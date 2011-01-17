@@ -54,7 +54,6 @@ $valid_data = array(
 	'valid_ip'		=> '69.163.138.62'
 );
 
-
 echo "These all FAIL:\n";
 
 print_r(GUMP::validate($invalid_data, $rules));
