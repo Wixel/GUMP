@@ -3,8 +3,6 @@
 
 require "gump.php";
 
-$validator = new GUMP();
-
 $rules = array(
 	'missing'   	=> 'required',
 	'email'     	=> 'valid_email',
@@ -61,8 +59,11 @@ echo "These all FAIL:\n";
 
 print_r(GUMP::validate($invalid_data, $rules));
 
-echo "These all SUCCEED:\n";
-
-print_r(GUMP::validate($valid_data, $rules));
+if(GUMP::validate($valid_data, $rules))
+{
+  echo "These all SUCCEED:\n";
+  
+  print_r($valid_data);
+}
 
 echo "DONE";
