@@ -1,6 +1,6 @@
-GUMP is a standalone PHP input validation and filtering class.
-
 # Getting started
+
+GUMP is a standalone PHP input validation and filtering class.
 
 1. Download GUMP
 2. Unzip it and copy the directory into your PHP project directory.
@@ -27,7 +27,7 @@ The following example is part of a registration form, the flow should be pretty 
 <pre>
 require "gump.php"
 
-$_POST = GUMP::sanitize($_POST);
+$_POST = GUMP::sanitize($_POST); // You don't have to sanitize, but it's safest to do so.
 
 $rules = array(
 	'username' => 'required|alpha_numeric|max_len,100|min_len,6',
@@ -36,11 +36,20 @@ $rules = array(
 	'gender'   => 'required|exact_len,1'
 );
 
+$filters = array(
+	'username' => 'trim|sanitize_string',
+	'password' => 'trim|base64',
+	'email'    => 'trim|sanitize_email',
+	'gender'   => 'trim'
+);
+
+$_POST = GUMP::filter($_POST, $filters);
+
 $validated = GUMP::validate($_POST, $rules);
 
 if($validated !== TRUE)
 {
-	print_r($validated);
+	print_r($validated); // Something went wrong
 }
 else
 {
@@ -48,13 +57,27 @@ else
 }
 </pre>
 
+Return Values
+-------------
+
+`GUMP::validate()` returns one of two types:
+
+AN ARRAY containing key names and validator names when data does not pass the validation.
+
+You can use this array along with your language helpers to determine what error message to show.
+
+A BOOLEAN value of TRUE if the validation was successful.
+
+`GUMP::filter()` returns the exact array structure that was parsed as the `$input` parameter, the only difference would be the filtered data.
+
+
 Available Validators
 --------------------
 * required `Ensures the specified key value exists and is not empty`
 * valid_email `Checks for a valid email address`
-* max_len `Checks key value length, makes sure it's not longer than the specified length`
-* min_len `Checks key value length, makes sure it's not shorter than the specified length`
-* exact_length `Ensures that the key value length precisely matches the specified length`
+* max_len,n `Checks key value length, makes sure it's not longer than the specified length. n = length parameter.`
+* min_len,n `Checks key value length, makes sure it's not shorter than the specified length. n = length parameter.`
+* exact_len,n `Ensures that the key value length precisely matches the specified length. n = length parameter.`
 * alpha `Ensure only alpha characters are present in the key value (a-z, A-Z)`
 * alpha_numeric `Ensure only alpha-numeric characters are present in the key value (a-z, A-Z, 0-9)`
 * alpha_dash `Ensure only alpha-numeric characters + dashes and underscores are present in the key value (a-z, A-Z, 0-9, _-)`
@@ -75,3 +98,24 @@ Available Filters
 * trim `Remove spaces from the beginning or end of strings`
 * base64 `Base64 encode the input`
 * sha1 `Encode the input with the secure sha1 algorithm`
+
+
+#  Creating your own validators and filters
+
+1. Open the gump.php class file, scroll to the bottom.
+2. Add your custom functions in the designated space ( to keep things clean )
+
+<pre>
+
+// ** ------------------------- Custom Validators ----------------------------- ** //	
+
+// Put yours here
+
+// ** ------------------------- Custom Filters -------------------------------- ** //
+
+// Put yours here
+
+</pre>
+
+Remember to create a protected static method with the correct parameter types.
+

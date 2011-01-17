@@ -116,7 +116,7 @@ class GUMP
 					$method = 'validate_'.$rule;
 				}
 
-				if(method_exists('Input', $method))
+				if(method_exists('GUMP', $method))
 				{
 					$result = Input::$method($field, $input, $param);
 
@@ -150,7 +150,7 @@ class GUMP
 			{	
 				$method = 'filter_'.$filter;
 
-				if(method_exists('Input', $method))
+				if(method_exists('GUMP', $method))
 				{
 					$input[$field] = Input::$method($input[$field]);
 				}
@@ -356,7 +356,7 @@ class GUMP
 	 * @param  array $input
 	 * @return mixed
 	 */
-	protected static function validate_exact_length($field, $input, $param = NULL)
+	protected static function validate_exact_len($field, $input, $param = NULL)
 	{
 		if(isset($input[$field]))
 		{
