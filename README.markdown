@@ -124,7 +124,7 @@ Running the tests:
 ------------------
 
 1. Open up your terminal
-2. cd <GUMP DIRECTORY>
+2. cd [GUMP DIRECTORY]
 3. php test.php
 
 Your output should look something like:
