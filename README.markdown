@@ -17,7 +17,7 @@ Methods available:
 GUMP::xss_clean(array $data); // Strips and encodes unwanted characters
 GUMP::sanitize(array $input, $fields = NULL); // Sanitizes data and converts strings to UTF-8 (if available)
 GUMP::validate(array $input, array $ruleset); // Validates input data according to the provided ruleset (see example)
-GUMP::filter(array $input, array $filterset) // Filters input data according to the provided filterset (see example)
+GUMP::filter(array $input, array $filterset); // Filters input data according to the provided filterset (see example)
 </pre>
 
 #  Complete Working Example
@@ -62,11 +62,11 @@ Return Values
 
 `GUMP::validate()` returns one of two types:
 
-AN ARRAY containing key names and validator names when data does not pass the validation.
+*AN ARRAY* containing key names and validator names when data does not pass the validation.
 
 You can use this array along with your language helpers to determine what error message to show.
 
-A BOOLEAN value of TRUE if the validation was successful.
+*A BOOLEAN* value of TRUE if the validation was successful.
 
 `GUMP::filter()` returns the exact array structure that was parsed as the `$input` parameter, the only difference would be the filtered data.
 
