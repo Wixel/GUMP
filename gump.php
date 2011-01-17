@@ -3,7 +3,7 @@
 /**
  * GUMP - A fast, extensible PHP input validation class
  *
- * @author		Sean Nieuwoudt (@SeanNieuwoudt)
+ * @author		Sean Nieuwoudt (http://twitter.com/SeanNieuwoudt)
  * @copyright	Copyright (c) 2011 Wixel.net
  * @link		http://github.com/Wixel/GUMP
  * @version     0.3
@@ -118,7 +118,7 @@ class GUMP
 
 				if(method_exists('GUMP', $method))
 				{
-					$result = Input::$method($field, $input, $param);
+					$result = GUMP::$method($field, $input, $param);
 
 					if(!is_bool($result))
 					{
@@ -152,7 +152,7 @@ class GUMP
 
 				if(method_exists('GUMP', $method))
 				{
-					$input[$field] = Input::$method($input[$field]);
+					$input[$field] = GUMP::$method($input[$field]);
 				}
 			}
 		}	
@@ -161,6 +161,58 @@ class GUMP
 	}
 	
 	// ** ------------------------- Filters --------------------------------------- ** //	
+	
+	/**
+	 * Trim the provided string
+	 * 
+	 * @static
+	 * @access protected
+	 * @param  string $value
+	 * @return string
+	 */
+	protected static function filter_trim($value)
+	{
+		return trim($value);
+	}
+	
+	/**
+	 * Base64 encode the provided string
+	 * 
+	 * @static
+	 * @access protected
+	 * @param  string $value
+	 * @return string
+	 */
+	protected static function filter_base64($value)
+	{
+		return base64_encode($value);
+	}
+	
+	/**
+	 * SHA1 encrypt the provided string
+	 * 
+	 * @static
+	 * @access protected
+	 * @param  string $value
+	 * @return string
+	 */
+	protected static function filter_sha1($value)
+	{
+		return sha1($value);
+	}
+	
+	/**
+	 * MD5 encode the provided string
+	 * 
+	 * @static
+	 * @access protected
+	 * @param  string $value
+	 * @return string
+	 */
+	protected static function filter_md5($value)
+	{
+		return md5($value);
+	}
 	
 	/**
 	 * Sanitize the string by removing any script tags
@@ -264,7 +316,12 @@ class GUMP
 	 */
 	protected static function validate_valid_email($field, $input, $param = NULL)
 	{
-		if(isset($input[$field]) && filter_var($input[$field], FILTER_VALIDATE_EMAIL))
+		if(!isset($input[$field]))
+		{
+			return true;
+		}
+	
+		if(filter_var($input[$field], FILTER_VALIDATE_EMAIL))
 		{
 			return true;
 		}
@@ -288,21 +345,23 @@ class GUMP
 	 */
 	protected static function validate_max_len($field, $input, $param = NULL)
 	{
-		if(isset($input[$field]))
+		if(!isset($input[$field]))
 		{
-			if(function_exists('mb_strlen'))
+			return true;
+		}
+		
+		if(function_exists('mb_strlen'))
+		{
+			if(mb_strlen($input[$field]) <= (int)$param)
 			{
-				if(mb_strlen($input[$field]) <= (int)$param)
-				{
-					return TRUE;
-				}
+				return TRUE;
 			}
-			else
+		}
+		else
+		{
+			if(strlen($input[$field]) <= (int)$param)
 			{
-				if(strlen($input[$field]) <= (int)$param)
-				{
-					return TRUE;
-				}
+				return TRUE;
 			}
 		}
 
@@ -323,21 +382,23 @@ class GUMP
 	 */
 	protected static function validate_min_len($field, $input, $param = NULL)
 	{
-		if(isset($input[$field]))
+		if(!isset($input[$field]))
 		{
-			if(function_exists('mb_strlen'))
+			return true;
+		}
+		
+		if(function_exists('mb_strlen'))
+		{
+			if(mb_strlen($input[$field]) >= (int)$param)
 			{
-				if(mb_strlen($input[$field]) >= (int)$param)
-				{
-					return TRUE;
-				}
+				return TRUE;
 			}
-			else
+		}
+		else
+		{
+			if(strlen($input[$field]) >= (int)$param)
 			{
-				if(strlen($input[$field]) >= (int)$param)
-				{
-					return TRUE;
-				}
+				return TRUE;
 			}
 		}
 
@@ -358,21 +419,23 @@ class GUMP
 	 */
 	protected static function validate_exact_len($field, $input, $param = NULL)
 	{
-		if(isset($input[$field]))
+		if(!isset($input[$field]))
 		{
-			if(function_exists('mb_strlen'))
+			return true;
+		}
+
+		if(function_exists('mb_strlen'))
+		{
+			if(mb_strlen($input[$field]) == (int)$param)
 			{
-				if(mb_strlen($input[$field]) == (int)$param)
-				{
-					return TRUE;
-				}
+				return TRUE;
 			}
-			else
+		}
+		else
+		{
+			if(strlen($input[$field]) == (int)$param)
 			{
-				if(strlen($input[$field]) == (int)$param)
-				{
-					return TRUE;
-				}
+				return TRUE;
 			}
 		}
 
@@ -393,7 +456,12 @@ class GUMP
 	 */
 	protected static function validate_alpha($field, $input, $param = NULL)
 	{
-		if(isset($input[$field]) && preg_match("/^([a-z])+$/i", $input[$field]) !== FALSE)
+		if(!isset($input[$field]))
+		{
+			return true;
+		}
+		
+		if(preg_match("/^([a-z])+$/i", $input[$field]) !== FALSE)
 		{
 			return true;
 		}
@@ -417,7 +485,12 @@ class GUMP
 	 */	
 	protected static function validate_alpha_numeric($field, $input, $param = NULL)
 	{	
-		if(isset($input[$field]) && preg_match("/^([a-z0-9])+$/i", $input[$field]) !== FALSE)
+		if(!isset($input[$field]))
+		{
+			return true;
+		}
+		
+		if(preg_match("/^([a-z0-9])+$/i", $input[$field]) !== FALSE)
 		{
 			return true;
 		}
@@ -441,7 +514,12 @@ class GUMP
 	 */
 	protected static function validate_alpha_dash($field, $input, $param = NULL)
 	{
-		if(isset($input[$field]) && preg_match("/^([-a-z0-9_-])+$/i", $input[$field]) !== FALSE)
+		if(!isset($input[$field]))
+		{
+			return true;
+		}
+		
+		if(preg_match("/^([-a-z0-9_-])+$/i", $input[$field]) !== FALSE)
 		{
 			return true;
 		}
@@ -465,7 +543,12 @@ class GUMP
 	 */
 	protected static function validate_numeric($field, $input, $param = NULL)
 	{
-		if(isset($input[$field]) && is_numeric($input[$field]))
+		if(!isset($input[$field]))
+		{
+			return true;
+		}
+		
+		if(is_numeric($input[$field]))
 		{
 			return true;
 		}
@@ -489,7 +572,12 @@ class GUMP
 	 */
 	protected static function validate_integer($field, $input, $param = NULL)
 	{
-		if(isset($input[$field]) && filter_var($input[$field], FILTER_VALIDATE_INT))
+		if(!isset($input[$field]))
+		{
+			return true;
+		}
+		
+		if(filter_var($input[$field], FILTER_VALIDATE_INT))
 		{
 			return true;
 		}
@@ -513,7 +601,14 @@ class GUMP
 	 */
 	protected static function validate_boolean($field, $input, $param = NULL)
 	{
-		if(isset($input[$field]) && filter_var($input[$field], FILTER_VALIDATE_BOOLEAN))
+		if(!isset($input[$field]))
+		{
+			return true;
+		}
+		
+		$bool = filter_var($input[$field], FILTER_VALIDATE_BOOLEAN);
+		
+		if(is_bool($bool))
 		{
 			return true;
 		}
@@ -537,7 +632,12 @@ class GUMP
 	 */
 	protected static function validate_float($field, $input, $param = NULL)
 	{
-		if(isset($input[$field]) && filter_var($input[$field], FILTER_VALIDATE_FLOAT))
+		if(!isset($input[$field]))
+		{
+			return true;
+		}
+		
+		if(filter_var($input[$field], FILTER_VALIDATE_FLOAT))
 		{
 			return true;
 		}
@@ -561,7 +661,12 @@ class GUMP
 	 */
 	protected static function validate_valid_url($field, $input, $param = NULL)
 	{
-		if(isset($input[$field]) && filter_var($input[$field], FILTER_VALIDATE_URL))
+		if(!isset($input[$field]))
+		{
+			return true;
+		}
+		
+		if(filter_var($input[$field], FILTER_VALIDATE_URL))
 		{
 			return true;
 		}
@@ -585,7 +690,12 @@ class GUMP
 	 */
 	protected static function validate_valid_ip($field, $input, $param = NULL)
 	{
-		if(isset($input[$field]) && filter_var($input[$field], FILTER_VALIDATE_IP) !== FALSE)
+		if(!isset($input[$field]))
+		{
+			return true;
+		}
+		
+		if(filter_var($input[$field], FILTER_VALIDATE_IP) !== FALSE)
 		{
 			return true;
 		}

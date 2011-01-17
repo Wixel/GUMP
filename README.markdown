@@ -97,7 +97,8 @@ Available Filters
 * sanitize_numbers `Remove any non-numeric characters`
 * trim `Remove spaces from the beginning or end of strings`
 * base64 `Base64 encode the input`
-* sha1 `Encode the input with the secure sha1 algorithm`
+* sha1 `Encrypt the input with the secure sha1 algorithm`
+* md5 `MD5 encode the input`
 
 
 #  Creating your own validators and filters
@@ -119,3 +120,73 @@ Available Filters
 
 Remember to create a protected static method with the correct parameter types.
 
+Running the tests:
+------------------
+
+1. Open up your terminal
+2. cd <GUMP DIRECTORY>
+3. php test.php
+
+Your output should look something like:
+
+<pre>
+These should all FAIL:
+Array
+(
+    [0] => Array
+        (
+            [field] => missing
+            [rule] => validate_required
+        )
+
+    [1] => Array
+        (
+            [field] => email
+            [rule] => validate_valid_email
+        )
+
+    [2] => Array
+        (
+            [field] => max_len
+            [rule] => validate_max_len
+        )
+
+    [3] => Array
+        (
+            [field] => min_len
+            [rule] => validate_min_len
+        )
+
+    [4] => Array
+        (
+            [field] => exact_len
+            [rule] => validate_exact_len
+        )
+
+    [5] => Array
+        (
+            [field] => numeric
+            [rule] => validate_numeric
+        )
+
+    [6] => Array
+        (
+            [field] => integer
+            [rule] => validate_integer
+        )
+
+    [7] => Array
+        (
+            [field] => float
+            [rule] => validate_float
+        )
+
+    [8] => Array
+        (
+            [field] => valid_ip
+            [rule] => validate_valid_ip
+        )
+
+)
+These should all SUCCEED:
+</pre>
