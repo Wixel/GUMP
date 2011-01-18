@@ -103,7 +103,7 @@ Available Filters
 
 #  Creating your own validators and filters
 
-1. Open the gump.php class file, scroll to the bottom.
+1. Open the gump.class.php class file, scroll to the bottom.
 2. Add your custom functions in the designated space ( to keep things clean )
 
 <pre>
