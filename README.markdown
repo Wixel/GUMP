@@ -8,7 +8,7 @@ GUMP is a standalone PHP input validation and filtering class.
 Include it in your project:
 
 <pre>
-require "gump.php"
+require "gump.php";
 </pre>
 
 Methods available:
@@ -189,4 +189,22 @@ Array
 
 )
 These should all SUCCEED:
+Array
+(
+    [missing] => This is not missing
+    [email] => sean@wixel.net
+    [max_len] => 1
+    [min_len] => 1234
+    [exact_len] => 1234567890
+    [alpha] => abcdefg
+    [alpha_numeric] => abcdefg12345
+    [alpha_dash] => abcdefg12345-_
+    [numeric] => 2
+    [integer] => 3
+    [boolean] => 
+    [float] => 10.1
+    [valid_url] => http://wixel.net
+    [valid_ip] => 69.163.138.62
+)
+
 </pre>

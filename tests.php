@@ -22,19 +22,19 @@ $rules = array(
 
 $invalid_data = array(
 	'missing'   	=> '',
-	'email'     	=> 'not a valid email',
-	'max_len'   	=> '1234567890',
-	'min_len'   	=> '1',
-	'exact_len' 	=> '123456',
-	'alpha'	       	=> '*(^*^*&',
-	'alpha_numeric' => 'abcdefg12345+',
-	'alpha_dash'	=> 'abcdefg12345-_+',
-	'numeric'		=> 'one, two',
-	'integer'		=> '1,003',
-	'boolean'		=> 'this is not a boolean',
-	'float'			=> 'not a float',
-	'valid_url'		=> 'http://add',
-	'valid_ip'		=> 'google.com'
+	'email'     	=> 'not a valid email\n\n',
+	'max_len'   	=> '1234567890\n\n',
+	'min_len'   	=> '1\n\n',
+	'exact_len' 	=> '123456\n\n',
+	'alpha'	       	=> '*(^*^*&\n\n',
+	'alpha_numeric' => 'abcdefg12345+\n\n',
+	'alpha_dash'	=> 'ab<script>alert(1);</script>cdefg12345-_+\n\n',
+	'numeric'		=> 'one, two\n\n',
+	'integer'		=> '1,003\n\n',
+	'boolean'		=> 'this is not a boolean\r\n',
+	'float'			=> 'not a float\n\n',
+	'valid_url'		=> 'http://add\n\n',
+	'valid_ip'		=> 'google.com\n\n'
 );
 
 $valid_data = array(
@@ -54,15 +54,23 @@ $valid_data = array(
 	'valid_ip'		=> '69.163.138.62'
 );
 
-echo "These all FAIL:\n";
+echo "\nBEFORE SANITIZE:\n\n";
+
+print_r($invalid_data);
+
+echo "\nAFTER SANITIZE:\n\n";
+
+print_r(GUMP::sanitize($invalid_data));
+
+echo "\nTHESE ALL FAIL:\n\n";
 
 print_r(GUMP::validate($invalid_data, $rules));
 
 if(GUMP::validate($valid_data, $rules))
 {
-  echo "These all SUCCEED:\n";
+  echo "\nTHESE ALL SUCCEED:\n\n";
   
   print_r($valid_data);
 }
 
-echo "DONE";
+echo "\nDONE\n\n";

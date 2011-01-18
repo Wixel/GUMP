@@ -14,7 +14,7 @@ class GUMP
 	// ** ------------------------- Validation Helpers ---------------------------- ** //	
 	
 	/**
-	 * Perform CSS clean to prevent cross site scripting
+	 * Perform XSS clean to prevent cross site scripting
 	 * 
 	 * @static
 	 * @access public
@@ -80,7 +80,9 @@ class GUMP
 				
 				$input[$field] = $value;
 			}
-		}		
+		}
+		
+		return $input;		
 	}
 	
 	/**
@@ -104,6 +106,8 @@ class GUMP
 			{
 				$method = NULL;
 				$param  = NULL;
+				
+				// @TODO: Improve the param parser
 				
 				if(strstr($rule, ',') !== FALSE) // has params
 				{
