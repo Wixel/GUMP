@@ -1,7 +1,9 @@
 #!/usr/bin/php -q
 <?php
 
-require "gump.php";
+echo htmlentities('<script>alert(1);</script>');
+
+require "gump.class.php";
 
 $rules = array(
 	'missing'   	=> 'required',

@@ -8,7 +8,7 @@ GUMP is a standalone PHP input validation and filtering class.
 Include it in your project:
 
 <pre>
-require "gump.php";
+require "gump.class.php";
 </pre>
 
 Methods available:
@@ -25,7 +25,7 @@ GUMP::filter(array $input, array $filterset); // Filters input data according to
 The following example is part of a registration form, the flow should be pretty standard
 
 <pre>
-require "gump.php";
+require "gump.class.php";
 
 $_POST = GUMP::sanitize($_POST); // You don't have to sanitize, but it's safest to do so.
 
@@ -142,7 +142,7 @@ Your output should look something like:
 	    [exact_len] => 123456\n\n
 	    [alpha] => *(^*^*&\n\n
 	    [alpha_numeric] => abcdefg12345+\n\n
-	    [alpha_dash] => ab<script>alert(1);</script>cdefg12345-_+\n\n
+	    [alpha_dash] => ab&lt;script&gt;alert(1);&lt;/script&gt;cdefg12345-_+\n\n
 	    [numeric] => one, two\n\n
 	    [integer] => 1,003\n\n
 	    [boolean] => this is not a boolean\r\n
