@@ -118,7 +118,7 @@ Available Filters
 
 </pre>
 
-Remember to create a protected static method with the correct parameter types.
+Remember to create a protected static methods with the correct parameter types and counts.
 
 Running the tests:
 ------------------
