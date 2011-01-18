@@ -25,7 +25,7 @@ GUMP::filter(array $input, array $filterset); // Filters input data according to
 The following example is part of a registration form, the flow should be pretty standard
 
 <pre>
-require "gump.php"
+require "gump.php";
 
 $_POST = GUMP::sanitize($_POST); // You don't have to sanitize, but it's safest to do so.
 
@@ -130,81 +130,122 @@ Running the tests:
 Your output should look something like:
 
 <pre>
-These should all FAIL:
-Array
-(
-    [0] => Array
-        (
-            [field] => missing
-            [rule] => validate_required
-        )
 
-    [1] => Array
-        (
-            [field] => email
-            [rule] => validate_valid_email
-        )
+	BEFORE SANITIZE:
 
-    [2] => Array
-        (
-            [field] => max_len
-            [rule] => validate_max_len
-        )
+	Array
+	(
+	    [missing] => 
+	    [email] => not a valid email\n\n
+	    [max_len] => 1234567890\n\n
+	    [min_len] => 1\n\n
+	    [exact_len] => 123456\n\n
+	    [alpha] => *(^*^*&\n\n
+	    [alpha_numeric] => abcdefg12345+\n\n
+	    [alpha_dash] => ab<script>alert(1);</script>cdefg12345-_+\n\n
+	    [numeric] => one, two\n\n
+	    [integer] => 1,003\n\n
+	    [boolean] => this is not a boolean\r\n
+	    [float] => not a float\n\n
+	    [valid_url] => http://add\n\n
+	    [valid_ip] => google.com\n\n
+	)
 
-    [3] => Array
-        (
-            [field] => min_len
-            [rule] => validate_min_len
-        )
+	AFTER SANITIZE:
 
-    [4] => Array
-        (
-            [field] => exact_len
-            [rule] => validate_exact_len
-        )
+	Array
+	(
+	    [missing] => 
+	    [email] => not a valid emailnn
+	    [max_len] => 1234567890nn
+	    [min_len] => 1nn
+	    [exact_len] => 123456nn
+	    [alpha] => *(^*^*&nn
+	    [alpha_numeric] => abcdefg12345+nn
+	    [alpha_dash] => abalert(1);cdefg12345-_+nn
+	    [numeric] => one, twonn
+	    [integer] => 1,003nn
+	    [boolean] => this is not a booleanrn
+	    [float] => not a floatnn
+	    [valid_url] => http://addnn
+	    [valid_ip] => google.comnn
+	)
 
-    [5] => Array
-        (
-            [field] => numeric
-            [rule] => validate_numeric
-        )
+	THESE ALL FAIL:
 
-    [6] => Array
-        (
-            [field] => integer
-            [rule] => validate_integer
-        )
+	Array
+	(
+	    [0] => Array
+	        (
+	            [field] => missing
+	            [rule] => validate_required
+	        )
 
-    [7] => Array
-        (
-            [field] => float
-            [rule] => validate_float
-        )
+	    [1] => Array
+	        (
+	            [field] => email
+	            [rule] => validate_valid_email
+	        )
 
-    [8] => Array
-        (
-            [field] => valid_ip
-            [rule] => validate_valid_ip
-        )
+	    [2] => Array
+	        (
+	            [field] => max_len
+	            [rule] => validate_max_len
+	        )
 
-)
-These should all SUCCEED:
-Array
-(
-    [missing] => This is not missing
-    [email] => sean@wixel.net
-    [max_len] => 1
-    [min_len] => 1234
-    [exact_len] => 1234567890
-    [alpha] => abcdefg
-    [alpha_numeric] => abcdefg12345
-    [alpha_dash] => abcdefg12345-_
-    [numeric] => 2
-    [integer] => 3
-    [boolean] => 
-    [float] => 10.1
-    [valid_url] => http://wixel.net
-    [valid_ip] => 69.163.138.62
-)
+	    [3] => Array
+	        (
+	            [field] => numeric
+	            [rule] => validate_numeric
+	        )
+
+	    [4] => Array
+	        (
+	            [field] => integer
+	            [rule] => validate_integer
+	        )
+
+	    [5] => Array
+	        (
+	            [field] => float
+	            [rule] => validate_float
+	        )
+
+	    [6] => Array
+	        (
+	            [field] => valid_url
+	            [rule] => validate_valid_url
+	        )
+
+	    [7] => Array
+	        (
+	            [field] => valid_ip
+	            [rule] => validate_valid_ip
+	        )
+
+	)
+
+	THESE ALL SUCCEED:
+
+	Array
+	(
+	    [missing] => This is not missing
+	    [email] => sean@wixel.net
+	    [max_len] => 1
+	    [min_len] => 1234
+	    [exact_len] => 1234567890
+	    [alpha] => abcdefg
+	    [alpha_numeric] => abcdefg12345
+	    [alpha_dash] => abcdefg12345-_
+	    [numeric] => 2
+	    [integer] => 3
+	    [boolean] => 
+	    [float] => 10.1
+	    [valid_url] => http://wixel.net
+	    [valid_ip] => 69.163.138.62
+	)
+
+	DONE
+
 
 </pre>
