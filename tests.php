@@ -1,8 +1,6 @@
 #!/usr/bin/php -q
 <?php
 
-echo htmlentities('<script>alert(1);</script>');
-
 require "gump.class.php";
 
 $rules = array(

@@ -103,18 +103,17 @@ Available Filters
 
 #  Creating your own validators and filters
 
-1. Open the gump.class.php class file, scroll to the bottom.
-2. Add your custom functions in the designated space ( to keep things clean )
+Simply create your own class that extends the GUMP class.
 
 <pre>
 
-// ** ------------------------- Custom Validators ----------------------------- ** //	
+class MyClass extends GUMP
+{
+	public static ....
+	
+} // EOC
 
-// Put yours here
-
-// ** ------------------------- Custom Filters -------------------------------- ** //
-
-// Put yours here
+$validated = MyClass::validate($_POST, $rules);
 
 </pre>
 
