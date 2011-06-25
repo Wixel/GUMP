@@ -106,6 +106,8 @@ Available Filters
 Simply create your own class that extends the GUMP class.
 
 <pre>
+	
+require "gump.class.php";
 
 class MyClass extends GUMP
 {
