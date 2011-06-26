@@ -131,7 +131,7 @@ class GUMP
 				}
 				else
 				{
-					throw new Exception("Validator '$method' does not exist.");
+					throw new Exception("Validator method '$method' does not exist.");
 				}
 			}
 		}
@@ -161,6 +161,10 @@ class GUMP
 				if(method_exists('GUMP', $method))
 				{
 					$input[$field] = GUMP::$method($input[$field]);
+				}
+				else
+				{
+					throw new Exception("Filter method '$method' does not exist.");
 				}
 			}
 		}	
