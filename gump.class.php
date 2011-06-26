@@ -6,7 +6,7 @@
  * @author		Sean Nieuwoudt (http://twitter.com/SeanNieuwoudt)
  * @copyright	Copyright (c) 2011 Wixel.net
  * @link		http://github.com/Wixel/GUMP
- * @version     0.3
+ * @version     0.5
  */
 
 class GUMP
@@ -124,10 +124,14 @@ class GUMP
 				{
 					$result = GUMP::$method($field, $input, $param);
 
-					if(!is_bool($result))
+					if(is_array($result)) // Validation Failed
 					{
 						$errors[] = $result;
 					}
+				}
+				else
+				{
+					throw new Exception("Validator '$method' does not exist.");
 				}
 			}
 		}
@@ -298,7 +302,7 @@ class GUMP
 	{
 		if(isset($input[$field]) && trim($input[$field]) != '')
 		{
-			return true;
+			return;
 		}
 		else
 		{
@@ -322,14 +326,10 @@ class GUMP
 	{
 		if(!isset($input[$field]))
 		{
-			return true;
+			return;
 		}
 	
-		if(filter_var($input[$field], FILTER_VALIDATE_EMAIL))
-		{
-			return true;
-		}
-		else
+		if(!filter_var($input[$field], FILTER_VALIDATE_EMAIL))
 		{
 			return array(
 				'field' => $field,
@@ -351,21 +351,21 @@ class GUMP
 	{
 		if(!isset($input[$field]))
 		{
-			return true;
+			return;
 		}
 		
 		if(function_exists('mb_strlen'))
 		{
 			if(mb_strlen($input[$field]) <= (int)$param)
 			{
-				return TRUE;
+				return;
 			}
 		}
 		else
 		{
 			if(strlen($input[$field]) <= (int)$param)
 			{
-				return TRUE;
+				return;
 			}
 		}
 
@@ -388,21 +388,21 @@ class GUMP
 	{
 		if(!isset($input[$field]))
 		{
-			return true;
+			return;
 		}
 		
 		if(function_exists('mb_strlen'))
 		{
 			if(mb_strlen($input[$field]) >= (int)$param)
 			{
-				return TRUE;
+				return;
 			}
 		}
 		else
 		{
 			if(strlen($input[$field]) >= (int)$param)
 			{
-				return TRUE;
+				return;
 			}
 		}
 
@@ -425,21 +425,21 @@ class GUMP
 	{
 		if(!isset($input[$field]))
 		{
-			return true;
+			return;
 		}
 
 		if(function_exists('mb_strlen'))
 		{
 			if(mb_strlen($input[$field]) == (int)$param)
 			{
-				return TRUE;
+				return;
 			}
 		}
 		else
 		{
 			if(strlen($input[$field]) == (int)$param)
 			{
-				return TRUE;
+				return;
 			}
 		}
 
@@ -462,14 +462,10 @@ class GUMP
 	{
 		if(!isset($input[$field]))
 		{
-			return true;
+			return;
 		}
 		
-		if(preg_match("/^([a-z])+$/i", $input[$field]) !== FALSE)
-		{
-			return true;
-		}
-		else
+		if(!preg_match("/^([a-z])+$/i", $input[$field]) !== FALSE)
 		{
 			return array(
 				'field' => $field,
@@ -491,14 +487,10 @@ class GUMP
 	{	
 		if(!isset($input[$field]))
 		{
-			return true;
+			return;
 		}
 		
-		if(preg_match("/^([a-z0-9])+$/i", $input[$field]) !== FALSE)
-		{
-			return true;
-		}
-		else
+		if(!preg_match("/^([a-z0-9])+$/i", $input[$field]) !== FALSE)
 		{
 			return array(
 				'field' => $field,
@@ -520,14 +512,10 @@ class GUMP
 	{
 		if(!isset($input[$field]))
 		{
-			return true;
+			return;
 		}
 		
-		if(preg_match("/^([-a-z0-9_-])+$/i", $input[$field]) !== FALSE)
-		{
-			return true;
-		}
-		else
+		if(!preg_match("/^([-a-z0-9_-])+$/i", $input[$field]) !== FALSE)
 		{
 			return array(
 				'field' => $field,
@@ -549,14 +537,10 @@ class GUMP
 	{
 		if(!isset($input[$field]))
 		{
-			return true;
+			return;
 		}
 		
-		if(is_numeric($input[$field]))
-		{
-			return true;
-		}
-		else
+		if(!is_numeric($input[$field]))
 		{
 			return array(
 				'field' => $field,
@@ -578,14 +562,10 @@ class GUMP
 	{
 		if(!isset($input[$field]))
 		{
-			return true;
+			return;
 		}
 		
-		if(filter_var($input[$field], FILTER_VALIDATE_INT))
-		{
-			return true;
-		}
-		else
+		if(!filter_var($input[$field], FILTER_VALIDATE_INT))
 		{
 			return array(
 				'field' => $field,
@@ -607,16 +587,12 @@ class GUMP
 	{
 		if(!isset($input[$field]))
 		{
-			return true;
+			return;
 		}
 		
 		$bool = filter_var($input[$field], FILTER_VALIDATE_BOOLEAN);
 		
-		if(is_bool($bool))
-		{
-			return true;
-		}
-		else
+		if(!is_bool($bool))
 		{
 			return array(
 				'field' => $field,
@@ -638,14 +614,10 @@ class GUMP
 	{
 		if(!isset($input[$field]))
 		{
-			return true;
+			return;
 		}
 		
-		if(filter_var($input[$field], FILTER_VALIDATE_FLOAT))
-		{
-			return true;
-		}
-		else
+		if(!filter_var($input[$field], FILTER_VALIDATE_FLOAT))
 		{
 			return array(
 				'field' => $field,
@@ -667,14 +639,39 @@ class GUMP
 	{
 		if(!isset($input[$field]))
 		{
-			return true;
+			return;
 		}
 		
-		if(filter_var($input[$field], FILTER_VALIDATE_URL))
+		if(!filter_var($input[$field], FILTER_VALIDATE_URL))
 		{
-			return true;
+			return array(
+				'field' => $field,
+				'rule'	=> __FUNCTION__
+			);
 		}
-		else
+	}
+	
+	/**
+	 * Determine if a URL exists & is accessible
+	 *
+	 * @static
+	 * @access protected
+	 * @param  string $field
+	 * @param  array $input
+	 * @return mixed
+	 */
+	protected static function validate_url_exists($field, $input, $param = NULL)
+	{
+		if(!isset($input[$field]))
+		{
+			return;
+		}
+		
+		$url = str_replace(
+			array('http://', 'https://', 'ftp://'), '', strtolower($input[$field])
+		);
+		
+		if(!checkdnsrr($url))
 		{
 			return array(
 				'field' => $field,
@@ -696,14 +693,10 @@ class GUMP
 	{
 		if(!isset($input[$field]))
 		{
-			return true;
+			return;
 		}
 		
-		if(filter_var($input[$field], FILTER_VALIDATE_IP) !== FALSE)
-		{
-			return true;
-		}
-		else
+		if(!filter_var($input[$field], FILTER_VALIDATE_IP) !== FALSE)
 		{
 			return array(
 				'field' => $field,

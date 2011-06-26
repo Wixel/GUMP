@@ -47,13 +47,13 @@ $_POST = GUMP::filter($_POST, $filters);
 
 $validated = GUMP::validate($_POST, $rules);
 
-if($validated !== TRUE)
-{
-	print_r($validated); // Something went wrong
-}
-else
+if($validated === TRUE)
 {
 	// Do something, everything went well
+}
+else
+{	
+	print_r($validated); // Something went wrong
 }
 </pre>
 
@@ -86,6 +86,7 @@ Available Validators
 * boolean `Checks for PHP accepted boolean values, returns TRUE for "1", "true", "on" and "yes"`
 * float `Checks for float values`
 * valid_url `Check for valid URL or subdomain`
+* url_exists `Check to see if the url exists and is accessible`
 * valid_ip `Check for valid IP address`
 
 Available Filters
@@ -111,7 +112,15 @@ require("gump.class.php");
 
 class MyClass extends GUMP
 {
-	public static ....
+	public static function filter_myfilter($value)
+	{
+		...
+	}
+	
+	public static function validate_myvalidator($field, $input, $param = NULL)
+	{
+		...
+	}
 	
 } // EOC
 
@@ -120,6 +129,9 @@ $validated = MyClass::validate($_POST, $rules);
 </pre>
 
 Remember to create a protected static methods with the correct parameter types and counts.
+
+For filter methods, prepend the method name with "filter_".
+For validator methods, prepend the method name with "validate_".
 
 Running the tests:
 ------------------
@@ -149,6 +161,7 @@ Your output should look something like:
 	    [boolean] => this is not a boolean\r\n
 	    [float] => not a float\n\n
 	    [valid_url] => http://add\n\n
+		[url_exists] => http://asdasdasd354.gov
 	    [valid_ip] => google.com\n\n
 	)
 
@@ -169,6 +182,7 @@ Your output should look something like:
 	    [boolean] => this is not a booleanrn
 	    [float] => not a floatnn
 	    [valid_url] => http://addnn
+		[url_exists] => http://asdasdasd354.gov
 	    [valid_ip] => google.comnn
 	)
 
@@ -196,34 +210,57 @@ Your output should look something like:
 
 	    [3] => Array
 	        (
+	            [field] => alpha
+	            [rule] => validate_alpha
+	        )
+
+	    [4] => Array
+	        (
+	            [field] => alpha_numeric
+	            [rule] => validate_alpha_numeric
+	        )
+
+	    [5] => Array
+	        (
+	            [field] => alpha_dash
+	            [rule] => validate_alpha_dash
+	        )
+
+	    [6] => Array
+	        (
 	            [field] => numeric
 	            [rule] => validate_numeric
 	        )
 
-	    [4] => Array
+	    [7] => Array
 	        (
 	            [field] => integer
 	            [rule] => validate_integer
 	        )
 
-	    [5] => Array
+	    [8] => Array
 	        (
 	            [field] => float
 	            [rule] => validate_float
 	        )
 
-	    [6] => Array
+	    [9] => Array
 	        (
 	            [field] => valid_url
 	            [rule] => validate_valid_url
 	        )
 
-	    [7] => Array
+	    [10] => Array
+	        (
+	            [field] => url_exists
+	            [rule] => validate_url_exists
+	        )
+
+	    [11] => Array
 	        (
 	            [field] => valid_ip
 	            [rule] => validate_valid_ip
 	        )
-
 	)
 
 	THESE ALL SUCCEED:
@@ -243,6 +280,7 @@ Your output should look something like:
 	    [boolean] => 
 	    [float] => 10.1
 	    [valid_url] => http://wixel.net
+		[url_exists] => http://wixel.net
 	    [valid_ip] => 69.163.138.62
 	)
 

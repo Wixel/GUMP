@@ -17,6 +17,7 @@ $rules = array(
 	'boolean'		=> 'boolean',
 	'float'			=> 'float',
 	'valid_url'		=> 'valid_url',
+	'url_exists'	=> 'url_exists',
 	'valid_ip'		=> 'valid_ip'
 );
 
@@ -34,6 +35,7 @@ $invalid_data = array(
 	'boolean'		=> 'this is not a boolean\r\n',
 	'float'			=> 'not a float\r\n',
 	'valid_url'		=> 'http://add\r\n',
+	'url_exists'	=> 'http://asdasdasd354.gov',
 	'valid_ip'		=> 'google.com\r\n'
 );
 
@@ -51,6 +53,7 @@ $valid_data = array(
 	'boolean'		=> FALSE,
 	'float'			=> 10.10,
 	'valid_url'		=> 'http://wixel.net',
+	'url_exists'	=> 'http://wixel.net',	
 	'valid_ip'		=> '69.163.138.62'
 );
 
