@@ -193,74 +193,87 @@ Your output should look something like:
 	    [0] => Array
 	        (
 	            [field] => missing
+	            [value] => 
 	            [rule] => validate_required
 	        )
 
 	    [1] => Array
 	        (
 	            [field] => email
+	            [value] => not a valid email\r\n
 	            [rule] => validate_valid_email
 	        )
 
 	    [2] => Array
 	        (
 	            [field] => max_len
+	            [value] => 1234567890\r\n
 	            [rule] => validate_max_len
 	        )
 
 	    [3] => Array
 	        (
 	            [field] => alpha
+	            [value] => *(^*^*&\r\n
 	            [rule] => validate_alpha
 	        )
 
 	    [4] => Array
 	        (
 	            [field] => alpha_numeric
+	            [value] => abcdefg12345+\r\n
 	            [rule] => validate_alpha_numeric
 	        )
 
 	    [5] => Array
 	        (
 	            [field] => alpha_dash
+	            [value] => ab<script>alert(1);</script>cdefg12345-_+\r\n
 	            [rule] => validate_alpha_dash
 	        )
 
 	    [6] => Array
 	        (
 	            [field] => numeric
+	            [value] => one, two\r\n
 	            [rule] => validate_numeric
 	        )
 
 	    [7] => Array
 	        (
 	            [field] => integer
+	            [value] => 1,003\r\n
 	            [rule] => validate_integer
 	        )
 
 	    [8] => Array
 	        (
 	            [field] => float
+	            [value] => not a float\r\n
 	            [rule] => validate_float
 	        )
 
 	    [9] => Array
 	        (
 	            [field] => valid_url
+	            [value] => http://add\r\n
 	            [rule] => validate_valid_url
 	        )
 
 	    [10] => Array
 	        (
 	            [field] => url_exists
+	            [value] => http://asdasdasd354.gov
 	            [rule] => validate_url_exists
 	        )
 
 	    [11] => Array
 	        (
 	            [field] => valid_ip
+	            [value] => google.com\r\n
 	            [rule] => validate_valid_ip
 	        )
+
 	)
 
 	THESE ALL SUCCEED:

@@ -312,6 +312,7 @@ class GUMP
 		{
 			return array(
 				'field' => $field,
+				'value' => $input[$field],
 				'rule'	=> __FUNCTION__
 			);
 		}
@@ -337,6 +338,7 @@ class GUMP
 		{
 			return array(
 				'field' => $field,
+				'value' => $input[$field],
 				'rule'	=> __FUNCTION__
 			);
 		}
@@ -375,6 +377,7 @@ class GUMP
 
 		return array(
 			'field' => $field,
+			'value' => $input[$field],
 			'rule'	=> __FUNCTION__
 		);		
 	}
@@ -412,6 +415,7 @@ class GUMP
 
 		return array(
 			'field' => $field,
+			'value' => $input[$field],
 			'rule'	=> __FUNCTION__
 		);
 	}
@@ -449,6 +453,7 @@ class GUMP
 
 		return array(
 			'field' => $field,
+			'value' => $input[$field],
 			'rule'	=> __FUNCTION__
 		);
 	}
@@ -473,6 +478,7 @@ class GUMP
 		{
 			return array(
 				'field' => $field,
+				'value' => $input[$field],
 				'rule'	=> __FUNCTION__
 			);
 		}
@@ -498,6 +504,7 @@ class GUMP
 		{
 			return array(
 				'field' => $field,
+				'value' => $input[$field],
 				'rule'	=> __FUNCTION__
 			);
 		}
@@ -523,6 +530,7 @@ class GUMP
 		{
 			return array(
 				'field' => $field,
+				'value' => $input[$field],
 				'rule'	=> __FUNCTION__
 			);
 		}
@@ -548,6 +556,7 @@ class GUMP
 		{
 			return array(
 				'field' => $field,
+				'value' => $input[$field],
 				'rule'	=> __FUNCTION__
 			);
 		}
@@ -573,6 +582,7 @@ class GUMP
 		{
 			return array(
 				'field' => $field,
+				'value' => $input[$field],
 				'rule'	=> __FUNCTION__
 			);
 		}
@@ -600,6 +610,7 @@ class GUMP
 		{
 			return array(
 				'field' => $field,
+				'value' => $input[$field],
 				'rule'	=> __FUNCTION__
 			);
 		}
@@ -625,6 +636,7 @@ class GUMP
 		{
 			return array(
 				'field' => $field,
+				'value' => $input[$field],
 				'rule'	=> __FUNCTION__
 			);
 		}
@@ -650,6 +662,7 @@ class GUMP
 		{
 			return array(
 				'field' => $field,
+				'value' => $input[$field],
 				'rule'	=> __FUNCTION__
 			);
 		}
@@ -679,6 +692,7 @@ class GUMP
 		{
 			return array(
 				'field' => $field,
+				'value' => $input[$field],
 				'rule'	=> __FUNCTION__
 			);
 		}
@@ -704,6 +718,7 @@ class GUMP
 		{
 			return array(
 				'field' => $field,
+				'value' => $input[$field],
 				'rule'	=> __FUNCTION__
 			);
 		}

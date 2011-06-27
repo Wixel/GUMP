@@ -23,20 +23,20 @@ $rules = array(
 
 $invalid_data = array(
 	'missing'   	=> '',
-	'email'     	=> 'not a valid email\r\n',
-	'max_len'   	=> '1234567890\r\n',
-	'min_len'   	=> '1\n\n',
-	'exact_len' 	=> '123456\r\n',
-	'alpha'	       	=> '*(^*^*&\r\n',
-	'alpha_numeric' => 'abcdefg12345+\r\n',
-	'alpha_dash'	=> 'ab<script>alert(1);</script>cdefg12345-_+\r\n',
-	'numeric'		=> 'one, two\r\n',
-	'integer'		=> '1,003\r\n',
-	'boolean'		=> 'this is not a boolean\r\n',
-	'float'			=> 'not a float\r\n',
-	'valid_url'		=> 'http://add\r\n',
+	'email'     	=> 'not a valid email',
+	'max_len'   	=> '1234567890',
+	'min_len'   	=> '1',
+	'exact_len' 	=> '123456',
+	'alpha'	       	=> '*(^*^*&',
+	'alpha_numeric' => 'abcdefg12345+',
+	'alpha_dash'	=> 'ab<script>alert(1);</script>cdefg12345-_+',
+	'numeric'		=> 'one, two',
+	'integer'		=> '1,003',
+	'boolean'		=> 'this is not a boolean',
+	'float'			=> 'not a float',
+	'valid_url'		=> 'http://add',
 	'url_exists'	=> 'http://asdasdasd354.gov',
-	'valid_ip'		=> 'google.com\r\n'
+	'valid_ip'		=> 'google.com'
 );
 
 $valid_data = array(
