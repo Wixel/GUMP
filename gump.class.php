@@ -67,7 +67,7 @@ class GUMP
 					
 					if(strpos($value, "\r") !== FALSE)
 					{
-						$value = str_replace(array("\r\n", "\r"), "\n", $value);
+						$value = trim($value);
 					}
 					
 					if(function_exists('iconv'))

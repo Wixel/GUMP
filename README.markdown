@@ -164,6 +164,25 @@ Your output should look something like:
 		[url_exists] => http://asdasdasd354.gov
 	    [valid_ip] => google.com\n\n
 	)
+	
+	Array
+	(
+		[missing]   	=> '',
+		[email]     	=> "not a valid email\r\n",
+		[max_len]   	=> "1234567890",
+		[min_len]   	=> "1",
+		[exact_len] 	=> "123456",
+		[alpha]	       	=> "*(^*^*&",
+		[alpha_numeric] => "abcdefg12345+\r\n\r\n\r\n",
+		[alpha_dash]	=> "ab<script>alert(1);</script>cdefg12345-_+",
+		[numeric]		=> "one, two\r\n",
+		[integer]		=> "1,003\r\n\r\n\r\n\r\n",
+		[boolean]		=> "this is not a boolean\r\n\r\n\r\n\r\n",
+		[float]			=> "not a float\r\n",
+		[valid_url]		=> "\r\n\r\nhttp://add",
+		[url_exists]	=> "http://asdasdasd354.gov",
+		[valid_ip]		=> "google.com"
+	)
 
 	AFTER SANITIZE:
 
