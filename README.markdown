@@ -170,20 +170,20 @@ Your output should look something like:
 	Array
 	(
 	    [missing] => 
-	    [email] => not a valid emailnn
-	    [max_len] => 1234567890nn
-	    [min_len] => 1nn
-	    [exact_len] => 123456nn
-	    [alpha] => *(^*^*&nn
-	    [alpha_numeric] => abcdefg12345+nn
-	    [alpha_dash] => abalert(1);cdefg12345-_+nn
-	    [numeric] => one, twonn
-	    [integer] => 1,003nn
-	    [boolean] => this is not a booleanrn
-	    [float] => not a floatnn
-	    [valid_url] => http://addnn
-		[url_exists] => http://asdasdasd354.gov
-	    [valid_ip] => google.comnn
+	    [email] => not a valid email
+	    [max_len] => 1234567890
+	    [min_len] => 1
+	    [exact_len] => 123456
+	    [alpha] => *(^*^*&
+	    [alpha_numeric] => abcdefg12345+
+	    [alpha_dash] => abalert(1);cdefg12345-_+
+	    [numeric] => one, two
+	    [integer] => 1,003
+	    [boolean] => this is not a boolean
+	    [float] => not a float
+	    [valid_url] => http://add
+	    [url_exists] => http://asdasdasd354.gov
+	    [valid_ip] => google.com
 	)
 
 	THESE ALL FAIL:
