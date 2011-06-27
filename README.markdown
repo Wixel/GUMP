@@ -145,25 +145,6 @@ Your output should look something like:
 <pre>
 
 	BEFORE SANITIZE:
-
-	Array
-	(
-	    [missing] => 
-	    [email] => not a valid email\n\n
-	    [max_len] => 1234567890\n\n
-	    [min_len] => 1\n\n
-	    [exact_len] => 123456\n\n
-	    [alpha] => *(^*^*&\n\n
-	    [alpha_numeric] => abcdefg12345+\n\n
-	    [alpha_dash] => ab&lt;script&gt;alert(1);&lt;/script&gt;cdefg12345-_+\n\n
-	    [numeric] => one, two\n\n
-	    [integer] => 1,003\n\n
-	    [boolean] => this is not a boolean\r\n
-	    [float] => not a float\n\n
-	    [valid_url] => http://add\n\n
-		[url_exists] => http://asdasdasd354.gov
-	    [valid_ip] => google.com\n\n
-	)
 	
 	Array
 	(
