@@ -157,10 +157,14 @@ class GUMP
 			foreach($filters as $filter)
 			{	
 				$method = 'filter_'.$filter;
-
+				
 				if(method_exists('GUMP', $method))
 				{
 					$input[$field] = GUMP::$method($input[$field]);
+				}
+				else if(function_exists($method))
+				{
+					$input[$field] = $method($input[$field]);
 				}
 				else
 				{
