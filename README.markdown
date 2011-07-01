@@ -25,29 +25,31 @@ GUMP::filter(array $input, array $filterset); // Filters input data according to
 The following example is part of a registration form, the flow should be pretty standard
 
 <pre>
-# Note that filters and validators are separate rule sets and method calls.
+# Note that filters and validators are separate rule sets and method calls. There is a good reason for this. 
 
 require "gump.class.php";
 
 $_POST = GUMP::sanitize($_POST); // You don't have to sanitize, but it's safest to do so.
 
 $rules = array(
-	'username' => 'required|alpha_numeric|max_len,100|min_len,6',
-	'password' => 'required|max_len,100|min_len,6',
-	'email'    => 'required|valid_email',
-	'gender'   => 'required|exact_len,1'
+	'username'    => 'required|alpha_numeric|max_len,100|min_len,6',
+	'password'    => 'required|max_len,100|min_len,6',
+	'email'       => 'required|valid_email',
+	'gender'      => 'required|exact_len,1',
+	'credit_card' => 'trim|valid_cc',
 );
 
 $filters = array(
-	'username' => 'trim|sanitize_string',
-	'password' => 'trim|base64',
-	'email'    => 'trim|sanitize_email',
-	'gender'   => 'trim'
+	'username' 	  => 'trim|sanitize_string',
+	'password'	  => 'trim|base64',
+	'email'    	  => 'trim|sanitize_email',
+	'gender'   	  => 'trim',
+	'bio'		  => 'noise_words'
 );
 
-$_POST = GUMP::filter($_POST, $filters);
-
-$validated = GUMP::validate($_POST, $rules);
+$validated = GUMP::validate(
+	GUMP::filter($_POST, $filters), $rules
+);
 
 if($validated === TRUE)
 {
@@ -90,19 +92,27 @@ Available Validators
 * valid_url `Check for valid URL or subdomain`
 * url_exists `Check to see if the url exists and is accessible`
 * valid_ip `Check for valid IP address`
+* valid_cc `Check for a valid credit card number (Uses the MOD10 Checksum Algorithm)`
 
 Available Filters
 -----------------
+Filters can be any PHP function that returns a string. You don't need to create your own if a PHP function exists that does what you want the filter to do.
+
 * sanitize_string `Remove script tags and encode HTML entities, similar to GUMP::xss_clean();`
 * urlencode `Encode url entities`
 * htmlencode `Encode HTML entities`
 * sanitize_email `Remove illegal characters from email addresses`
 * sanitize_numbers `Remove any non-numeric characters`
 * trim `Remove spaces from the beginning or end of strings`
-* base64_encode_ `Base64 encode the input`
+* base64_encode `Base64 encode the input`
+* base64_decode `Base64 decode the input`
 * sha1 `Encrypt the input with the secure sha1 algorithm`
 * md5 `MD5 encode the input`
-
+* noise_words `Remove noise words from string`
+* json_encode `Create a json representation of the input` 
+* json_decode `Decode a json string` 
+* rmpunctuation `Remove all known puncutation characters from a string`
+* translate `Translate the input string to any desired language eg. From English -> Spanish: translate,en,es`
 
 #  Creating your own validators and filters
 
@@ -135,197 +145,30 @@ Remember to create a protected static methods with the correct parameter types a
 For filter methods, prepend the method name with "filter_".
 For validator methods, prepend the method name with "validate_".
 
-Running the tests:
+Running the examples:
 ------------------
 
 1. Open up your terminal
-2. cd [GUMP DIRECTORY]
-3. php test.php
+2. cd [GUMP DIRECTORY/examples]
+3. php <file>.php
 
-Your output should look something like:
-
-<pre>
-
-	BEFORE SANITIZE:
-	
-	Array
-	(
-		[missing]   	=> '',
-		[email]     	=> "not a valid email\r\n",
-		[max_len]   	=> "1234567890",
-		[min_len]   	=> "1",
-		[exact_len] 	=> "123456",
-		[alpha]	       	=> "*(^*^*&",
-		[alpha_numeric] => "abcdefg12345+\r\n\r\n\r\n",
-		[alpha_dash]	=> "ab<script>alert(1);</script>cdefg12345-_+",
-		[numeric]		=> "one, two\r\n",
-		[integer]		=> "1,003\r\n\r\n\r\n\r\n",
-		[boolean]		=> "this is not a boolean\r\n\r\n\r\n\r\n",
-		[float]			=> "not a float\r\n",
-		[valid_url]		=> "\r\n\r\nhttp://add",
-		[url_exists]	=> "http://asdasdasd354.gov",
-		[valid_ip]		=> "google.com"
-	)
-
-	AFTER SANITIZE:
-
-	Array
-	(
-	    [missing] => 
-	    [email] => not a valid email
-	    [max_len] => 1234567890
-	    [min_len] => 1
-	    [exact_len] => 123456
-	    [alpha] => *(^*^*&
-	    [alpha_numeric] => abcdefg12345+
-	    [alpha_dash] => abalert(1);cdefg12345-_+
-	    [numeric] => one, two
-	    [integer] => 1,003
-	    [boolean] => this is not a boolean
-	    [float] => not a float
-	    [valid_url] => http://add
-	    [url_exists] => http://asdasdasd354.gov
-	    [valid_ip] => google.com
-	)
-
-	THESE ALL FAIL:
-
-	Array
-	(
-	    [0] => Array
-	        (
-	            [field] => missing
-	            [value] => 
-	            [rule] => validate_required
-	        )
-
-	    [1] => Array
-	        (
-	            [field] => email
-	            [value] => not a valid email\r\n
-	            [rule] => validate_valid_email
-	        )
-
-	    [2] => Array
-	        (
-	            [field] => max_len
-	            [value] => 1234567890\r\n
-	            [rule] => validate_max_len
-	        )
-
-	    [3] => Array
-	        (
-	            [field] => alpha
-	            [value] => *(^*^*&\r\n
-	            [rule] => validate_alpha
-	        )
-
-	    [4] => Array
-	        (
-	            [field] => alpha_numeric
-	            [value] => abcdefg12345+\r\n
-	            [rule] => validate_alpha_numeric
-	        )
-
-	    [5] => Array
-	        (
-	            [field] => alpha_dash
-	            [value] => ab<script>alert(1);</script>cdefg12345-_+\r\n
-	            [rule] => validate_alpha_dash
-	        )
-
-	    [6] => Array
-	        (
-	            [field] => numeric
-	            [value] => one, two\r\n
-	            [rule] => validate_numeric
-	        )
-
-	    [7] => Array
-	        (
-	            [field] => integer
-	            [value] => 1,003\r\n
-	            [rule] => validate_integer
-	        )
-
-	    [8] => Array
-	        (
-	            [field] => float
-	            [value] => not a float\r\n
-	            [rule] => validate_float
-	        )
-
-	    [9] => Array
-	        (
-	            [field] => valid_url
-	            [value] => http://add\r\n
-	            [rule] => validate_valid_url
-	        )
-
-	    [10] => Array
-	        (
-	            [field] => url_exists
-	            [value] => http://asdasdasd354.gov
-	            [rule] => validate_url_exists
-	        )
-
-	    [11] => Array
-	        (
-	            [field] => valid_ip
-	            [value] => google.com\r\n
-	            [rule] => validate_valid_ip
-	        )
-
-	)
-
-	THESE ALL SUCCEED:
-
-	Array
-	(
-	    [missing] => This is not missing
-	    [email] => sean@wixel.net
-	    [max_len] => 1
-	    [min_len] => 1234
-	    [exact_len] => 1234567890
-	    [alpha] => abcdefg
-	    [alpha_numeric] => abcdefg12345
-	    [alpha_dash] => abcdefg12345-_
-	    [numeric] => 2
-	    [integer] => 3
-	    [boolean] => 
-	    [float] => 10.1
-	    [valid_url] => http://wixel.net
-		[url_exists] => http://wixel.net
-	    [valid_ip] => 69.163.138.62
-	)
-
-	DONE
-
-</pre>
+The output will depend on the input data
 
 # TODO
 
 * An in array match method that allows to check for pre-defined values
 * A currency validator
 * An address validator
-* A credit card validator
 * A country validator
 * Location co-ordinates validator
 * HTML validator
 * Language validation ... determine if a piece of text is a specified language
-* A noise words filter
 * Validate a spam domain or IP.
 * Validate a spam email address
 * Validate spam text with askimet or something similar
-* Re-do tests and add filters into it
 * Improve documentation
 * More examples
-* A google translate filter to return translated text
-* A correct punctuation filter: http://davidwalsh.name/php-possessive-punctuation
-* A filter to strip all punctuation from a string: http://stackoverflow.com/questions/5233734/how-to-strip-punctuation-in-php
 * W3C validation filter?
 * A filter that integrates with an HTML tidy service?: http://infohound.net/tidy/
-* A source code validator?
 * Add a twitter & facebook profile url validator: http://stackoverflow.com/questions/2845243/check-if-twitter-username-exists
 * Add more logical examples - log in form, profile update form, blog post form, etc etc.
-* Add downloadable examples
