@@ -272,6 +272,7 @@ class GUMP
 		{
 			case 1:
 				$input_lang  = $params[0];
+				break;
 			case 2:
 				$input_lang  = $params[0];
 				$output_lang = $params[1];
