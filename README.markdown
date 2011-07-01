@@ -150,9 +150,9 @@ Running the examples:
 
 1. Open up your terminal
 2. cd [GUMP DIRECTORY/examples]
-3. php <file>.php
+3. php [file].php
 
-The output will depend on the input data
+The output will depend on the input data.
 
 # TODO
 
