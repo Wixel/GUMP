@@ -166,12 +166,17 @@ class GUMP
 			$filters = explode('|', $filters);
 
 			foreach($filters as $filter)
-			{	
-				$method = 'filter_'.$filter;
-
-				if(method_exists('GUMP', $method))
+			{
+				//First try built in or extended filters
+				if(method_exists('GUMP', 'filter_'.$filter))
 				{
+					$method = 'filter_'.$filter;
 					$input[$field] = GUMP::$method($input[$field]);
+				}
+				//Else try for a php function
+				else if(function_exists($filter))
+				{
+					$input[$field] = $filter($input[$field]);
 				}
 				else
 				{
@@ -184,20 +189,7 @@ class GUMP
 	}
 	
 	// ** ------------------------- Filters --------------------------------------- ** //	
-	
-	/**
-	 * Trim the provided string
-	 * 
-	 * @static
-	 * @access protected
-	 * @param  string $value
-	 * @return string
-	 */
-	protected static function filter_trim($value)
-	{
-		return trim($value);
-	}
-	
+		
 	/**
 	 * Replace noise words in a string (http://tax.cchgroup.com/help/Avoiding_noise_words_in_your_search.htm)
 	 * 
@@ -241,33 +233,7 @@ class GUMP
 	{
 		return base64_encode($value);
 	}
-	
-	/**
-	 * SHA1 encrypt the provided string
-	 * 
-	 * @static
-	 * @access protected
-	 * @param  string $value
-	 * @return string
-	 */
-	protected static function filter_sha1($value)
-	{
-		return sha1($value);
-	}
-	
-	/**
-	 * MD5 encode the provided string
-	 * 
-	 * @static
-	 * @access protected
-	 * @param  string $value
-	 * @return string
-	 */
-	protected static function filter_md5($value)
-	{
-		return md5($value);
-	}
-	
+		
 	/**
 	 * Sanitize the string by removing any script tags
 	 * 
