@@ -25,6 +25,8 @@ GUMP::filter(array $input, array $filterset); // Filters input data according to
 The following example is part of a registration form, the flow should be pretty standard
 
 <pre>
+# Note that filters and validators are separate rule sets and method calls.
+
 require "gump.class.php";
 
 $_POST = GUMP::sanitize($_POST); // You don't have to sanitize, but it's safest to do so.
@@ -97,7 +99,7 @@ Available Filters
 * sanitize_email `Remove illegal characters from email addresses`
 * sanitize_numbers `Remove any non-numeric characters`
 * trim `Remove spaces from the beginning or end of strings`
-* base64 `Base64 encode the input`
+* base64_encode_ `Base64 encode the input`
 * sha1 `Encrypt the input with the secure sha1 algorithm`
 * md5 `MD5 encode the input`
 
@@ -299,5 +301,31 @@ Your output should look something like:
 
 	DONE
 
-
 </pre>
+
+# TODO
+
+* An in array match method that allows to check for pre-defined values
+* A currency validator
+* An address validator
+* A credit card validator
+* A country validator
+* Location co-ordinates validator
+* HTML validator
+* Language validation ... determine if a piece of text is a specified language
+* A noise words filter
+* Validate a spam domain or IP.
+* Validate a spam email address
+* Validate spam text with askimet or something similar
+* Re-do tests and add filters into it
+* Improve documentation
+* More examples
+* A google translate filter to return translated text
+* A correct punctuation filter: http://davidwalsh.name/php-possessive-punctuation
+* A filter to strip all punctuation from a string: http://stackoverflow.com/questions/5233734/how-to-strip-punctuation-in-php
+* W3C validation filter?
+* A filter that integrates with an HTML tidy service?: http://infohound.net/tidy/
+* A source code validator?
+* Add a twitter & facebook profile url validator: http://stackoverflow.com/questions/2845243/check-if-twitter-username-exists
+* Add more logical examples - log in form, profile update form, blog post form, etc etc.
+* Add downloadable examples
