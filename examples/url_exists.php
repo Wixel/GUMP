@@ -4,7 +4,7 @@
 require "../gump.class.php";
 
 $_POST = array(
-	'url' => 'http://ahakjdhkahddfsdfsdfdkjad.com' // This url obviously does exist
+	'url' => 'http://ahakjdhkahddfsdfsdfdkjad.com' // This url obviously does not exist
 );
 
 $rules = array(
