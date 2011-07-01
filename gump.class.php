@@ -205,9 +205,10 @@ class GUMP
 	 * @static
 	 * @access protected
 	 * @param  string $value
+	 * @param  array $params
 	 * @return string
 	 */
-	protected static function filter_noise_words($value)
+	protected static function filter_noise_words($value, $params = NULL)
 	{
 		$value = preg_replace('/\s\s+/', chr(32),$value);
 		
@@ -236,9 +237,10 @@ class GUMP
 	 * @static
 	 * @access protected
 	 * @param  string $value
+	 * @param  array $params
 	 * @return string
 	 */
-	protected static function filter_rmpunctuation($value)
+	protected static function filter_rmpunctuation($value, $params = NULL)
 	{
 		return preg_replace("/(?![.=$'€%-])\p{P}/u", '', $value);
 	}
@@ -300,9 +302,10 @@ class GUMP
 	 * @static
 	 * @access protected
 	 * @param  string $value
+	 * @param  array $params
 	 * @return string
 	 */
-	protected static function filter_sanitize_string($value)
+	protected static function filter_sanitize_string($value, $params = NULL)
 	{
 		return filter_var($value, FILTER_SANITIZE_STRING);
 	}
@@ -313,9 +316,10 @@ class GUMP
 	 * @static
 	 * @access protected
 	 * @param  string $value
+	 * @param  array $params	
 	 * @return string
 	 */
-	protected static function filter_urlencode($value)
+	protected static function filter_urlencode($value, $params = NULL)
 	{
 		return filter_var($value, FILTER_SANITIZE_ENCODED);  
 	}
@@ -326,9 +330,10 @@ class GUMP
 	 * @static
 	 * @access protected
 	 * @param  string $value
+	 * @param  array $params
 	 * @return string
 	 */
-	protected static function filter_htmlencode($value)
+	protected static function filter_htmlencode($value, $params = NULL)
 	{
 		return filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS);  
 	}
@@ -339,9 +344,10 @@ class GUMP
 	 * @static
 	 * @access protected
 	 * @param  string $value
+	 * @param  array $params
 	 * @return string
 	 */
-	protected static function filter_sanitize_email($value)
+	protected static function filter_sanitize_email($value, $params = NULL)
 	{
 		return filter_var($value, FILTER_SANITIZE_EMAIL);  
 	}
@@ -352,9 +358,10 @@ class GUMP
 	 * @static
 	 * @access protected
 	 * @param  string $value
+	 * @param  array $params
 	 * @return string
 	 */
-	protected static function filter_sanitize_numbers($value)
+	protected static function filter_sanitize_numbers($value, $params = NULL)
 	{
 		return filter_var($value, FILTER_SANITIZE_NUMBER_INT);  
 	}
