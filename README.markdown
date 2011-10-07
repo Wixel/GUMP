@@ -13,18 +13,18 @@ require "gump.class.php";
 
 Methods available:
 
-<pre>
+``` php
 GUMP::xss_clean(array $data); // Strips and encodes unwanted characters
 GUMP::sanitize(array $input, $fields = NULL); // Sanitizes data and converts strings to UTF-8 (if available)
 GUMP::validate(array $input, array $ruleset); // Validates input data according to the provided ruleset (see example)
 GUMP::filter(array $input, array $filterset); // Filters input data according to the provided filterset (see example)
-</pre>
+```
 
 #  Complete Working Example
 
 The following example is part of a registration form, the flow should be pretty standard
 
-<pre>
+``` php
 # Note that filters and validators are separate rule sets and method calls. There is a good reason for this. 
 
 require "gump.class.php";
@@ -59,7 +59,7 @@ else
 {	
 	print_r($validated); // Something went wrong
 }
-</pre>
+```
 
 Return Values
 -------------
