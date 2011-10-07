@@ -7,9 +7,9 @@ GUMP is a standalone PHP input validation and filtering class.
 
 Include it in your project:
 
-<pre>
+``` php
 require "gump.class.php";
-</pre>
+```
 
 Methods available:
 
