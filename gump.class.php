@@ -111,6 +111,11 @@ class GUMP
 		
 		foreach($ruleset as $field => $rules)
 		{
+			if(!array_key_exists($field, $input))
+			{
+				continue;
+			}
+			
 			$rules = explode('|', $rules);
 
 			foreach($rules as $rule)
@@ -163,6 +168,11 @@ class GUMP
 	{
 		foreach($filterset as $field => $filters)
 		{
+			if(!array_key_exists($field, $input))
+			{
+				continue;
+			}
+
 			$filters = explode('|', $filters);
 
 			foreach($filters as $filter)
