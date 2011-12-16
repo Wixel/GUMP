@@ -111,10 +111,10 @@ class GUMP
 		
 		foreach($ruleset as $field => $rules)
 		{
-			if(!array_key_exists($field, $input))
-			{
-				continue;
-			}
+			#if(!array_key_exists($field, $input))
+			#{
+			#	continue;
+			#}
 			
 			$rules = explode('|', $rules);
 

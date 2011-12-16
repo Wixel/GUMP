@@ -22,7 +22,7 @@ $rules = array(
 	'float'			=> 'float',
 	'valid_url'		=> 'valid_url',
 	'url_exists'	=> 'url_exists',
-	'valid_ip'		=> 'valid_ip'
+	'valid_ip'		=> 'valid_ip',
 );
 
 $invalid_data = array(
