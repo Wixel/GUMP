@@ -1,6 +1,10 @@
 #!/usr/bin/php -q
 <?php
 
+error_reporting(-1);
+
+ini_set('display_errors', 1);
+
 require "gump.class.php";
 
 $rules = array(

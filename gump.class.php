@@ -131,7 +131,7 @@ class GUMP
 					$method = 'validate_'.$rule;
 				}
 				
-				if(is_callable(array(self, $method)))
+				if(is_callable(array(__CLASS__, $method)))
 				{
 					$result = self::$method($field, $input, $param);
 
@@ -178,7 +178,7 @@ class GUMP
 					$filter = $filter[0];
 				}
 				
-				if(is_callable(array(self, 'filter_'.$filter)))
+				if(is_callable(array(__CLASS__, 'filter_'.$filter)))
 				{
 					$method = 'filter_'.$filter;
 					$input[$field] = self::$method($input[$field], $params);
@@ -763,14 +763,28 @@ class GUMP
 		$url = str_replace(
 			array('http://', 'https://', 'ftp://'), '', strtolower($input[$field])
 		);
-		
-		if(!checkdnsrr($url))
+
+		if(function_exists('checkdnsrr'))
 		{
-			return array(
-				'field' => $field,
-				'value' => $input[$field],
-				'rule'	=> __FUNCTION__
-			);
+			if(!checkdnsrr($url))
+			{
+				return array(
+					'field' => $field,
+					'value' => $input[$field],
+					'rule'	=> __FUNCTION__
+				);
+			}	
+		}
+		else
+		{
+			if(gethostbyname($url) == $url)
+			{
+				return array(
+					'field' => $field,
+					'value' => $input[$field],
+					'rule'	=> __FUNCTION__
+				);
+			}
 		}
 	}
 	
