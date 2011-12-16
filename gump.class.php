@@ -398,7 +398,7 @@ class GUMP
 		{
 			return array(
 				'field' => $field,
-				'value' => $input[$field],
+				'value' => NULL,
 				'rule'	=> __FUNCTION__
 			);
 		}
