@@ -45,12 +45,11 @@ class GUMP
 	/**
 	 * Sanitize the input data
 	 * 
-	 * @static
 	 * @access public
 	 * @param  array $data
 	 * @return array
 	 */
-	public static function sanitize(array $input, $fields = NULL)
+	public function sanitize(array $input, $fields = NULL)
 	{
 		$magic_quotes = (bool)get_magic_quotes_gpc();
 		
@@ -99,13 +98,12 @@ class GUMP
 	/**
 	 * Perform data validation against the provided ruleset
 	 * 
-	 * @static
 	 * @access public
 	 * @param  mixed $input
 	 * @param  array $ruleset
 	 * @return mixed
 	 */
-	public static function validate(array $input, array $ruleset)
+	public function validate(array $input, array $ruleset)
 	{
 		$errors = array();
 		
@@ -135,10 +133,10 @@ class GUMP
 				{
 					$method = 'validate_'.$rule;
 				}
-				
-				if(is_callable(array(__CLASS__, $method)))
+
+				if(is_callable(array($this, $method)))
 				{
-					$result = self::$method($field, $input, $param);
+					$result = $this->$method($field, $input, $param);					
 
 					if(is_array($result)) // Validation Failed
 					{
@@ -158,13 +156,12 @@ class GUMP
 	/**
 	 * Filter the input data according to the specified filter set 
 	 * 
-	 * @static
 	 * @access public
 	 * @param  mixed $input
 	 * @param  array $filterset
 	 * @return mixed
 	 */
-	public static function filter(array $input, array $filterset)
+	public function filter(array $input, array $filterset)
 	{
 		foreach($filterset as $field => $filters)
 		{
@@ -191,7 +188,7 @@ class GUMP
 				if(is_callable(array(__CLASS__, 'filter_'.$filter)))
 				{
 					$method = 'filter_'.$filter;
-					$input[$field] = self::$method($input[$field], $params);
+					$input[$field] = $this->$method($input[$field], $params);
 				}
 				else if(function_exists($filter))
 				{
@@ -212,13 +209,12 @@ class GUMP
 	/**
 	 * Replace noise words in a string (http://tax.cchgroup.com/help/Avoiding_noise_words_in_your_search.htm)
 	 * 
-	 * @static
 	 * @access protected
 	 * @param  string $value
 	 * @param  array $params
 	 * @return string
 	 */
-	protected static function filter_noise_words($value, $params = NULL)
+	protected function filter_noise_words($value, $params = NULL)
 	{
 		$value = preg_replace('/\s\s+/', chr(32),$value);
 		
@@ -244,13 +240,12 @@ class GUMP
 	/**
 	 * Remove all known punctuation from a string
 	 * 
-	 * @static
 	 * @access protected
 	 * @param  string $value
 	 * @param  array $params
 	 * @return string
 	 */
-	protected static function filter_rmpunctuation($value, $params = NULL)
+	protected function filter_rmpunctuation($value, $params = NULL)
 	{
 		return preg_replace("/(?![.=$'€%-])\p{P}/u", '', $value);
 	}
@@ -262,13 +257,12 @@ class GUMP
 	 *
 	 * See: http://www.science.co.il/language/Codes.asp?s=code2
 	 *
-	 * @static
 	 * @access protected
 	 * @param  string $value
 	 * @param  array $params
 	 * @return string
 	 */
-	protected static function filter_translate($value, $params = NULL)
+	protected function filter_translate($value, $params = NULL)
 	{
 		$input_lang  = 'en';
 		$output_lang = 'en';
@@ -310,13 +304,12 @@ class GUMP
 	/**
 	 * Sanitize the string by removing any script tags
 	 * 
-	 * @static
 	 * @access protected
 	 * @param  string $value
 	 * @param  array $params
 	 * @return string
 	 */
-	protected static function filter_sanitize_string($value, $params = NULL)
+	protected function filter_sanitize_string($value, $params = NULL)
 	{
 		return filter_var($value, FILTER_SANITIZE_STRING);
 	}
@@ -324,13 +317,12 @@ class GUMP
 	/**
 	 * Sanitize the string by urlencoding characters
 	 * 
-	 * @static
 	 * @access protected
 	 * @param  string $value
 	 * @param  array $params	
 	 * @return string
 	 */
-	protected static function filter_urlencode($value, $params = NULL)
+	protected function filter_urlencode($value, $params = NULL)
 	{
 		return filter_var($value, FILTER_SANITIZE_ENCODED);  
 	}
@@ -338,13 +330,12 @@ class GUMP
 	/**
 	 * Sanitize the string by converting HTML characters to their HTML entities
 	 * 
-	 * @static
 	 * @access protected
 	 * @param  string $value
 	 * @param  array $params
 	 * @return string
 	 */
-	protected static function filter_htmlencode($value, $params = NULL)
+	protected function filter_htmlencode($value, $params = NULL)
 	{
 		return filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS);  
 	}
@@ -352,13 +343,12 @@ class GUMP
 	/**
 	 * Sanitize the string by removing illegal characters from emails
 	 * 
-	 * @static
 	 * @access protected
 	 * @param  string $value
 	 * @param  array $params
 	 * @return string
 	 */
-	protected static function filter_sanitize_email($value, $params = NULL)
+	protected function filter_sanitize_email($value, $params = NULL)
 	{
 		return filter_var($value, FILTER_SANITIZE_EMAIL);  
 	}
@@ -366,13 +356,12 @@ class GUMP
 	/**
 	 * Sanitize the string by removing illegal characters from numbers
 	 * 
-	 * @static
 	 * @access protected
 	 * @param  string $value
 	 * @param  array $params
 	 * @return string
 	 */
-	protected static function filter_sanitize_numbers($value, $params = NULL)
+	protected function filter_sanitize_numbers($value, $params = NULL)
 	{
 		return filter_var($value, FILTER_SANITIZE_NUMBER_INT);  
 	}
@@ -382,13 +371,12 @@ class GUMP
 	/**
 	 * Check if the specified key is present and not empty
 	 * 
-	 * @static
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
 	 * @return mixed
 	 */
-	protected static function validate_required($field, $input, $param = NULL)
+	protected function validate_required($field, $input, $param = NULL)
 	{
 		if(isset($input[$field]) && trim($input[$field]) != '')
 		{
@@ -407,13 +395,12 @@ class GUMP
 	/**
 	 * Determine if the provided email is valid
 	 * 
-	 * @static
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
 	 * @return mixed
 	 */
-	protected static function validate_valid_email($field, $input, $param = NULL)
+	protected function validate_valid_email($field, $input, $param = NULL)
 	{
 		if(!isset($input[$field]))
 		{
@@ -433,13 +420,12 @@ class GUMP
 	/**
 	 * Determine if the provided value length is less or equal to a specific value
 	 * 
-	 * @static
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
 	 * @return mixed
 	 */
-	protected static function validate_max_len($field, $input, $param = NULL)
+	protected function validate_max_len($field, $input, $param = NULL)
 	{
 		if(!isset($input[$field]))
 		{
@@ -471,13 +457,12 @@ class GUMP
 	/**
 	 * Determine if the provided value length is more or equal to a specific value
 	 * 
-	 * @static
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
 	 * @return mixed
 	 */
-	protected static function validate_min_len($field, $input, $param = NULL)
+	protected function validate_min_len($field, $input, $param = NULL)
 	{
 		if(!isset($input[$field]))
 		{
@@ -509,13 +494,12 @@ class GUMP
 	/**
 	 * Determine if the provided value length matches a specific value
 	 * 
-	 * @static
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
 	 * @return mixed
 	 */
-	protected static function validate_exact_len($field, $input, $param = NULL)
+	protected function validate_exact_len($field, $input, $param = NULL)
 	{
 		if(!isset($input[$field]))
 		{
@@ -547,13 +531,12 @@ class GUMP
 	/**
 	 * Determine if the provided value contains only alpha characters
 	 * 
-	 * @static
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
 	 * @return mixed
 	 */
-	protected static function validate_alpha($field, $input, $param = NULL)
+	protected function validate_alpha($field, $input, $param = NULL)
 	{
 		if(!isset($input[$field]))
 		{
@@ -573,13 +556,12 @@ class GUMP
 	/**
 	 * Determine if the provided value contains only alpha-numeric characters
 	 * 
-	 * @static
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
 	 * @return mixed
 	 */	
-	protected static function validate_alpha_numeric($field, $input, $param = NULL)
+	protected function validate_alpha_numeric($field, $input, $param = NULL)
 	{	
 		if(!isset($input[$field]))
 		{
@@ -599,13 +581,12 @@ class GUMP
 	/**
 	 * Determine if the provided value contains only alpha characters with dashed and underscores
 	 * 
-	 * @static
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
 	 * @return mixed
 	 */
-	protected static function validate_alpha_dash($field, $input, $param = NULL)
+	protected function validate_alpha_dash($field, $input, $param = NULL)
 	{
 		if(!isset($input[$field]))
 		{
@@ -625,13 +606,12 @@ class GUMP
 	/**
 	 * Determine if the provided value is a valid number or numeric string
 	 * 
-	 * @static
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
 	 * @return mixed
 	 */
-	protected static function validate_numeric($field, $input, $param = NULL)
+	protected function validate_numeric($field, $input, $param = NULL)
 	{
 		if(!isset($input[$field]))
 		{
@@ -651,13 +631,12 @@ class GUMP
 	/**
 	 * Determine if the provided value is a valid integer
 	 * 
-	 * @static
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
 	 * @return mixed
 	 */
-	protected static function validate_integer($field, $input, $param = NULL)
+	protected function validate_integer($field, $input, $param = NULL)
 	{
 		if(!isset($input[$field]))
 		{
@@ -677,13 +656,12 @@ class GUMP
 	/**
 	 * Determine if the provided value is a PHP accepted boolean
 	 * 
-	 * @static
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
 	 * @return mixed
 	 */
-	protected static function validate_boolean($field, $input, $param = NULL)
+	protected function validate_boolean($field, $input, $param = NULL)
 	{
 		if(!isset($input[$field]))
 		{
@@ -705,13 +683,12 @@ class GUMP
 	/**
 	 * Determine if the provided value is a valid float
 	 * 
-	 * @static
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
 	 * @return mixed
 	 */
-	protected static function validate_float($field, $input, $param = NULL)
+	protected function validate_float($field, $input, $param = NULL)
 	{
 		if(!isset($input[$field]))
 		{
@@ -731,13 +708,12 @@ class GUMP
 	/**
 	 * Determine if the provided value is a valid URL
 	 * 
-	 * @static
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
 	 * @return mixed
 	 */
-	protected static function validate_valid_url($field, $input, $param = NULL)
+	protected function validate_valid_url($field, $input, $param = NULL)
 	{
 		if(!isset($input[$field]))
 		{
@@ -757,13 +733,12 @@ class GUMP
 	/**
 	 * Determine if a URL exists & is accessible
 	 *
-	 * @static
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
 	 * @return mixed
 	 */
-	protected static function validate_url_exists($field, $input, $param = NULL)
+	protected function validate_url_exists($field, $input, $param = NULL)
 	{
 		if(!isset($input[$field]))
 		{
@@ -801,13 +776,12 @@ class GUMP
 	/**
 	 * Determine if the provided value is a valid IP address
 	 * 
-	 * @static
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
 	 * @return mixed
 	 */
-	protected static function validate_valid_ip($field, $input, $param = NULL)
+	protected function validate_valid_ip($field, $input, $param = NULL)
 	{
 		if(!isset($input[$field]))
 		{
@@ -829,13 +803,12 @@ class GUMP
 	 *
 	 * See: http://stackoverflow.com/questions/174730/what-is-the-best-way-to-validate-a-credit-card-in-php
 	 * 
-	 * @static
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
 	 * @return mixed
 	 */
-	protected static function validate_valid_cc($field, $input, $param = NULL)
+	protected function validate_valid_cc($field, $input, $param = NULL)
 	{
 		$number = preg_replace('/\D/', '', $input[$field]);		
 		

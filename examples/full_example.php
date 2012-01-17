@@ -3,6 +3,8 @@
 
 require "../gump.class.php";
 
+$validator = new GUMP();
+
 // Set the data
 
 $_POST = array(
@@ -14,7 +16,7 @@ $_POST = array(
 	'bio'		  => 'This is good! I think I will switch to another language'
 );
 
-$_POST = GUMP::sanitize($_POST); // You don't have to sanitize, but it's safest to do so.
+$_POST = $validator->sanitize($_POST); // You don't have to sanitize, but it's safest to do so.
 
 // Let's define the rules and filters
 
@@ -35,11 +37,11 @@ $filters = array(
 	'bio'		  => 'translate,en,de'
 );
 
-$_POST = GUMP::filter($_POST, $filters);
+$_POST = $validator->filter($_POST, $filters);
 
 // You can run filter() or validate() first
 
-$validated = GUMP::validate(
+$validated = $validator->validate(
 	$_POST, $rules
 );
 

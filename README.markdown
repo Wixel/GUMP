@@ -14,10 +14,10 @@ require "gump.class.php";
 Methods available:
 
 ``` php
-GUMP::xss_clean(array $data); // Strips and encodes unwanted characters
-GUMP::sanitize(array $input, $fields = NULL); // Sanitizes data and converts strings to UTF-8 (if available)
-GUMP::validate(array $input, array $ruleset); // Validates input data according to the provided ruleset (see example)
-GUMP::filter(array $input, array $filterset); // Filters input data according to the provided filterset (see example)
+xss_clean(array $data); // Strips and encodes unwanted characters
+sanitize(array $input, $fields = NULL); // Sanitizes data and converts strings to UTF-8 (if available)
+validate(array $input, array $ruleset); // Validates input data according to the provided ruleset (see example)
+filter(array $input, array $filterset); // Filters input data according to the provided filterset (see example)
 ```
 
 #  Complete Working Example
@@ -29,7 +29,9 @@ The following example is part of a registration form, the flow should be pretty 
 
 require "gump.class.php";
 
-$_POST = GUMP::sanitize($_POST); // You don't have to sanitize, but it's safest to do so.
+$gump = new GUMP(); 
+
+$_POST = $gump->sanitize($_POST); // You don't have to sanitize, but it's safest to do so.
 
 $rules = array(
 	'username'    => 'required|alpha_numeric|max_len,100|min_len,6',
@@ -47,8 +49,8 @@ $filters = array(
 	'bio'		  => 'noise_words'
 );
 
-$validated = GUMP::validate(
-	GUMP::filter($_POST, $filters), $rules
+$validated = $gump->validate(
+	$gump->filter($_POST, $filters), $rules
 );
 
 if($validated === TRUE)
@@ -64,7 +66,7 @@ else
 Return Values
 -------------
 
-`GUMP::validate()` returns one of two types:
+`validate()` returns one of two types:
 
 *AN ARRAY* containing key names and validator names when data does not pass the validation.
 
@@ -72,7 +74,7 @@ You can use this array along with your language helpers to determine what error 
 
 *A BOOLEAN* value of TRUE if the validation was successful.
 
-`GUMP::filter()` returns the exact array structure that was parsed as the `$input` parameter, the only difference would be the filtered data.
+`filter()` returns the exact array structure that was parsed as the `$input` parameter, the only difference would be the filtered data.
 
 
 Available Validators
@@ -124,23 +126,25 @@ require("gump.class.php");
 
 class MyClass extends GUMP
 {
-	public static function filter_myfilter($value)
+	public function filter_myfilter($value)
 	{
 		...
 	}
 	
-	public static function validate_myvalidator($field, $input, $param = NULL)
+	public function validate_myvalidator($field, $input, $param = NULL)
 	{
 		...
 	}
 	
 } // EOC
 
-$validated = MyClass::validate($_POST, $rules);
+$validator = new MyClass();
+
+$validated = $validator->validate($_POST, $rules);
 
 </pre>
 
-Remember to create a protected static methods with the correct parameter types and counts.
+Remember to create a public methods with the correct parameter types and counts.
 
 For filter methods, prepend the method name with "filter_".
 For validator methods, prepend the method name with "validate_".

@@ -3,6 +3,8 @@
 
 require "../gump.class.php";
 
+$validator = new GUMP();
+
 $_POST = array(
 	'sentence_1' => "CLICK one of the Column Titles to sort the table by that item. This table does not include mostly ancient languages that do not have assigned two letter codes.",
 	'sentence_2' => "Using this function will use any registered autoloaders if the class is not already known."
@@ -19,4 +21,4 @@ $filters = array(
 	'sentence_2' => 'translate,en,cs',
 );
 
-print_r(GUMP::filter($_POST, $filters));
+print_r($validator->filter($_POST, $filters));

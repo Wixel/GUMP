@@ -7,6 +7,8 @@ ini_set('display_errors', 1);
 
 require "gump.class.php";
 
+$validator = new GUMP();
+
 $rules = array(
 	'missing'   	=> 'required',
 	'email'     	=> 'valid_email',
@@ -67,13 +69,13 @@ print_r($invalid_data);
 
 echo "\nAFTER SANITIZE:\n\n";
 
-print_r(GUMP::sanitize($invalid_data));
+print_r($validator->sanitize($invalid_data));
 
 echo "\nTHESE ALL FAIL:\n\n";
 
-print_r(GUMP::validate($invalid_data, $rules));
+print_r($validator->validate($invalid_data, $rules));
 
-if(GUMP::validate($valid_data, $rules))
+if($validator->validate($valid_data, $rules))
 {
   echo "\nTHESE ALL SUCCEED:\n\n";
   

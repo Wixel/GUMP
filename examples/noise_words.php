@@ -3,6 +3,8 @@
 
 require "../gump.class.php";
 
+$validator = new GUMP();
+
 // What are noise words? http://support.dtsearch.com/webhelp/dtsearch/noise_words.htm
 
 $_POST = array(
@@ -13,4 +15,4 @@ $filters = array(
 	'words' => 'noise_words'
 );
 
-print_r(GUMP::filter($_POST, $filters));
+print_r($validator->filter($_POST, $filters));

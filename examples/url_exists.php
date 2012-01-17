@@ -3,6 +3,8 @@
 
 require "../gump.class.php";
 
+$validator = new GUMP();
+
 $_POST = array(
 	'url' => 'http://ahakjdhkahddfsdfsdfdkjad.com' // This url obviously does not exist
 );
@@ -11,4 +13,4 @@ $rules = array(
 	'url' => 'url_exists'
 );
 
-print_r(GUMP::validate($_POST, $rules));
+print_r($validator->validate($_POST, $rules));
