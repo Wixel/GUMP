@@ -95,6 +95,7 @@ Available Validators
 * url_exists `Check to see if the url exists and is accessible`
 * valid_ip `Check for valid IP address`
 * valid_cc `Check for a valid credit card number (Uses the MOD10 Checksum Algorithm)`
+* valid_name `Check for a valid format human name`
 
 Available Filters
 -----------------

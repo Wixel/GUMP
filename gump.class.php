@@ -856,4 +856,31 @@ class GUMP
 		}
 	}
 	
+	/**
+	 * Determine if the input is a valid human name [Credits to http://github.com/ben-s]
+	 *
+	 * See: https://github.com/Wixel/GUMP/issues/5
+	 * 
+	 * @access protected
+	 * @param  string $field
+	 * @param  array $input
+	 * @return mixed
+	 */
+	protected function validate_valid_name($field, $input, $param = NULL)
+	{
+		if(!isset($input[$field]))
+		{
+			return;
+		}
+		
+	    if(!preg_match("/^([-a-zÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïñðòóôõöùúûüýÿ '-])+$/i", $input[$field]) !== FALSE)
+	    {
+	        return array(
+	            'field' => $field,
+	            'value' => $input[$field],
+	            'rule'  => __FUNCTION__
+	        );
+	    }
+	}
+	
 } // EOC
