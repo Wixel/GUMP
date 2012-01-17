@@ -185,7 +185,7 @@ class GUMP
 					$filter = $filter[0];
 				}
 				
-				if(is_callable(array(__CLASS__, 'filter_'.$filter)))
+				if(is_callable(array($this, 'filter_'.$filter)))
 				{
 					$method = 'filter_'.$filter;
 					$input[$field] = $this->$method($input[$field], $params);
@@ -216,7 +216,7 @@ class GUMP
 	 */
 	protected function filter_noise_words($value, $params = NULL)
 	{
-		$value = preg_replace('/\s\s+/', chr(32),$value);
+		$value = preg_replace('/\s\s+/u', chr(32),$value);
 		
 		$value = " $value ";
 				
@@ -543,7 +543,7 @@ class GUMP
 			return;
 		}
 		
-		if(!preg_match("/^([a-z])+$/i", $input[$field]) !== FALSE)
+		if(!preg_match("/^([a-zÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ])+$/i", $input[$field]) !== FALSE)
 		{
 			return array(
 				'field' => $field,
@@ -568,7 +568,7 @@ class GUMP
 			return;
 		}
 		
-		if(!preg_match("/^([a-z0-9])+$/i", $input[$field]) !== FALSE)
+		if(!preg_match("/^([a-z0-9ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ])+$/i", $input[$field]) !== FALSE)
 		{
 			return array(
 				'field' => $field,
@@ -593,7 +593,7 @@ class GUMP
 			return;
 		}
 		
-		if(!preg_match("/^([-a-z0-9_-])+$/i", $input[$field]) !== FALSE)
+		if(!preg_match("/^([-a-z0-9ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ_-])+$/i", $input[$field]) !== FALSE)
 		{
 			return array(
 				'field' => $field,
@@ -812,7 +812,14 @@ class GUMP
 	{
 		$number = preg_replace('/\D/', '', $input[$field]);		
 		
-	  	$number_length = strlen($number);
+		if(function_exists('mb_strlen'))
+		{
+			$number_length = mb_strlen($input[$field]);
+		}
+		else
+		{
+			$number_length = strlen($input[$field]);
+		}		
 	
 	  	$parity = $number_length % 2;
 	
