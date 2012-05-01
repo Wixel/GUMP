@@ -7,13 +7,13 @@ GUMP is a standalone PHP input validation and filtering class.
 
 Include it in your project:
 
-``` php
+```php
 require "gump.class.php";
 ```
 
 Methods available:
 
-``` php
+```php
 xss_clean(array $data); // Strips and encodes unwanted characters
 sanitize(array $input, $fields = NULL); // Sanitizes data and converts strings to UTF-8 (if available)
 validate(array $input, array $ruleset); // Validates input data according to the provided ruleset (see example)
@@ -24,7 +24,7 @@ filter(array $input, array $filterset); // Filters input data according to the p
 
 The following example is part of a registration form, the flow should be pretty standard
 
-``` php
+```php
 # Note that filters and validators are separate rule sets and method calls. There is a good reason for this. 
 
 require "gump.class.php";
@@ -121,7 +121,7 @@ Filters can be any PHP function that returns a string. You don't need to create 
 
 Simply create your own class that extends the GUMP class.
 
-<pre>
+```php
 	
 require("gump.class.php");
 
@@ -143,7 +143,7 @@ $validator = new MyClass();
 
 $validated = $validator->validate($_POST, $rules);
 
-</pre>
+```
 
 Remember to create a public methods with the correct parameter types and counts.
 
