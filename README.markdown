@@ -42,7 +42,7 @@ $rules = array(
 );
 
 $filters = array(
-	'username' 	  => 'trim|sanitize_string',
+	'username' 	  => 'trim|sanitize_string|mysql_escape',
 	'password'	  => 'trim|base64',
 	'email'    	  => 'trim|sanitize_email',
 	'gender'   	  => 'trim',
@@ -116,6 +116,7 @@ Filters can be any PHP function that returns a string. You don't need to create 
 * json_decode `Decode a json string` 
 * rmpunctuation `Remove all known puncutation characters from a string`
 * translate `Translate the input string to any desired language eg. From English -> Spanish: translate,en,es`
+* mysql_escape `Runs mysql_real_escape_string on the input`
 
 #  Creating your own validators and filters
 
