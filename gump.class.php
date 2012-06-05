@@ -277,7 +277,7 @@ class GUMP
 	}
 	
 	/**
-	 * Translate an input string to a desired language
+	 * Translate an input string to a desired language [DEPRECIATED]
 	 *
 	 * Any ISO 639-1 2 character language code may be used 
 	 *
@@ -288,6 +288,7 @@ class GUMP
 	 * @param  array $params
 	 * @return string
 	 */
+	/*
 	protected function filter_translate($value, $params = NULL)
 	{
 		$input_lang  = 'en';
@@ -326,6 +327,7 @@ class GUMP
 			return $json['responseData']['translatedText'];
 		}		
 	}
+	*/
 		
 	/**
 	 * Sanitize the string by removing any script tags
