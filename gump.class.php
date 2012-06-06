@@ -205,33 +205,7 @@ class GUMP
 	}
 	
 	// ** ------------------------- Filters --------------------------------------- ** //
-
-	/**
-	 * Perform a mysql_real_escape_string on the input string
-	 * 
-	 * @access protected
-	 * @param  string $value
-	 * @param  array $params
-	 * @return string
-	 */	
-	protected function filter_mysql_escape($value, $params = NULL)	
-	{
-		if(is_string($value))
-		{
-			return mysql_real_escape_string($value);
-		}
-		
-		if(is_array($value))
-		{
-			foreach($value as $k => &$v)
-			{
-				$value[$k] = mysql_real_escape_string($v);
-			}
-			
-			return $value;
-		}
-	}
-		
+	
 	/**
 	 * Replace noise words in a string (http://tax.cchgroup.com/help/Avoiding_noise_words_in_your_search.htm)
 	 * 

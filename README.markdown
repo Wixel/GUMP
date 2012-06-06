@@ -115,7 +115,6 @@ Filters can be any PHP function that returns a string. You don't need to create 
 * json_encode `Create a json representation of the input` 
 * json_decode `Decode a json string` 
 * rmpunctuation `Remove all known puncutation characters from a string`
-* mysql_escape `Runs mysql_real_escape_string on the input`
 
 #  Creating your own validators and filters
 
