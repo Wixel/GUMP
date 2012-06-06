@@ -5,12 +5,12 @@ require "../gump.class.php";
 
 $validator = new GUMP();
 
-$validator->sanitize($_POST);
-
 $_POST = array(
 	'username' => "my username",
 	'password' => "' OR ''='"
 );
+
+$validator->sanitize($_POST);
 
 $filters = array(
 	'username' => 'noise_words',
