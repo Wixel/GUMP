@@ -21,7 +21,7 @@ $_POST = $validator->sanitize($_POST); // You don't have to sanitize, but it's s
 // Let's define the rules and filters
 
 $rules = array(
-	'username'    => 'required|alpha_numeric|max_len,100|min_len,6',
+	'username'    => 'required|alpha_numeric|max_len,100|min_len,40',
 	'password'    => 'required|max_len,100|min_len,6',
 	'email'       => 'required|valid_email',
 	'gender'      => 'required|exact_len,1',
@@ -44,8 +44,6 @@ $validated = $validator->validate(
 	$_POST, $rules
 );
 
-// Check if validation was successful
-
 if($validated === TRUE)
 {
 	echo "Successful Validation\n\n";
@@ -56,7 +54,17 @@ if($validated === TRUE)
 }
 else
 {
-	print_r($_POST); 
-		
-	print_r($validated); // Shows all the rules that failed along with the data
+	// You should know what form fields to expect, so you can reference them here for custom messages
+	echo "There were errors with the data you provided:\n";
+	
+	foreach($validated as $v) {
+		switch($v['field']) {
+			case 'credit_card':
+				echo "- The credit card provided is not valid.\n";
+				break;
+			case 'username':
+				echo "- The username provided is not valid.\n";
+				break;				
+		}
+	}
 }
