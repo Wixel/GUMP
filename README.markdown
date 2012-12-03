@@ -60,6 +60,10 @@ if($validated === TRUE)
 else
 {	
 	print_r($validated); // Something went wrong
+	
+	// Or you can do the following:
+	echo $gump->get_readable_errors(true); // Prints out a string
+	print_r($gump->get_readable_errors()); // Prints out an array of error messages
 }
 ```
 

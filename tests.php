@@ -78,11 +78,14 @@ echo "\nTHESE ALL FAIL:\n\n";
 
 print_r($validator->validate($invalid_data, $rules));
 
+// Print out the errors using the new get_readable_errors() method:
+
+print_r($validator->get_readable_errors());
+
 if($validator->validate($valid_data, $rules))
 {
   echo "\nTHESE ALL SUCCEED:\n\n";
   
   print_r($valid_data);
 }
-
 echo "\nDONE\n\n";

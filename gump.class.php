@@ -6,11 +6,14 @@
  * @author		Sean Nieuwoudt (http://twitter.com/SeanNieuwoudt)
  * @copyright	Copyright (c) 2011 Wixel.net
  * @link		http://github.com/Wixel/GUMP
- * @version     0.5
+ * @version     1.0
  */
 
 class GUMP
 {	
+	// Instance attribute containing errors from last run
+	protected $errors = array();
+	
 	// ** ------------------------- Validation Data ------------------------------- ** //					
 		
 	public static $en_noise_words = "about,after,all,also,an,and,another,any,are,as,at,be,because,been,before,
@@ -96,6 +99,16 @@ class GUMP
 	}
 	
 	/**
+	 * Return the error array from the last validation run
+	 *
+	 * @return array
+	 */
+	public function errors()
+	{
+		return $this->errors;
+	}
+	
+	/**
 	 * Perform data validation against the provided ruleset
 	 * 
 	 * @access public
@@ -105,7 +118,7 @@ class GUMP
 	 */
 	public function validate(array $input, array $ruleset)
 	{
-		$errors = array();
+		$this->errors = array();
 		
 		foreach($ruleset as $field => $rules)
 		{
@@ -120,8 +133,6 @@ class GUMP
 			{
 				$method = NULL;
 				$param  = NULL;
-				
-				// @TODO: Improve the param parser
 				
 				if(strstr($rule, ',') !== FALSE) // has params
 				{
@@ -140,7 +151,7 @@ class GUMP
 
 					if(is_array($result)) // Validation Failed
 					{
-						$errors[] = $result;
+						$this->errors[] = $result;
 					}
 				}
 				else
@@ -150,7 +161,103 @@ class GUMP
 			}
 		}
 
-		return (count($errors) > 0)? $errors : TRUE;
+		return (count($this->errors) > 0)? $this->errors : TRUE;
+	}
+	
+	/**
+	 * Process the validation errors and return human readable error messages
+	 *
+	 * @param $convert_to_string = false
+	 * @return array 
+	 * @return string	
+	 */
+	public function get_readable_errors($convert_to_string = false)
+	{
+		if(empty($this->errors)) {
+			return ($convert_to_string)? null : array();
+		}
+		
+		foreach($this->errors as $e) {
+			
+			$field = ucwords($e['field']);
+			$param = $e['param'];
+			
+			switch($e['rule']) {
+				case 'validate_required':
+					$resp[] = "The <span class=\"field\">$field</span> field is required";
+					break;
+				case 'validate_valid_email':
+					$resp[] = "The <span class=\"field\">$field</span> field is required to be a valid email address";				
+					break;				
+				case 'validate_max_len':
+					if($param == 1) {
+						$resp[] = "The <span class=\"field\">$field</span> field needs to be shorter than $param character";										
+					} else {
+						$resp[] = "The <span class=\"field\">$field</span> field needs to be shorter than $param characters";				
+					}
+					break;
+				case 'validate_min_len':
+					if($param == 1) {
+						$resp[] = "The <span class=\"field\">$field</span> field needs to be longer than $param character";
+					} else {
+						$resp[] = "The <span class=\"field\">$field</span> field needs to be longer than $param characters";						
+					}
+					break;			
+				case 'validate_exact_len':
+					if($param == 1) {				
+						$resp[] = "The <span class=\"field\">$field</span> field needs to be exactly $param character in length";										
+					} else {
+						$resp[] = "The <span class=\"field\">$field</span> field needs to be exactly $param characters in length";				
+					}
+					break;				
+				case 'validate_alpha':
+					$resp[] = "The <span class=\"field\">$field</span> field may only contain alpha characters(a-z)";								
+					break;
+				case 'validate_alpha_numeric':
+					$resp[] = "The <span class=\"field\">$field</span> field may only contain alpha-numeric characters";												
+					break;
+				case 'validate_alpha_dash':
+					$resp[] = "The <span class=\"field\">$field</span> field may only contain alpha characters &amp; dashes";																
+					break;				
+				case 'validate_numeric':
+					$resp[] = "The <span class=\"field\">$field</span> field may only contain numeric characters";																				
+					break;
+				case 'validate_integer':
+					$resp[] = "The <span class=\"field\">$field</span> field may only contain a numeric value";																								
+					break;
+				case 'validate_boolean':
+					$resp[] = "The <span class=\"field\">$field</span> field may only contain a true or false value";																												
+					break;
+				case 'validate_float':
+					$resp[] = "The <span class=\"field\">$field</span> field may only contain a float value";																												
+					break;			
+				case 'validate_valid_url':
+					$resp[] = "The <span class=\"field\">$field</span> field is required to be a valid URL";																												
+					break;				
+				case 'validate_url_exists':
+					$resp[] = "The <span class=\"field\">$field</span> URL does not exist";																																
+					break;				
+				case 'validate_valid_ip':
+					$resp[] = "The <span class=\"field\">$field</span> field needs to contain a valid IP address";																																
+					break;			
+				case 'validate_valid_cc':
+					$resp[] = "The <span class=\"field\">$field</span> field needs to contain a valid credit card number";																																
+					break;																			
+				case 'validate_valid_name':
+					$resp[] = "The <span class=\"field\">$field</span> field needs to contain a valid human name";																																
+					break;				
+			}
+		}		
+		
+		if(!$convert_to_string) {
+			return $resp;
+		} else {
+			$buffer = '';
+			foreach($resp as $s) {
+				$buffer .= "<span class=\"error-message\">$s</span>";
+			}
+			return $buffer;
+		}
 	}
 	
 	/**
@@ -389,7 +496,8 @@ class GUMP
 			return array(
 				'field' => $field,
 				'value' => NULL,
-				'rule'	=> __FUNCTION__
+				'rule'	=> __FUNCTION__,
+				'param' => $param
 			);
 		}
 	}
@@ -414,7 +522,8 @@ class GUMP
 			return array(
 				'field' => $field,
 				'value' => $input[$field],
-				'rule'	=> __FUNCTION__
+				'rule'	=> __FUNCTION__,
+				'param' => $param				
 			);
 		}
 	}
@@ -452,7 +561,8 @@ class GUMP
 		return array(
 			'field' => $field,
 			'value' => $input[$field],
-			'rule'	=> __FUNCTION__
+			'rule'	=> __FUNCTION__,
+			'param' => $param
 		);		
 	}
 	
@@ -489,7 +599,8 @@ class GUMP
 		return array(
 			'field' => $field,
 			'value' => $input[$field],
-			'rule'	=> __FUNCTION__
+			'rule'	=> __FUNCTION__,
+			'param' => $param			
 		);
 	}
 	
@@ -526,7 +637,8 @@ class GUMP
 		return array(
 			'field' => $field,
 			'value' => $input[$field],
-			'rule'	=> __FUNCTION__
+			'rule'	=> __FUNCTION__,
+			'param' => $param			
 		);
 	}
 	
@@ -550,7 +662,8 @@ class GUMP
 			return array(
 				'field' => $field,
 				'value' => $input[$field],
-				'rule'	=> __FUNCTION__
+				'rule'	=> __FUNCTION__,
+				'param' => $param				
 			);
 		}
 	}
@@ -575,7 +688,8 @@ class GUMP
 			return array(
 				'field' => $field,
 				'value' => $input[$field],
-				'rule'	=> __FUNCTION__
+				'rule'	=> __FUNCTION__,
+				'param' => $param				
 			);
 		}
 	}
@@ -600,7 +714,8 @@ class GUMP
 			return array(
 				'field' => $field,
 				'value' => $input[$field],
-				'rule'	=> __FUNCTION__
+				'rule'	=> __FUNCTION__,
+				'param' => $param				
 			);
 		}
 	}
@@ -625,7 +740,8 @@ class GUMP
 			return array(
 				'field' => $field,
 				'value' => $input[$field],
-				'rule'	=> __FUNCTION__
+				'rule'	=> __FUNCTION__,
+				'param' => $param				
 			);
 		}
 	}
@@ -650,7 +766,8 @@ class GUMP
 			return array(
 				'field' => $field,
 				'value' => $input[$field],
-				'rule'	=> __FUNCTION__
+				'rule'	=> __FUNCTION__,
+				'param' => $param				
 			);
 		}
 	}
@@ -677,7 +794,8 @@ class GUMP
 			return array(
 				'field' => $field,
 				'value' => $input[$field],
-				'rule'	=> __FUNCTION__
+				'rule'	=> __FUNCTION__,
+				'param' => $param				
 			);
 		}
 	}
@@ -702,7 +820,8 @@ class GUMP
 			return array(
 				'field' => $field,
 				'value' => $input[$field],
-				'rule'	=> __FUNCTION__
+				'rule'	=> __FUNCTION__,
+				'param' => $param				
 			);
 		}
 	}
@@ -727,7 +846,8 @@ class GUMP
 			return array(
 				'field' => $field,
 				'value' => $input[$field],
-				'rule'	=> __FUNCTION__
+				'rule'	=> __FUNCTION__,
+				'param' => $param				
 			);
 		}
 	}
@@ -758,7 +878,8 @@ class GUMP
 				return array(
 					'field' => $field,
 					'value' => $input[$field],
-					'rule'	=> __FUNCTION__
+					'rule'	=> __FUNCTION__,
+					'param' => $param					
 				);
 			}	
 		}
@@ -769,7 +890,8 @@ class GUMP
 				return array(
 					'field' => $field,
 					'value' => $input[$field],
-					'rule'	=> __FUNCTION__
+					'rule'	=> __FUNCTION__,
+					'param' => $param					
 				);
 			}
 		}
@@ -795,7 +917,8 @@ class GUMP
 			return array(
 				'field' => $field,
 				'value' => $input[$field],
-				'rule'	=> __FUNCTION__
+				'rule'	=> __FUNCTION__,
+				'param' => $param				
 			);
 		}
 	}
@@ -853,7 +976,8 @@ class GUMP
 			return array(
 				'field' => $field,
 				'value' => $input[$field],
-				'rule'	=> __FUNCTION__
+				'rule'	=> __FUNCTION__,
+				'param' => $param				
 			);
 		}
 	}
@@ -880,7 +1004,8 @@ class GUMP
 	        return array(
 	            'field' => $field,
 	            'value' => $input[$field],
-	            'rule'  => __FUNCTION__
+	            'rule'  => __FUNCTION__,
+				'param' => $param	
 	        );
 	    }
 	}
