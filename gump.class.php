@@ -178,8 +178,8 @@ class GUMP
 		}
 		
 		foreach($this->errors as $e) {
-			
-			$field = ucwords($e['field']);
+		
+			$field = ucwords(str_replace(array('_','-'), chr(32), $e['field']));
 			$param = $e['param'];
 			
 			switch($e['rule']) {
