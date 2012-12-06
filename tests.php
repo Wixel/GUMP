@@ -79,7 +79,7 @@ print_r($validator->sanitize($invalid_data));
 
 echo "\nTHESE ALL FAIL:\n\n";
 
-print_r($validator->validate($invalid_data, $rules));
+$validator->validate($invalid_data, $rules);
 
 // Print out the errors using the new get_readable_errors() method:
 
