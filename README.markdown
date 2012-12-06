@@ -54,13 +54,6 @@ $validated = $gump->validate(
 	$gump->filter($_POST, $filters), $rules
 );
 
-// OR:
-/*
-$validated = $gump->validate(
-	$_POST, $rules, filters
-);
-*/
-
 if($validated === TRUE)
 {
 	// Do something, everything went well
