@@ -114,11 +114,16 @@ class GUMP
 	 * @access public
 	 * @param  mixed $input
 	 * @param  array $ruleset
+	 * @param  array $filterset If provided, filtering would run before validation	
 	 * @return mixed
 	 */
-	public function validate(array $input, array $ruleset)
+	public function validate(array $input, array $ruleset, array $filterset = array())
 	{
 		$this->errors = array();
+		
+		if(!empty($filterset)) { // if present, run filters
+			$input = $this->filter($input, $filterset);
+		}
 		
 		foreach($ruleset as $field => $rules)
 		{
