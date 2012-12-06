@@ -496,7 +496,9 @@ class GUMP
 		
 		$param = explode(chr(32), trim(strtolower($param)));
 		
-		if(!in_array($input[$field], $param)) {
+		$value = trim(strtolower($input[$field]));
+		
+		if(!in_array($value, $param)) {
 			$invalid = true;
 		}
 
