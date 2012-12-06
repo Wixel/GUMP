@@ -323,6 +323,8 @@ class GUMP
 	/**
 	 * Replace noise words in a string (http://tax.cchgroup.com/help/Avoiding_noise_words_in_your_search.htm)
 	 * 
+	 * Usage: '<index>' => 'noise_words'
+	 *	
 	 * @access protected
 	 * @param  string $value
 	 * @param  array $params
@@ -354,6 +356,8 @@ class GUMP
 	/**
 	 * Remove all known punctuation from a string
 	 * 
+	 * Usage: '<index>' => 'rmpunctuataion'
+	 *	
 	 * @access protected
 	 * @param  string $value
 	 * @param  array $params
@@ -420,6 +424,8 @@ class GUMP
 	/**
 	 * Sanitize the string by removing any script tags
 	 * 
+	 * Usage: '<index>' => 'sanitize_string'
+	 *	
 	 * @access protected
 	 * @param  string $value
 	 * @param  array $params
@@ -433,6 +439,8 @@ class GUMP
 	/**
 	 * Sanitize the string by urlencoding characters
 	 * 
+	 * Usage: '<index>' => 'urlencode'
+	 *	
 	 * @access protected
 	 * @param  string $value
 	 * @param  array $params	
@@ -446,6 +454,8 @@ class GUMP
 	/**
 	 * Sanitize the string by converting HTML characters to their HTML entities
 	 * 
+	 * Usage: '<index>' => 'htmlencode'
+	 *	
 	 * @access protected
 	 * @param  string $value
 	 * @param  array $params
@@ -459,6 +469,8 @@ class GUMP
 	/**
 	 * Sanitize the string by removing illegal characters from emails
 	 * 
+	 * Usage: '<index>' => 'sanitize_email'
+	 *	
 	 * @access protected
 	 * @param  string $value
 	 * @param  array $params
@@ -487,6 +499,8 @@ class GUMP
 	/**
 	 * Verify that a value is contained within the pre-defined value set
 	 * 
+	 * Usage: '<index>' => 'contains,value value value'
+	 *	
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
@@ -519,6 +533,8 @@ class GUMP
 	/**
 	 * Check if the specified key is present and not empty
 	 * 
+	 * Usage: '<index>' => 'required'
+	 *
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
@@ -544,6 +560,8 @@ class GUMP
 	/**
 	 * Determine if the provided email is valid
 	 * 
+	 * Usage: '<index>' => 'valid_email'
+	 *	
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
@@ -570,6 +588,8 @@ class GUMP
 	/**
 	 * Determine if the provided value length is less or equal to a specific value
 	 * 
+	 * Usage: '<index>' => 'max_len,240'
+	 *	
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
@@ -608,6 +628,8 @@ class GUMP
 	/**
 	 * Determine if the provided value length is more or equal to a specific value
 	 * 
+	 * Usage: '<index>' => 'min_len,4'
+	 *	
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
@@ -646,6 +668,8 @@ class GUMP
 	/**
 	 * Determine if the provided value length matches a specific value
 	 * 
+	 * Usage: '<index>' => 'exact_len,5'
+	 *	
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
@@ -684,6 +708,8 @@ class GUMP
 	/**
 	 * Determine if the provided value contains only alpha characters
 	 * 
+	 * Usage: '<index>' => 'alpha'
+	 *
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
@@ -710,6 +736,8 @@ class GUMP
 	/**
 	 * Determine if the provided value contains only alpha-numeric characters
 	 * 
+	 * Usage: '<index>' => 'alpha_numeric'
+	 *	
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
@@ -736,6 +764,8 @@ class GUMP
 	/**
 	 * Determine if the provided value contains only alpha characters with dashed and underscores
 	 * 
+	 * Usage: '<index>' => 'alpha_dash'
+	 *	
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
@@ -762,6 +792,8 @@ class GUMP
 	/**
 	 * Determine if the provided value is a valid number or numeric string
 	 * 
+	 * Usage: '<index>' => 'numeric'
+	 *	
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
@@ -788,6 +820,8 @@ class GUMP
 	/**
 	 * Determine if the provided value is a valid integer
 	 * 
+	 * Usage: '<index>' => 'integer'
+	 *	
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
@@ -814,6 +848,8 @@ class GUMP
 	/**
 	 * Determine if the provided value is a PHP accepted boolean
 	 * 
+	 * Usage: '<index>' => 'boolean'
+	 *
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
@@ -842,6 +878,8 @@ class GUMP
 	/**
 	 * Determine if the provided value is a valid float
 	 * 
+	 * Usage: '<index>' => 'float'
+	 *	
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
@@ -868,6 +906,8 @@ class GUMP
 	/**
 	 * Determine if the provided value is a valid URL
 	 * 
+	 * Usage: '<index>' => 'valid_url'
+	 *
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
@@ -894,6 +934,8 @@ class GUMP
 	/**
 	 * Determine if a URL exists & is accessible
 	 *
+	 * Usage: '<index>' => 'url_exists'
+	 *	
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
@@ -939,6 +981,8 @@ class GUMP
 	/**
 	 * Determine if the provided value is a valid IP address
 	 * 
+	 * Usage: '<index>' => 'valid_ip'
+	 *	
 	 * @access protected
 	 * @param  string $field
 	 * @param  array $input
@@ -966,6 +1010,7 @@ class GUMP
 	 * Determine if the input is a valid credit card number 
 	 *
 	 * See: http://stackoverflow.com/questions/174730/what-is-the-best-way-to-validate-a-credit-card-in-php
+	 * Usage: '<index>' => 'valid_cc'	
 	 * 
 	 * @access protected
 	 * @param  string $field
@@ -1025,6 +1070,7 @@ class GUMP
 	 * Determine if the input is a valid human name [Credits to http://github.com/ben-s]
 	 *
 	 * See: https://github.com/Wixel/GUMP/issues/5
+	 * Usage: '<index>' => 'valid_name'
 	 * 
 	 * @access protected
 	 * @param  string $field
