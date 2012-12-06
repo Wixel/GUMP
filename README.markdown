@@ -34,42 +34,37 @@ $gump = new GUMP();
 
 $_POST = $gump->sanitize($_POST); // You don't have to sanitize, but it's safest to do so.
 
-$rules = array(
+$gump->validation_rules(array(
 	'username'    => 'required|alpha_numeric|max_len,100|min_len,6',
 	'password'    => 'required|max_len,100|min_len,6',
 	'email'       => 'required|valid_email',
 	'gender'      => 'required|exact_len,1|contains,m f',
-	'credit_card' => 'required|trim|valid_cc',
-);
+	'credit_card' => 'required|trim|valid_cc'
+));
 
-$filters = array(
+$gump->filter_rules(array(
 	'username' 	  => 'trim|sanitize_string|mysql_escape',
 	'password'	  => 'trim|base64',
 	'email'    	  => 'trim|sanitize_email',
 	'gender'   	  => 'trim',
 	'bio'		  => 'noise_words'
-);
+));
 
-$validated = $gump->validate(
-	$gump->filter($_POST, $filters), $rules
-);
+$validated_data = $gump->run($_POST);
 
-if($validated === TRUE)
-{
-	// Do something, everything went well
-}
-else
-{	
-	print_r($validated); // Something went wrong
-	
-	// Or you can do the following:
-	echo $gump->get_readable_errors(true); // Prints out a string
-	print_r($gump->get_readable_errors()); // Prints out an array of error messages
+if($validated_data === false) {
+	echo $gump->get_readable_errors(true);
+} else {
+	print_r($validated_data); // validation successful
 }
 ```
 
 Return Values
 -------------
+`run()` returns one of two types:
+
+*ARRAY* containing the successfully validated and filtered data when the validation is successful
+*FALSE* when the validation has failed
 
 `validate()` returns one of two types:
 

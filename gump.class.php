@@ -11,6 +11,12 @@
 
 class GUMP
 {	
+	// Validation rules for execution
+	protected $validation_rules = array();
+	
+	// Filter rules for execution
+	protected $filter_rules = array(); 
+	
 	// Instance attribute containing errors from last run
 	protected $errors = array();
 	
@@ -43,6 +49,58 @@ class GUMP
 		}
 		
 		return $data;
+	}
+	
+	/**
+	 * Getter/Setter for the validation rules
+	 *
+	 * @param array $rules
+	 * @return array
+	 */
+	public function validation_rules(array $rules = array())
+	{
+		if(!empty($rules)) {
+			$this->validation_rules = $rules;
+		} else {
+			return $this->validation_rules;
+		}		
+	}
+	
+	/**
+	 * Getter/Setter for the filter rules
+	 *
+	 * @param array $rules
+	 * @return array
+	 */	
+	public function filter_rules(array $rules = array())
+	{
+		if(!empty($rules)) {
+			$this->filter_rules = $rules;
+		} else {
+			return $this->filter_rules;
+		}
+	}	
+	
+	/**
+	 * Run the filtering and validation after each other
+	 *
+	 * @param array $data
+	 * @return array
+	 * @return boolean
+	 */
+	public function run(array $data)
+	{
+		$data = $this->filter($data, $this->filter_rules());
+		
+		$validated = $this->validate(
+			$data, $this->validation_rules()
+		);		
+		
+		if($validated !== true) {
+			return false;
+		} else {
+		   return $data;
+		}
 	}
 	
 	/**
