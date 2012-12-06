@@ -25,7 +25,8 @@ $rules = array(
 	'valid_url'		=> 'valid_url',
 	'url_exists'	=> 'url_exists',
 	'valid_ip'		=> 'valid_ip',
-	'valid_name'    => 'valid_name'
+	'valid_name'    => 'valid_name',
+	'contains'		=> 'contains,free pro basic'
 );
 
 $invalid_data = array(
@@ -44,7 +45,8 @@ $invalid_data = array(
 	'valid_url'		=> "\r\n\r\nhttp://add",
 	'url_exists'	=> "http://asdasdasd354.gov",
 	'valid_ip'		=> "google.com",
-	'valid_name' 	=> '*&((*S))(*09890uiadaiusyd)'
+	'valid_name' 	=> '*&((*S))(*09890uiadaiusyd)',
+	'contains'		=> 'premium'	
 );
 
 $valid_data = array(
@@ -63,7 +65,8 @@ $valid_data = array(
 	'valid_url'		=> 'http://wixel.net',
 	'url_exists'	=> 'http://wixel.net',	
 	'valid_ip'		=> '69.163.138.62',
-	'valid_name' 	=> 'Sean Nieuwoudt' 
+	'valid_name' 	=> 'Sean Nieuwoudt',
+	'contains'		=> 'free'
 );
 
 echo "\nBEFORE SANITIZE:\n\n";

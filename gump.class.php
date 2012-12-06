@@ -177,6 +177,8 @@ class GUMP
 			return ($convert_to_string)? null : array();
 		}
 		
+		$resp = array();
+		
 		foreach($this->errors as $e) {
 		
 			$field = ucwords(str_replace(array('_','-'), chr(32), $e['field']));
@@ -246,6 +248,9 @@ class GUMP
 				case 'validate_valid_name':
 					$resp[] = "The <span class=\"field\">$field</span> field needs to contain a valid human name";																																
 					break;				
+				case 'validate_contains':
+					$resp[] = "The <span class=\"field\">$field</span> field needs contain one of these values: ".implode(', ', $param);																																
+					break;					
 			}
 		}		
 		
@@ -476,6 +481,36 @@ class GUMP
 	}
 	
 	// ** ------------------------- Validators ------------------------------------ ** //	
+	
+	/**
+	 * Verify that a value is contained within the pre-defined value set
+	 * 
+	 * @access protected
+	 * @param  string $field
+	 * @param  array $input
+	 * @return mixed
+	 */
+	protected function validate_contains($field, $input, $param = NULL)
+	{
+		$invalid = false;
+		
+		$param = explode(chr(32), trim(strtolower($param)));
+		
+		if(!in_array($input[$field], $param)) {
+			$invalid = true;
+		}
+
+		if(!$invalid) {
+			return;
+		} else {
+			return array(
+				'field' => $field,
+				'value' => NULL,
+				'rule'	=> __FUNCTION__,
+				'param' => $param
+			);			
+		}
+	}	
 	
 	/**
 	 * Check if the specified key is present and not empty

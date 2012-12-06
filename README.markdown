@@ -101,6 +101,7 @@ Available Validators
 * valid_ip `Check for valid IP address`
 * valid_cc `Check for a valid credit card number (Uses the MOD10 Checksum Algorithm)`
 * valid_name `Check for a valid format human name`
+* contains,n `Verify that a value is contained within the pre-defined value set`
 
 Available Filters
 -----------------
@@ -165,7 +166,6 @@ The output will depend on the input data.
 
 # TODO
 
-* An in array match method that allows to check for pre-defined values
 * A currency validator
 * An address validator
 * A country validator
