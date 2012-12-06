@@ -20,7 +20,9 @@ class GUMP
 	// Instance attribute containing errors from last run
 	protected $errors = array();
 	
-	// ** ------------------------- Validation Data ------------------------------- ** //					
+	// ** ------------------------- Validation Data ------------------------------- ** //	
+	
+	public static $basic_tags	  = "<br><p><a><strong><b><i><em><img><blockquote><code><dd><dl><hr><h1><h2><h3><h4><h5><h6><label><ul><li><span><sub><sup>";				
 		
 	public static $en_noise_words = "about,after,all,also,an,and,another,any,are,as,at,be,because,been,before,
 				  				  	 being,between,both,but,by,came,can,come,could,did,do,each,for,from,get,
@@ -550,6 +552,19 @@ class GUMP
 	protected function filter_sanitize_numbers($value, $params = NULL)
 	{
 		return filter_var($value, FILTER_SANITIZE_NUMBER_INT);  
+	}
+	
+	/**
+	 * Filter out all HTML tags except the defined basic tags
+	 * 
+	 * @access protected
+	 * @param  string $value
+	 * @param  array $params
+	 * @return string
+	 */	
+	protected function filter_basic_tags($value, $params = NULL)
+	{
+		return strip_tags($value, self::$basic_tags);
 	}
 	
 	// ** ------------------------- Validators ------------------------------------ ** //	

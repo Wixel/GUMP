@@ -119,6 +119,7 @@ Filters can be any PHP function that returns a string. You don't need to create 
 * json_encode `Create a json representation of the input` 
 * json_decode `Decode a json string` 
 * rmpunctuation `Remove all known puncutation characters from a string`
+* basic_tags `Remove all layout orientated HTML tags from text. Leaving only basic tags`
 
 #  Creating your own validators and filters
 
