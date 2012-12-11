@@ -36,6 +36,16 @@ class GUMP
 	// ** ------------------------- Validation Helpers ---------------------------- ** //	
 	
 	/**
+	 * Magic method to generate the validation error messages
+	 *
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return $this->get_readable_errors(true);
+	}
+	
+	/**
 	 * Perform XSS clean to prevent cross site scripting
 	 * 
 	 * @static

@@ -9,6 +9,8 @@ $rules = array(
 	'account_type' => 'required|contains,pro free basic premium',
 );
 
+echo "\nVALID DATA TEST:\n\n";
+
 // Valid Data
 $_POST_VALID = array(
 	'account_type' => 'pro'
@@ -24,6 +26,8 @@ if($valid !== true) {
 	echo "Validation passed! \n";
 }
 
+echo "\nINVALID DATA TEST:\n\n";
+
 // Invalid
 $_POST_INVALID = array(
 	'account_type' => 'bad'
@@ -35,6 +39,7 @@ $invalid = $validator->validate(
 
 if($invalid !== true) {
 	echo $validator->get_readable_errors(true);
+	echo "\n\n";
 } else {
-	echo "Validation passed!";
+	echo "Validation passed!\n\n";
 }
