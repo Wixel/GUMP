@@ -165,6 +165,7 @@ The output will depend on the input data.
 
 # TODO
 
+* Add composer compatibility
 * A currency validator
 * An address validator
 * A country validator
