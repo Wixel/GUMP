@@ -1090,6 +1090,62 @@ class GUMP
 	}
 	
 	/**
+	 * Determine if the provided value is a valid IPv4 address
+	 * 
+	 * Usage: '<index>' => 'valid_ipv4'
+	 *	
+	 * @access protected
+	 * @param  string $field
+	 * @param  array $input
+	 * @return mixed
+	 */
+	protected function validate_valid_ipv4($field, $input, $param = NULL)
+	{
+		if(!isset($input[$field]))
+		{
+			return;
+		}
+		
+		if(!filter_var($input[$field], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== FALSE)
+		{
+			return array(
+				'field' => $field,
+				'value' => $input[$field],
+				'rule'	=> __FUNCTION__,
+				'param' => $param				
+			);
+		}
+	}	
+	
+	/**
+	 * Determine if the provided value is a valid IPv6 address
+	 * 
+	 * Usage: '<index>' => 'valid_ipv6'
+	 *	
+	 * @access protected
+	 * @param  string $field
+	 * @param  array $input
+	 * @return mixed
+	 */
+	protected function validate_valid_ipv6($field, $input, $param = NULL)
+	{
+		if(!isset($input[$field]))
+		{
+			return;
+		}
+		
+		if(!filter_var($input[$field], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== FALSE)
+		{
+			return array(
+				'field' => $field,
+				'value' => $input[$field],
+				'rule'	=> __FUNCTION__,
+				'param' => $param				
+			);
+		}
+	}	
+	
+	/**
 	 * Determine if the input is a valid credit card number 
 	 *
 	 * See: http://stackoverflow.com/questions/174730/what-is-the-best-way-to-validate-a-credit-card-in-php

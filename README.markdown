@@ -96,7 +96,9 @@ Available Validators
 * float `Checks for float values`
 * valid_url `Check for valid URL or subdomain`
 * url_exists `Check to see if the url exists and is accessible`
-* valid_ip `Check for valid IP address`
+* valid_ip `Check for valid generic IP address`
+* valid_ipv4 `Check for valid IPv4 address`
+* valid_ipv6 `Check for valid IPv6 address`
 * valid_cc `Check for a valid credit card number (Uses the MOD10 Checksum Algorithm)`
 * valid_name `Check for a valid format human name`
 * contains,n `Verify that a value is contained within the pre-defined value set`
