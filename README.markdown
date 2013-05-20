@@ -67,7 +67,7 @@ if($validated_data === false) {
 
 Or, shorthand validation
 
-```
+```php
 $gump = new GUMP(); 
 
 $is_valid = GUMP::is_valid($_POST, array(
@@ -81,7 +81,6 @@ if($is_valid === true) {
 } else {
 	print_r($is_valid);
 }
-
 ```
 
 Return Values
