@@ -36,6 +36,31 @@ class GUMP
 	// ** ------------------------- Validation Helpers ---------------------------- ** //	
 	
 	/**
+	 * Shorthand method for inline validation 
+	 *
+	 * @param array $data The data to be validated
+	 * @param array $validators The GUMP validators
+	 * @param array $filters The optional GUMP filters
+	 * @return mixed True(boolean) or the array of error messages
+	 */
+	public static function is_valid(array $data, array $validators, array $filters = array()) 
+	{
+		$gump = new Gump();
+
+		$gump->validation_rules($validators);
+
+		if(!empty($filters)) {
+			$gump->filter_rules($filters);
+		}
+
+		if($gump->run($data) === false) {
+			return $gump->get_readable_errors(false);
+		} else {
+			return true;
+		}	
+	}	
+	
+	/**
 	 * Magic method to generate the validation error messages
 	 *
 	 * @return string

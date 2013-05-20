@@ -1,5 +1,7 @@
 # Getting started
 
+[![Build Status](https://travis-ci.org/Wixel/GUMP.png)](https://travis-ci.org/Wixel/GUMP)
+
 GUMP is a standalone PHP input validation and filtering class.
 
 1. Download GUMP
@@ -14,6 +16,7 @@ require "gump.class.php";
 Methods available:
 
 ```php
+is_valid(array $data, array $rules, array $filters) // Shorthand validation
 validation_rules(array $rules); // Get or set the validation rules
 filter_rules(array $rules); // Get or set the filtering rules
 run(array $data); // Runs the filter and validation routines
@@ -60,6 +63,25 @@ if($validated_data === false) {
 } else {
 	print_r($validated_data); // validation successful
 }
+```
+
+Or, shorthand validation
+
+```
+$gump = new GUMP(); 
+
+$is_valid = GUMP::is_valid($_POST, array(
+	'username' => 'required|alpha_numeric'
+), array(
+	'username' => 'trim|sanitize_string|mysql_escape'	
+));
+
+if($is_valid === true) {
+	// continue
+} else {
+	print_r($is_valid);
+}
+
 ```
 
 Return Values
