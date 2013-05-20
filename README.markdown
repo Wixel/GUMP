@@ -1,7 +1,5 @@
 # Getting started
 
-[![Build Status](https://travis-ci.org/Wixel/GUMP.png)](https://travis-ci.org/Wixel/GUMP)
-
 GUMP is a standalone PHP input validation and filtering class.
 
 1. Download GUMP
