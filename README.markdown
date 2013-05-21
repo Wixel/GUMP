@@ -13,9 +13,6 @@ require "gump.class.php";
 $is_valid = GUMP::is_valid($_POST, array(
 	'username' => 'required|alpha_numeric',
 	'password' => 'required|max_len,100|min_len,6'
-), array(
-	'username' => 'trim|sanitize_string|mysql_escape',
-	'password' => 'trim|base64'
 ));
 
 if($is_valid === true) {
@@ -28,7 +25,7 @@ if($is_valid === true) {
 Methods available:
 
 ```php
-is_valid(array $data, array $rules, array $filters) // Shorthand validation
+is_valid(array $data, array $rules) // Shorthand validation
 validation_rules(array $rules); // Get or set the validation rules
 filter_rules(array $rules); // Get or set the filtering rules
 run(array $data); // Runs the filter and validation routines

@@ -40,18 +40,13 @@ class GUMP
 	 *
 	 * @param array $data The data to be validated
 	 * @param array $validators The GUMP validators
-	 * @param array $filters The optional GUMP filters
 	 * @return mixed True(boolean) or the array of error messages
 	 */
-	public static function is_valid(array $data, array $validators, array $filters = array()) 
+	public static function is_valid(array $data, array $validators) 
 	{
 		$gump = new Gump();
 
 		$gump->validation_rules($validators);
-
-		if(!empty($filters)) {
-			$gump->filter_rules($filters);
-		}
 
 		if($gump->run($data) === false) {
 			return $gump->get_readable_errors(false);
