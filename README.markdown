@@ -14,7 +14,8 @@ $is_valid = GUMP::is_valid($_POST, array(
 	'username' => 'required|alpha_numeric',
 	'password' => 'required|max_len,100|min_len,6'
 ), array(
-	'username' => 'trim|sanitize_string|mysql_escape',	
+	'username' => 'trim|sanitize_string|mysql_escape',
+	'password' => 'trim|base64'
 ));
 
 if($is_valid === true) {
