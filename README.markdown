@@ -11,9 +11,10 @@ Include it in your project:
 require "gump.class.php";
 
 $is_valid = GUMP::is_valid($_POST, array(
-	'username' => 'required|alpha_numeric'
+	'username' => 'required|alpha_numeric',
+	'password' => 'required|max_len,100|min_len,6'
 ), array(
-	'username' => 'trim|sanitize_string|mysql_escape'	
+	'username' => 'trim|sanitize_string|mysql_escape',	
 ));
 
 if($is_valid === true) {
