@@ -66,8 +66,6 @@ if($validated_data === false) {
 Or, shorthand validation
 
 ```php
-$gump = new GUMP(); 
-
 $is_valid = GUMP::is_valid($_POST, array(
 	'username' => 'required|alpha_numeric'
 ), array(
