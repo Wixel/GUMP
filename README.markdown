@@ -9,6 +9,18 @@ Include it in your project:
 
 ```php
 require "gump.class.php";
+
+$is_valid = GUMP::is_valid($_POST, array(
+	'username' => 'required|alpha_numeric'
+), array(
+	'username' => 'trim|sanitize_string|mysql_escape'	
+));
+
+if($is_valid === true) {
+	// continue
+} else {
+	print_r($is_valid);
+}
 ```
 
 Methods available:
@@ -25,7 +37,7 @@ filter(array $input, array $filterset); // Filters input data according to the p
 get_readable_errors($convert_to_string = false); // Returns human readable error text in an array or string
 ```
 
-#  Complete Working Example
+#  Complete Working Example (Long format)
 
 The following example is part of a registration form, the flow should be pretty standard
 
@@ -60,22 +72,6 @@ if($validated_data === false) {
 	echo $gump->get_readable_errors(true);
 } else {
 	print_r($validated_data); // validation successful
-}
-```
-
-Or, shorthand validation
-
-```php
-$is_valid = GUMP::is_valid($_POST, array(
-	'username' => 'required|alpha_numeric'
-), array(
-	'username' => 'trim|sanitize_string|mysql_escape'	
-));
-
-if($is_valid === true) {
-	// continue
-} else {
-	print_r($is_valid);
 }
 ```
 
