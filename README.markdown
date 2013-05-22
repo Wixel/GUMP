@@ -180,7 +180,9 @@ The output will depend on the input data.
 
 # Contributors
 
-* 
+* Colleen Emryss http://skitter.tv
+* Mark Slingsby http://www.rsaweb.co.za
+* Rob Crowe http://vivalacrowe.com
 
 # TODO
 
