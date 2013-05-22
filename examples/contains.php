@@ -6,14 +6,16 @@ require "../gump.class.php";
 $validator = new GUMP();
 
 $rules = array(
-  'account_type' => 'required|contains,pro free basic premium',
+  'account_type' => "required|contains,pro free basic premium",
+  'priority'     => "required|contains,'low' 'medium' 'very high'",
 );
 
 echo "\nVALID DATA TEST:\n\n";
 
 // Valid Data
 $_POST_VALID = array(
-  'account_type' => 'pro'
+  'account_type' => 'pro',
+  'priority'     => 'very high'
 );
 
 $valid = $validator->validate(
@@ -30,7 +32,8 @@ echo "\nINVALID DATA TEST:\n\n";
 
 // Invalid
 $_POST_INVALID = array(
-  'account_type' => 'bad'
+  'account_type' => 'bad',
+  'priority'     => 'unknown'
 );
 
 $invalid = $validator->validate(

@@ -178,6 +178,10 @@ Running the examples:
 
 The output will depend on the input data.
 
+# Contributors
+
+* 
+
 # TODO
 
 * Add composer compatibility

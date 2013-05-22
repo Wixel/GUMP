@@ -237,7 +237,7 @@ class GUMP
 
 				if(is_callable(array($this, $method)))
 				{
-					$result = $this->$method($field, $input, $param);					
+					$result = $this->$method($field, $input, $param);
 
 					if(is_array($result)) // Validation Failed
 					{
@@ -614,22 +614,22 @@ class GUMP
 	 */
 	protected function validate_contains($field, $input, $param = NULL)
 	{
-		$invalid = false;
-		
-		$param = explode(chr(32), trim(strtolower($param)));
+		$param = trim(strtolower($param));
 		
 		$value = trim(strtolower($input[$field]));
 		
-		if(!in_array($value, $param)) {
-			$invalid = true;
+		if (preg_match_all('#\'(.+?)\'#', $param, $matches, PREG_PATTERN_ORDER)) {
+			$param = $matches[1];
+		} else  {
+			$param = explode(chr(32), $param);
 		}
 
-		if(!$invalid) {
+		if(in_array($value, $param)) { // valid, return nothing
 			return;
 		} else {
 			return array(
 				'field' => $field,
-				'value' => NULL,
+				'value' => $value,
 				'rule'	=> __FUNCTION__,
 				'param' => $param
 			);			
