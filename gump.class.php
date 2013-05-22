@@ -675,7 +675,7 @@ class GUMP
 	 */
 	protected function validate_valid_email($field, $input, $param = NULL)
 	{
-		if(!isset($input[$field]))
+		if(!isset($input[$field]) || empty($input[$field]))
 		{
 			return;
 		}
@@ -823,7 +823,7 @@ class GUMP
 	 */
 	protected function validate_alpha($field, $input, $param = NULL)
 	{
-		if(!isset($input[$field]))
+		if(!isset($input[$field]) || empty($input[$field]))
 		{
 			return;
 		}
@@ -851,7 +851,7 @@ class GUMP
 	 */	
 	protected function validate_alpha_numeric($field, $input, $param = NULL)
 	{	
-		if(!isset($input[$field]))
+		if(!isset($input[$field]) || empty($input[$field]))
 		{
 			return;
 		}
@@ -879,7 +879,7 @@ class GUMP
 	 */
 	protected function validate_alpha_dash($field, $input, $param = NULL)
 	{
-		if(!isset($input[$field]))
+		if(!isset($input[$field]) || empty($input[$field]))
 		{
 			return;
 		}
@@ -907,7 +907,7 @@ class GUMP
 	 */
 	protected function validate_numeric($field, $input, $param = NULL)
 	{
-		if(!isset($input[$field]))
+		if(!isset($input[$field]) || empty($input[$field]))
 		{
 			return;
 		}
@@ -935,7 +935,7 @@ class GUMP
 	 */
 	protected function validate_integer($field, $input, $param = NULL)
 	{
-		if(!isset($input[$field]))
+		if(!isset($input[$field]) || empty($input[$field]))
 		{
 			return;
 		}
@@ -963,7 +963,7 @@ class GUMP
 	 */
 	protected function validate_boolean($field, $input, $param = NULL)
 	{
-		if(!isset($input[$field]))
+		if(!isset($input[$field]) || empty($input[$field]))
 		{
 			return;
 		}
@@ -993,7 +993,7 @@ class GUMP
 	 */
 	protected function validate_float($field, $input, $param = NULL)
 	{
-		if(!isset($input[$field]))
+		if(!isset($input[$field]) || empty($input[$field]))
 		{
 			return;
 		}
@@ -1021,7 +1021,7 @@ class GUMP
 	 */
 	protected function validate_valid_url($field, $input, $param = NULL)
 	{
-		if(!isset($input[$field]))
+		if(!isset($input[$field]) || empty($input[$field]))
 		{
 			return;
 		}
@@ -1049,7 +1049,7 @@ class GUMP
 	 */
 	protected function validate_url_exists($field, $input, $param = NULL)
 	{
-		if(!isset($input[$field]))
+		if(!isset($input[$field]) || empty($input[$field]))
 		{
 			return;
 		}
@@ -1096,7 +1096,7 @@ class GUMP
 	 */
 	protected function validate_valid_ip($field, $input, $param = NULL)
 	{
-		if(!isset($input[$field]))
+		if(!isset($input[$field]) || empty($input[$field]))
 		{
 			return;
 		}
@@ -1124,7 +1124,7 @@ class GUMP
 	 */
 	protected function validate_valid_ipv4($field, $input, $param = NULL)
 	{
-		if(!isset($input[$field]))
+		if(!isset($input[$field]) || empty($input[$field]))
 		{
 			return;
 		}
@@ -1152,7 +1152,7 @@ class GUMP
 	 */
 	protected function validate_valid_ipv6($field, $input, $param = NULL)
 	{
-		if(!isset($input[$field]))
+		if(!isset($input[$field]) || empty($input[$field]))
 		{
 			return;
 		}
@@ -1181,6 +1181,11 @@ class GUMP
 	 */
 	protected function validate_valid_cc($field, $input, $param = NULL)
 	{
+		if(!isset($input[$field]) || empty($input[$field]))
+		{
+			return;
+		}
+		
 		$number = preg_replace('/\D/', '', $input[$field]);		
 		
 		if(function_exists('mb_strlen'))
@@ -1241,7 +1246,7 @@ class GUMP
 	 */
 	protected function validate_valid_name($field, $input, $param = NULL)
 	{
-		if(!isset($input[$field]))
+		if(!isset($input[$field])|| empty($input[$field]))
 		{
 			return;
 		}
@@ -1269,7 +1274,7 @@ class GUMP
 	 */
 	protected function validate_street_address($field, $input, $param = NULL)
 	{	
-		if(!isset($input[$field]))
+		if(!isset($input[$field])|| empty($input[$field]))
 		{
 			return;
 		}
