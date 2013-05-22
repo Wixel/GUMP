@@ -114,6 +114,7 @@ Available Validators
 * valid_cc `Check for a valid credit card number (Uses the MOD10 Checksum Algorithm)`
 * valid_name `Check for a valid format human name`
 * contains,n `Verify that a value is contained within the pre-defined value set`
+* street_address `Checks that the provided string is a likely street address. 1 number, 1 or more space, 1 or more letters`
 
 Available Filters
 -----------------
@@ -181,7 +182,6 @@ The output will depend on the input data.
 
 * Add composer compatibility
 * A currency validator
-* An address validator
 * A country validator
 * Location co-ordinates validator
 * HTML validator
