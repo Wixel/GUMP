@@ -142,7 +142,7 @@ class GUMP
 	 * @param  array $data
 	 * @return array
 	 */
-	public function sanitize(array $input, $fields = NULL)
+	public function sanitize(array $input, $fields = NULL, $utf8_encode = true)
 	{
 		$magic_quotes = (bool)get_magic_quotes_gpc();
 		
@@ -173,9 +173,11 @@ class GUMP
 						$value = trim($value);
 					}
 					
-					if(function_exists('iconv'))
+					if(function_exists('iconv') && function_exists('mb_detect_encoding'))
 					{
-						$value = iconv('ISO-8859-1', 'UTF-8', $value);
+						if(mb_detect_encoding($value) != 'UTF-8' && mb_detect_encoding($value) != 'UTF-16' && $utf8_encode) {
+							$value = iconv('ISO-8859-1', 'UTF-8', $value);
+						}
 					}
 					
 					$value = filter_var($value, FILTER_SANITIZE_STRING);		
