@@ -175,12 +175,14 @@ class GUMP
 					
 					if(function_exists('iconv') && function_exists('mb_detect_encoding'))
 					{
-						if(mb_detect_encoding($value) != 'UTF-8' && mb_detect_encoding($value) != 'UTF-16' && $utf8_encode) {
-							$value = iconv('ISO-8859-1', 'UTF-8', $value);
+						$current_encoding = mb_detect_encoding($value);
+						
+						if($current_encoding != 'UTF-8' && $current_encoding != 'UTF-16' && $utf8_encode) {
+							$value = iconv($current_encoding, 'UTF-8', $value);
 						}
 					}
 					
-					$value = filter_var($value, FILTER_SANITIZE_STRING);		
+					$value = filter_var($value, FILTER_SANITIZE_STRING);
 				}
 				
 				$input[$field] = $value;
