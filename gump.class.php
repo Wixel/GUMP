@@ -120,7 +120,7 @@ class GUMP
 	 * @return array
 	 * @return boolean
 	 */
-	public function run(array $data)
+	public function run(array $data, $check_fields = false)
 	{
 		$data = $this->filter($data, $this->filter_rules());
 		
