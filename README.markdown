@@ -74,6 +74,19 @@ if($validated_data === false) {
 }
 ```
 
+Match data-keys against rules-keys
+-------------
+We can check if there is a rules specified for every data-key, by adding an extra parameter to the run method.
+
+```
+$gump->run($_POST, true);
+```
+
+If it doesn't match the output will be:
+```
+There is no validation rule for <span class=\"$field_class\">$field</span>
+```
+
 Return Values
 -------------
 `run()` returns one of two types:
@@ -183,6 +196,7 @@ The output will depend on the input data.
 * Colleen Emryss http://skitter.tv
 * Mark Slingsby http://www.rsaweb.co.za
 * Rob Crowe http://vivalacrowe.com
+* Roy de Kleijn http://roydekleijn.com
 
 # TODO
 
