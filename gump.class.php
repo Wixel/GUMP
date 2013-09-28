@@ -120,18 +120,32 @@ class GUMP
 	 * @return array
 	 * @return boolean
 	 */
-	public function run(array $data)
+	public function run(array $data, $check_fields = false)
 	{
 		$data = $this->filter($data, $this->filter_rules());
 		
 		$validated = $this->validate(
 			$data, $this->validation_rules()
-		);		
+		);
+
+		if($check_fields === true) {
+			$this->check_fields($data);
+		}  			
 		
 		if($validated !== true) {
 			return false;
 		} else {
 		   return $data;
+		}
+	}
+	
+	private function check_fields($data)
+	{
+		$ruleset = $this->validation_rules();
+		$mismatch = array_diff_key($data, $ruleset);
+		$fields = array_keys($mismatch);
+		foreach ($fields as $field) {
+			$this -> errors[] = array('field' => $field, 'value' => $data[$field], 'rule' => 'mismatch', 'param' => NULL);
 		}
 	}
 	
@@ -281,6 +295,9 @@ class GUMP
 			$param = $e['param'];
 			
 			switch($e['rule']) {
+				case 'mismatch' :
+					$resp[] = "There is no validation rule for <span class=\"$field_class\">$field</span>";
+					break;
 				case 'validate_required':
 					$resp[] = "The <span class=\"$field_class\">$field</span> field is required";
 					break;
