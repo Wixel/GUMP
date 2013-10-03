@@ -215,3 +215,6 @@ The output will depend on the input data.
 * A filter that integrates with an HTML tidy service?: http://infohound.net/tidy/
 * Add a twitter & facebook profile url validator: http://stackoverflow.com/questions/2845243/check-if-twitter-username-exists
 * Add more logical examples - log in form, profile update form, blog post form, etc etc.
+* Add validators to allow checking the PHP $_FILES array.
+* Allow a validator that can check for existing files on the host machine
+* Add an 'is empty' validator check
