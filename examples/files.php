@@ -35,7 +35,6 @@ for($i = 0; $i < $length; $i++) {
 	
 	if($validated !== true) {
 		$errors[] = $validated;
-	    // continue
 	}
 }
 
