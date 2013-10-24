@@ -1341,4 +1341,52 @@ class GUMP
 		}
 	}	
 	
+	/**
+	 * Determine if the provided value is a valid IBAN
+	 * 
+	 * Usage: '<index>' => 'iban'
+	 *	
+	 * @access protected
+	 * @param  string $field
+	 * @param  array $input
+	 * @return mixed
+	 */
+	protected function validate_iban($field, $input, $param = NULL)
+	{           
+		if(!isset($input[$field]) || empty($input[$field]))
+		{
+			return;
+		}
+		        
+    static $character = array (
+      'A' => 10, 'C' => 12, 'D' => 13, 'E' => 14, 'F' => 15, 'G' => 16, 
+      'H' => 17, 'I' => 18, 'J' => 19, 'K' => 20, 'L' => 21, 'M' => 22, 
+      'N' => 23, 'O' => 24, 'P' => 25, 'Q' => 26, 'R' => 27, 'S' => 28, 
+      'T' => 29, 'U' => 30, 'V' => 31, 'W' => 32, 'X' => 33, 'Y' => 34, 
+      'Z' => 35,
+    );
+    
+    if (!preg_match("/\A[A-Z]{2}\d{2} ?[A-Z\d]{4}( ?\d{4}){1,} ?\d{1,4}\z/", $input[$field])) {
+			return array(
+				'field' => $field,
+				'value' => $input[$field],
+				'rule'	=> __FUNCTION__,
+				'param' => $param				
+			);
+    }
+    
+    $iban = str_replace(' ', '', $input[$field]);
+    $iban = substr($iban, 4) . substr($iban, 0, 4);
+    $iban = strtr($iban, $character);
+		          
+		if(bcmod($iban, 97) != 1){
+			return array(
+				'field' => $field,
+				'value' => $input[$field],
+				'rule'	=> __FUNCTION__,
+				'param' => $param				
+			);
+		}
+	}	
+	
 } // EOC

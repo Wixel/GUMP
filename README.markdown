@@ -128,6 +128,7 @@ Available Validators
 * valid_name `Check for a valid format human name`
 * contains,n `Verify that a value is contained within the pre-defined value set`
 * street_address `Checks that the provided string is a likely street address. 1 number, 1 or more space, 1 or more letters`
+* iban `Check for a valid IBAN`
 
 Available Filters
 -----------------
