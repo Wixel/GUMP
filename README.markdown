@@ -198,6 +198,7 @@ The output will depend on the input data.
 * Mark Slingsby http://www.rsaweb.co.za
 * Rob Crowe http://vivalacrowe.com
 * Roy de Kleijn http://roydekleijn.com
+* Christian Klisch http://www.christian-klisch.de/
 
 # TODO
 
