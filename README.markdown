@@ -218,3 +218,4 @@ The output will depend on the input data.
 * Add validators to allow checking the PHP $_FILES array.
 * Allow a validator that can check for existing files on the host machine
 * Add an 'is empty' validator check
+* Check that arrays have a positive count (if type is array)

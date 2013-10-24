@@ -139,13 +139,24 @@ class GUMP
 		}
 	}
 	
-	private function check_fields($data)
+	/**
+	 * Ensure that the field counts match the validation rule counts
+	 *
+	 * @param array $data
+	 */
+	private function check_fields(array $data)
 	{
-		$ruleset = $this->validation_rules();
+		$ruleset  = $this->validation_rules();
 		$mismatch = array_diff_key($data, $ruleset);
-		$fields = array_keys($mismatch);
+		$fields   = array_keys($mismatch);
+		
 		foreach ($fields as $field) {
-			$this -> errors[] = array('field' => $field, 'value' => $data[$field], 'rule' => 'mismatch', 'param' => NULL);
+			$this->errors[] = array(
+				'field' => $field, 
+				'value' => $data[$field], 
+				'rule'  => 'mismatch', 
+				'param' => NULL
+			);
 		}
 	}
 	
