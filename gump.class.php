@@ -56,6 +56,19 @@ class GUMP
 	}	
 	
 	/**
+	 * Shorthand method for running only the data filters
+	 *
+	 * @param array $data
+	 * @param array $filters
+	 */
+	public static function filter_input(array $data, array $filters)
+	{
+		$gump = new Gump();
+		
+		return $gump->filter($data, $filters);
+	}
+	
+	/**
 	 * Magic method to generate the validation error messages
 	 *
 	 * @return string
