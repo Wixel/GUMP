@@ -199,6 +199,7 @@ The output will depend on the input data.
 * Rob Crowe http://vivalacrowe.com
 * Roy de Kleijn http://roydekleijn.com
 * Christian Klisch http://www.christian-klisch.de/
+* Inge Brattaas http://res.no/
 
 # TODO
 
