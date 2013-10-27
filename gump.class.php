@@ -391,6 +391,9 @@ class GUMP
 				case 'validate_street_address':
 					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a valid street address";
 					break;
+				case 'validate_date':
+					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a valid date";
+					break;
 			}
 		}		
 		
@@ -1387,6 +1390,39 @@ class GUMP
 				'param' => $param				
 			);
 		}
-	}	
+	}
+	
+
+    /**
+     * Determine if the provided input is a valid date (ISO 8601)
+     *
+     * Usage: '<index>' => 'date'
+     *
+     * @access protected
+     * @param string $field
+     * @param string $input date ('Y-m-d') or datetime ('Y-m-d H:i:s')
+     * @param null   $param
+     *
+     * @return mixed
+     */
+    protected function validate_date($field, $input, $param = null)
+    {
+        if (!isset($input[$field]) || empty($input[$field])) {
+            return;
+        }
+
+        $cdate1 = date('Y-m-d', strtotime($input[$field]));
+        $cdate2 = date('Y-m-d H:i:s', strtotime($input[$field]));
+
+
+        if ($cdate1 != $input[$field] && $cdate2 != $input[$field]) {
+            return array(
+                'field' => $field,
+                'value' => $input[$field],
+                'rule'  => __FUNCTION__,
+                'param' => $param
+            );
+        }
+    }
 	
 } // EOC
