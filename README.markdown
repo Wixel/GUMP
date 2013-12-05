@@ -41,11 +41,11 @@ get_readable_errors($convert_to_string = false); // Returns human readable error
 The following example is part of a registration form, the flow should be pretty standard
 
 ```php
-# Note that filters and validators are separate rule sets and method calls. There is a good reason for this. 
+# Note that filters and validators are separate rule sets and method calls. There is a good reason for this.
 
 require "gump.class.php";
 
-$gump = new GUMP(); 
+$gump = new GUMP();
 
 $_POST = $gump->sanitize($_POST); // You don't have to sanitize, but it's safest to do so.
 
@@ -145,8 +145,8 @@ Filters can be any PHP function that returns a string. You don't need to create 
 * sha1 `Encrypt the input with the secure sha1 algorithm`
 * md5 `MD5 encode the input`
 * noise_words `Remove noise words from string`
-* json_encode `Create a json representation of the input` 
-* json_decode `Decode a json string` 
+* json_encode `Create a json representation of the input`
+* json_decode `Decode a json string`
 * rmpunctuation `Remove all known puncutation characters from a string`
 * basic_tags `Remove all layout orientated HTML tags from text. Leaving only basic tags`
 
@@ -155,7 +155,7 @@ Filters can be any PHP function that returns a string. You don't need to create 
 Simply create your own class that extends the GUMP class.
 
 ```php
-	
+
 require("gump.class.php");
 
 class MyClass extends GUMP
@@ -164,12 +164,12 @@ class MyClass extends GUMP
 	{
 		...
 	}
-	
+
 	public function validate_myvalidator($field, $input, $param = NULL)
 	{
 		...
 	}
-	
+
 } // EOC
 
 $validator = new MyClass();
@@ -203,7 +203,6 @@ The output will depend on the input data.
 
 # TODO
 
-* Add composer compatibility
 * A currency validator
 * A country validator
 * Location co-ordinates validator

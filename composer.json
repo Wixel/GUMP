@@ -1,0 +1,35 @@
+{
+    "name": "wixel/gump",
+    "description": "A fast, extensible & stand-alone PHP input validation class that allows you to validate any data",
+    "authors": [
+        {
+            "name": "Colleen Emryss",
+            "homepage": "http://skitter.tv"
+        },
+        {
+            "name": "Mark Slingsby",
+            "homepage": "http://www.rsaweb.co.za"
+        },
+        {
+            "name": "Rob Crowe",
+            "homepage": "http://vivalacrowe.com"
+        },
+        {
+            "name": "Roy de Kleijn",
+            "homepage": "http://roydekleijn.com"
+        },
+        {
+            "name": "Christian Klisch",
+            "homepage": "http://www.christian-klisch.de/"
+        },
+        {
+            "name": "Inge Brattaas",
+            "homepage": "http://res.no/"
+        }
+    ],
+    "license": "MIT",
+    "homepage": "http://wixelhq.com/",
+    "autoload": {
+        "files": ["gump.class.php"]
+    }
+}
