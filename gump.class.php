@@ -386,7 +386,7 @@ class GUMP
 					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to contain a valid human name";
 					break;
 				case 'validate_contains':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field needs contain one of these values: ".implode(', ', $param);
+					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to contain one of these values: ".implode(', ', $param);
 					break;
 				case 'validate_street_address':
 					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a valid street address";
@@ -394,6 +394,12 @@ class GUMP
 				case 'validate_date':
 					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a valid date";
 					break;
+		                case 'validate_min_numeric':
+		                    	$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a numeric value, equal to, or higher than $param";
+		                    	break;
+		                case 'validate_max_numeric':
+		                	$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a numeric value, equal to, or lower than $param";
+		                    	break;
 			}
 		}		
 		
