@@ -1425,6 +1425,7 @@ class GUMP
         }
     }
     
+    
     /**
      * Determine if the provided numeric value is lower or equal to a specific value
      *
@@ -1440,7 +1441,7 @@ class GUMP
      */
     protected function validate_max_numeric($field, $input, $param = null)
     {
-        if (!isset($input[$field])) {
+        if (!isset($input[$field]) || empty($input[$field])) {
             return;
         }
 
@@ -1471,7 +1472,7 @@ class GUMP
      */
     protected function validate_min_numeric($field, $input, $param = null)
     {
-        if (!isset($input[$field])) {
+        if (!isset($input[$field]) || empty($input[$field])) {
             return;
         }
 
