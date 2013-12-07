@@ -1424,5 +1424,67 @@ class GUMP
             );
         }
     }
-	
+    
+    /**
+     * Determine if the provided numeric value is lower or equal to a specific value
+     *
+     * Usage: '<index>' => 'max_numeric,50'
+     *
+     * @access protected
+     *
+     * @param  string $field
+     * @param  array  $input
+     * @param null    $param
+     *
+     * @return mixed
+     */
+    protected function validate_max_numeric($field, $input, $param = null)
+    {
+        if (!isset($input[$field])) {
+            return;
+        }
+
+        if (is_numeric($input[$field]) && is_numeric($param) && ($input[$field] <= $param)) {
+            return;
+        }
+
+        return array(
+            'field' => $field,
+            'value' => $input[$field],
+            'rule'  => __FUNCTION__,
+            'param' => $param
+        );
+    }
+
+    /**
+     * Determine if the provided numeric value is higher or equal to a specific value
+     *
+     * Usage: '<index>' => 'min_numeric,1'
+     *
+     * @access protected
+     *
+     * @param  string $field
+     * @param  array  $input
+     * @param null    $param
+     *
+     * @return mixed
+     */
+    protected function validate_min_numeric($field, $input, $param = null)
+    {
+        if (!isset($input[$field])) {
+            return;
+        }
+
+        if (is_numeric($input[$field]) && is_numeric($param) && ($input[$field] >= $param)) {
+            return;
+        }
+
+        return array(
+            'field' => $field,
+            'value' => $input[$field],
+            'rule'  => __FUNCTION__,
+            'param' => $param
+        )
+    }
+    
 } // EOC
