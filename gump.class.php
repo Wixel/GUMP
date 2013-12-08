@@ -386,7 +386,7 @@ class GUMP
 					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to contain a valid human name";
 					break;
 				case 'validate_contains':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field needs contain one of these values: ".implode(', ', $param);
+					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to contain one of these values: ".implode(', ', $param);
 					break;
 				case 'validate_street_address':
 					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a valid street address";
@@ -394,6 +394,12 @@ class GUMP
 				case 'validate_date':
 					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a valid date";
 					break;
+		                case 'validate_min_numeric':
+		                    	$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a numeric value, equal to, or higher than $param";
+		                    	break;
+		                case 'validate_max_numeric':
+		                	$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a numeric value, equal to, or lower than $param";
+		                    	break;
 			}
 		}		
 		
@@ -1424,5 +1430,68 @@ class GUMP
             );
         }
     }
-	
+    
+    
+    /**
+     * Determine if the provided numeric value is lower or equal to a specific value
+     *
+     * Usage: '<index>' => 'max_numeric,50'
+     *
+     * @access protected
+     *
+     * @param  string $field
+     * @param  array  $input
+     * @param null    $param
+     *
+     * @return mixed
+     */
+    protected function validate_max_numeric($field, $input, $param = null)
+    {
+        if (!isset($input[$field]) || empty($input[$field])) {
+            return;
+        }
+
+        if (is_numeric($input[$field]) && is_numeric($param) && ($input[$field] <= $param)) {
+            return;
+        }
+
+        return array(
+            'field' => $field,
+            'value' => $input[$field],
+            'rule'  => __FUNCTION__,
+            'param' => $param
+        );
+    }
+
+    /**
+     * Determine if the provided numeric value is higher or equal to a specific value
+     *
+     * Usage: '<index>' => 'min_numeric,1'
+     *
+     * @access protected
+     *
+     * @param  string $field
+     * @param  array  $input
+     * @param null    $param
+     *
+     * @return mixed
+     */
+    protected function validate_min_numeric($field, $input, $param = null)
+    {
+        if (!isset($input[$field]) || empty($input[$field])) {
+            return;
+        }
+
+        if (is_numeric($input[$field]) && is_numeric($param) && ($input[$field] >= $param)) {
+            return;
+        }
+
+        return array(
+            'field' => $field,
+            'value' => $input[$field],
+            'rule'  => __FUNCTION__,
+            'param' => $param
+        )
+    }
+    
 } // EOC
