@@ -200,6 +200,8 @@ The output will depend on the input data.
 * Roy de Kleijn http://roydekleijn.com
 * Christian Klisch http://www.christian-klisch.de/
 * Inge Brattaas http://res.no/
+* Adam Curtis http://alc.im
+* Sean Hickey 
 
 # TODO
 
