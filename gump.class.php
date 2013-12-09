@@ -1491,7 +1491,7 @@ class GUMP
             'value' => $input[$field],
             'rule'  => __FUNCTION__,
             'param' => $param
-        )
+        );
     }
     
 } // EOC
