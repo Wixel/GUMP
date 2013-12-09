@@ -1244,11 +1244,11 @@ class GUMP
 		
 		if(function_exists('mb_strlen'))
 		{
-			$number_length = mb_strlen($input[$field]);
+			$number_length = mb_strlen($number);
 		}
 		else
 		{
-			$number_length = strlen($input[$field]);
+			$number_length = strlen($number);
 		}		
 	
 	  	$parity = $number_length % 2;
