@@ -702,7 +702,7 @@ class GUMP
 	 */
 	protected function validate_required($field, $input, $param = NULL)
 	{
-		if(isset($input[$field]) && trim($input[$field]) != '')
+		if(isset($input[$field]) && $this->trimScalar($input[$field]) != '')
 		{
 			return;
 		}
@@ -1492,6 +1492,20 @@ class GUMP
             'rule'  => __FUNCTION__,
             'param' => $param
         );
+    }
+    
+    /**
+     * Trims whitespace only when the value is a scalar
+     *
+     * @param mixed $value
+     * @return mixed
+     */
+    protected function trimScalar($value)
+    {
+        if (is_scalar($value)) {
+            $value = trim($value);
+        }
+        return $value;
     }
     
 } // EOC
