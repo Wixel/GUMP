@@ -317,6 +317,7 @@ class GUMP
                     $rule   = explode(',', $rule);
                     $method = 'validate_'.$rule[0];
                     $param  = $rule[1];
+                    $rule   = $rule[0];
                 }
                 else
                 {
