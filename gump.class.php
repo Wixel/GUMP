@@ -317,6 +317,7 @@ class GUMP
                     $rule   = explode(',', $rule);
                     $method = 'validate_'.$rule[0];
                     $param  = $rule[1];
+                    $rule   = $rule[0];
                 }
                 else
                 {
@@ -334,17 +335,19 @@ class GUMP
                 }
                 else if (isset(self::$validation_methods[$rule]))
                 {
-                    $result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
-
-                    if (!$result) // Validation Failed
-                    {
-                        $this->errors[] = array(
-                            'field' => $field,
-                            'value' => $value,
-                            'rule'	=> $method,
-                            'param' => $param
-                        );
-                    }
+                	if (isset($input[$field])) {
+	                    $result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
+	
+	                    if (!$result) // Validation Failed
+	                    {
+	                        $this->errors[] = array(
+	                            'field' => $field,
+	                            'value' => isset($input[$field]) ? $input[$field] : NULL,
+	                            'rule'  => $method,
+	                            'param' => $param
+	                        );
+	                    }
+                	}
                 }
                 else
                 {
