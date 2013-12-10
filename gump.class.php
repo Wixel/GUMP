@@ -341,8 +341,8 @@ class GUMP
                     {
                         $this->errors[] = array(
                             'field' => $field,
-                            'value' => $value,
-                            'rule'	=> $method,
+                            'value' => isset($input[$field]) ? $input[$field] : NULL,
+                            'rule'  => $method,
                             'param' => $param
                         );
                     }
