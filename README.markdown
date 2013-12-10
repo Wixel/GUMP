@@ -152,7 +152,29 @@ Filters can be any PHP function that returns a string. You don't need to create 
 
 #  Creating your own validators and filters
 
-Simply create your own class that extends the GUMP class.
+Adding custom validators and filters is made easy by using callback functions.
+
+```php
+require("gump.class.php");
+
+// Create a custom validation rule named "is_object".
+// The callback function receives three arguments:
+// The field to validate, the values being validated, and any parameters used in the validation rule.
+// It should return a boolean value indicating whether the value is valid.
+GUMP::add_validator("is_object", function($field, $input, $param = NULL) {
+    return is_object($input[$field]);
+});
+
+// Create a custom filter named "upper".
+// The callback function receives two arguments:
+// The value to filter, and any parameters used in the filter rule. It should returned the filtered value.
+GUMP::add_filter("upper", function($value, $params = NULL) {
+    return strtoupper($value);
+});
+
+```
+
+Alternately, you can simply create your own class that extends the GUMP class.
 
 ```php
 
@@ -160,7 +182,7 @@ require("gump.class.php");
 
 class MyClass extends GUMP
 {
-	public function filter_myfilter($value)
+	public function filter_myfilter($value, $param = NULL)
 	{
 		...
 	}
