@@ -246,3 +246,4 @@ The output will depend on the input data.
 * Add an 'is empty' validator check
 * Check that arrays have a positive count (if type is array)
 * A secure password validator
+* Custom regex validator
