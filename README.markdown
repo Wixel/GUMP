@@ -245,3 +245,4 @@ The output will depend on the input data.
 * Allow a validator that can check for existing files on the host machine
 * Add an 'is empty' validator check
 * Check that arrays have a positive count (if type is array)
+* A secure password validator
