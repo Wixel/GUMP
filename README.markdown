@@ -120,7 +120,7 @@ Available Validators
 * boolean `Checks for PHP accepted boolean values, returns TRUE for "1", "true", "on" and "yes"`
 * float `Checks for float values`
 * valid_url `Check for valid URL or subdomain`
-* url_exists `Check to see if the url exists and is accessible`
+* url_exists `Check to see if the url exists and is accessiblee`
 * valid_ip `Check for valid generic IP address`
 * valid_ipv4 `Check for valid IPv4 address`
 * valid_ipv6 `Check for valid IPv6 address`
@@ -147,7 +147,7 @@ Filters can be any PHP function that returns a string. You don't need to create 
 * noise_words `Remove noise words from string`
 * json_encode `Create a json representation of the input`
 * json_decode `Decode a json string`
-* rmpunctuation `Remove all known puncutation characters from a string`
+* rmpunctuation `Remove all known punctuation characters from a string`
 * basic_tags `Remove all layout orientated HTML tags from text. Leaving only basic tags`
 
 #  Creating your own validators and filters
@@ -223,7 +223,8 @@ The output will depend on the input data.
 * Christian Klisch http://www.christian-klisch.de/
 * Inge Brattaas http://res.no/
 * Adam Curtis http://alc.im
-* Sean Hickey 
+* Sean Hickey
+* Dennis Thompson http://atomicpages.net
 
 # TODO
 
