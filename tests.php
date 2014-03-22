@@ -1,4 +1,3 @@
-#!/usr/bin/php -q
 <?php
 
 error_reporting(-1);
@@ -25,8 +24,8 @@ $rules = array(
 	'valid_url'		=> 'valid_url',
 	'url_exists'	=> 'url_exists',
 	'valid_ip'		=> 'valid_ip',
-	'valid_ipv4'	=> 'valid_ipv4',	
-	'valid_ipv6'	=> 'valid_ipv6',		
+	'valid_ipv4'	=> 'valid_ipv4',
+	'valid_ipv6'	=> 'valid_ipv6',
 	'valid_name'    => 'valid_name',
 	'contains'		=> 'contains,free pro basic'
 );
@@ -47,10 +46,10 @@ $invalid_data = array(
 	'valid_url'		=> "\r\n\r\nhttp://add",
 	'url_exists'	=> "http://asdasdasd354.gov",
 	'valid_ip'		=> "google.com",
-	'valid_ipv4'    => "google.com",	
-	'valid_ipv6'    => "google.com",		
+	'valid_ipv4'    => "google.com",
+	'valid_ipv6'    => "google.com",
 	'valid_name' 	=> '*&((*S))(*09890uiadaiusyd)',
-	'contains'		=> 'premium'	
+	'contains'		=> 'premium'
 );
 
 $valid_data = array(
@@ -67,34 +66,39 @@ $valid_data = array(
 	'boolean'		=> FALSE,
 	'float'			=> 10.10,
 	'valid_url'		=> 'http://wixel.net',
-	'url_exists'	=> 'http://wixel.net',	
+	'url_exists'	=> 'http://wixel.net',
 	'valid_ip'		=> '69.163.138.62',
-	'valid_ipv4'    => "255.255.255.255",	
-	'valid_ipv6'    => "2001:0db8:85a3:08d3:1319:8a2e:0370:7334",	
+	'valid_ipv4'    => "255.255.255.255",
+	'valid_ipv6'    => "2001:0db8:85a3:08d3:1319:8a2e:0370:7334",
 	'valid_name' 	=> 'Sean Nieuwoudt',
 	'contains'		=> 'free'
 );
 
 echo "\nBEFORE SANITIZE:\n\n";
-
+print "<pre>";
 print_r($invalid_data);
+print "</pre>";
 
 echo "\nAFTER SANITIZE:\n\n";
-
+print "<pre>";
 print_r($validator->sanitize($invalid_data));
+print "</pre>";
 
 echo "\nTHESE ALL FAIL:\n\n";
-
+print "<pre>";
 $validator->validate($invalid_data, $rules);
+print "</pre>";
 
 // Print out the errors using the new get_readable_errors() method:
-
+print "<pre>";
 print_r($validator->get_readable_errors());
+print "</pre>";
 
-if($validator->validate($valid_data, $rules))
-{
-  echo "\nTHESE ALL SUCCEED:\n\n";
-  
-  print_r($valid_data);
+if($validator->validate($valid_data, $rules)){
+	echo "\nTHESE ALL SUCCEED:\n\n";
+	print "<pre>";
+	print_r($valid_data);
+	print "</pre>";
 }
+
 echo "\nDONE\n\n";

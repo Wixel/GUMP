@@ -3,9 +3,9 @@
 /**
  * GUMP - A fast, extensible PHP input validation class
  *
- * @author		Sean Nieuwoudt (http://twitter.com/SeanNieuwoudt)
- * @copyright	Copyright (c) 2011 Wixel.net
- * @link		http://github.com/Wixel/GUMP
+ * @author      Sean Nieuwoudt (http://twitter.com/SeanNieuwoudt)
+ * @copyright   Copyright (c) 2011 Wixel.net
+ * @link        http://github.com/Wixel/GUMP
  * @version     1.0
  */
 
@@ -28,16 +28,16 @@ class GUMP
 
     // ** ------------------------- Validation Data ------------------------------- ** //
 
-    public static $basic_tags	  = "<br><p><a><strong><b><i><em><img><blockquote><code><dd><dl><hr><h1><h2><h3><h4><h5><h6><label><ul><li><span><sub><sup>";
+    public static $basic_tags     = "<br><p><a><strong><b><i><em><img><blockquote><code><dd><dl><hr><h1><h2><h3><h4><h5><h6><label><ul><li><span><sub><sup>";
 
     public static $en_noise_words = "about,after,all,also,an,and,another,any,are,as,at,be,because,been,before,
-				  				  	 being,between,both,but,by,came,can,come,could,did,do,each,for,from,get,
-				  				  	 got,has,had,he,have,her,here,him,himself,his,how,if,in,into,is,it,its,it's,like,
-			      				  	 make,many,me,might,more,most,much,must,my,never,now,of,on,only,or,other,
-				  				  	 our,out,over,said,same,see,should,since,some,still,such,take,than,that,
-				  				  	 the,their,them,then,there,these,they,this,those,through,to,too,under,up,
-				  				  	 very,was,way,we,well,were,what,where,which,while,who,with,would,you,your,a,
-				  				  	 b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,$,1,2,3,4,5,6,7,8,9,0,_";
+                                     being,between,both,but,by,came,can,come,could,did,do,each,for,from,get,
+                                     got,has,had,he,have,her,here,him,himself,his,how,if,in,into,is,it,its,it's,like,
+                                     make,many,me,might,more,most,much,must,my,never,now,of,on,only,or,other,
+                                     our,out,over,said,same,see,should,since,some,still,such,take,than,that,
+                                     the,their,them,then,there,these,they,this,those,through,to,too,under,up,
+                                     very,was,way,we,well,were,what,where,which,while,who,with,would,you,your,a,
+                                     b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,$,1,2,3,4,5,6,7,8,9,0,_";
 
     // ** ------------------------- Validation Helpers ---------------------------- ** //
 
@@ -150,11 +150,11 @@ class GUMP
      */
     public function validation_rules(array $rules = array())
     {
-        if(!empty($rules)) {
-            $this->validation_rules = $rules;
-        } else {
+        if(empty($rules)) {
             return $this->validation_rules;
         }
+
+        $this->validation_rules = $rules;
     }
 
     /**
@@ -165,11 +165,11 @@ class GUMP
      */
     public function filter_rules(array $rules = array())
     {
-        if(!empty($rules)) {
-            $this->filter_rules = $rules;
-        } else {
+        if(empty($rules)) {
             return $this->filter_rules;
         }
+
+        $this->filter_rules = $rules;
     }
 
     /**
@@ -193,9 +193,9 @@ class GUMP
 
         if($validated !== true) {
             return false;
-        } else {
-            return $data;
         }
+
+        return $data;
     }
 
     /**
@@ -302,7 +302,7 @@ class GUMP
         {
             #if(!array_key_exists($field, $input))
             #{
-            #	continue;
+            #   continue;
             #}
 
             $rules = explode('|', $rules);
@@ -335,19 +335,19 @@ class GUMP
                 }
                 else if (isset(self::$validation_methods[$rule]))
                 {
-                	if (isset($input[$field])) {
-	                    $result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
-	
-	                    if (!$result) // Validation Failed
-	                    {
-	                        $this->errors[] = array(
-	                            'field' => $field,
-	                            'value' => $input[$field],
-	                            'rule'  => $method,
-	                            'param' => $param
-	                        );
-	                    }
-                	}
+                    if (isset($input[$field])) {
+                        $result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
+
+                        if (!$result) // Validation Failed
+                        {
+                            $this->errors[] = array(
+                                'field' => $field,
+                                'value' => $input[$field],
+                                'rule'  => $method,
+                                'param' => $param
+                            );
+                        }
+                    }
                 }
                 else
                 {
@@ -747,14 +747,14 @@ class GUMP
 
         if(in_array($value, $param)) { // valid, return nothing
             return;
-        } else {
-            return array(
-                'field' => $field,
-                'value' => $value,
-                'rule'	=> __FUNCTION__,
-                'param' => $param
-            );
         }
+
+        return array(
+            'field' => $field,
+            'value' => $value,
+            'rule'  => __FUNCTION__,
+            'param' => $param
+        );
     }
 
     /**
@@ -769,19 +769,17 @@ class GUMP
      */
     protected function validate_required($field, $input, $param = NULL)
     {
-		if(isset($input[$field]) && !empty($input[$field]))
-		{
-			return;
-		}
-		else
-		{
-			return array(
-			'field' => $field,
-			'value' => NULL,
-			'rule'  => __FUNCTION__,
-			'param' => $param
-			);
-		}
+        if(isset($input[$field]) && !empty($input[$field]))
+        {
+            return;
+        }
+
+        return array(
+        'field' => $field,
+        'value' => NULL,
+        'rule'  => __FUNCTION__,
+        'param' => $param
+        );
     }
 
     /**
@@ -806,7 +804,7 @@ class GUMP
             return array(
                 'field' => $field,
                 'value' => $input[$field],
-                'rule'	=> __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param
             );
         }
@@ -847,7 +845,7 @@ class GUMP
         return array(
             'field' => $field,
             'value' => $input[$field],
-            'rule'	=> __FUNCTION__,
+            'rule'  => __FUNCTION__,
             'param' => $param
         );
     }
@@ -887,7 +885,7 @@ class GUMP
         return array(
             'field' => $field,
             'value' => $input[$field],
-            'rule'	=> __FUNCTION__,
+            'rule'  => __FUNCTION__,
             'param' => $param
         );
     }
@@ -927,7 +925,7 @@ class GUMP
         return array(
             'field' => $field,
             'value' => $input[$field],
-            'rule'	=> __FUNCTION__,
+            'rule'  => __FUNCTION__,
             'param' => $param
         );
     }
@@ -954,7 +952,7 @@ class GUMP
             return array(
                 'field' => $field,
                 'value' => $input[$field],
-                'rule'	=> __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param
             );
         }
@@ -982,7 +980,7 @@ class GUMP
             return array(
                 'field' => $field,
                 'value' => $input[$field],
-                'rule'	=> __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param
             );
         }
@@ -1010,7 +1008,7 @@ class GUMP
             return array(
                 'field' => $field,
                 'value' => $input[$field],
-                'rule'	=> __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param
             );
         }
@@ -1038,7 +1036,7 @@ class GUMP
             return array(
                 'field' => $field,
                 'value' => $input[$field],
-                'rule'	=> __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param
             );
         }
@@ -1066,7 +1064,7 @@ class GUMP
             return array(
                 'field' => $field,
                 'value' => $input[$field],
-                'rule'	=> __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param
             );
         }
@@ -1096,7 +1094,7 @@ class GUMP
             return array(
                 'field' => $field,
                 'value' => $input[$field],
-                'rule'	=> __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param
             );
         }
@@ -1124,7 +1122,7 @@ class GUMP
             return array(
                 'field' => $field,
                 'value' => $input[$field],
-                'rule'	=> __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param
             );
         }
@@ -1152,7 +1150,7 @@ class GUMP
             return array(
                 'field' => $field,
                 'value' => $input[$field],
-                'rule'	=> __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param
             );
         }
@@ -1186,7 +1184,7 @@ class GUMP
                 return array(
                     'field' => $field,
                     'value' => $input[$field],
-                    'rule'	=> __FUNCTION__,
+                    'rule'  => __FUNCTION__,
                     'param' => $param
                 );
             }
@@ -1198,7 +1196,7 @@ class GUMP
                 return array(
                     'field' => $field,
                     'value' => $input[$field],
-                    'rule'	=> __FUNCTION__,
+                    'rule'  => __FUNCTION__,
                     'param' => $param
                 );
             }
@@ -1227,7 +1225,7 @@ class GUMP
             return array(
                 'field' => $field,
                 'value' => $input[$field],
-                'rule'	=> __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param
             );
         }
@@ -1255,7 +1253,7 @@ class GUMP
             return array(
                 'field' => $field,
                 'value' => $input[$field],
-                'rule'	=> __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param
             );
         }
@@ -1283,7 +1281,7 @@ class GUMP
             return array(
                 'field' => $field,
                 'value' => $input[$field],
-                'rule'	=> __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param
             );
         }
@@ -1343,15 +1341,13 @@ class GUMP
         {
             return; // Valid
         }
-        else
-        {
-            return array(
-                'field' => $field,
-                'value' => $input[$field],
-                'rule'	=> __FUNCTION__,
-                'param' => $param
-            );
-        }
+
+        return array(
+            'field' => $field,
+            'value' => $input[$field],
+            'rule'  => __FUNCTION__,
+            'param' => $param
+        );
     }
 
     /**
@@ -1411,7 +1407,7 @@ class GUMP
             return array(
                 'field' => $field,
                 'value' => $input[$field],
-                'rule'	=> __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param
             );
         }
@@ -1446,7 +1442,7 @@ class GUMP
             return array(
                 'field' => $field,
                 'value' => $input[$field],
-                'rule'	=> __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param
             );
         }
@@ -1459,7 +1455,7 @@ class GUMP
             return array(
                 'field' => $field,
                 'value' => $input[$field],
-                'rule'	=> __FUNCTION__,
+                'rule'  => __FUNCTION__,
                 'param' => $param
             );
         }
@@ -1558,7 +1554,7 @@ class GUMP
             'param' => $param
         );
     }
-    
+
     /**
      * Trims whitespace only when the value is a scalar
      *
@@ -1570,6 +1566,7 @@ class GUMP
         if (is_scalar($value)) {
             $value = trim($value);
         }
+
         return $value;
     }
 
