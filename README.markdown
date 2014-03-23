@@ -120,7 +120,7 @@ Available Validators
 * boolean `Checks for PHP accepted boolean values, returns TRUE for "1", "true", "on" and "yes"`
 * float `Checks for float values`
 * valid_url `Check for valid URL or subdomain`
-* url_exists `Check to see if the url exists and is accessiblee`
+* url_exists `Check to see if the url exists and is accessible`
 * valid_ip `Check for valid generic IP address`
 * valid_ipv4 `Check for valid IPv4 address`
 * valid_ipv6 `Check for valid IPv6 address`

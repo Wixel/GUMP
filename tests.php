@@ -75,30 +75,20 @@ $valid_data = array(
 );
 
 echo "\nBEFORE SANITIZE:\n\n";
-print "<pre>";
 print_r($invalid_data);
-print "</pre>";
 
 echo "\nAFTER SANITIZE:\n\n";
-print "<pre>";
 print_r($validator->sanitize($invalid_data));
-print "</pre>";
 
 echo "\nTHESE ALL FAIL:\n\n";
-print "<pre>";
 $validator->validate($invalid_data, $rules);
-print "</pre>";
 
 // Print out the errors using the new get_readable_errors() method:
-print "<pre>";
 print_r($validator->get_readable_errors());
-print "</pre>";
 
-if($validator->validate($valid_data, $rules)){
+if($validator->validate($valid_data, $rules)) {
 	echo "\nTHESE ALL SUCCEED:\n\n";
-	print "<pre>";
 	print_r($valid_data);
-	print "</pre>";
 }
 
 echo "\nDONE\n\n";
