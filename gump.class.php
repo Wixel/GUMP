@@ -774,7 +774,7 @@ class GUMP
 	 */
 	protected function validate_required($field, $input, $param = NULL)
 	{
-		if(isset($input[$field]) && !empty($input[$field]))
+    if(isset($input[$field]) && ($input[$field] === false || $input[$field] === 0 || $input[$field] === 0.0 || $input[$field] === "0" || !empty($input[$field])))
 		{
 			return;
 		}
