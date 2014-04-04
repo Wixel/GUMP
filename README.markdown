@@ -54,7 +54,7 @@ $gump->validation_rules(array(
 	'password'    => 'required|max_len,100|min_len,6',
 	'email'       => 'required|valid_email',
 	'gender'      => 'required|exact_len,1|contains,m f',
-	'credit_card' => 'required|trim|valid_cc'
+	'credit_card' => 'required|valid_cc'
 ));
 
 $gump->filter_rules(array(
