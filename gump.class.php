@@ -735,6 +735,11 @@ class GUMP
 	 */
 	protected function validate_contains($field, $input, $param = NULL)
 	{
+		if(!isset($input[$field]))
+		{
+			return;
+		}
+
 		$param = trim(strtolower($param));
 
 		$value = trim(strtolower($input[$field]));
