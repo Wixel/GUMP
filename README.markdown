@@ -1,6 +1,6 @@
 # Getting started
 
-GUMP is a standalone PHP input validation and filtering class.
+GUMP is a standalone PHP data validation and filtering class that makes form (or any other data) validation easy and painless without the reliance on a framework.
 
 #### There are 2 ways to install GUMP
 
@@ -42,7 +42,7 @@ Then open your terminal in your project directory and run:
 `composer install`
 
 
-Methods available:
+#### Available Methods
 
 ```php
 // Shorthand validation
