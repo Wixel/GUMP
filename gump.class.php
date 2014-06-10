@@ -755,6 +755,11 @@ class GUMP
 	 */
 	protected function validate_contains($field, $input, $param = NULL)
 	{
+		if(!isset($input[$field]))
+		{
+			return;
+		}
+
 		$param = trim(strtolower($param));
 
 		$value = trim(strtolower($input[$field]));
@@ -789,7 +794,7 @@ class GUMP
 	 */
 	protected function validate_required($field, $input, $param = NULL)
 	{
-		if(isset($input[$field]) && !empty($input[$field]))
+    if(isset($input[$field]) && ($input[$field] === false || $input[$field] === 0 || $input[$field] === 0.0 || $input[$field] === "0" || !empty($input[$field])))
 		{
 			return;
 		}
