@@ -1192,14 +1192,16 @@ class GUMP
 		{
 			return;
 		}
-
-		$url = str_replace(
-			array('http://', 'https://', 'ftp://'), '', strtolower($input[$field])
-		);
+		
+		$url = parse_url(strtolower($input[$field]));
+		
+		if(isset($url['host'])) {
+			$url = $url['host'];
+		}
 
 		if(function_exists('checkdnsrr'))
 		{
-			if(!checkdnsrr($url))
+			if(checkdnsrr($url) === false)
 			{
 				return array(
 					'field' => $field,
