@@ -308,52 +308,55 @@ class GUMP
 			#}
 
 			$rules = explode('|', $rules);
-
-			foreach($rules as $rule)
-			{
-				$method = NULL;
-				$param  = NULL;
-
-				if(strstr($rule, ',') !== FALSE) // has params
+			
+	        if(in_array("required", $rules) || (isset($input[$field]) && trim($input[$field]) != ''))
+	        {			
+				foreach($rules as $rule)
 				{
-					$rule   = explode(',', $rule);
-					$method = 'validate_'.$rule[0];
-					$param  = $rule[1];
-					$rule   = $rule[0];
-				}
-				else
-				{
-					$method = 'validate_'.$rule;
-				}
+					$method = NULL;
+					$param  = NULL;
 
-				if(is_callable(array($this, $method)))
-				{
-					$result = $this->$method($field, $input, $param);
-
-					if(is_array($result)) // Validation Failed
+					if(strstr($rule, ',') !== FALSE) // has params
 					{
-						$this->errors[] = $result;
+						$rule   = explode(',', $rule);
+						$method = 'validate_'.$rule[0];
+						$param  = $rule[1];
+						$rule   = $rule[0];
 					}
-				}
-				else if (isset(self::$validation_methods[$rule]))
-				{
-					if (isset($input[$field])) {
-						$result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
+					else
+					{
+						$method = 'validate_'.$rule;
+					}
 
-						if (!$result) // Validation Failed
+					if(is_callable(array($this, $method)))
+					{
+						$result = $this->$method($field, $input, $param);
+
+						if(is_array($result)) // Validation Failed
 						{
-							$this->errors[] = array(
-								'field' => $field,
-								'value' => $input[$field],
-								'rule'  => $method,
-								'param' => $param
-							);
+							$this->errors[] = $result;
 						}
 					}
-				}
-				else
-				{
-					throw new Exception("Validator method '$method' does not exist.");
+					else if (isset(self::$validation_methods[$rule]))
+					{
+						if (isset($input[$field])) {
+							$result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
+
+							if (!$result) // Validation Failed
+							{
+								$this->errors[] = array(
+									'field' => $field,
+									'value' => $input[$field],
+									'rule'  => $method,
+									'param' => $param
+								);
+							}
+						}
+					}
+					else
+					{
+						throw new Exception("Validator method '$method' does not exist.");
+					}
 				}
 			}
 		}
