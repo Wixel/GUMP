@@ -2,6 +2,10 @@
 
 GUMP is a standalone PHP input validation and filtering class.
 
+#### There are 2 ways to install GUMP
+
+###### Install Manually 
+
 1. Download GUMP
 2. Unzip it and copy the directory into your PHP project directory.
 
@@ -22,9 +26,7 @@ if($is_valid === true) {
 }
 ```
 
---- Or ---
-
-Install with composer:
+###### Install with composer
 
 Add the following to your composer.json file:
 
