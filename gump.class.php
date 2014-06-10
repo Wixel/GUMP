@@ -4,7 +4,7 @@
  * GUMP - A fast, extensible PHP input validation class
  *
  * @author      Sean Nieuwoudt (http://twitter.com/SeanNieuwoudt)
- * @copyright   Copyright (c) 2011 Wixel.net
+ * @copyright   Copyright (c) 2014 Wixelhq.com
  * @link        http://github.com/Wixel/GUMP
  * @version     1.0
  */
@@ -113,6 +113,7 @@ class GUMP
 	public static function add_validator($rule, $callback)
 	{
 		$method = 'validate_'.$rule;
+		
 		if(method_exists(__CLASS__, $method) || isset(self::$validation_methods[$rule])) {
 			throw new Exception("Validator rule '$rule' already exists.");
 		}
@@ -133,6 +134,7 @@ class GUMP
 	public static function add_filter($rule, $callback)
 	{
 		$method = 'filter_'.$rule;
+		
 		if(method_exists(__CLASS__, $method) || isset(self::$filter_methods[$rule])) {
 			throw new Exception("Filter rule '$rule' already exists.");
 		}
@@ -463,6 +465,8 @@ class GUMP
 				case 'validate_max_numeric':
 					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a numeric value, equal to, or lower than $param";
 					break;
+				default:
+					$resp[] = "The <span class=\"$field_class\">$field</span> field is invalid";				
 			}
 		}
 

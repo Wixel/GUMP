@@ -22,21 +22,56 @@ if($is_valid === true) {
 }
 ```
 
+--- Or ---
+
+Install with composer:
+
+Add the following to your composer.json file:
+
+```json
+{
+    "require": {
+        "wixel/gump": "dev-master"
+    }
+}
+```
+Then open your terminal in your project directory and run:
+
+`composer install`
+
+
 Methods available:
 
 ```php
-is_valid(array $data, array $rules) // Shorthand validation
-validation_rules(array $rules); // Get or set the validation rules
-filter_rules(array $rules); // Get or set the filtering rules
-run(array $data); // Runs the filter and validation routines
-xss_clean(array $data); // Strips and encodes unwanted characters
-sanitize(array $input, $fields = NULL); // Sanitizes data and converts strings to UTF-8 (if available)
-validate(array $input, array $ruleset); // Validates input data according to the provided ruleset (see example)
-filter(array $input, array $filterset); // Filters input data according to the provided filterset (see example)
-get_readable_errors($convert_to_string = false); // Returns human readable error text in an array or string
+// Shorthand validation
+is_valid(array $data, array $rules) 
+
+// Get or set the validation rules
+validation_rules(array $rules); 
+
+// Get or set the filtering rules
+filter_rules(array $rules); 
+
+// Runs the filter and validation routines
+run(array $data); 
+
+// Strips and encodes unwanted characters
+xss_clean(array $data); 
+
+// Sanitizes data and converts strings to UTF-8 (if available)
+sanitize(array $input, $fields = NULL); 
+
+// Validates input data according to the provided ruleset (see example)
+validate(array $input, array $ruleset); 
+
+// Filters input data according to the provided filterset (see example)
+filter(array $input, array $filterset); 
+
+// Returns human readable error text in an array or string
+get_readable_errors($convert_to_string = false); 
 ```
 
-#  Complete Working Example (Long format)
+#  Working Example (Long format)
 
 The following example is part of a registration form, the flow should be pretty standard
 
@@ -76,7 +111,7 @@ if($validated_data === false) {
 
 Match data-keys against rules-keys
 -------------
-We can check if there is a rules specified for every data-key, by adding an extra parameter to the run method.
+We can check if there is a rule specified for every data-key, by adding an extra parameter to the run method.
 
 ```
 $gump->run($_POST, true);
@@ -92,6 +127,7 @@ Return Values
 `run()` returns one of two types:
 
 *ARRAY* containing the successfully validated and filtered data when the validation is successful
+
 *FALSE* when the validation has failed
 
 `validate()` returns one of two types:
@@ -157,10 +193,12 @@ Adding custom validators and filters is made easy by using callback functions.
 ```php
 require("gump.class.php");
 
-// Create a custom validation rule named "is_object".
-// The callback function receives three arguments:
-// The field to validate, the values being validated, and any parameters used in the validation rule.
-// It should return a boolean value indicating whether the value is valid.
+/* 
+   Create a custom validation rule named "is_object".   
+   The callback receives 3 arguments:
+   The field to validate, the values being validated, and any parameters used in the validation rule.
+   It should return a boolean value indicating whether the value is valid.
+*/
 GUMP::add_validator("is_object", function($field, $input, $param = NULL) {
     return is_object($input[$field]);
 });
@@ -200,10 +238,12 @@ $validated = $validator->validate($_POST, $rules);
 
 ```
 
-Remember to create a public methods with the correct parameter types and counts.
+Please see `examples/custom_validator.php` for further information.
 
-For filter methods, prepend the method name with "filter_".
-For validator methods, prepend the method name with "validate_".
+Remember to create a public methods with the correct parameter types and parameter counts.
+
+* For filter methods, prepend the method name with "filter_".
+* For validator methods, prepend the method name with "validate_".
 
 Running the examples:
 ------------------
