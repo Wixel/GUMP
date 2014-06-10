@@ -28,7 +28,7 @@ $validated = $validator->validate(
 );
 
 if($validated === true) {
-	echo "Validated passed!";
+	echo "Validation passed!";
 } else {
 	echo $validator->get_readable_errors(true);
 }
@@ -38,7 +38,7 @@ if($validated === true) {
 $is_valid = GUMP::is_valid($input_data, $rules);
 
 if($is_valid === true) {
-	echo "Validated passed!";
+	echo "Validation passed!";
 } else {
     print_r($is_valid);
 }

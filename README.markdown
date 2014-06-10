@@ -71,7 +71,7 @@ filter(array $input, array $filterset);
 get_readable_errors($convert_to_string = false); 
 ```
 
-#  Working Example (Long format)
+# Example (Long format)
 
 The following example is part of a registration form, the flow should be pretty standard
 
@@ -109,6 +109,27 @@ if($validated_data === false) {
 }
 ```
 
+# Example (Short format)
+
+The short format is an alternative way to run the validation.
+
+```php
+$data = array(
+	'street' => '6 Avondans Road'
+);
+
+$validated = GUMP::is_valid($data, array(
+	'street' => 'required|street_address'
+));
+
+if($validated === true) {
+	echo "Valid Street Address!";
+} else {
+	print_r($validated);
+}
+```
+
+
 Match data-keys against rules-keys
 -------------
 We can check if there is a rule specified for every data-key, by adding an extra parameter to the run method.
@@ -128,15 +149,15 @@ Return Values
 
 *ARRAY* containing the successfully validated and filtered data when the validation is successful
 
-*FALSE* when the validation has failed
+*BOOLEAN* False when the validation has failed
 
 `validate()` returns one of two types:
 
-*AN ARRAY* containing key names and validator names when data does not pass the validation.
+*ARRAY* containing key names and validator names when data does not pass the validation.
 
 You can use this array along with your language helpers to determine what error message to show.
 
-*A BOOLEAN* value of TRUE if the validation was successful.
+*BOOLEAN* value of TRUE if the validation was successful.
 
 `filter()` returns the exact array structure that was parsed as the `$input` parameter, the only difference would be the filtered data.
 
@@ -165,6 +186,9 @@ Available Validators
 * contains,n `Verify that a value is contained within the pre-defined value set`
 * street_address `Checks that the provided string is a likely street address. 1 number, 1 or more space, 1 or more letters`
 * iban `Check for a valid IBAN`
+* min_numeric `Determine if the provided numeric value is higher or equal to a specific value`
+* max_numeric `Determine if the provided numeric value is lower or equal to a specific value`
+* date `Determine if the provided input is a valid date (ISO 8601)`
 
 Available Filters
 -----------------
@@ -185,6 +209,7 @@ Filters can be any PHP function that returns a string. You don't need to create 
 * json_decode `Decode a json string`
 * rmpunctuation `Remove all known punctuation characters from a string`
 * basic_tags `Remove all layout orientated HTML tags from text. Leaving only basic tags`
+* whole_number `Ensure that the provided numeric value is represented as a whole number`
 
 #  Creating your own validators and filters
 

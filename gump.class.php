@@ -724,6 +724,19 @@ class GUMP
 	{
 		return strip_tags($value, self::$basic_tags);
 	}
+	
+	/**
+	 * Convert the provided numeric value to a whole number
+	 *
+	 * @access protected
+	 * @param  string $value
+	 * @param  array $params
+	 * @return string
+	 */
+	protected function filter_whole_number($value, $params = NULL)
+	{
+		return intval($value);
+	}	
 
 	// ** ------------------------- Validators ------------------------------------ ** //
 
@@ -1509,10 +1522,9 @@ class GUMP
 	 * Usage: '<index>' => 'max_numeric,50'
 	 *
 	 * @access protected
-	 *
-	 * @param  string $field
-	 * @param  array  $input
-	 * @param null    $param
+	 * @param string $field
+	 * @param array  $input
+	 * @param null   $param
 	 *
 	 * @return mixed
 	 */
@@ -1540,10 +1552,9 @@ class GUMP
 	 * Usage: '<index>' => 'min_numeric,1'
 	 *
 	 * @access protected
-	 *
-	 * @param  string $field
-	 * @param  array  $input
-	 * @param null    $param
+	 * @param string $field
+	 * @param array  $input
+	 * @param null   $param
 	 *
 	 * @return mixed
 	 */
