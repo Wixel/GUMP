@@ -3,6 +3,10 @@
     "description": "A fast, extensible & stand-alone PHP input validation class that allows you to validate any data",
     "authors": [
         {
+            "name": "Sean Nieuwoudt",
+            "homepage": "http://wixelhq.com"
+        },    
+        {
             "name": "Colleen Emryss",
             "homepage": "http://skitter.tv"
         },
