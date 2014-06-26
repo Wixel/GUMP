@@ -71,6 +71,9 @@ filter(array $input, array $filterset);
 
 // Returns human readable error text in an array or string
 get_readable_errors($convert_to_string = false); 
+
+// Override field names with readable ones for errors
+set_field_name($field, $readable_name);
 ```
 
 # Example (Long format)
@@ -273,6 +276,30 @@ Remember to create a public methods with the correct parameter types and paramet
 
 * For filter methods, prepend the method name with "filter_".
 * For validator methods, prepend the method name with "validate_".
+
+# Set Custom Field Names
+
+You can easily override your form field names for improved readability in errors using the `GUMP::set_field_name($field, $readable_name)` method as follows:
+
+```php
+$data = array(
+	'str' => null
+);
+
+$rules = array(
+	'str' => 'required'
+);
+
+GUMP::set_field_name("str", "Street");
+
+$validated = GUMP::is_valid($data, $rules);
+
+if($validated === true) {
+	echo "Valid Street Address\n";
+} else {
+	print_r($validated);
+}
+```
 
 Running the examples:
 ------------------

@@ -8,12 +8,16 @@ ini_set('display_errors', 1);
 require "../gump.class.php";
 
 $data = array(
-	'street' => '6 Avondans Road'
+	'str' => null
 );
 
-$validated = GUMP::is_valid($data, array(
-	'street' => 'required|street_address'
-));
+$rules = array(
+	'str' => 'required'
+);
+
+GUMP::set_field_name("str", "Street");
+
+$validated = GUMP::is_valid($data, $rules);
 
 if($validated === true) {
 	echo "Valid Street Address\n";

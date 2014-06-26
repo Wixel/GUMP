@@ -19,6 +19,9 @@ class GUMP
 
 	// Instance attribute containing errors from last run
 	protected $errors = array();
+	
+	// Contain readable field names that have been set manually
+	protected static $fields = array();	
 
 	// Custom validation methods
 	protected static $validation_methods = array();
@@ -363,6 +366,18 @@ class GUMP
 
 		return (count($this->errors) > 0)? $this->errors : TRUE;
 	}
+	
+	/**
+	 * Set a readable name for a specified field names
+	 *
+	 * @param string $field_class
+	 * @param string $readable_name
+	 * @return void
+	 */	
+	public static function set_field_name($field, $readable_name)
+	{
+		self::$fields[$field] = $readable_name;
+	}
 
 	/**
 	 * Process the validation errors and return human readable error messages
@@ -385,6 +400,11 @@ class GUMP
 
 			$field = ucwords(str_replace(array('_','-'), chr(32), $e['field']));
 			$param = $e['param'];
+			
+			// Let's fetch explicit field names if they exist
+			if(array_key_exists($e['field'], self::$fields)) {
+				$field = self::$fields[$e['field']];
+			}
 
 			switch($e['rule']) {
 				case 'mismatch' :
