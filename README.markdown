@@ -98,11 +98,11 @@ $gump->validation_rules(array(
 ));
 
 $gump->filter_rules(array(
-	'username' 	  => 'trim|sanitize_string',
-	'password'	  => 'trim',
-	'email'    	  => 'trim|sanitize_email',
-	'gender'   	  => 'trim',
-	'bio'		  => 'noise_words'
+	'username' => 'trim|sanitize_string',
+	'password' => 'trim',
+	'email'    => 'trim|sanitize_email',
+	'gender'   => 'trim',
+	'bio'	   => 'noise_words'
 ));
 
 $validated_data = $gump->run($_POST);
