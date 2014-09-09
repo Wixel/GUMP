@@ -239,7 +239,9 @@ class GUMP
 		{
 			$fields = array_keys($input);
 		}
-
+		
+		$return = array();
+		
 		foreach($fields as $field)
 		{
 			if(!isset($input[$field]))
@@ -274,11 +276,11 @@ class GUMP
 					$value = filter_var($value, FILTER_SANITIZE_STRING);
 				}
 
-				$input[$field] = $value;
+				$return[$field] = $value;
 			}
 		}
 
-		return $input;
+		return $return;
 	}
 
 	/**
