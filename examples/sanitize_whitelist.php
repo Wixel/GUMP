@@ -7,8 +7,8 @@ $validator = new GUMP();
 
 $_POST = array(
 	'first_name' 	=> 'Joe',
-	'last_name'		=> 'Black',
-	'nickname'		=> 'blackjoe', // unexpected field
+	'last_name'	=> 'Black',
+	'nickname'	=> 'blackjoe', // unexpected field
 );
 
 $rules = array(
