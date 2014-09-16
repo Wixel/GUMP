@@ -60,8 +60,8 @@ run(array $data);
 // Strips and encodes unwanted characters
 xss_clean(array $data); 
 
-// Sanitizes data and converts strings to UTF-8 (if available)
-sanitize(array $input, $fields = NULL); 
+// Sanitizes data and converts strings to UTF-8 (if available), optionally according to the provided field whitelist
+sanitize(array $input, $whitelist = NULL); 
 
 // Validates input data according to the provided ruleset (see example)
 validate(array $input, array $ruleset); 
