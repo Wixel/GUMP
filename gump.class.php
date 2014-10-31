@@ -490,6 +490,9 @@ class GUMP
 				case 'validate_max_numeric':
 					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a numeric value, equal to, or lower than $param";
 					break;
+				case 'validate_starts' :
+					$resp[] = "The <span class=\"$field_class\">$field</span> field is required to start with ".$param;
+					break;
 				default:
 					$resp[] = "The <span class=\"$field_class\">$field</span> field is invalid";				
 			}
@@ -1606,6 +1609,34 @@ class GUMP
 			'rule'  => __FUNCTION__,
 			'param' => $param
 		);
+	}
+
+	/**
+	 * Determine if the provided value starts with param
+	 * 
+	 * Usage: '<index>' => 'starts,Z'
+	 *	
+	 * @access protected
+	 * @param  string $field
+	 * @param  array $input
+	 * @return mixed
+	 */	
+	protected function validate_starts($field, $input, $param = NULL)
+	{	
+		if(!isset($input[$field]) || empty($input[$field]))
+		{
+			return;
+		}
+		
+		if(strpos($input[$field], $param) !== 0)
+		{
+			return array(
+				'field' => $field,
+				'value' => $input[$field],
+				'rule'	=> __FUNCTION__,
+				'param' => $param				
+			);
+		}
 	}
 
 	/**
