@@ -347,14 +347,11 @@ class GUMP
 						if (isset($input[$field])) {
 							$result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
 
-							if (!$result) // Validation Failed
+							$result = $this->$method($field, $input, $param);
+	
+							if(is_array($result)) // Validation Failed
 							{
-								$this->errors[] = array(
-									'field' => $field,
-									'value' => $input[$field],
-									'rule'  => $method,
-									'param' => $param
-								);
+								$this->errors[] = $result;
 							}
 						}
 					}
