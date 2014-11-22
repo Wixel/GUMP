@@ -1174,6 +1174,34 @@ class GUMP
 			);
 		}
 	}
+	
+	/**
+	 * Determine if the provided value contains only alpha numeric characters with spaces
+	 *
+	 * Usage: '<index>' => 'alpha_space'
+	 *
+	 * @access protected
+	 * @param  string $field
+	 * @param  array $input
+	 * @return mixed
+	 */
+	protected function validate_alpha_space($field, $input, $param = NULL)
+	{
+		if(!isset($input[$field]) || empty($input[$field]))
+		{
+			return;
+		}
+
+		if(!preg_match("/^([a-z0-9ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ\s])+$/i", $input[$field]) !== FALSE)
+		{
+			return array(
+				'field' => $field,
+				'value' => $input[$field],
+				'rule'  => __FUNCTION__,
+				'param' => $param
+			);
+		}
+	}	
 
 	/**
 	 * Determine if the provided value is a valid number or numeric string

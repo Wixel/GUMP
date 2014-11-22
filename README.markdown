@@ -181,6 +181,7 @@ Available Validators
 * alpha `Ensure only alpha characters are present in the key value (a-z, A-Z)`
 * alpha_numeric `Ensure only alpha-numeric characters are present in the key value (a-z, A-Z, 0-9)`
 * alpha_dash `Ensure only alpha-numeric characters + dashes and underscores are present in the key value (a-z, A-Z, 0-9, _-)`
+* alpha_space `Ensure only alpha-numeric characters + spaces are present in the key value (a-z, A-Z, 0-9, \s)`
 * numeric `Ensure only numeric key values`
 * integer `Ensure only integer key values`
 * boolean `Checks for PHP accepted boolean values, returns TRUE for "1", "true", "on" and "yes"`
