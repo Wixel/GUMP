@@ -72,6 +72,9 @@ filter(array $input, array $filterset);
 // Returns human readable error text in an array or string
 get_readable_errors($convert_to_string = false); 
 
+// Fetch an array of validation errors indexed by the field names
+get_errors_array();
+
 // Override field names with readable ones for errors
 set_field_name($field, $readable_name);
 ```
