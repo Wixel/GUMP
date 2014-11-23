@@ -957,7 +957,6 @@ class GUMP
 			'rule'  => __FUNCTION__,
 			'param' => $param
 		);
-	}
 
 	}	
 	
