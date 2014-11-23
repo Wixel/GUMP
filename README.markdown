@@ -194,11 +194,14 @@ Available Validators
 * valid_cc `Check for a valid credit card number (Uses the MOD10 Checksum Algorithm)`
 * valid_name `Check for a valid format human name`
 * contains,n `Verify that a value is contained within the pre-defined value set`
+* containsList,n `Verify that a value is contained within the pre-defined value set. Comma separated, list not outputted.`
+* doesNotcontainList,n `Verify that a value is not contained within the pre-defined value set. Comma separated, list not outputted.`
 * street_address `Checks that the provided string is a likely street address. 1 number, 1 or more space, 1 or more letters`
 * iban `Check for a valid IBAN`
 * min_numeric `Determine if the provided numeric value is higher or equal to a specific value`
 * max_numeric `Determine if the provided numeric value is lower or equal to a specific value`
 * date `Determine if the provided input is a valid date (ISO 8601)`
+* starts `Ensures the value starts with a certain character / set of character`
 
 Available Filters
 -----------------

@@ -487,9 +487,6 @@ class GUMP
 				case 'validate_street_address':
 					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a valid street address";
 					break;
-				case 'validate_startsWith':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to begin with $param";
-					break;
 				case 'validate_date':
 					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a valid date";
 					break;
@@ -499,8 +496,8 @@ class GUMP
 				case 'validate_max_numeric':
 					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a numeric value, equal to, or lower than $param";
 					break;
-				case 'validate_starts' :
-					$resp[] = "The <span class=\"$field_class\">$field</span> field is required to start with ".$param;
+				case 'validate_starts':
+					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to start with $param";
 					break;
 				default:
 					$resp[] = "The <span class=\"$field_class\">$field</span> field is invalid";				
@@ -892,34 +889,7 @@ class GUMP
 
 	// ** ------------------------- Validators ------------------------------------ ** //
 
-	/**
-	 * Verify that a value's first character equals a pre-defined value
-	 * 
-	 * Usage: '<index>' => 'startsWith,a'
-	 *	
-	 * @access protected
-	 * @param  string $field
-	 * @param  array $input
-	 * @return mixed
-	 */
-	protected function validate_startsWith($field, $input, $param = NULL)
-	{
-		$param = trim(strtolower($param));
-		$value = trim(strtolower($input[$field]));
 		
-		if( substr($value, 0, 1) === $param ) { // valid, return nothing
-			return;
-		} else {
-			return array(
-				'field' => $field,
-				'value' => $value,
-				'rule'	=> __FUNCTION__,
-				'param' => $param
-			);			
-		}
-	}
-	
-	
 	/**
 	 * Verify that a value is contained within the pre-defined value set
 	 *
