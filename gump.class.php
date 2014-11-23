@@ -517,14 +517,14 @@ class GUMP
 			return $buffer;
 		}
 	}
-	
+
 	/**
 	 * Process the validation errors and return an array of errors with field names as keys
 	 *
-	 * @return array
-	 * @return null (if empty);
+	 * @param $convert_to_string
+	 * @return array | null (if empty)
 	 */
-	public function get_errors_array()
+	public function get_errors_array($convert_to_string = null)
 	{
 		if(empty($this->errors)) {
 			return ($convert_to_string)? null : array();
