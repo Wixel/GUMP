@@ -34,16 +34,19 @@ class GUMP
 	public static $basic_tags     = "<br><p><a><strong><b><i><em><img><blockquote><code><dd><dl><hr><h1><h2><h3><h4><h5><h6><label><ul><li><span><sub><sup>";
 
 	public static $en_noise_words = "about,after,all,also,an,and,another,any,are,as,at,be,because,been,before,
-									 being,between,both,but,by,came,can,come,could,did,do,each,for,from,get,
-									 got,has,had,he,have,her,here,him,himself,his,how,if,in,into,is,it,its,it's,like,
-									 make,many,me,might,more,most,much,must,my,never,now,of,on,only,or,other,
-									 our,out,over,said,same,see,should,since,some,still,such,take,than,that,
-									 the,their,them,then,there,these,they,this,those,through,to,too,under,up,
-									 very,was,way,we,well,were,what,where,which,while,who,with,would,you,your,a,
-									 b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,$,1,2,3,4,5,6,7,8,9,0,_";
+				  				  	 being,between,both,but,by,came,can,come,could,did,do,each,for,from,get,
+				  				  	 got,has,had,he,have,her,here,him,himself,his,how,if,in,into,is,it,its,it's,like,
+			      				  	 make,many,me,might,more,most,much,must,my,never,now,of,on,only,or,other,
+				  				  	 our,out,over,said,same,see,should,since,some,still,such,take,than,that,
+				  				  	 the,their,them,then,there,these,they,this,those,through,to,too,under,up,
+				  				  	 very,was,way,we,well,were,what,where,which,while,who,with,would,you,your,a,
+				  				  	 b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,$,1,2,3,4,5,6,7,8,9,0,_";
 
-	// ** ------------------------- Validation Helpers ---------------------------- ** //
-
+	// field characters below will be replaced with a space.
+	protected $fieldCharsToRemove = array('-') ; //array('_','-');
+	
+	// ** ------------------------- Validation Helpers ---------------------------- ** //	
+	
 	/**
 	 * Shorthand method for inline validation
 	 *
@@ -396,8 +399,8 @@ class GUMP
 		$resp = array();
 
 		foreach($this->errors as $e) {
-
-			$field = ucwords(str_replace(array('_','-'), chr(32), $e['field']));
+		
+			$field = ucwords(str_replace($this->fieldCharsToRemove, chr(32), $e['field']));
 			$param = $e['param'];
 			
 			// Let's fetch explicit field names if they exist
@@ -475,8 +478,17 @@ class GUMP
 				case 'validate_contains':
 					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to contain one of these values: ".implode(', ', $param);
 					break;
+				case 'validate_containsList':
+					$resp[] = "The <span class=\"$field_class\">$field</span> field needs contain a value from its drop down list";
+					break;
+				case 'validate_doesNotContainList':
+					$resp[] = "The <span class=\"$field_class\">$field</span> field contains a value that is not accepted";
+					break;
 				case 'validate_street_address':
 					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a valid street address";
+					break;
+				case 'validate_startsWith':
+					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to begin with $param";
 					break;
 				case 'validate_date':
 					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a valid date";
@@ -626,6 +638,7 @@ class GUMP
 	 * @access public
 	 * @param  mixed $input
 	 * @param  array $filterset
+	 * @throws Exception
 	 * @return mixed
 	 */
 	public function filter(array $input, array $filterset)
@@ -880,6 +893,34 @@ class GUMP
 	// ** ------------------------- Validators ------------------------------------ ** //
 
 	/**
+	 * Verify that a value's first character equals a pre-defined value
+	 * 
+	 * Usage: '<index>' => 'startsWith,a'
+	 *	
+	 * @access protected
+	 * @param  string $field
+	 * @param  array $input
+	 * @return mixed
+	 */
+	protected function validate_startsWith($field, $input, $param = NULL)
+	{
+		$param = trim(strtolower($param));
+		$value = trim(strtolower($input[$field]));
+		
+		if( substr($value, 0, 1) === $param ) { // valid, return nothing
+			return;
+		} else {
+			return array(
+				'field' => $field,
+				'value' => $value,
+				'rule'	=> __FUNCTION__,
+				'param' => $param
+			);			
+		}
+	}
+	
+	
+	/**
 	 * Verify that a value is contained within the pre-defined value set
 	 *
 	 * Usage: '<index>' => 'contains,value value value'
@@ -918,6 +959,74 @@ class GUMP
 		);
 	}
 
+	}	
+	
+	/**
+	 * Verify that a value is contained within the pre-defined value set.
+	 * OUTPUT: will NOT show the list of values.
+	 * 
+	 * Usage: '<index>' => 'containsList,value;value;value'
+	 *
+	 * @access protected
+	 * @param  string $field
+	 * @param  array $input
+	 * @return mixed
+	 */
+	protected function validate_containsList($field, $input, $param = NULL)
+	{
+		$param = trim(strtolower($param));
+	
+		$value = trim(strtolower($input[$field]));
+	
+		$param = explode(";", $param);
+		
+		// consider: in_array(strtolower($value), array_map('strtolower', $param)
+		
+		if(in_array($value, $param)) { // valid, return nothing
+			return;
+		} else {
+			return array(
+					'field' => $field,
+					'value' => $value,
+					'rule'	=> __FUNCTION__,
+					'param' => $param
+			);
+		}
+	}
+	
+	
+	
+	/**
+	 * Verify that a value is NOT contained within the pre-defined value set.
+	 * OUTPUT: will NOT show the list of values.
+	 *
+	 * Usage: '<index>' => 'doesNotContainList,value;value;value'
+	 *
+	 * @access protected
+	 * @param  string $field
+	 * @param  array $input
+	 * @return mixed
+	 */
+	protected function validate_doesNotContainList($field, $input, $param = NULL)
+	{
+		$param = trim(strtolower($param));
+	
+		$value = trim(strtolower($input[$field]));
+	
+		$param = explode(";", $param);
+				
+		if( !in_array($value, $param)) { // valid, return nothing
+			return;
+		} else {
+			return array(
+					'field' => $field,
+					'value' => $value,
+					'rule'	=> __FUNCTION__,
+					'param' => $param
+			);
+		}
+	}
+	
 	/**
 	 * Check if the specified key is present and not empty
 	 *
