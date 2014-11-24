@@ -72,6 +72,7 @@ class GUMP
 	 *
 	 * @param array $data
 	 * @param array $filters
+	 * @return mixed
 	 */
 	public static function filter_input(array $data, array $filters)
 	{
@@ -112,9 +113,10 @@ class GUMP
 	 * Adds a custom validation rule using a callback function
 	 *
 	 * @access public
-	 * @param string $rule
+	 * @param string   $rule
 	 * @param callable $callback
 	 * @return bool
+	 * @throws Exception
 	 */
 	public static function add_validator($rule, $callback)
 	{
@@ -133,9 +135,10 @@ class GUMP
 	 * Adds a custom filter using a callback function
 	 *
 	 * @access public
-	 * @param string $rule
+	 * @param string   $rule
 	 * @param callable $callback
 	 * @return bool
+	 * @throws Exception
 	 */
 	public static function add_filter($rule, $callback)
 	{
@@ -184,8 +187,9 @@ class GUMP
 	 * Run the filtering and validation after each other
 	 *
 	 * @param array $data
+	 * @param bool  $check_fields
 	 * @return array
-	 * @return boolean
+	 * @throws Exception
 	 */
 	public function run(array $data, $check_fields = false)
 	{
@@ -230,8 +234,10 @@ class GUMP
 	/**
 	 * Sanitize the input data
 	 *
-	 * @access public
-	 * @param  array $data
+	 * @access   public
+	 * @param array $input
+	 * @param null  $fields
+	 * @param bool  $utf8_encode
 	 * @return array
 	 */
 	public function sanitize(array $input, $fields = NULL, $utf8_encode = true)
@@ -303,6 +309,7 @@ class GUMP
 	 * @param  mixed $input
 	 * @param  array $ruleset
 	 * @return mixed
+	 * @throws Exception
 	 */
 	public function validate(array $input, array $ruleset)
 	{
@@ -372,7 +379,7 @@ class GUMP
 	/**
 	 * Set a readable name for a specified field names
 	 *
-	 * @param string $field_class
+	 * @param string $field
 	 * @param string $readable_name
 	 * @return void
 	 */	
@@ -637,6 +644,7 @@ class GUMP
 	 * @param  array $filterset
 	 * @throws Exception
 	 * @return mixed
+	 * @throws Exception
 	 */
 	public function filter(array $input, array $filterset)
 	{
@@ -897,7 +905,8 @@ class GUMP
 	 *
 	 * @access protected
 	 * @param  string $field
-	 * @param  array $input
+	 * @param  array  $input
+	 * @param null    $param
 	 * @return mixed
 	 */
 	protected function validate_contains($field, $input, $param = NULL)
@@ -1003,7 +1012,8 @@ class GUMP
 	 *
 	 * @access protected
 	 * @param  string $field
-	 * @param  array $input
+	 * @param  array  $input
+	 * @param null    $param
 	 * @return mixed
 	 */
 	protected function validate_required($field, $input, $param = NULL)
@@ -1028,7 +1038,8 @@ class GUMP
 	 *
 	 * @access protected
 	 * @param  string $field
-	 * @param  array $input
+	 * @param  array  $input
+	 * @param null    $param
 	 * @return mixed
 	 */
 	protected function validate_valid_email($field, $input, $param = NULL)
@@ -1056,7 +1067,8 @@ class GUMP
 	 *
 	 * @access protected
 	 * @param  string $field
-	 * @param  array $input
+	 * @param  array  $input
+	 * @param null    $param
 	 * @return mixed
 	 */
 	protected function validate_max_len($field, $input, $param = NULL)
@@ -1096,7 +1108,8 @@ class GUMP
 	 *
 	 * @access protected
 	 * @param  string $field
-	 * @param  array $input
+	 * @param  array  $input
+	 * @param null    $param
 	 * @return mixed
 	 */
 	protected function validate_min_len($field, $input, $param = NULL)
@@ -1136,7 +1149,8 @@ class GUMP
 	 *
 	 * @access protected
 	 * @param  string $field
-	 * @param  array $input
+	 * @param  array  $input
+	 * @param null    $param
 	 * @return mixed
 	 */
 	protected function validate_exact_len($field, $input, $param = NULL)
@@ -1176,7 +1190,8 @@ class GUMP
 	 *
 	 * @access protected
 	 * @param  string $field
-	 * @param  array $input
+	 * @param  array  $input
+	 * @param null    $param
 	 * @return mixed
 	 */
 	protected function validate_alpha($field, $input, $param = NULL)
@@ -1204,7 +1219,8 @@ class GUMP
 	 *
 	 * @access protected
 	 * @param  string $field
-	 * @param  array $input
+	 * @param  array  $input
+	 * @param null    $param
 	 * @return mixed
 	 */
 	protected function validate_alpha_numeric($field, $input, $param = NULL)
@@ -1232,7 +1248,8 @@ class GUMP
 	 *
 	 * @access protected
 	 * @param  string $field
-	 * @param  array $input
+	 * @param  array  $input
+	 * @param null    $param
 	 * @return mixed
 	 */
 	protected function validate_alpha_dash($field, $input, $param = NULL)
@@ -1252,7 +1269,7 @@ class GUMP
 			);
 		}
 	}
-	
+
 	/**
 	 * Determine if the provided value contains only alpha numeric characters with spaces
 	 *
@@ -1260,7 +1277,8 @@ class GUMP
 	 *
 	 * @access protected
 	 * @param  string $field
-	 * @param  array $input
+	 * @param  array  $input
+	 * @param null    $param
 	 * @return mixed
 	 */
 	protected function validate_alpha_space($field, $input, $param = NULL)
@@ -1279,7 +1297,7 @@ class GUMP
 				'param' => $param
 			);
 		}
-	}	
+	}
 
 	/**
 	 * Determine if the provided value is a valid number or numeric string
@@ -1288,7 +1306,8 @@ class GUMP
 	 *
 	 * @access protected
 	 * @param  string $field
-	 * @param  array $input
+	 * @param  array  $input
+	 * @param null    $param
 	 * @return mixed
 	 */
 	protected function validate_numeric($field, $input, $param = NULL)
@@ -1316,7 +1335,8 @@ class GUMP
 	 *
 	 * @access protected
 	 * @param  string $field
-	 * @param  array $input
+	 * @param  array  $input
+	 * @param null    $param
 	 * @return mixed
 	 */
 	protected function validate_integer($field, $input, $param = NULL)
@@ -1344,7 +1364,8 @@ class GUMP
 	 *
 	 * @access protected
 	 * @param  string $field
-	 * @param  array $input
+	 * @param  array  $input
+	 * @param null    $param
 	 * @return mixed
 	 */
 	protected function validate_boolean($field, $input, $param = NULL)
@@ -1374,7 +1395,8 @@ class GUMP
 	 *
 	 * @access protected
 	 * @param  string $field
-	 * @param  array $input
+	 * @param  array  $input
+	 * @param null    $param
 	 * @return mixed
 	 */
 	protected function validate_float($field, $input, $param = NULL)
@@ -1402,7 +1424,8 @@ class GUMP
 	 *
 	 * @access protected
 	 * @param  string $field
-	 * @param  array $input
+	 * @param  array  $input
+	 * @param null    $param
 	 * @return mixed
 	 */
 	protected function validate_valid_url($field, $input, $param = NULL)
@@ -1430,7 +1453,8 @@ class GUMP
 	 *
 	 * @access protected
 	 * @param  string $field
-	 * @param  array $input
+	 * @param  array  $input
+	 * @param null    $param
 	 * @return mixed
 	 */
 	protected function validate_url_exists($field, $input, $param = NULL)
