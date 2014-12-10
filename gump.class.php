@@ -260,7 +260,9 @@ class GUMP
 			else
 			{
 				$value = $input[$field];
-
+				if (is_array($value)){
+					$value = null;
+				}
 				if(is_string($value))
 				{
 					if($magic_quotes === TRUE)
@@ -324,8 +326,8 @@ class GUMP
 
 			$rules = explode('|', $rules);
 			
-	        if(in_array("required", $rules) || (isset($input[$field]) && trim($input[$field]) != ''))
-	        {			
+			if(in_array("required", $rules) || (isset($input[$field]) && !is_array($input[$field]) && trim($input[$field]) != ''))
+			{
 				foreach($rules as $rule)
 				{
 					$method = NULL;
