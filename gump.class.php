@@ -506,6 +506,12 @@ class GUMP
 				case 'validate_starts':
 					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to start with $param";
 					break;
+				case 'validate_equalsfield':
+					$resp[] = "The <span class=\"$field_class\">$field</span> field does not equal $param field";
+					break;
+				case 'validate_min_age':
+					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to have an age greater than or equal to $param";
+					break;
 				default:
 					$resp[] = "The <span class=\"$field_class\">$field</span> field is invalid";				
 			}
@@ -627,6 +633,9 @@ class GUMP
 					break;
 				case 'validate_max_numeric':
 					$resp[$field] = "The $field field needs to be a numeric value, equal to, or lower than $param";
+					break;
+				case 'validate_min_age':
+					$resp[$field] = "The $field field needs to have an age greater than or equal to $param";
 					break;
 				default:
 					$resp[$field] = "The $field field is invalid";				
@@ -1791,6 +1800,39 @@ class GUMP
 			);
 		}
 	}
+	
+	/**
+	 * Determine if the provided input is a valid date (ISO 8601)
+	 *
+	 * Usage: '<index>' => 'min_age,13'
+	 *
+	 * @access protected
+	 * @param  string $field
+	 * @param  string $input date ('Y-m-d') or datetime ('Y-m-d H:i:s')
+	 * @param  array $input
+	 * @return mixed
+	 */
+	protected function validate_min_age($field, $input, $param = null)
+	{
+		if (!isset($input[$field]) || empty($input[$field])) {
+			return;
+		}
+
+		$cdate1 = new DateTime(date('Y-m-d', strtotime($input[$field])));
+		$today = new DateTime(date("d-m-Y"));
+		
+		$interval = $cdate1->diff($today);
+		$age= $interval->y;
+
+		if ($age <= $param) {
+			return array(
+				'field' => $field,
+				'value' => $input[$field],
+				'rule'  => __FUNCTION__,
+				'param' => $param
+			);
+		}
+	}
 
 	/**
 	 * Determine if the provided numeric value is lower or equal to a specific value
@@ -1870,6 +1912,39 @@ class GUMP
 		}
 		
 		if(strpos($input[$field], $param) !== 0)
+		{
+			return array(
+				'field' => $field,
+				'value' => $input[$field],
+				'rule'	=> __FUNCTION__,
+				'param' => $param				
+			);
+		}
+	}
+	
+	/**
+	 * Determine if the provided value equals param
+	 * 
+	 * Usage: '<index>' => 'equals,Z'
+	 *	
+	 * @access protected
+	 * @param  string $field
+	 * @param  array $input
+	 * @return mixed
+	 */	
+	protected function validate_equalsfield($field, $input, $param = NULL)
+	{	
+		if(!isset($input[$field]) || empty($input[$field]))
+		{
+			return;
+		}
+		
+		if(!isset($param) || empty($input[$param]))
+		{
+			return;
+		}
+		
+		if($input[$field] != $input[$param])
 		{
 			return array(
 				'field' => $field,
