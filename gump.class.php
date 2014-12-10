@@ -506,6 +506,9 @@ class GUMP
 				case 'validate_starts':
 					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to start with $param";
 					break;
+				case 'validate_equalsfield':
+					$resp[] = "The <span class=\"$field_class\">$field</span> field does not equal $param field";
+					break;
 				default:
 					$resp[] = "The <span class=\"$field_class\">$field</span> field is invalid";				
 			}
@@ -1870,6 +1873,39 @@ class GUMP
 		}
 		
 		if(strpos($input[$field], $param) !== 0)
+		{
+			return array(
+				'field' => $field,
+				'value' => $input[$field],
+				'rule'	=> __FUNCTION__,
+				'param' => $param				
+			);
+		}
+	}
+	
+	/**
+	 * Determine if the provided value equals param
+	 * 
+	 * Usage: '<index>' => 'equals,Z'
+	 *	
+	 * @access protected
+	 * @param  string $field
+	 * @param  array $input
+	 * @return mixed
+	 */	
+	protected function validate_equalsfield($field, $input, $param = NULL)
+	{	
+		if(!isset($input[$field]) || empty($input[$field]))
+		{
+			return;
+		}
+		
+		if(!isset($param) || empty($input[$param]))
+		{
+			return;
+		}
+		
+		if($input[$field] != $input[$param])
 		{
 			return array(
 				'field' => $field,
