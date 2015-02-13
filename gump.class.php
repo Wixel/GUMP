@@ -506,6 +506,9 @@ class GUMP
 				case 'validate_starts':
 					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to start with $param";
 					break;
+				case 'validate_twitter':
+					$resp[] = "The <span class=\"$field_class\">$field</span> field is not a valid twitter handle.";
+					break;
 				default:
 					$resp[] = "The <span class=\"$field_class\">$field</span> field is invalid";				
 			}
@@ -1876,6 +1879,35 @@ class GUMP
 				'value' => $input[$field],
 				'rule'	=> __FUNCTION__,
 				'param' => $param				
+			);
+		}
+	}
+
+	/**
+	 * Determine if the provided value is a valid twitter handle.
+	 *
+	 * @access protected 
+	 * @param  string $field
+	 * @param  array $input
+	 * @return mixed
+	 */
+	protected function validate_twitter($field, $input, $param = NULL)
+	{
+		if(!isset($input[$field]) || empty($input[$field]))
+		{
+			return;
+		}
+
+		$json_twitter = file_get_contents("http://twitter.com/users/username_available?username=".$input[$field]);
+	
+		$twitter_response = json_decode($json_twitter);
+
+		if($twitter_response->reason != "taken"){
+			return array(
+				'field' => $field,
+				'value' => $input[$field],
+				'rule' => __FUNCTION__,
+				'param' => $param
 			);
 		}
 	}
