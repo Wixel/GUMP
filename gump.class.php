@@ -631,6 +631,9 @@ class GUMP
 				case 'validate_max_numeric':
 					$resp[$field] = "The $field field needs to be a numeric value, equal to, or lower than $param";
 					break;
+				case 'validate_twitter':
+					$resp[$field] = "The $field field is not a valid twitter handle";
+					break;
 				default:
 					$resp[$field] = "The $field field is invalid";				
 			}
