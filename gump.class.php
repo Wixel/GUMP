@@ -397,7 +397,7 @@ class GUMP
 	 * @return array
 	 * @return string
 	 */
-	public function get_readable_errors($convert_to_string = false, $field_class="field", $error_class="error-message")
+	public function get_readable_errors($convert_to_string = false, $field_class="gump-field", $error_class="gump-error-message")
 	{
 		if(empty($this->errors)) {
 			return ($convert_to_string)? null : array();
