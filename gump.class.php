@@ -324,7 +324,7 @@ class GUMP
 
 			$rules = explode('|', $rules);
 			
-	        if(in_array("required", $rules) || (isset($input[$field]) && trim($input[$field]) != ''))
+	        if($this->shouldRunValidation($input, $rules, $field))
 	        {			
 				foreach($rules as $rule)
 				{
@@ -1894,5 +1894,16 @@ class GUMP
 
 		return $value;
 	}
+
+    /**
+     * @param array $input
+     * @param $rules
+     * @param $field
+     * @return bool
+     */
+    protected function shouldRunValidation(array $input, $rules, $field)
+    {
+        return in_array("required", $rules) || (isset($input[$field]) && trim($input[$field]) != '');
+    }
 
 } // EOC
