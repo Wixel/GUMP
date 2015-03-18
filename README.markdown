@@ -2,6 +2,8 @@
 
 GUMP is a standalone PHP data validation and filtering class that makes validating any data easy and painless without the reliance on a framework.
 
+Follow along on the project board: http://d.monsterboards.co/project/LSCPVmHUxQ-gump
+
 #### There are 2 ways to install GUMP
 
 ###### Install Manually 
