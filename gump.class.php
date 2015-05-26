@@ -417,100 +417,100 @@ class GUMP
 
 			switch($e['rule']) {
 				case 'mismatch' :
-					$resp[] = "There is no validation rule for <span class=\"$field_class\">$field</span>";
+					$resp[] = "There is no validation rule for <span class=\"$field_class\">$field</span>. ";
 					break;
 				case 'validate_required':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field is required";
+					$resp[] = "The <span class=\"$field_class\">$field</span> field is required. ";
 					break;
 				case 'validate_valid_email':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field is required to be a valid email address";
+					$resp[] = "The <span class=\"$field_class\">$field</span> field is required to be a valid email address. ";
 					break;
 				case 'validate_max_len':
 					if($param == 1) {
-						$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be shorter than $param character";
+						$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be shorter than $param character. ";
 					} else {
-						$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be shorter than $param characters";
+						$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be shorter than $param characters. ";
 					}
 					break;
 				case 'validate_min_len':
 					if($param == 1) {
-						$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be longer than $param character";
+						$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be longer than $param character. ";
 					} else {
-						$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be longer than $param characters";
+						$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be longer than $param characters. ";
 					}
 					break;
 				case 'validate_exact_len':
 					if($param == 1) {
-						$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be exactly $param character in length";
+						$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be exactly $param character in length. ";
 					} else {
-						$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be exactly $param characters in length";
+						$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be exactly $param characters in length. ";
 					}
 					break;
 				case 'validate_alpha':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field may only contain alpha characters(a-z)";
+					$resp[] = "The <span class=\"$field_class\">$field</span> field may only contain alpha characters(a-z). ";
 					break;
 				case 'validate_alpha_numeric':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field may only contain alpha-numeric characters";
+					$resp[] = "The <span class=\"$field_class\">$field</span> field may only contain alpha-numeric characters. ";
 					break;
 				case 'validate_alpha_dash':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field may only contain alpha characters &amp; dashes";
+					$resp[] = "The <span class=\"$field_class\">$field</span> field may only contain alpha characters &amp; dashes. ";
 					break;
 				case 'validate_numeric':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field may only contain numeric characters";
+					$resp[] = "The <span class=\"$field_class\">$field</span> field may only contain numeric characters. ";
 					break;
 				case 'validate_integer':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field may only contain a numeric value";
+					$resp[] = "The <span class=\"$field_class\">$field</span> field may only contain a numeric value. ";
 					break;
 				case 'validate_boolean':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field may only contain a true or false value";
+					$resp[] = "The <span class=\"$field_class\">$field</span> field may only contain a true or false value. ";
 					break;
 				case 'validate_float':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field may only contain a float value";
+					$resp[] = "The <span class=\"$field_class\">$field</span> field may only contain a float value. ";
 					break;
 				case 'validate_valid_url':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field is required to be a valid URL";
+					$resp[] = "The <span class=\"$field_class\">$field</span> field is required to be a valid URL. ";
 					break;
 				case 'validate_url_exists':
-					$resp[] = "The <span class=\"$field_class\">$field</span> URL does not exist";
+					$resp[] = "The <span class=\"$field_class\">$field</span> URL does not exist. ";
 					break;
 				case 'validate_valid_ip':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to contain a valid IP address";
+					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to contain a valid IP address. ";
 					break;
 				case 'validate_valid_cc':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to contain a valid credit card number";
+					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to contain a valid credit card number. ";
 					break;
 				case 'validate_valid_name':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to contain a valid human name";
+					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to contain a valid human name. ";
 					break;
 				case 'validate_contains':
 					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to contain one of these values: ".implode(', ', $param);
 					break;
 				case 'validate_containsList':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field needs contain a value from its drop down list";
+					$resp[] = "The <span class=\"$field_class\">$field</span> field needs contain a value from its drop down list. ";
 					break;
 				case 'validate_doesNotContainList':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field contains a value that is not accepted";
+					$resp[] = "The <span class=\"$field_class\">$field</span> field contains a value that is not accepted. ";
 					break;
 				case 'validate_street_address':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a valid street address";
+					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a valid street address. ";
 					break;
 				case 'validate_date':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a valid date";
+					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a valid date. ";
 					break;
 				case 'validate_min_numeric':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a numeric value, equal to, or higher than $param";
+					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a numeric value, equal to, or higher than $param. ";
 					break;
 				case 'validate_max_numeric':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a numeric value, equal to, or lower than $param";
+					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a numeric value, equal to, or lower than $param. ";
 					break;
 				case 'validate_starts':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to start with $param";
+					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to start with $param. ";
 					break;
 				case 'validate_twitter':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field is not a valid twitter handle.";
+					$resp[] = "The <span class=\"$field_class\">$field</span> field is not a valid twitter handle.. ";
 					break;
 				default:
-					$resp[] = "The <span class=\"$field_class\">$field</span> field is invalid";				
+					$resp[] = "The <span class=\"$field_class\">$field</span> field is invalid. ";				
 			}
 		}
 
@@ -900,6 +900,19 @@ class GUMP
 	{
 		return intval($value);
 	}	
+
+	/**
+	 * Convert the provided string to all uppers.
+	 *
+	 * @access protected 
+	 * @param  string $value
+	 * @param  array $params
+	 * @return  string 
+	 */
+	protected function filter_upper($value, $params = NULL)
+	{
+		return strtoupper($value);
+	}
 
 	// ** ------------------------- Validators ------------------------------------ ** //
 
