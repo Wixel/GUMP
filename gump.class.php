@@ -1346,7 +1346,7 @@ class GUMP
 			return;
 		}
 
-		if(!filter_var($input[$field], FILTER_VALIDATE_INT))
+		if(filter_var($input[$field], FILTER_VALIDATE_INT) === false)
 		{
 			return array(
 				'field' => $field,
@@ -1406,7 +1406,7 @@ class GUMP
 			return;
 		}
 
-		if(!filter_var($input[$field], FILTER_VALIDATE_FLOAT))
+		if(filter_var($input[$field], FILTER_VALIDATE_FLOAT) === false)
 		{
 			return array(
 				'field' => $field,
