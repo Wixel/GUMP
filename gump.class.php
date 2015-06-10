@@ -331,16 +331,30 @@ class GUMP
 					$method = NULL;
 					$param  = NULL;
 
-					if(strstr($rule, ',') !== FALSE) // has params
-					{
-						$rule   = explode(',', $rule);
-						$method = 'validate_'.$rule[0];
-						$param  = $rule[1];
-						$rule   = $rule[0];
-					}
-					else
-					{
-						$method = 'validate_'.$rule;
+					if(strstr($rule, 'regex') !== FALSE){
+						if(strstr($rule, '&&&') !== FALSE) // has params
+						{
+							$rule   = explode('&&&', $rule);
+							$method = 'validate_'.$rule[0];
+							$param  = $rule[1];
+							$rule   = $rule[0];
+						}
+						else
+						{
+							$method = 'validate_'.$rule;
+						}
+					}else{
+						if(strstr($rule, ',') !== FALSE) // has params
+						{
+							$rule   = explode(',', $rule);
+							$method = 'validate_'.$rule[0];
+							$param  = $rule[1];
+							$rule   = $rule[0];
+						}
+						else
+						{
+							$method = 'validate_'.$rule;
+						}
 					}
 
 					if(is_callable(array($this, $method)))
@@ -1893,6 +1907,76 @@ class GUMP
 		}
 
 		return $value;
+	}
+	
+	/**
+	 * Determine if the provided value is a valid phone number
+	 *
+	 * Usage: '<index>' => 'phone_number'
+	 *
+	 * @access protected
+	 * @param  string $field
+	 * @param  array $input
+	 * @return mixed
+	 *
+	 * Examples:
+	 *
+	 *  555-555-5555: valid
+	 *	5555425555: valid
+	 *	555 555 5555: valid
+	 *	1(519) 555-4444: valid
+	 *	1 (519) 555-4422: valid
+	 *	1-555-555-5555: valid
+	 *	1-(555)-555-5555: valid
+	 *
+	 *
+	 */
+	protected function validate_phone_number($field, $input, $param = NULL)
+	{
+		if(!isset($input[$field]) || empty($input[$field]))
+		{
+			return;
+		}
+
+		$regex = '/^(\d[\s-]?)?[\(\[\s-]{0,2}?\d{3}[\)\]\s-]{0,2}?\d{3}[\s-]?\d{4}$/i';
+		if(!preg_match( $regex, $input[$field] ))
+		{
+			return array(
+				'field' => $field,
+				'value' => $input[$field],
+				'rule'	=> __FUNCTION__,
+				'param' => $param
+			);
+		}
+	}
+
+	/**
+	 * Custom regex validator
+	 *
+	 * Usage: '<index>' => 'regex&&&/regex/'
+	 *
+	 * @access protected
+	 * @param  string $field
+	 * @param  array $input
+	 * @return mixed
+	 */
+	protected function validate_regex($field, $input, $param = NULL)
+	{
+		if(!isset($input[$field]) || empty($input[$field]))
+		{
+			return;
+		}
+
+		$regex = $param;
+		if(!preg_match( $regex, $input[$field] ))
+		{
+			return array(
+				'field' => $field,
+				'value' => $input[$field],
+				'rule'	=> __FUNCTION__,
+				'param' => $param
+			);
+		}
 	}
 
 } // EOC
