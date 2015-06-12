@@ -1978,5 +1978,32 @@ class GUMP
 			);
 		}
 	}
+	
+	/**
+	 * Json validatior
+	 *
+	 * Usage: '<index>' => 'valid_json_string'
+	 *
+	 * @access protected
+	 * @param  string $field
+	 * @param  array $input
+	 * @return mixed
+	 */
+	protected function validate_valid_json_string($field, $input, $param = NULL)
+	{
+		if(!isset($input[$field]) || empty($input[$field]))
+		{
+			return;
+		}
+
+		if( !is_string($input[$field]) || !is_object(json_decode($input[$field])) ){
+			return array(
+				'field' => $field,
+				'value' => $input[$field],
+				'rule'	=> __FUNCTION__,
+				'param' => $param
+			);
+		}
+	}
 
 } // EOC
