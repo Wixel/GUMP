@@ -323,8 +323,13 @@ class GUMP
 			#}
 
 			$rules = explode('|', $rules);
-			
-	        if(in_array("required", $rules) || (isset($input[$field]) && trim($input[$field]) != ''))
+		
+                    $is_empty = true;
+                    if (!is_array($input[$field])) {
+                        $is_empty = isset($input[$field]) && trim($input[$field]) != '';
+                    }    
+                        
+	        if(in_array("required", $rules) || $is_empty)
 	        {			
 				foreach($rules as $rule)
 				{
@@ -506,6 +511,13 @@ class GUMP
 				case 'validate_starts':
 					$resp[] = "The <span class=\"$field_class\">$field</span> field needs to start with $param";
 					break;
+                                
+                                case 'validate_extension':
+                                        $resp[] = "The <span class\"$field_class\">$field</span> field can have the following extensions $param";
+                                        break; 
+                                case 'validate_required_file':
+                                        $resp[] = "The <span class\"$field_class\">$field</span> field is required";
+                                        break; 
 				default:
 					$resp[] = "The <span class=\"$field_class\">$field</span> field is invalid";				
 			}
@@ -1879,6 +1891,62 @@ class GUMP
 			);
 		}
 	}
+        
+        /**
+	 * checks if a file was uploaded
+	 * 
+	 * Usage: '<index>' => 'required_file'
+	 *	
+	 * @access protected
+	 * @param  string $field
+	 * @param  array $input
+	 * @return mixed
+	 */
+        protected function validate_required_file($field, $input, $param = NULL)
+        {
+            if ($input[$field]['error'] !== 4) {
+                return;
+            }
+            return array(
+                'field' => $field,
+                'value' => $input[$field],
+                'rule' => __FUNCTION__,
+                'param' => $param
+            );
+        }
+        
+        /**
+	 * check the uploaded file for extension 
+         * for now checks onlt the ext should add mime type check
+	 * 
+	 * Usage: '<index>' => 'starts,Z'
+	 *	
+	 * @access protected
+	 * @param  string $field
+	 * @param  array $input
+	 * @return mixed
+	 */
+        protected function validate_extension($field, $input, $param = NULL)
+        {
+            if ($input[$field]['error'] !== 4) {
+                $param = trim(strtolower($param));
+                $allowed_extensions = explode(";", $param);
+
+                $path_info = pathinfo($input[$field]['name']);
+                $extension = $path_info['extension'];
+
+                if (in_array($extension, $allowed_extensions)) {
+                    return;
+                }
+
+                return array(
+                    'field' => $field,
+                    'value' => $input[$field],
+                    'rule' => __FUNCTION__,
+                    'param' => $param
+                );
+            }
+        }
 
 	/**
 	 * Trims whitespace only when the value is a scalar

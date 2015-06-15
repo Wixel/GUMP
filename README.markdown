@@ -311,6 +311,23 @@ if($validated === true) {
 }
 ```
 
+# validating file fields
+
+```php
+require "gump.class.php";
+
+$is_valid = GUMP::is_valid(array_merge($_POST,$_FILES), array(
+	'title' => 'required|alpha_numeric',
+	'image' => 'required_file|extension,png;jpg'
+));
+
+if($is_valid === true) {
+	// continue
+} else {
+	print_r($is_valid);
+}
+```
+
 Running the examples:
 ------------------
 
