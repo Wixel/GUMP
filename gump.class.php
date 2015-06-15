@@ -1802,14 +1802,14 @@ class GUMP
 	}
 	
 	/**
-	 * Determine if the provided input is a valid date (ISO 8601)
+	 * Determine if the provided input meets age requirement (ISO 8601)
 	 *
 	 * Usage: '<index>' => 'min_age,13'
 	 *
 	 * @access protected
 	 * @param  string $field
 	 * @param  string $input date ('Y-m-d') or datetime ('Y-m-d H:i:s')
-	 * @param  array $input
+	 * @param  string $param int
 	 * @return mixed
 	 */
 	protected function validate_min_age($field, $input, $param = null)
@@ -1923,13 +1923,14 @@ class GUMP
 	}
 	
 	/**
-	 * Determine if the provided value equals param
+	 * Determine if the provided field value equals current field value
 	 * 
-	 * Usage: '<index>' => 'equals,Z'
+	 * Usage: '<index>' => 'equalsfield,Z'
 	 *	
 	 * @access protected
 	 * @param  string $field
-	 * @param  array $input
+	 * @param  string $input
+	 * @param  string $param field to compare with
 	 * @return mixed
 	 */	
 	protected function validate_equalsfield($field, $input, $param = NULL)
