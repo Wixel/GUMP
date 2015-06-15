@@ -214,7 +214,7 @@ Filters can be any PHP function that returns a string. You don't need to create 
 * htmlencode `Encode HTML entities`
 * sanitize_email `Remove illegal characters from email addresses`
 * sanitize_numbers `Remove any non-numeric characters`
-* trim `Remove spaces from the beginning or end of strings`
+* trim `Remove spaces from the beginning and end of strings`
 * base64_encode `Base64 encode the input`
 * base64_decode `Base64 decode the input`
 * sha1 `Encrypt the input with the secure sha1 algorithm`
