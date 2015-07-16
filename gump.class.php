@@ -397,6 +397,25 @@ class GUMP
 	}
 
 	/**
+	 * Set readable name for specified fields in an array
+	 *
+	 * Usage:
+	 * GUMP::set_field_names(array(
+	 * 	"name" => "My Lovely Name",
+	 * 	"username" => "My Beloved Username",
+	 * ));
+	 *
+	 * @param array $array
+	 * @return void
+	 */
+	public static function set_field_names(array $array)
+	{
+		foreach ( $array as $field => $readable_name ) {
+			self::$fields[$field] = $readable_name;
+		}
+	}
+
+	/**
 	 * Process the validation errors and return human readable error messages
 	 *
 	 * @param bool $convert_to_string = false
