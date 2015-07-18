@@ -1867,6 +1867,86 @@ class GUMP
 		);
 	}
 
+    /**
+     * Determine if the provided phone number is valid
+     *
+     * Usage: '<index>' => 'valid_phone
+     *
+     * @access protected
+     * @param  string $field
+     * @param  array $input
+     * @return mixed
+     */
+    public function validate_valid_phone($field, $input, $param = NULL)
+    {
+        if(!isset($input[$field]) || empty($input[$field]))
+        {
+            return;
+        }
+
+        if(!preg_match("/^[0|\+][0-9]{2}[0-9\/\s]+$", $input[$field]) !== FALSE)
+        {
+            return array(
+                'field' => $field,
+                'value' => $input[$field],
+                'rule'  => __FUNCTION__,
+                'param' => $param
+            );
+        }
+    }
+
+    /**
+     * Determine if the provided value is valid against one of five currency rules
+     *
+     * Usage: '<index>' => 'valid_email'
+     *
+     * @access protected
+     * @param  string $field
+     * @param  array $input
+     * @return mixed
+     *
+     * @param int $param defines which currency rule is used for validation
+     * 0 => Currency amount (cents mandatory) Optional thousands separators; mandatory two-digit fraction (US)
+     * 1 => Currency amount (cents optional) Optional thousands separators; optional two-digit fraction (US)
+     * 2 => Currency amount (cents mandatory) Optional thousands separators; mandatory two-digit fraction (EU)
+     * 3 => Currency amount (cents optional) Optional thousands separators; optional two-digit fraction (EU)
+     * 4 => Currency amount US & EU (cents optional) Can use US-style 123,456.78 notation and European-style 123.456,78 notation. Optional thousands separators; optional two-digit fraction
+     */
+    public function validate_currency($field, $input, $param = 0)
+    {
+        if(!isset($input[$field]) || empty($input[$field]))
+        {
+            return;
+        }
+
+        switch($param){
+            case 0:
+                $regex = "^[+-]?[0-9]{1,3}(?:,?[0-9]{3})*\.[0-9]{2}$";
+                break;
+            case 1:
+                $regex = "^[+-]?[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{2})?$";
+                break;
+            case 2:
+                $regex = "^[+-]?[0-9]{1,3}(?:\.?[0-9]{3})*,[0-9]{2}$";
+                break;
+            case 3:
+                $regex = "^[+-]?[0-9]{1,3}(?:\.?[0-9]{3})*(?:,[0-9]{2})?$";
+                break;
+            case 4:
+                $regex = "^[+-]?[0-9]{1,3}(?:[0-9]*(?:[.,][0-9]{2})?|(?:,[0-9]{3})*(?:\.[0-9]{2})?|(?:\.[0-9]{3})*(?:,[0-9]{2})?)$";
+                break;
+        }
+        if(!preg_match($regex, $input[$field]) !== FALSE)
+        {
+            return array(
+                'field' => $field,
+                'value' => $input[$field],
+                'rule'  => __FUNCTION__,
+                'param' => $param
+            );
+        }
+    }
+
 	/**
 	 * Determine if the provided value starts with param
 	 * 
