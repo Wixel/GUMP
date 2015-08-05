@@ -5,7 +5,9 @@
  *
  * @author      Sean Nieuwoudt (http://twitter.com/SeanNieuwoudt)
  * @copyright   Copyright (c) 2015 wixelhq.com
+ *
  * @link        http://github.com/Wixel/GUMP
+ *
  * @version     1.0
  */
 class GUMP
@@ -42,7 +44,7 @@ class GUMP
 				  				  	 b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,$,1,2,3,4,5,6,7,8,9,0,_";
 
     // field characters below will be replaced with a space.
-    protected $fieldCharsToRemove = array('_','-');
+    protected $fieldCharsToRemove = array('_', '-');
 
     // ** ------------------------- Validation Helpers ---------------------------- ** //
 
@@ -332,15 +334,28 @@ class GUMP
                     $method = null;
                     $param = null;
 
-                    if (strstr($rule, ',') !== false) {
-                        // has params
+                    if (strstr($rule, 'regex') !== false) {
+                        if (strstr($rule, '&&&') !== false) {
+                            // has params
 
-                        $rule = explode(',', $rule);
-                        $method = 'validate_'.$rule[0];
-                        $param = $rule[1];
-                        $rule = $rule[0];
+                                      $rule = explode('&&&', $rule);
+                            $method = 'validate_'.$rule[0];
+                            $param = $rule[1];
+                            $rule = $rule[0];
+                        } else {
+                            $method = 'validate_'.$rule;
+                        }
                     } else {
-                        $method = 'validate_'.$rule;
+                        if (strstr($rule, ',') !== false) {
+                            // has params
+
+                                      $rule = explode(',', $rule);
+                            $method = 'validate_'.$rule[0];
+                            $param = $rule[1];
+                            $rule = $rule[0];
+                        } else {
+                            $method = 'validate_'.$rule;
+                        }
                     }
 
                     if (is_callable(array($this, $method))) {
@@ -388,24 +403,23 @@ class GUMP
     }
 
     /**
-  	 * Set readable name for specified fields in an array
-  	 *
-  	 * Usage:
+     * Set readable name for specified fields in an array.
      *
-  	 * GUMP::set_field_names(array(
-  	 * 	"name" => "My Lovely Name",
-  	 * 	"username" => "My Beloved Username",
-  	 * ));
-  	 *
-  	 * @param array $array
-  	 * @return void
-  	 */
-  	public static function set_field_names(array $array)
-  	{
-  		foreach ( $array as $field => $readable_name ) {
-  			self::$fields[$field] = $readable_name;
-  		}
-  	}
+     * Usage:
+     *
+     * GUMP::set_field_names(array(
+     * 	"name" => "My Lovely Name",
+     * 	"username" => "My Beloved Username",
+     * ));
+     *
+     * @param array $array
+     */
+    public static function set_field_names(array $array)
+    {
+        foreach ($array as $field => $readable_name) {
+            self::$fields[$field] = $readable_name;
+        }
+    }
 
     /**
      * Process the validation errors and return human readable error messages.
@@ -525,12 +539,12 @@ class GUMP
                 case 'validate_starts':
                     $resp[] = "The <span class=\"$field_class\">$field</span> field needs to start with $param";
                     break;
-        case 'validate_extension':
-                $resp[] = "The <span class\"$field_class\">$field</span> field can have the following extensions $param";
-                break;
-        case 'validate_required_file':
-                $resp[] = "The <span class\"$field_class\">$field</span> field is required";
-                break;
+                case 'validate_extension':
+                    $resp[] = "The <span class\"$field_class\">$field</span> field can have the following extensions $param";
+                    break;
+                case 'validate_required_file':
+                    $resp[] = "The <span class\"$field_class\">$field</span> field is required";
+                    break;
                 case 'validate_equalsfield':
                     $resp[] = "The <span class=\"$field_class\">$field</span> field does not equal $param field";
                     break;
@@ -1969,5 +1983,95 @@ class GUMP
         }
 
         return $value;
+    }
+
+    /**
+     * Determine if the provided value is a valid phone number.
+     *
+     * Usage: '<index>' => 'phone_number'
+     *
+     * @param string $field
+     * @param array  $input
+     *
+     * @return mixed
+     *
+     * Examples:
+     *
+     *  555-555-5555: valid
+     *	5555425555: valid
+     *	555 555 5555: valid
+     *	1(519) 555-4444: valid
+     *	1 (519) 555-4422: valid
+     *	1-555-555-5555: valid
+     *	1-(555)-555-5555: valid
+     */
+    protected function validate_phone_number($field, $input, $param = null)
+    {
+        if (!isset($input[$field]) || empty($input[$field])) {
+            return;
+        }
+
+        $regex = '/^(\d[\s-]?)?[\(\[\s-]{0,2}?\d{3}[\)\]\s-]{0,2}?\d{3}[\s-]?\d{4}$/i';
+        if (!preg_match($regex, $input[$field])) {
+            return array(
+          'field' => $field,
+          'value' => $input[$field],
+          'rule' => __FUNCTION__,
+          'param' => $param,
+        );
+        }
+    }
+
+    /**
+     * Custom regex validator.
+     *
+     * Usage: '<index>' => 'regex&&&/regex/'
+     *
+     * @param string $field
+     * @param array  $input
+     *
+     * @return mixed
+     */
+    protected function validate_regex($field, $input, $param = null)
+    {
+        if (!isset($input[$field]) || empty($input[$field])) {
+            return;
+        }
+
+        $regex = $param;
+        if (!preg_match($regex, $input[$field])) {
+            return array(
+          'field' => $field,
+          'value' => $input[$field],
+          'rule' => __FUNCTION__,
+          'param' => $param,
+        );
+        }
+    }
+
+    /**
+     * Json validatior.
+     *
+     * Usage: '<index>' => 'valid_json_string'
+     *
+     * @param string $field
+     * @param array  $input
+     *
+     * @return mixed
+     */
+    protected function validate_valid_json_string($field, $input, $param = null)
+    {
+        if (!isset($input[$field]) || empty($input[$field])) {
+            return;
+        }
+
+        if (!is_string($input[$field]) || !is_object(json_decode($input[$field]))) {
+            return array(
+          'field' => $field,
+          'value' => $input[$field],
+          'rule' => __FUNCTION__,
+          'param' => $param,
+        );
+        }
     }
 } // EOC

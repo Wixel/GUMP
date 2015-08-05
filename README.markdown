@@ -204,6 +204,9 @@ Available Validators
 * max_numeric `Determine if the provided numeric value is lower or equal to a specific value`
 * date `Determine if the provided input is a valid date (ISO 8601)`
 * starts `Ensures the value starts with a certain character / set of character`
+* phone_number `Validate phone numbers that match the following examples: 555-555-5555 , 5555425555, 555 555 5555, 1(519) 555-4444, 1 (519) 555-4422, 1-555-555-5555`
+* regex `You can pass a custom regex using the following format: 'regex&&&/your-regex/`
+* valid_json_string `validate string to check if it's a valid json format`
 
 Available Filters
 -----------------
@@ -370,4 +373,3 @@ The output will depend on the input data.
 * Add an 'is empty' validator check
 * Check that arrays have a positive count (if type is array)
 * A secure password validator
-* Custom regex validator
