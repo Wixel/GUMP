@@ -159,6 +159,27 @@ class GUMP
     }
 
     /**
+     * Helper method to extract an element from an array safely
+     *
+     * @param mixed $key
+     * @param array $array
+     * @param mixed $default
+     * @return mixed
+     */
+    public static function field($key, array $array, $default = null)
+    {
+      if(!is_array($array)) {
+        return null;
+      }
+
+      if(isset($array[$key])) {
+        return $array[$key];
+      } else {
+        return $default;
+      }
+    }
+
+    /**
      * Getter/Setter for the validation rules.
      *
      * @param array $rules
