@@ -5,9 +5,7 @@
  *
  * @author      Sean Nieuwoudt (http://twitter.com/SeanNieuwoudt)
  * @copyright   Copyright (c) 2015 wixelhq.com
- *
  * @link        http://github.com/Wixel/GUMP
- *
  * @version     1.0
  */
 class GUMP
@@ -307,88 +305,86 @@ class GUMP
      *
      * @param mixed $input
      * @param array $ruleset
-     *
      * @return mixed
      *
      * @throws Exception
      */
-    public function validate(array $input, array $ruleset)
+     public function validate(array $input, array $ruleset)
+   	{
+   		$this->errors = array();
+
+   		foreach($ruleset as $field => $rules)
+   		{
+   			#if(!array_key_exists($field, $input))
+   			#{
+   			#   continue;
+   			#}
+
+   			$rules = explode('|', $rules);
+
+   	        if($this->shouldRunValidation($input, $rules, $field))
+   	        {
+   				foreach($rules as $rule)
+   				{
+   					$method = NULL;
+   					$param  = NULL;
+
+   					if(strstr($rule, ',') !== FALSE) // has params
+   					{
+   						$rule   = explode(',', $rule);
+   						$method = 'validate_'.$rule[0];
+   						$param  = $rule[1];
+   						$rule   = $rule[0];
+   					}
+   					else
+   					{
+   						$method = 'validate_'.$rule;
+   					}
+
+   					if(is_callable(array($this, $method)))
+   					{
+   						$result = $this->$method($field, $input, $param);
+
+   						if(is_array($result)) // Validation Failed
+   						{
+   							$this->errors[] = $result;
+   						}
+   					}
+   					else if (isset(self::$validation_methods[$rule]))
+   					{
+   						if (isset($input[$field])) {
+   							$result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
+
+   							$result = $this->$method($field, $input, $param);
+
+   							if(is_array($result)) // Validation Failed
+   							{
+   								$this->errors[] = $result;
+   							}
+   						}
+   					}
+   					else
+   					{
+   						throw new Exception("Validator method '$method' does not exist.");
+   					}
+   				}
+   			}
+   		}
+
+   		return (count($this->errors) > 0)? $this->errors : TRUE;
+    }
+
+    /**
+     * Overloadable method to invoke validation
+     *
+     * @param array $input
+     * @param $rules
+     * @param $field
+     * @return bool
+     */
+    protected function shouldRunValidation(array $input, $rules, $field)
     {
-        $this->errors = array();
-
-        foreach ($ruleset as $field => $rules) {
-            #if(!array_key_exists($field, $input))
-            #{
-            #   continue;
-            #}
-
-            $rules = explode('|', $rules);
-
-            $is_empty = true;
-            if (!is_array($input[$field])) {
-                $is_empty = isset($input[$field]) && trim($input[$field]) != '';
-            }
-
-            if (in_array('required', $rules) || $is_empty) {
-                foreach ($rules as $rule) {
-                    $method = null;
-                    $param = null;
-
-                    if (strstr($rule, 'regex') !== false) {
-                        if (strstr($rule, '&&&') !== false) {
-                            // has params
-
-                                      $rule = explode('&&&', $rule);
-                            $method = 'validate_'.$rule[0];
-                            $param = $rule[1];
-                            $rule = $rule[0];
-                        } else {
-                            $method = 'validate_'.$rule;
-                        }
-                    } else {
-                        if (strstr($rule, ',') !== false) {
-                            // has params
-
-                                      $rule = explode(',', $rule);
-                            $method = 'validate_'.$rule[0];
-                            $param = $rule[1];
-                            $rule = $rule[0];
-                        } else {
-                            $method = 'validate_'.$rule;
-                        }
-                    }
-
-                    if (is_callable(array($this, $method))) {
-                        $result = $this->$method($field, $input, $param);
-
-                        if (is_array($result)) {
-                            // Validation Failed
-
-                            $this->errors[] = $result;
-                        }
-                    } elseif (isset(self::$validation_methods[$rule])) {
-                        if (isset($input[$field])) {
-                            $result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
-
-                            if (!$result) {
-                                // Validation Failed
-
-                                $this->errors[] = array(
-                                    'field' => $field,
-                                    'value' => $input[$field],
-                                    'rule' => $method,
-                                    'param' => $param,
-                                );
-                            }
-                        }
-                    } else {
-                        throw new Exception("Validator method '$method' does not exist.");
-                    }
-                }
-            }
-        }
-
-        return (count($this->errors) > 0) ? $this->errors : true;
+        return in_array("required", $rules) || (isset($input[$field]) && trim($input[$field]) != '');
     }
 
     /**
@@ -2074,4 +2070,5 @@ class GUMP
         );
         }
     }
+
 } // EOC
