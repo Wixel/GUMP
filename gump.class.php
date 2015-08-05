@@ -238,143 +238,152 @@ class GUMP
         }
     }
 
-    /**
-     * Sanitize the input data.
-     *
-     * @param array $input
-     * @param null  $fields
-     * @param bool  $utf8_encode
-     *
-     * @return array
-     */
-    public function sanitize(array $input, $fields = null, $utf8_encode = true)
-    {
-        $magic_quotes = (bool) get_magic_quotes_gpc();
+    	/**
+    	 * Sanitize the input data
+    	 *
+    	 * @access   public
+    	 * @param array $input
+    	 * @param null  $fields
+    	 * @param bool  $utf8_encode
+    	 * @return array
+    	 */
+    	public function sanitize(array $input, $fields = NULL, $utf8_encode = true)
+    	{
+    		$magic_quotes = (bool)get_magic_quotes_gpc();
 
-        if (is_null($fields)) {
-            $fields = array_keys($input);
-        }
+    		if(is_null($fields))
+    		{
+    			$fields = array_keys($input);
+    		}
 
-        $return = array();
+    		$return = array();
 
-        foreach ($fields as $field) {
-            if (!isset($input[$field])) {
-                continue;
-            } else {
-                $value = $input[$field];
+    		foreach($fields as $field)
+    		{
+    			if(!isset($input[$field]))
+    			{
+    				continue;
+    			}
+    			else
+    			{
+    				$value = $input[$field];
+    				if (is_array($value)){
+    					$value = null;
+    				}
+    				if(is_string($value))
+    				{
+    					if($magic_quotes === TRUE)
+    					{
+    						$value = stripslashes($value);
+    					}
 
-                if (is_string($value)) {
-                    if ($magic_quotes === true) {
-                        $value = stripslashes($value);
-                    }
+    					if(strpos($value, "\r") !== FALSE)
+    					{
+    						$value = trim($value);
+    					}
 
-                    if (strpos($value, "\r") !== false) {
-                        $value = trim($value);
-                    }
+    					if(function_exists('iconv') && function_exists('mb_detect_encoding') && $utf8_encode)
+    					{
+    						$current_encoding = mb_detect_encoding($value);
 
-                    if (function_exists('iconv') && function_exists('mb_detect_encoding') && $utf8_encode) {
-                        $current_encoding = mb_detect_encoding($value);
+    						if($current_encoding != 'UTF-8' && $current_encoding != 'UTF-16') {
+    							$value = iconv($current_encoding, 'UTF-8', $value);
+    						}
+    					}
 
-                        if ($current_encoding != 'UTF-8' && $current_encoding != 'UTF-16') {
-                            $value = iconv($current_encoding, 'UTF-8', $value);
-                        }
-                    }
+    					$value = filter_var($value, FILTER_SANITIZE_STRING);
+    				}
 
-                    $value = filter_var($value, FILTER_SANITIZE_STRING);
-                }
+    				$return[$field] = $value;
+    			}
+    		}
 
-                $return[$field] = $value;
-            }
-        }
+    		return $return;
+    	}
 
-        return $return;
-    }
+    	/**
+    	 * Return the error array from the last validation run
+    	 *
+    	 * @return array
+    	 */
+    	public function errors()
+    	{
+    		return $this->errors;
+    	}
 
-    /**
-     * Return the error array from the last validation run.
-     *
-     * @return array
-     */
-    public function errors()
-    {
-        return $this->errors;
-    }
+    	/**
+    	 * Perform data validation against the provided ruleset
+    	 *
+    	 * @access public
+    	 * @param  mixed $input
+    	 * @param  array $ruleset
+    	 * @return mixed
+    	 * @throws Exception
+    	 */
+    	public function validate(array $input, array $ruleset)
+    	{
+    		$this->errors = array();
 
-    /**
-     * Perform data validation against the provided ruleset.
-     *
-     * @param mixed $input
-     * @param array $ruleset
-     *
-     * @return mixed
-     *
-     * @throws Exception
-     */
-    public function validate(array $input, array $ruleset)
-    {
-        $this->errors = array();
+    		foreach($ruleset as $field => $rules)
+    		{
+    			#if(!array_key_exists($field, $input))
+    			#{
+    			#   continue;
+    			#}
 
-        foreach ($ruleset as $field => $rules) {
-            #if(!array_key_exists($field, $input))
-            #{
-            #   continue;
-            #}
+    			$rules = explode('|', $rules);
 
-            $rules = explode('|', $rules);
+    			if(in_array("required", $rules) || (isset($input[$field]) && !is_array($input[$field]) && trim($input[$field]) != ''))
+    			{
+    				foreach($rules as $rule)
+    				{
+    					$method = NULL;
+    					$param  = NULL;
 
-            $is_empty = true;
-            if (!is_array($input[$field])) {
-                $is_empty = isset($input[$field]) && trim($input[$field]) != '';
-            }
+    					if(strstr($rule, ',') !== FALSE) // has params
+    					{
+    						$rule   = explode(',', $rule);
+    						$method = 'validate_'.$rule[0];
+    						$param  = $rule[1];
+    						$rule   = $rule[0];
+    					}
+    					else
+    					{
+    						$method = 'validate_'.$rule;
+    					}
 
-            if (in_array('required', $rules) || $is_empty) {
-                foreach ($rules as $rule) {
-                    $method = null;
-                    $param = null;
+    					if(is_callable(array($this, $method)))
+    					{
+    						$result = $this->$method($field, $input, $param);
 
-                    if (strstr($rule, ',') !== false) {
-                        // has params
+    						if(is_array($result)) // Validation Failed
+    						{
+    							$this->errors[] = $result;
+    						}
+    					}
+    					else if (isset(self::$validation_methods[$rule]))
+    					{
+    						if (isset($input[$field])) {
+    							$result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
 
-                        $rule = explode(',', $rule);
-                        $method = 'validate_'.$rule[0];
-                        $param = $rule[1];
-                        $rule = $rule[0];
-                    } else {
-                        $method = 'validate_'.$rule;
-                    }
+    							$result = $this->$method($field, $input, $param);
 
-                    if (is_callable(array($this, $method))) {
-                        $result = $this->$method($field, $input, $param);
+    							if(is_array($result)) // Validation Failed
+    							{
+    								$this->errors[] = $result;
+    							}
+    						}
+    					}
+    					else
+    					{
+    						throw new Exception("Validator method '$method' does not exist.");
+    					}
+    				}
+    			}
+    		}
 
-                        if (is_array($result)) {
-                            // Validation Failed
-
-                            $this->errors[] = $result;
-                        }
-                    } elseif (isset(self::$validation_methods[$rule])) {
-                        if (isset($input[$field])) {
-                            $result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
-
-                            if (!$result) {
-                                // Validation Failed
-
-                                $this->errors[] = array(
-                                    'field' => $field,
-                                    'value' => $input[$field],
-                                    'rule' => $method,
-                                    'param' => $param,
-                                );
-                            }
-                        }
-                    } else {
-                        throw new Exception("Validator method '$method' does not exist.");
-                    }
-                }
-            }
-        }
-
-        return (count($this->errors) > 0) ? $this->errors : true;
-    }
+    		return (count($this->errors) > 0)? $this->errors : TRUE;
+    	}
 
     /**
      * Set a readable name for a specified field names.
@@ -1950,4 +1959,5 @@ class GUMP
 
         return $value;
     }
+
 } // EOC
