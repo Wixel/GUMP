@@ -1976,6 +1976,34 @@ class GUMP
     }
 
     /**
+     * Determine if the provided field value is a valid GUID (v4)
+     *
+     * Usage: '<index>' => 'guidv4'
+     *
+     * @param string $field
+     * @param string $input
+     * @param string $param field to compare with
+     * @return mixed
+     */
+    protected function validate_guidv4($field, $input, $param = null)
+    {
+        if (!isset($input[$field]) || empty($input[$field])) {
+            return;
+        }
+
+        if (preg_match("/\{?[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}\}?$/", $input[$field])) {
+          return;
+        }
+
+        return array(
+            'field' => $field,
+            'value' => $input[$field],
+            'rule' => __FUNCTION__,
+            'param' => $param,
+        );
+    }
+
+    /**
      * Trims whitespace only when the value is a scalar.
      *
      * @param mixed $value
