@@ -270,11 +270,11 @@ class GUMP
      *
      * @return array
      */
-    public function sanitize(array $input, $fields = null, $utf8_encode = true)
+    public function sanitize(array $input, array $fields = array(), $utf8_encode = true)
     {
         $magic_quotes = (bool) get_magic_quotes_gpc();
 
-        if (is_null($fields)) {
+        if (empty($fields)) {
             $fields = array_keys($input);
         }
 
