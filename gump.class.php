@@ -340,10 +340,6 @@ class GUMP
         $this->errors = array();
 
         foreach ($ruleset as $field => $rules) {
-            #if(!array_key_exists($field, $input))
-            #{
-            #   continue;
-            #}
 
             $rules = explode('|', $rules);
 
@@ -352,13 +348,12 @@ class GUMP
                     $method = null;
                     $param = null;
 
+                    // Check if we have rule parameters
                     if (strstr($rule, ',') !== false) {
-                        // has params
-
-                        $rule = explode(',', $rule);
+                        $rule   = explode(',', $rule);
                         $method = 'validate_'.$rule[0];
-                        $param = $rule[1];
-                        $rule = $rule[0];
+                        $param  = $rule[1];
+                        $rule   = $rule[0];
                     } else {
                         $method = 'validate_'.$rule;
                     }
@@ -366,9 +361,8 @@ class GUMP
                     if (is_callable(array($this, $method))) {
                         $result = $this->$method($field, $input, $param);
 
+                        // Validation failed
                         if (is_array($result)) {
-                            // Validation Failed
-
                             $this->errors[] = $result;
                         }
                     } elseif (isset(self::$validation_methods[$rule])) {
@@ -377,9 +371,8 @@ class GUMP
 
                             $result = $this->$method($field, $input, $param);
 
+                            // Validation failed
                             if (is_array($result)) {
-                                // Validation Failed
-
                                 $this->errors[] = $result;
                             }
                         }
@@ -534,10 +527,10 @@ class GUMP
                 case 'validate_contains':
                     $resp[] = "The <span class=\"$field_class\">$field</span> field needs to contain one of these values: ".implode(', ', $param);
                     break;
-                case 'validate_containsList':
+                case 'validate_contains_list':
                     $resp[] = "The <span class=\"$field_class\">$field</span> field needs contain a value from its drop down list";
                     break;
-                case 'validate_doesNotContainList':
+                case 'validate_doesnt_contain_list':
                     $resp[] = "The <span class=\"$field_class\">$field</span> field contains a value that is not accepted";
                     break;
                 case 'validate_street_address':
@@ -1970,18 +1963,16 @@ class GUMP
             return;
         }
 
-        if (!isset($param) || empty($input[$param])) {
-            return;
+        if ($input[$field] == $input[$param]) {
+          return;
         }
 
-        if ($input[$field] != $input[$param]) {
-            return array(
-                'field' => $field,
-                'value' => $input[$field],
-                'rule' => __FUNCTION__,
-                'param' => $param,
-            );
-        }
+        return array(
+            'field' => $field,
+            'value' => $input[$field],
+            'rule' => __FUNCTION__,
+            'param' => $param,
+        );
     }
 
     /**
