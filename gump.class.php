@@ -1829,12 +1829,11 @@ class GUMP
      * @param string $field
      * @param array  $input
      * @param null   $param
-     *
      * @return mixed
      */
     protected function validate_min_numeric($field, $input, $param = null)
     {
-        if (!isset($input[$field]) || empty($input[$field])) {
+        if (!isset($input[$field])) {
             return;
         }
 
