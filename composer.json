@@ -4,8 +4,8 @@
     "authors": [
         {
             "name": "Sean Nieuwoudt",
-            "homepage": "http://wixelhq.com"
-        },    
+            "homepage": "https://wixelhq.com"
+        },
         {
             "name": "Colleen Emryss",
             "homepage": "http://skitter.tv"
@@ -32,7 +32,7 @@
         }
     ],
     "license": "MIT",
-    "homepage": "http://wixelhq.com/",
+    "homepage": "https://wixelhq.com/",
     "autoload": {
         "files": ["gump.class.php"]
     }
