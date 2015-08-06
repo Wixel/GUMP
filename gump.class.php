@@ -473,25 +473,13 @@ class GUMP
                     $resp[] = "The <span class=\"$field_class\">$field</span> field is required to be a valid email address";
                     break;
                 case 'validate_max_len':
-                    if ($param == 1) {
-                        $resp[] = "The <span class=\"$field_class\">$field</span> field needs to be shorter than $param character";
-                    } else {
-                        $resp[] = "The <span class=\"$field_class\">$field</span> field needs to be shorter than $param characters";
-                    }
+                    $resp[] = "The <span class=\"$field_class\">$field</span> field needs to be $param or shorter in length";
                     break;
                 case 'validate_min_len':
-                    if ($param == 1) {
-                        $resp[] = "The <span class=\"$field_class\">$field</span> field needs to be longer than $param character";
-                    } else {
-                        $resp[] = "The <span class=\"$field_class\">$field</span> field needs to be longer than $param characters";
-                    }
+                    $resp[] = "The <span class=\"$field_class\">$field</span> field needs to be $param or longer in length";
                     break;
                 case 'validate_exact_len':
-                    if ($param == 1) {
-                        $resp[] = "The <span class=\"$field_class\">$field</span> field needs to be exactly $param character in length";
-                    } else {
-                        $resp[] = "The <span class=\"$field_class\">$field</span> field needs to be exactly $param characters in length";
-                    }
+                    $resp[] = "The <span class=\"$field_class\">$field</span> field needs to be exactly $param characters in length";
                     break;
                 case 'validate_alpha':
                     $resp[] = "The <span class=\"$field_class\">$field</span> field may only contain alpha characters(a-z)";
@@ -617,25 +605,13 @@ class GUMP
                     $resp[$field] = "The $field field is required to be a valid email address";
                     break;
                 case 'validate_max_len':
-                    if ($param == 1) {
-                        $resp[$field] = "The $field field needs to be shorter than $param character";
-                    } else {
-                        $resp[$field] = "The $field field needs to be shorter than $param characters";
-                    }
+                    $resp[$field] = "The $field field needs to be $param or shorter in length";
                     break;
                 case 'validate_min_len':
-                    if ($param == 1) {
-                        $resp[$field] = "The $field field needs to be longer than $param character";
-                    } else {
-                        $resp[$field] = "The $field field needs to be longer than $param characters";
-                    }
+                    $resp[$field] = "The $field field needs to be $param or longer in length";
                     break;
                 case 'validate_exact_len':
-                    if ($param == 1) {
-                        $resp[$field] = "The $field field needs to be exactly $param character in length";
-                    } else {
-                        $resp[$field] = "The $field field needs to be exactly $param characters in length";
-                    }
+                    $resp[$field] = "The $field field needs to be exactly $param characters in length";
                     break;
                 case 'validate_alpha':
                     $resp[$field] = "The $field field may only contain alpha characters(a-z)";
