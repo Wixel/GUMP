@@ -1380,20 +1380,20 @@ class GUMP
      */
     protected function validate_boolean($field, $input, $param = null)
     {
-        if (!isset($input[$field]) || empty($input[$field])) {
+        if (!isset($input[$field]) || empty($input[$field]) && $input[$field] !== 0) {
             return;
         }
 
-        $bool = filter_var($input[$field], FILTER_VALIDATE_BOOLEAN);
-
-        if (!is_bool($bool)) {
-            return array(
-                'field' => $field,
-                'value' => $input[$field],
-                'rule' => __FUNCTION__,
-                'param' => $param,
-            );
+        if($input[$field] === true || $input[$field] === false) {
+          return;
         }
+
+        return array(
+            'field' => $field,
+            'value' => $input[$field],
+            'rule' => __FUNCTION__,
+            'param' => $param,
+        );
     }
 
     /**
