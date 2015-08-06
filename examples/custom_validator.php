@@ -10,13 +10,13 @@ GUMP::add_validator("is_object", function($field, $input, $param = NULL) {
 
 // Generic test data
 $input_data = array(
-  'not_object'   => 5,
+  'not_object'   => "asdasd",
   'valid_object' => new stdClass()
 );
 
 $rules = array(
-  'not_object'   => "required|is_object",
-  'valid_object' => "required|is_object"
+  'not_object'   => "is_object",
+  'valid_object' => "is_object"
 );
 
 // METHOD 1 (Long):

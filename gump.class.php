@@ -343,7 +343,7 @@ class GUMP
 
             $rules = explode('|', $rules);
 
-            if (in_array('required', $rules) || (isset($input[$field]) && !is_array($input[$field]) && trim($input[$field]) != '')) {
+            if (in_array('required', $rules) || (isset($input[$field]) && !is_array($input[$field]))) {
                 foreach ($rules as $rule) {
                     $method = null;
                     $param = null;
@@ -358,24 +358,29 @@ class GUMP
                         $method = 'validate_'.$rule;
                     }
 
-                    if (is_callable(array($this, $method))) {
-                        $result = $this->$method($field, $input, $param);
+                    //self::$validation_methods[$rule] = $callback;
 
-                        // Validation failed
+                    if (is_callable(array($this, $method))) {
+                        $result = $this->$method(
+                          $field, $input, $param
+                        );
+
                         if (is_array($result)) {
                             $this->errors[] = $result;
                         }
-                    } elseif (isset(self::$validation_methods[$rule])) {
-                        if (isset($input[$field])) {
-                            $result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
+                    } elseif(isset(self::$validation_methods[$rule])) {
 
-                            $result = $this->$method($field, $input, $param);
+                        $result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
 
-                            // Validation failed
-                            if (is_array($result)) {
-                                $this->errors[] = $result;
-                            }
+                        if($result === false) {
+                          $this->errors[] = array(
+                            'field' => $field,
+                            'value' => $input,
+                            'rule' => self::$validation_methods[$rule],
+                            'param' => $param,
+                          );
                         }
+
                     } else {
                         throw new Exception("Validator method '$method' does not exist.");
                     }
