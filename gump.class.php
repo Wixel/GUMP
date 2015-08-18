@@ -2040,7 +2040,7 @@ class GUMP
     /**
      * Custom regex validator.
      *
-     * Usage: '<index>' => 'regex&&&/regex/'
+     * Usage: '<index>' => 'regex,/your-regex-expression/'
      *
      * @param string $field
      * @param array  $input
