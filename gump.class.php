@@ -12,6 +12,9 @@
  */
 class GUMP
 {
+    //Singleton instance of GUMP
+    protected static $instance = null;
+
     // Validation rules for execution
     protected $validation_rules = array();
 
@@ -29,6 +32,23 @@ class GUMP
 
     // Customer filter methods
     protected static $filter_methods = array();
+
+    // ** ------------------------- Instance Helper ---------------------------- ** //
+    /**
+     * Function to create and return previously created instance
+     *
+     * @return GUMP
+     */
+
+    public static function get_instance(){
+        if(self::$instance === null)
+        {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+
 
     // ** ------------------------- Validation Data ------------------------------- ** //
 
@@ -58,7 +78,7 @@ class GUMP
      */
     public static function is_valid(array $data, array $validators)
     {
-        $gump = new self();
+        $gump = self::get_instance();
 
         $gump->validation_rules($validators);
 
@@ -79,7 +99,7 @@ class GUMP
      */
     public static function filter_input(array $data, array $filters)
     {
-        $gump = new self();
+        $gump = self::get_instance();
 
         return $gump->filter($data, $filters);
     }
