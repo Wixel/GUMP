@@ -1223,7 +1223,7 @@ class GUMP
             return;
         }
 
-        if (!preg_match('/^([a-zÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ])+$/i', $input[$field]) !== false) {
+        if (!preg_match('/^([\p{L}])+$/u', $input[$field]) !== false) {
             return array(
                 'field' => $field,
                 'value' => $input[$field],
@@ -1250,7 +1250,7 @@ class GUMP
             return;
         }
 
-        if (!preg_match('/^([a-z0-9ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ])+$/i', $input[$field]) !== false) {
+        if (!preg_match('/^([\p{N}\p{L}])+$/u', $input[$field]) !== false) {
             return array(
                 'field' => $field,
                 'value' => $input[$field],
@@ -1277,7 +1277,7 @@ class GUMP
             return;
         }
 
-        if (!preg_match('/^([a-z0-9ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ_-])+$/i', $input[$field]) !== false) {
+        if (!preg_match('/^([\p{N}\p{L}_-])+$/u', $input[$field]) !== false) {
             return array(
                 'field' => $field,
                 'value' => $input[$field],
@@ -1304,7 +1304,7 @@ class GUMP
             return;
         }
 
-        if (!preg_match("/^([a-z0-9ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ\s])+$/i", $input[$field]) !== false) {
+        if (!preg_match("/^([\p{N}\p{L}\s])+$/u", $input[$field]) !== false) {
             return array(
                 'field' => $field,
                 'value' => $input[$field],
