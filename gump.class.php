@@ -541,7 +541,7 @@ class GUMP
                     $resp[] = "The <span class=\"$field_class\">$field</span> field needs to contain one of these values: ".implode(', ', $param);
                     break;
                 case 'validate_contains_list':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> field needs contain a value from its drop down list";
+                    $resp[] = "The <span class=\"$field_class\">$field</span> field needs to contain a value from its drop down list";
                     break;
                 case 'validate_doesnt_contain_list':
                     $resp[] = "The <span class=\"$field_class\">$field</span> field contains a value that is not accepted";
