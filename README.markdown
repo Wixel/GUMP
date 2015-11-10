@@ -196,8 +196,8 @@ Available Validators
 * valid_cc `Check for a valid credit card number (Uses the MOD10 Checksum Algorithm)`
 * valid_name `Check for a valid format human name`
 * contains,n `Verify that a value is contained within the pre-defined value set`
-* containsList,n `Verify that a value is contained within the pre-defined value set. The list of valid values must be provided in semicolon-separated list format (like so: value1;value2;value3;..;valuen). If a validation error occurs, the list of valid values is not revelead (this means, the error will just say the input is invalid, but it won't reveal the valid set to the user.`
-* doesNotcontainList,n `Verify that a value is not contained within the pre-defined value set. Semicolon (;) separated, list not outputted. See the rule above for more info.`
+* contains_list,n `Verify that a value is contained within the pre-defined value set. The list of valid values must be provided in semicolon-separated list format (like so: value1;value2;value3;..;valuen). If a validation error occurs, the list of valid values is not revelead (this means, the error will just say the input is invalid, but it won't reveal the valid set to the user.`
+* doesnt_contain_list,n `Verify that a value is not contained within the pre-defined value set. Semicolon (;) separated, list not outputted. See the rule above for more info.`
 * street_address `Checks that the provided string is a likely street address. 1 number, 1 or more space, 1 or more letters`
 * iban `Check for a valid IBAN`
 * min_numeric `Determine if the provided numeric value is higher or equal to a specific value`
