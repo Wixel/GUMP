@@ -1379,14 +1379,16 @@ class GUMP
      *
      * @return mixed
      */
-    protected function validate_boolean($field, $input, $param = null)
+     protected function validate_boolean($field, $input, $param = null)
     {
+        $truthy = array('1','true',true,1,'0','false',false,0);
+        
         if (!isset($input[$field]) || empty($input[$field]) && $input[$field] !== 0) {
             return;
         }
 
-        if($input[$field] === true || $input[$field] === false) {
-          return;
+        if (in_array($input[$field], $truthy, true )) {
+            return;
         }
 
         return array(
