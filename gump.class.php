@@ -1031,6 +1031,10 @@ class GUMP
      */
     protected function validate_doesnt_contain_list($field, $input, $param = null)
     {
+    	if (!isset($input[$field])) {
+            return;
+        }
+        
         $param = trim(strtolower($param));
 
         $value = trim(strtolower($input[$field]));
