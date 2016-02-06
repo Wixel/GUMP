@@ -579,7 +579,7 @@ class GUMP
                 $field = self::$fields[$e['field']];
             }
 
-            $resp[] = $this->get_error_message($rule, $param, "<span class=\"$field_class\">$field</span>");
+            $resp[] = $this->get_error_message($e['rule'], $param, "<span class=\"$field_class\">$field</span>");
         }
 
         if (!$convert_to_string) {
