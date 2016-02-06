@@ -455,6 +455,103 @@ class GUMP
         }
     }
 
+    private function get_error_message($rule, $param, $field_text) {
+        switch($rule) {
+            case 'mismatch':
+                return "There is no validation rule for $field_text";
+                break;
+            case 'validate_required':
+                return "The $field_text field is required";
+                break;
+            case 'validate_valid_email':
+                return "The $field_text field must be a valid email address";
+                break;
+            case 'validate_max_len':
+                return "The $field_text field needs to be $param characters or less";
+                break;
+            case 'validate_min_len':
+                return "The $field_text field needs to be at least $param characters";
+                break;
+            case 'validate_exact_len':
+                return "The $field_text field needs to be exactly $param characters";
+                break;
+            case 'validate_alpha':
+                return "The $field_text field may only contain letters";
+                break;
+            case 'validate_alpha_numeric':
+                return "The $field_text field may only contain numbers or letters";
+                break;
+            case 'validate_alpha_dash':
+                return "The $field_text field may only contain dashes or letters";
+                break;
+            case 'validate_numeric':
+                return "The $field_text field must be a number";
+                break;
+            case 'validate_integer':
+                return "The $field_text field must be a number without a decimal";
+                break;
+            case 'validate_boolean':
+                return "The $field_text field has to be either true or false";
+                break;
+            case 'validate_float':
+                return "The $field_text field must be a number with a decimal point";
+                break;
+            case 'validate_valid_url':
+                return "The $field_text field has to be a URL";
+                break;
+            case 'validate_url_exists':
+                return "The $field_text URL does not exist";
+                break;
+            case 'validate_valid_ip':
+                return "The $field_text field needs to be an IP address";
+                break;
+            case 'validate_valid_cc':
+                return "The $field_text is not a valid credit card number";
+                break;
+            case 'validate_valid_name':
+                return "The $field_text should be a full name";
+                break;
+            case 'validate_contains':
+                return "The $field_text can only be one of the following: ".implode(', ', $param);
+                break;
+            case 'validate_contains_list':
+                return "The $field_text field needs contain a value from its drop down list";
+                break;
+            case 'validate_doesnt_contain_list':
+                return "The $field_text is not a valid option";
+                break;
+            case 'validate_street_address':
+                return "The $field_text field needs to be a valid street address";
+                break;
+            case 'validate_date':
+                return "The $field_text must be a valid date";
+                break;
+            case 'validate_min_numeric':
+                return "The $field_text field needs to be a numeric value, equal to, or higher than $param";
+                break;
+            case 'validate_max_numeric':
+                return "The $field_text field needs to be a numeric value, equal to, or lower than $param";
+                break;
+            case 'validate_starts':
+                return "The $field_text field needs to start with $param";
+                break;
+            case 'validate_extension':
+                return "The $field_text field can have the following extensions $param";
+                break;
+            case 'validate_required_file':
+                return "The $field_text field is required";
+                break;
+            case 'validate_equalsfield':
+                return "The $field_text field does not equal $param field";
+                break;
+            case 'validate_min_age':
+                return "The $field_text field needs to have an age greater than or equal to $param";
+                break;
+            default:
+                return "The $field_text field is invalid";
+        }
+    }
+
     /**
      * Process the validation errors and return human readable error messages.
      *
@@ -482,100 +579,7 @@ class GUMP
                 $field = self::$fields[$e['field']];
             }
 
-            switch ($e['rule']) {
-                case 'mismatch' :
-                    $resp[] = "There is no validation rule for <span class=\"$field_class\">$field</span>";
-                    break;
-                case 'validate_required' :
-                    $resp[] = "The <span class=\"$field_class\">$field</span> field is required";
-                    break;
-                case 'validate_valid_email':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> field must be a valid email address";
-                    break;
-                case 'validate_max_len':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> field needs to be $param characters or less";
-                    break;
-                case 'validate_min_len':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> field needs to be at least $param characters";
-                    break;
-                case 'validate_exact_len':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> field needs to be exactly $param characters";
-                    break;
-                case 'validate_alpha':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> field may only contain letters";
-                    break;
-                case 'validate_alpha_numeric':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> field may only contain numbers or letters";
-                    break;
-                case 'validate_alpha_dash':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> field may only contain dashes or letters";
-                    break;
-                case 'validate_numeric':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> field must be a number";
-                    break;
-                case 'validate_integer':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> field must be a number without a decimal";
-                    break;
-                case 'validate_boolean':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> field has to be either true or false";
-                    break;
-                case 'validate_float':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> field must be a number with a decimal point";
-                    break;
-                case 'validate_valid_url':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> field has to be a URL";
-                    break;
-                case 'validate_url_exists':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> URL does not exist";
-                    break;
-                case 'validate_valid_ip':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> field needs to be an IP address";
-                    break;
-                case 'validate_valid_cc':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> is not a valid credit card number";
-                    break;
-                case 'validate_valid_name':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> should be a full name";
-                    break;
-                case 'validate_contains':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> can only be one of the following: ".implode(', ', $param);
-                    break;
-                case 'validate_contains_list':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> field needs contain a value from its drop down list";
-                    break;
-                case 'validate_doesnt_contain_list':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> is not a valid option";
-                    break;
-                case 'validate_street_address':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a valid street address";
-                    break;
-                case 'validate_date':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> must be a valid date";
-                    break;
-                case 'validate_min_numeric':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a numeric value, equal to, or higher than $param";
-                    break;
-                case 'validate_max_numeric':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> field needs to be a numeric value, equal to, or lower than $param";
-                    break;
-                case 'validate_starts':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> field needs to start with $param";
-                    break;
-                case 'validate_extension':
-                    $resp[] = "The <span class\"$field_class\">$field</span> field can have the following extensions $param";
-                    break;
-                case 'validate_required_file':
-                    $resp[] = "The <span class\"$field_class\">$field</span> field is required";
-                    break;
-                case 'validate_equalsfield':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> field does not equal $param field";
-                    break;
-                case 'validate_min_age':
-                    $resp[] = "The <span class=\"$field_class\">$field</span> field needs to have an age greater than or equal to $param";
-                    break;
-                default:
-                    $resp[] = "The <span class=\"$field_class\">$field</span> field is invalid";
-            }
+            $resp[] = $this->get_error_message($rule, $param, "<span class=\"$field_class\">$field</span>");
         }
 
         if (!$convert_to_string) {
@@ -614,82 +618,7 @@ class GUMP
                 $field = self::$fields[$e['field']];
             }
 
-            switch ($e['rule']) {
-                case 'mismatch' :
-                    $resp[$field] = "There is no validation rule for $field";
-                    break;
-                case 'validate_required':
-                    $resp[$field] = "The $field field is required";
-                    break;
-                case 'validate_valid_email':
-                    $resp[$field] = "The $field field is required to be a valid email address";
-                    break;
-                case 'validate_max_len':
-                    $resp[$field] = "The $field field needs to be $param or shorter in length";
-                    break;
-                case 'validate_min_len':
-                    $resp[$field] = "The $field field needs to be $param or longer in length";
-                    break;
-                case 'validate_exact_len':
-                    $resp[$field] = "The $field field needs to be exactly $param characters in length";
-                    break;
-                case 'validate_alpha':
-                    $resp[$field] = "The $field field may only contain alpha characters(a-z)";
-                    break;
-                case 'validate_alpha_numeric':
-                    $resp[$field] = "The $field field may only contain alpha-numeric characters";
-                    break;
-                case 'validate_alpha_dash':
-                    $resp[$field] = "The $field field may only contain alpha characters &amp; dashes";
-                    break;
-                case 'validate_numeric':
-                    $resp[$field] = "The $field field may only contain numeric characters";
-                    break;
-                case 'validate_integer':
-                    $resp[$field] = "The $field field may only contain a numeric value";
-                    break;
-                case 'validate_boolean':
-                    $resp[$field] = "The $field field may only contain a true or false value";
-                    break;
-                case 'validate_float':
-                    $resp[$field] = "The $field field may only contain a float value";
-                    break;
-                case 'validate_valid_url':
-                    $resp[$field] = "The $field field is required to be a valid URL";
-                    break;
-                case 'validate_url_exists':
-                    $resp[$field] = "The $field URL does not exist";
-                    break;
-                case 'validate_valid_ip':
-                    $resp[$field] = "The $field field needs to contain a valid IP address";
-                    break;
-                case 'validate_valid_cc':
-                    $resp[$field] = "The $field field needs to contain a valid credit card number";
-                    break;
-                case 'validate_valid_name':
-                    $resp[$field] = "The $field field needs to contain a valid human name";
-                    break;
-                case 'validate_contains':
-                    $resp[$field] = "The $field field needs to contain one of these values: ".implode(', ', $param);
-                    break;
-                case 'validate_street_address':
-                    $resp[$field] = "The $field field needs to be a valid street address";
-                    break;
-                case 'validate_date':
-                    $resp[$field] = "The $field field needs to be a valid date";
-                    break;
-                case 'validate_min_numeric':
-                    $resp[$field] = "The $field field needs to be a numeric value, equal to, or higher than $param";
-                    break;
-                case 'validate_max_numeric':
-                    $resp[$field] = "The $field field needs to be a numeric value, equal to, or lower than $param";
-                    break;
-                case 'validate_min_age':
-                    $resp[$field] = "The $field field needs to have an age greater than or equal to $param";
-                    break;
-                default:
-                    $resp[$field] = "The $field field is invalid";
-            }
+            $resp[$field] = $this->get_error_message($e['rule'], $param, $field_human);
         }
 
         return $resp;
