@@ -56,7 +56,7 @@ $invalid_data = array(
 
 $valid_data = array(
 	'missing'   	=> 'This is not missing',
-	'email'     	=> ['sean@wixel.net', 'user@example.com'],
+	'email'     	=> array('sean@wixel.net', 'user@example.com'),
 	'max_len'   	=> '1',
 	'min_len'   	=> '1234',
 	'exact_len' 	=> '1234567890',
