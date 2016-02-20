@@ -24,6 +24,9 @@ class GUMP
     // Instance attribute containing errors from last run
     protected $errors = array();
 
+    // Instance attribute containing custom errors from last run
+    protected static $custom_errors = array();
+
     // Contain readable field names that have been set manually
     protected static $fields = array();
 
@@ -396,7 +399,7 @@ class GUMP
                           $this->errors[] = array(
                             'field' => $field,
                             'value' => $input,
-                            'rule' => self::$validation_methods[$rule],
+                            'rule' => $rule,//self::$validation_methods[$rule],
                             'param' => $param,
                           );
                         }
@@ -688,11 +691,75 @@ class GUMP
                     $resp[$field] = "The $field field needs to have an age greater than or equal to $param";
                     break;
                 default:
-                    $resp[$field] = "The $field field is invalid";
+                    $resp[$field] = $this->get_custom_message($e['rule'], $field, $param);
             }
         }
 
         return $resp;
+    }
+
+     /**
+     * Filter the input data according to the specified filter set.
+     *
+     * @param string $rule - the validation function name - eg. compare_to, min, max
+     *
+     * @param string $message - Custom user message with keywords _field_, _rule_, _param_.
+     *
+     * @return true if success i.e. no errors
+     *
+     * @throws Exception
+     *
+     */ 
+
+    public static function set_custom_validation_message($messages = array())
+    {
+
+        $c_errors = array();
+
+        if(is_array($messages) && !empty($messages))
+        {
+            foreach($messages as $rule=>$message)
+            {
+                if(!is_string($rule) || !is_string($message))
+                 {
+                    throw new Exception("Invalid custom validation message inputs");
+                 }
+
+                 $c_errors[$rule] = $message;
+            }
+        }
+
+        self::$custom_errors = array_merge(self::$custom_errors, $c_errors);
+
+        return true;
+
+    }
+
+     /**
+     * Filter the input data according to the specified filter set.
+     *
+     * @param string $field - field name Eg. email, password - the actual name value used in form
+     * @param string $rule - the validation function name - eg. compare_to, min, max
+     *
+     * @param string param - the parameter value - eg. any number, custom text, other field name.
+     *
+     * @return string
+     */
+
+    public function get_custom_message($rule, $field, $param)
+    {
+        $err = self::$custom_errors;
+
+        if(!empty($err) && array_key_exists($rule, $err))
+        {
+             $these = array("_rule_", "_field_", "_param_");
+             $with_this   = array($rule, $field, ucwords($param));
+
+            return str_replace($these, $with_this, $err[$rule]);
+        }
+        else
+            return "The $field field is invalid";
+
     }
 
     /**
