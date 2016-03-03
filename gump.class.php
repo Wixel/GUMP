@@ -143,14 +143,14 @@ class GUMP
      *
      * @return bool
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public static function add_validator($rule, $callback)
     {
         $method = 'validate_'.$rule;
 
         if (method_exists(__CLASS__, $method) || isset(self::$validation_methods[$rule])) {
-            throw new \Exception("Validator rule '$rule' already exists.");
+            throw new Exception("Validator rule '$rule' already exists.");
         }
 
         self::$validation_methods[$rule] = $callback;
@@ -166,14 +166,14 @@ class GUMP
      *
      * @return bool
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public static function add_filter($rule, $callback)
     {
         $method = 'filter_'.$rule;
 
         if (method_exists(__CLASS__, $method) || isset(self::$filter_methods[$rule])) {
-            throw new \Exception("Filter rule '$rule' already exists.");
+            throw new Exception("Filter rule '$rule' already exists.");
         }
 
         self::$filter_methods[$rule] = $callback;
@@ -242,7 +242,7 @@ class GUMP
      *
      * @return array
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function run(array $data, $check_fields = false)
     {
@@ -356,7 +356,7 @@ class GUMP
      *
      * @return mixed
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function validate(array $input, array $ruleset)
     {
@@ -410,7 +410,7 @@ class GUMP
                         }
 
                     } else {
-                        throw new \Exception("Validator method '$method' does not exist.");
+                        throw new Exception("Validator method '$method' does not exist.");
                     }
                 }
             }
@@ -712,11 +712,11 @@ class GUMP
      * @param mixed $input
      * @param array $filterset
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return mixed
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function filter(array $input, array $filterset)
     {
@@ -746,7 +746,7 @@ class GUMP
                 } elseif (isset(self::$filter_methods[$filter])) {
                     $input[$field] = call_user_func(self::$filter_methods[$filter], $input[$field], $params);
                 } else {
-                    throw new \Exception("Filter method '$filter' does not exist.");
+                    throw new Exception("Filter method '$filter' does not exist.");
                 }
             }
         }
@@ -1073,7 +1073,7 @@ class GUMP
      */
     protected function validate_required($field, $input, $param = null)
     {
-		var_dump($param); 
+	
         if (isset($input[$field]) && ($input[$field] === false || $input[$field] === 0 || $input[$field] === 0.0 || $input[$field] === '0' || !empty($input[$field]))) {
             return;
         }
