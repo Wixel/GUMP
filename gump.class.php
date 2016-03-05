@@ -338,7 +338,9 @@ class GUMP
                         }
                     }
 
-                    $value = filter_var($value, FILTER_SANITIZE_STRING);
+                    // old code - filter_var($value, FILTER_SANITIZE_STRING);
+                    // See #106 https://github.com/Wixel/GUMP/issues/106
+                    $value = $this->filter_basic_tags($value);
                 }
 
                 $return[$field] = $value;
