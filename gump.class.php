@@ -55,8 +55,8 @@ class GUMP
     public static $basic_tags = '<br><p><a><strong><b><i><em><img><blockquote><code><dd><dl><hr><h1><h2><h3><h4><h5><h6><label><ul><li><span><sub><sup>';
 
     // By default the instance_tags are the basic tags, but they can be changed on a per instance
-    // of GUMP basis.
-    public $instance_tags = $basic_tags;
+    // of GUMP basis (see the constructor)
+    public $instance_tags;
 
     public static $en_noise_words = "about,after,all,also,an,and,another,any,are,as,at,be,because,been,before,
 				  				  	 being,between,both,but,by,came,can,come,could,did,do,each,for,from,get,
@@ -69,6 +69,15 @@ class GUMP
 
     // field characters below will be replaced with a space.
     protected $fieldCharsToRemove = array('_', '-');
+
+    public function __construct($opts = array()) {
+      $this->instance_tags = static::$basic_tags;
+
+      // permit overrides
+      foreach($opts as $key => $value) {
+        $this->$key = $value;
+      }
+    }
 
     // ** ------------------------- Validation Helpers ---------------------------- ** //
 
