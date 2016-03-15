@@ -1318,6 +1318,33 @@ class GUMP
     }
 
     /**
+     * Determine if the provided value contains only alpha numeric characters with spaces, dashed and underscores.
+     *
+     * Usage: '<index>' => 'alpha_space_dash'
+     *
+     * @param string $field
+     * @param array  $input
+     * @param null   $param
+     *
+     * @return mixed
+     */
+    protected function validate_alpha_space_dash($field, $input, $param = null)
+    {
+        if (!isset($input[$field]) || empty($input[$field])) {
+            return;
+        }
+
+        if (!preg_match("/^([a-z0-9ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ\s_-])+$/i", $input[$field]) !== false) {
+            return array(
+                'field' => $field,
+                'value' => $input[$field],
+                'rule' => __FUNCTION__,
+                'param' => $param,
+            );
+        }
+    }
+
+    /**
      * Determine if the provided value is a valid number or numeric string.
      *
      * Usage: '<index>' => 'numeric'
