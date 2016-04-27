@@ -570,6 +570,9 @@ class GUMP
                 case 'validate_equalsfield':
                     $resp[] = "The <span class=\"$field_class\">$field</span> field does not equal $param field";
                     break;
+                case 'validate_equals':
+                    $resp[] = "The <span class=\"$field_class\">$field</span> field does not equal to requested";
+                    break;
                 case 'validate_min_age':
                     $resp[] = "The <span class=\"$field_class\">$field</span> field needs to have an age greater than or equal to $param";
                     break;
@@ -1965,6 +1968,35 @@ class GUMP
         }
 
         if ($input[$field] == $input[$param]) {
+          return;
+        }
+
+        return array(
+            'field' => $field,
+            'value' => $input[$field],
+            'rule' => __FUNCTION__,
+            'param' => $param,
+        );
+    }
+
+    /**
+     * Determine if the value of parameter equals current field value.
+     *
+     * Usage: '<index>' => 'equals,Z'
+     *
+     * @param string $field
+     * @param string $input
+     * @param string $param value to compare with
+     *
+     * @return mixed
+     */
+    protected function validate_equals($field, $input, $param = null)
+    {
+        if (!isset($input[$field]) || empty($input[$field])) {
+            return;
+        }
+
+        if ($input[$field] == $param) {
           return;
         }
 
