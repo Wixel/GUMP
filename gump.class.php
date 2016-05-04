@@ -562,10 +562,10 @@ class GUMP
                     $resp[] = "The <span class=\"$field_class\">$field</span> field needs to start with $param";
                     break;
                 case 'validate_extension':
-                    $resp[] = "The <span class\"$field_class\">$field</span> field can have the following extensions $param";
+                    $resp[] = "The <span class=\"$field_class\">$field</span> field can have the following extensions $param";
                     break;
                 case 'validate_required_file':
-                    $resp[] = "The <span class\"$field_class\">$field</span> field is required";
+                    $resp[] = "The <span class=\"$field_class\">$field</span> field is required";
                     break;
                 case 'validate_equalsfield':
                     $resp[] = "The <span class=\"$field_class\">$field</span> field does not equal $param field";
