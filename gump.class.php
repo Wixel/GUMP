@@ -924,6 +924,19 @@ class GUMP
     }
 
     /**
+     * Sanitize the string by removing illegal characters from float numbers.
+     *
+     * @param string $value
+     * @param array  $params
+     *
+     * @return string
+     */
+    protected function filter_sanitize_floats($value, $params = null)
+    {
+        return filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+    }
+
+    /**
      * Filter out all HTML tags except the defined basic tags.
      *
      * @param string $value
