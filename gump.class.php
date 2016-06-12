@@ -306,7 +306,7 @@ class GUMP
             } else {
                 $value = $input[$field];
                 if (is_array($value)) {
-                    $value = null;
+                    $value = $this->sanitize($value, array(), $utf8_encode);
                 }
                 if (is_string($value)) {
                     if ($magic_quotes === true) {
@@ -363,46 +363,67 @@ class GUMP
 
             $rules = explode('|', $rules);
 
-            if (in_array('required', $rules) || (isset($input[$field]) && !is_array($input[$field]))) {
-                foreach ($rules as $rule) {
-                    $method = null;
-                    $param = null;
+            if (in_array('required', $rules) || (isset($input[$field]))) {
+                // Some interesting mechanics have to be done to support
+                // arrays while maintaining minimal code impact.
+                if(is_array($input[$field])) {
+                    $input_array = $input[$field];
+                } else {
+                    // First we make everything an array to make
+                    // our conditional checks easier.  This also
+                    // exists as our copy (see below why we need this)
+                    $input_array = array($input[$field]);
+                } 
+			
+                foreach ($input_array as $value) {
+                    // We don't pass an actual value to the validators. Instead
+                    // we pass the whole object along with the field we want validated.
+                    // It is assumed that this field is not an array. That means that
+                    // we replace our local copy of the field with the array index we 
+                    // are looking at.
 
-                    // Check if we have rule parameters
-                    if (strstr($rule, ',') !== false) {
-                        $rule   = explode(',', $rule);
-                        $method = 'validate_'.$rule[0];
-                        $param  = $rule[1];
-                        $rule   = $rule[0];
-                    } else {
-                        $method = 'validate_'.$rule;
-                    }
+                    $input[$field] = $value;
 
-                    //self::$validation_methods[$rule] = $callback;
+                    foreach ($rules as $rule) {
+                        $method = null;
+                        $param = null;
 
-                    if (is_callable(array($this, $method))) {
-                        $result = $this->$method(
-                          $field, $input, $param
-                        );
-
-                        if (is_array($result)) {
-                            $this->errors[] = $result;
-                        }
-                    } elseif(isset(self::$validation_methods[$rule])) {
-
-                        $result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
-
-                        if($result === false) {
-                          $this->errors[] = array(
-                            'field' => $field,
-                            'value' => $input,
-                            'rule' => self::$validation_methods[$rule],
-                            'param' => $param,
-                          );
+                        // Check if we have rule parameters
+                        if (strstr($rule, ',') !== false) {
+                            $rule   = explode(',', $rule);
+                            $method = 'validate_'.$rule[0];
+                            $param  = $rule[1];
+                            $rule   = $rule[0];
+                        } else {
+                            $method = 'validate_'.$rule;
                         }
 
-                    } else {
-                        throw new Exception("Validator method '$method' does not exist.");
+                        //self::$validation_methods[$rule] = $callback;
+
+                        if (is_callable(array($this, $method))) {
+                            $result = $this->$method(
+                              $field, $input, $param
+                            );
+
+                            if (is_array($result)) {
+                                $this->errors[] = $result;
+                            }
+                        } elseif(isset(self::$validation_methods[$rule])) {
+
+                            $result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
+
+                            if($result === false) {
+                              $this->errors[] = array(
+                                'field' => $field,
+                                'value' => $input,
+                                'rule' => self::$validation_methods[$rule],
+                                'param' => $param,
+                              );
+                            }
+
+                        } else {
+                            throw new Exception("Validator method '$method' does not exist.");
+                        }
                     }
                 }
             }
