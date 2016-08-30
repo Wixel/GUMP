@@ -55,13 +55,13 @@ class GUMP
     public static $basic_tags = '<br><p><a><strong><b><i><em><img><blockquote><code><dd><dl><hr><h1><h2><h3><h4><h5><h6><label><ul><li><span><sub><sup>';
 
     public static $en_noise_words = "about,after,all,also,an,and,another,any,are,as,at,be,because,been,before,
-				  				  	 being,between,both,but,by,came,can,come,could,did,do,each,for,from,get,
-				  				  	 got,has,had,he,have,her,here,him,himself,his,how,if,in,into,is,it,its,it's,like,
-			      				  	 make,many,me,might,more,most,much,must,my,never,now,of,on,only,or,other,
-				  				  	 our,out,over,said,same,see,should,since,some,still,such,take,than,that,
-				  				  	 the,their,them,then,there,these,they,this,those,through,to,too,under,up,
-				  				  	 very,was,way,we,well,were,what,where,which,while,who,with,would,you,your,a,
-				  				  	 b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,$,1,2,3,4,5,6,7,8,9,0,_";
+                                     being,between,both,but,by,came,can,come,could,did,do,each,for,from,get,
+                                     got,has,had,he,have,her,here,him,himself,his,how,if,in,into,is,it,its,it's,like,
+                                     make,many,me,might,more,most,much,must,my,never,now,of,on,only,or,other,
+                                     our,out,over,said,same,see,should,since,some,still,such,take,than,that,
+                                     the,their,them,then,there,these,they,this,those,through,to,too,under,up,
+                                     very,was,way,we,well,were,what,where,which,while,who,with,would,you,your,a,
+                                     b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,$,1,2,3,4,5,6,7,8,9,0,_";
 
     // field characters below will be replaced with a space.
     protected $fieldCharsToRemove = array('_', '-');
@@ -442,8 +442,8 @@ class GUMP
      * Usage:
      *
      * GUMP::set_field_names(array(
-     * 	"name" => "My Lovely Name",
-     * 	"username" => "My Beloved Username",
+     *  "name" => "My Lovely Name",
+     *  "username" => "My Beloved Username",
      * ));
      *
      * @param array $array
@@ -960,6 +960,42 @@ class GUMP
     protected function filter_whole_number($value, $params = null)
     {
         return intval($value);
+    }
+
+    /**
+     * Convert MS Word special characters to web safe characters.
+     * [“, ”, ‘, ’, –, …] => [", ", ', ', -, ...]
+     *
+     * @param string $value
+     * @param array  $params
+     *
+     * @return string
+     */
+    protected function filter_ms_word_characters($value, $params = null)
+    {
+        $word_open_double  = '“';
+        $word_close_double = '”';
+        $web_safe_double   = '"';
+
+        $value = str_replace(array($word_open_double, $word_close_double), $web_safe_double, $value);
+
+        $word_open_single  = '‘';
+        $word_close_single = '’';
+        $web_safe_single   = "'";
+
+        $value = str_replace(array($word_open_single, $word_close_single), $web_safe_single, $value);
+
+        $word_em     = '–';
+        $web_safe_em = '-';
+
+        $value = str_replace($word_em, $web_safe_em, $value);
+
+        $word_ellipsis = '…';
+        $web_safe_em   = '...';
+
+        $value = str_replace($word_ellipsis, $web_safe_em, $value);
+
+        return $value;
     }
 
     // ** ------------------------- Validators ------------------------------------ ** //
@@ -2052,12 +2088,12 @@ class GUMP
      * Examples:
      *
      *  555-555-5555: valid
-     *	5555425555: valid
-     *	555 555 5555: valid
-     *	1(519) 555-4444: valid
-     *	1 (519) 555-4422: valid
-     *	1-555-555-5555: valid
-     *	1-(555)-555-5555: valid
+     *  5555425555: valid
+     *  555 555 5555: valid
+     *  1(519) 555-4444: valid
+     *  1 (519) 555-4422: valid
+     *  1-555-555-5555: valid
+     *  1-(555)-555-5555: valid
      */
     protected function validate_phone_number($field, $input, $param = null)
     {
