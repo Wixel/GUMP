@@ -306,7 +306,7 @@ class GUMP
             } else {
                 $value = $input[$field];
                 if (is_array($value)) {
-                    $value = sanitize($value);
+                    $value = $this->sanitize($value);
                 }
                 if (is_string($value)) {
                     if ($magic_quotes === true) {
