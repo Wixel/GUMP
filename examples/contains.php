@@ -19,13 +19,14 @@ $_POST_VALID = array(
 );
 
 $valid = $validator->validate(
-  $_POST_VALID, $rules
+    $_POST_VALID,
+    $rules
 );
 
-if($valid !== true) {
-  echo $validator->get_readable_errors(true);
+if ($valid !== true) {
+    echo $validator->get_readable_errors(true);
 } else {
-  echo "Validation passed! \n";
+    echo "Validation passed! \n";
 }
 
 echo "\nINVALID DATA TEST:\n\n";
@@ -37,12 +38,13 @@ $_POST_INVALID = array(
 );
 
 $invalid = $validator->validate(
-  $_POST_INVALID, $rules
+    $_POST_INVALID,
+    $rules
 );
 
-if($invalid !== true) {
-  echo $validator->get_readable_errors(true);
-  echo "\n\n";
+if ($invalid !== true) {
+    echo $validator->get_readable_errors(true);
+    echo "\n\n";
 } else {
-  echo "Validation passed!\n\n";
+    echo "Validation passed!\n\n";
 }

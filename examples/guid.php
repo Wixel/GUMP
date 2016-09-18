@@ -8,11 +8,11 @@ $data = array(
 );
 
 $is_valid = GUMP::is_valid($data, array(
-	'guid' => 'required|guidv4',
+    'guid' => 'required|guidv4',
 ));
 
-if($is_valid === true) {
-	// continue
+if ($is_valid === true) {
+    // continue
 } else {
-	print_r($is_valid);
+    print_r($is_valid);
 }

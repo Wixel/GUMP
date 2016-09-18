@@ -10,6 +10,7 @@
  *
  * @version     1.4
  */
+
 class GUMP
 {
     //Singleton instance of GUMP
@@ -40,9 +41,9 @@ class GUMP
      * @return GUMP
      */
 
-    public static function get_instance(){
-        if(self::$instance === null)
-        {
+    public static function get_instance()
+    {
+        if (self::$instance === null) {
             self::$instance = new self();
         }
         return self::$instance;
@@ -52,7 +53,8 @@ class GUMP
 
     // ** ------------------------- Validation Data ------------------------------- ** //
 
-    public static $basic_tags = '<br><p><a><strong><b><i><em><img><blockquote><code><dd><dl><hr><h1><h2><h3><h4><h5><h6><label><ul><li><span><sub><sup>';
+    public static $basic_tags = '<br><p><a><strong><b><i><em><img><blockquote><code>
+                                 <dd><dl><hr><h1><h2><h3><h4><h5><h6><label><ul><li><span><sub><sup>';
 
     public static $en_noise_words = "about,after,all,also,an,and,another,any,are,as,at,be,because,been,before,
                                      being,between,both,but,by,came,can,come,could,did,do,each,for,from,get,
@@ -188,15 +190,15 @@ class GUMP
      */
     public static function field($key, array $array, $default = null)
     {
-      if(!is_array($array)) {
-        return null;
-      }
+        if (!is_array($array)) {
+            return null;
+        }
 
-      if(isset($array[$key])) {
-        return $array[$key];
-      } else {
-        return $default;
-      }
+        if (isset($array[$key])) {
+            return $array[$key];
+        } else {
+            return $default;
+        }
     }
 
     /**
@@ -246,7 +248,8 @@ class GUMP
         $data = $this->filter($data, $this->filter_rules());
 
         $validated = $this->validate(
-            $data, $this->validation_rules()
+            $data,
+            $this->validation_rules()
         );
 
         if ($check_fields === true) {
@@ -360,7 +363,6 @@ class GUMP
         $this->errors = array();
 
         foreach ($ruleset as $field => $rules) {
-
             $rules = explode('|', $rules);
 
             if (in_array('required', $rules) || (isset($input[$field]) && !is_array($input[$field]))) {
@@ -388,19 +390,17 @@ class GUMP
                         if (is_array($result)) {
                             $this->errors[] = $result;
                         }
-                    } elseif(isset(self::$validation_methods[$rule])) {
-
+                    } elseif (isset(self::$validation_methods[$rule])) {
                         $result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
 
-                        if($result === false) {
-                          $this->errors[] = array(
-                            'field' => $field,
-                            'value' => $input,
-                            'rule' => self::$validation_methods[$rule],
-                            'param' => $param,
-                          );
+                        if ($result === false) {
+                            $this->errors[] = array(
+                                'field' => $field,
+                                'value' => $input,
+                                'rule' => self::$validation_methods[$rule],
+                                'param' => $param,
+                            );
                         }
-
                     } else {
                         throw new Exception("Validator method '$method' does not exist.");
                     }
@@ -483,10 +483,10 @@ class GUMP
             }
 
             switch ($e['rule']) {
-                case 'mismatch' :
+                case 'mismatch':
                     $resp[] = "There is no validation rule for <span class=\"$field_class\">$field</span>";
                     break;
-                case 'validate_required' :
+                case 'validate_required':
                     $resp[] = "The <span class=\"$field_class\">$field</span> field is required";
                     break;
                 case 'validate_valid_email':
@@ -615,7 +615,7 @@ class GUMP
             }
 
             switch ($e['rule']) {
-                case 'mismatch' :
+                case 'mismatch':
                     $resp[$field] = "There is no validation rule for $field";
                     break;
                 case 'validate_required':
@@ -990,10 +990,10 @@ class GUMP
 
         $value = str_replace($word_em, $web_safe_em, $value);
 
-        $word_ellipsis = '…';
-        $web_safe_em   = '...';
+        $word_ellipsis     = '…';
+        $web_safe_ellipsis = '...';
 
-        $value = str_replace($word_ellipsis, $web_safe_em, $value);
+        $value = str_replace($word_ellipsis, $web_safe_ellipsis, $value);
 
         return $value;
     }
@@ -1117,7 +1117,12 @@ class GUMP
      */
     protected function validate_required($field, $input, $param = null)
     {
-        if (isset($input[$field]) && ($input[$field] === false || $input[$field] === 0 || $input[$field] === 0.0 || $input[$field] === '0' || !empty($input[$field]))) {
+        if (isset($input[$field]) &&
+            ($input[$field] === false ||
+            $input[$field] === 0 ||
+            $input[$field] === 0.0 ||
+            $input[$field] === '0' ||
+            !empty($input[$field]))) {
             return;
         }
 
@@ -1440,8 +1445,8 @@ class GUMP
             return;
         }
 
-        if($input[$field] === true || $input[$field] === false) {
-          return;
+        if ($input[$field] === true || $input[$field] === false) {
+            return;
         }
 
         return array(
@@ -1955,11 +1960,11 @@ class GUMP
        *
        * @return mixed
        */
-      protected function validate_required_file($field, $input, $param = null)
-      {
-          if ($input[$field]['error'] !== 4) {
-              return;
-          }
+    protected function validate_required_file($field, $input, $param = null)
+    {
+        if ($input[$field]['error'] !== 4) {
+            return;
+        }
 
           return array(
               'field' => $field,
@@ -1967,7 +1972,7 @@ class GUMP
               'rule' => __FUNCTION__,
               'param' => $param,
           );
-      }
+    }
 
     /**
      * check the uploaded file for extension
@@ -2020,7 +2025,7 @@ class GUMP
         }
 
         if ($input[$field] == $input[$param]) {
-          return;
+            return;
         }
 
         return array(
@@ -2048,7 +2053,7 @@ class GUMP
         }
 
         if (preg_match("/\{?[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}\}?$/", $input[$field])) {
-          return;
+            return;
         }
 
         return array(
@@ -2104,11 +2109,11 @@ class GUMP
         $regex = '/^(\d[\s-]?)?[\(\[\s-]{0,2}?\d{3}[\)\]\s-]{0,2}?\d{3}[\s-]?\d{4}$/i';
         if (!preg_match($regex, $input[$field])) {
             return array(
-          'field' => $field,
-          'value' => $input[$field],
-          'rule' => __FUNCTION__,
-          'param' => $param,
-        );
+                'field' => $field,
+                'value' => $input[$field],
+                'rule' => __FUNCTION__,
+                'param' => $param,
+            );
         }
     }
 
@@ -2131,11 +2136,11 @@ class GUMP
         $regex = $param;
         if (!preg_match($regex, $input[$field])) {
             return array(
-          'field' => $field,
-          'value' => $input[$field],
-          'rule' => __FUNCTION__,
-          'param' => $param,
-        );
+                'field' => $field,
+                'value' => $input[$field],
+                'rule' => __FUNCTION__,
+                'param' => $param,
+            );
         }
     }
 
@@ -2157,11 +2162,11 @@ class GUMP
 
         if (!is_string($input[$field]) || !is_object(json_decode($input[$field]))) {
             return array(
-          'field' => $field,
-          'value' => $input[$field],
-          'rule' => __FUNCTION__,
-          'param' => $param,
-        );
+                'field' => $field,
+                'value' => $input[$field],
+                'rule' => __FUNCTION__,
+                'param' => $param,
+            );
         }
     }
 } // EOC

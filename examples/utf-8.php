@@ -8,17 +8,17 @@ ini_set('display_errors', 1);
 require "../gump.class.php";
 
 $data = array(
-	'one' => 'Freiheit, Mobilität und Unabhängigkeit lebt. ö, Ä, é, or ß',
-	'two' => 'ß'
+    'one' => 'Freiheit, Mobilität und Unabhängigkeit lebt. ö, Ä, é, or ß',
+    'two' => 'ß'
 );
 
 $validated = GUMP::is_valid($data, array(
-	'one' => 'required|min_len,10',
-	'two' => 'required|min_len,1',
+    'one' => 'required|min_len,10',
+    'two' => 'required|min_len,1',
 ));
 
-if($validated === true) {
-	echo "Valid Text\n";
+if ($validated === true) {
+    echo "Valid Text\n";
 } else {
-	print_r($validated);
+    print_r($validated);
 }
