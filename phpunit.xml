@@ -1,0 +1,21 @@
+<phpunit bootstrap="tests/bootstrap.php" colors="true">
+
+    <logging>
+        <log type="coverage-clover" target="clover.xml" />
+        <log type="coverage-html" target="tests/coverage" />
+    </logging>
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix="Test.php">./tests/validators</directory>
+            <file>gump.class.php</file>
+        </whitelist>
+    </filter>
+
+    <testsuites>
+        <testsuite>
+            <directory>./tests/validators</directory>
+        </testsuite>
+    </testsuites>
+
+</phpunit>
