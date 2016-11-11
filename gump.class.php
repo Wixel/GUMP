@@ -61,9 +61,9 @@ class GUMP
         'mismatch'  => 'There is no validation rule for <span class=\"[field_class]\">[field]</span>',
         'validate_required'  => 'The <span class=\"[field_class]\">[field]</span> field is required',
         'validate_valid_email' => 'The <span class=\"[field_class]\">[field]</span> field is required to be a valid email address',
-        'validate_max_len' => 'The <span class=\"[field_class]\">[field]</span> field needs to be $param or shorter in length',
-        'validate_min_len' => 'The <span class=\"[field_class]\">[field]</span> field needs to be $param or longer in length',
-        'validate_exact_len' => 'The <span class=\"[field_class]\">[field]</span> field needs to be exactly $param characters in length',
+        'validate_max_len' => 'The <span class=\"[field_class]\">[field]</span> field needs to be [param] or shorter in length',
+        'validate_min_len' => 'The <span class=\"[field_class]\">[field]</span> field needs to be [param] or longer in length',
+        'validate_exact_len' => 'The <span class=\"[field_class]\">[field]</span> field needs to be exactly [param] characters in length',
         'validate_alpha' => 'The <span class=\"[field_class]\">[field]</span> field may only contain alpha characters(a-z)',
         'validate_alpha_numeric' => 'The <span class=\"[field_class]\">[field]</span> field may only contain alpha-numeric characters',
         'validate_alpha_dash' => 'The <span class=\"[field_class]\">[field]</span> field may only contain alpha characters &amp; dashes',
@@ -76,18 +76,18 @@ class GUMP
         'validate_valid_ip' => 'The <span class=\"[field_class]\">[field]</span> field needs to contain a valid IP address',
         'validate_valid_cc' => 'The <span class=\"[field_class]\">[field]</span> field needs to contain a valid credit card number',
         'validate_valid_name' => 'The <span class=\"[field_class]\">[field]</span> field needs to contain a valid human name',
-        'validate_contains' => 'The <span class=\"[field_class]\">[field]</span> field needs to contain one of these values: ".implode(', ', $param',
+        'validate_contains' => 'The <span class=\"[field_class]\">[field]</span> field needs to contain one of these values: ".implode(', ', [param]',
         'validate_contains_list' => 'The <span class=\"[field_class]\">[field]</span> field needs to contain a value from its drop down list',
         'validate_doesnt_contain_list' => 'The <span class=\"[field_class]\">[field]</span> field contains a value that is not accepted',
         'validate_street_address' => 'The <span class=\"[field_class]\">[field]</span> field needs to be a valid street address',
         'validate_date' => 'The <span class=\"[field_class]\">[field]</span> field needs to be a valid date',
-        'validate_min_numeric' => 'The <span class=\"[field_class]\">[field]</span> field needs to be a numeric value, equal to, or higher than $param',
-        'validate_max_numeric' => 'The <span class=\"[field_class]\">[field]</span> field needs to be a numeric value, equal to, or lower than $param',
-        'validate_starts' => 'The <span class=\"[field_class]\">[field]</span> field needs to start with $param',
-        'validate_extension' => 'The <span class=\"[field_class]\">[field]</span> field can have the following extensions $param',
+        'validate_min_numeric' => 'The <span class=\"[field_class]\">[field]</span> field needs to be a numeric value, equal to, or higher than [param]',
+        'validate_max_numeric' => 'The <span class=\"[field_class]\">[field]</span> field needs to be a numeric value, equal to, or lower than [param]',
+        'validate_starts' => 'The <span class=\"[field_class]\">[field]</span> field needs to start with [param]',
+        'validate_extension' => 'The <span class=\"[field_class]\">[field]</span> field can have the following extensions [param]',
         'validate_required_file' => 'The <span class=\"[field_class]\">[field]</span> field is required',
-        'validate_equalsfield' => 'The <span class=\"[field_class]\">[field]</span> field does not equal $param field',
-        'validate_min_age' => 'The <span class=\"[field_class]\">[field]</span> field needs to have an age greater than or equal to $param'
+        'validate_equalsfield' => 'The <span class=\"[field_class]\">[field]</span> field does not equal [param] field',
+        'validate_min_age' => 'The <span class=\"[field_class]\">[field]</span> field needs to have an age greater than or equal to [param]'
     );
 
     // Custom validation methods
