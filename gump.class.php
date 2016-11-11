@@ -650,11 +650,11 @@ class GUMP
             {
                 $tags = array('[rule]', '[field]', '[param]');
                 $values = array($e['rule'], $field, ucwords($param));
-                $resp[$field] = str_replace($tags, $values, $error_template);
+                $resp[$e['field']] = str_replace($tags, $values, $error_template);
             }
             else
             {
-                $resp[$field] = "The $field field is invalid";
+                $resp[$e['field']] = "The $field field is invalid";
             }
         }
 
