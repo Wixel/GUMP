@@ -196,6 +196,42 @@ class GUMP
     }
 
     /**
+     * Adds a custom error message or overrides and existing one.
+     *
+     * @param string   $key
+     * @param string   $error
+     * @param string   $make_readable
+     *
+     * @return bool
+     *
+     */
+    public static function add_error_message($key, $error, $make_readable = false)
+    {
+        self::$error_templates[$key] = $error;
+        
+        if($make_readable) {
+            $error = str_replace("[field]", "<span class=\"[field_class]\">[field]</span>", $error);
+            self::add_readable_error_message($key, $error);
+        }
+
+        return true;
+    }
+
+    /**
+     * Adds a custom readable error message or overrides and existing one.
+     *
+     * @param string   $error
+     *
+     * @return bool
+     *
+     */
+    public static function add_readable_error_message($key, $error)
+    {
+        self::$error_templates[$key] = $error;
+        return true;
+    }
+
+    /**
      * Adds a custom validation rule using a callback function.
      *
      * @param string   $rule
@@ -315,6 +351,7 @@ class GUMP
         if ($check_fields === true) {
             $this->check_fields($data);
         }
+        
 
         if ($validated !== true) {
             return false;
