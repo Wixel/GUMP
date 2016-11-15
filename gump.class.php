@@ -220,6 +220,7 @@ class GUMP
     /**
      * Adds a custom readable error message or overrides and existing one.
      *
+     * @param string   $key
      * @param string   $error
      *
      * @return bool
