@@ -379,6 +379,10 @@ class GUMP
                     }
 
                     //self::$validation_methods[$rule] = $callback;
+                                        
+                    if (substr($param, 0, 1) == '_' && isset($input[substr($param, 1)])) {
+                        $param = $input[substr($param, 1)];
+                    }
 
                     if (is_callable(array($this, $method))) {
                         $result = $this->$method(
