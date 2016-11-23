@@ -396,7 +396,7 @@ class GUMP
                           $this->errors[] = array(
                             'field' => $field,
                             'value' => $input,
-                            'rule' => self::$validation_methods[$rule],
+                            'rule' => $rule,
                             'param' => $param,
                           );
                         }
