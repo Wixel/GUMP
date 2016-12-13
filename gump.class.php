@@ -1345,6 +1345,33 @@ class GUMP
     /**
      * Determine if the provided value contains only alpha numeric characters with spaces.
      *
+     * Usage: '<index>' => 'alpha_numeric_space'
+     *
+     * @param string $field
+     * @param array  $input
+     * @param null   $param
+     *
+     * @return mixed
+     */
+    protected function validate_alpha_numeric_space($field, $input, $param = null)
+    {
+        if (!isset($input[$field]) || empty($input[$field])) {
+            return;
+        }
+
+        if (!preg_match("/^([a-z0-9ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ\s])+$/i", $input[$field]) !== false) {
+            return array(
+                'field' => $field,
+                'value' => $input[$field],
+                'rule' => __FUNCTION__,
+                'param' => $param,
+            );
+        }
+    }
+
+    /**
+     * Determine if the provided value contains only alpha numeric characters with spaces.
+     *
      * Usage: '<index>' => 'alpha_space'
      *
      * @param string $field
@@ -1359,7 +1386,7 @@ class GUMP
             return;
         }
 
-        if (!preg_match("/^([a-z0-9ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ\s])+$/i", $input[$field]) !== false) {
+        if (!preg_match("/^([a-zÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ\s])+$/i", $input[$field]) !== false) {
             return array(
                 'field' => $field,
                 'value' => $input[$field],
