@@ -370,7 +370,7 @@ class GUMP
 
                     // Check if we have rule parameters
                     if (strstr($rule, ',') !== false) {
-                        $rule   = explode(',', $rule);
+                        $rule   = explode(',', $rule, 2);
                         $method = 'validate_'.$rule[0];
                         $param  = $rule[1];
                         $rule   = $rule[0];
