@@ -573,6 +573,15 @@ class GUMP
                 case 'validate_min_age':
                     $resp[] = "The <span class=\"$field_class\">$field</span> field needs to have an age greater than or equal to $param";
                     break;
+                case 'validate_valid_array_size_greater':
+                    $resp[] = "The <span class=\"$field_class\">$field</span> fields needs to be an array with a size, equal to, or higher than $param";
+                    break;
+                case 'validate_valid_array_size_lesser':
+                    $resp[] = "The <span class=\"$field_class\">$field</span> fields needs to be an array with a size, equal to, or lower than $param";
+                    break;
+                case 'validate_valid_array_size_equal':
+                    $resp[] = "The <span class=\"$field_class\">$field</span> fields needs to be an array with a size equal to $param";
+                    break;
                 default:
                     $resp[] = "The <span class=\"$field_class\">$field</span> field is invalid";
             }
@@ -2162,6 +2171,84 @@ class GUMP
           'rule' => __FUNCTION__,
           'param' => $param,
         );
+        }
+    }
+
+    /**
+     * Check if an input is an array and if the size is more or equal to a specific value.
+     *
+     * Usage: '<index>' => 'valid_array_size_greater,1'
+     *
+     * @param string $field
+     * @param array  $input
+     *
+     * @return mixed
+     */
+    protected function validate_valid_array_size_greater($field, $input, $param = null)
+    {
+        if (!isset($input[$field]) || empty($input[$field])) {
+            return;
+        }
+
+        if (!is_array($input[$field]) || sizeof($input[$field]) < (int)$param) {
+            return array(
+          'field' => $field,
+          'value' => $input[$field],
+          'rule' => __FUNCTION__,
+          'param' => $param,
+        );
+        }
+    }
+
+    /**
+     * Check if an input is an array and if the size is less or equal to a specific value.
+     *
+     * Usage: '<index>' => 'valid_array_size_lesser,1'
+     *
+     * @param string $field
+     * @param array $input
+     *
+     * @return mixed
+     */
+    protected function validate_valid_array_size_lesser($field, $input, $param = null)
+    {
+        if (!isset($input[$field]) || empty($input[$field])) {
+            return;
+        }
+
+        if (!is_array($input[$field]) || sizeof($input[$field]) > (int)$param) {
+            return array(
+                'field' => $field,
+                'value' => $input[$field],
+                'rule'  => __FUNCTION__,
+                'param' => $param,
+            );
+        }
+    }
+
+    /**
+     * Check if an input is an array and if the size is equal to a specific value.
+     *
+     * Usage: '<index>' => 'valid_array_size_equal,1'
+     *
+     * @param string $field
+     * @param array $input
+     *
+     * @return mixed
+     */
+    protected function validate_valid_array_size_equal($field, $input, $param = null)
+    {
+        if (!isset($input[$field]) || empty($input[$field])) {
+            return;
+        }
+
+        if (!is_array($input[$field]) || sizeof($input[$field]) == (int)$param) {
+            return array(
+                'field' => $field,
+                'value' => $input[$field],
+                'rule'  => __FUNCTION__,
+                'param' => $param,
+            );
         }
     }
 } // EOC
