@@ -690,6 +690,18 @@ class GUMP
                 case 'validate_max_numeric':
                     $resp[$field] = "The $field field needs to be a numeric value, equal to, or lower than $param";
                     break;
+                case 'validate_starts':
+                    $resp[$field] = "The $field field needs to start with $param";
+                    break;
+                case 'validate_extension':
+                    $resp[$field] = "The $field field can have the following extensions $param";
+                    break;
+                case 'validate_required_file':
+                    $resp[$field] = "The $field field is required";
+                    break;
+                case 'validate_equalsfield':
+                    $resp[$field] = "The $field field does not equal $param field";
+                    break;
                 case 'validate_min_age':
                     $resp[$field] = "The $field field needs to have an age greater than or equal to $param";
                     break;
