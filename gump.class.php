@@ -2087,4 +2087,82 @@ class GUMP
             );
         }
     }
+
+    /**
+     * Check if an input is an array and if the size is more or equal to a specific value.
+     *
+     * Usage: '<index>' => 'valid_array_size_greater,1'
+     *
+     * @param string $field
+     * @param array  $input
+     *
+     * @return mixed
+     */
+    protected function validate_valid_array_size_greater($field, $input, $param = null)
+    {
+        if (!isset($input[$field]) || empty($input[$field])) {
+            return;
+        }
+
+        if (!is_array($input[$field]) || sizeof($input[$field]) < (int)$param) {
+            return array(
+              'field' => $field,
+              'value' => $input[$field],
+              'rule' => __FUNCTION__,
+              'param' => $param,
+            );
+        }
+    }
+
+    /**
+     * Check if an input is an array and if the size is less or equal to a specific value.
+     *
+     * Usage: '<index>' => 'valid_array_size_lesser,1'
+     *
+     * @param string $field
+     * @param array $input
+     *
+     * @return mixed
+     */
+    protected function validate_valid_array_size_lesser($field, $input, $param = null)
+    {
+        if (!isset($input[$field]) || empty($input[$field])) {
+            return;
+        }
+
+        if (!is_array($input[$field]) || sizeof($input[$field]) > (int)$param) {
+            return array(
+                'field' => $field,
+                'value' => $input[$field],
+                'rule'  => __FUNCTION__,
+                'param' => $param,
+            );
+        }
+    }
+
+    /**
+     * Check if an input is an array and if the size is equal to a specific value.
+     *
+     * Usage: '<index>' => 'valid_array_size_equal,1'
+     *
+     * @param string $field
+     * @param array $input
+     *
+     * @return mixed
+     */
+    protected function validate_valid_array_size_equal($field, $input, $param = null)
+    {
+        if (!isset($input[$field]) || empty($input[$field])) {
+            return;
+        }
+
+        if (!is_array($input[$field]) || sizeof($input[$field]) == (int)$param) {
+            return array(
+                'field' => $field,
+                'value' => $input[$field],
+                'rule'  => __FUNCTION__,
+                'param' => $param,
+            );
+        }
+    }
 }
