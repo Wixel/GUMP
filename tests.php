@@ -27,7 +27,10 @@ $rules = array(
 	'valid_ipv4'	      => 'valid_ipv4',
 	'valid_ipv6'	      => 'valid_ipv6',
 	'valid_name'          => 'valid_name',
-	'contains'		      => 'contains,free pro basic'
+	'contains'		      => 'contains,free pro basic',
+	'array_size_equal'  => 'validate_valid_array_size_equal,2',
+	'array_size_greater'=> 'validate_valid_array_size_greater,2',
+	'array_size_lesser' => 'validate_valid_array_size_lesser,2'
 );
 
 $invalid_data = array(
@@ -51,7 +54,10 @@ $invalid_data = array(
 	'valid_ipv4'            => "google.com",
 	'valid_ipv6'            => "google.com",
 	'valid_name' 	        => '*&((*S))(*09890uiadaiusyd)',
-	'contains'		        => 'premium'
+	'contains'		        => 'premium',
+	'array_size_equal'	=> array("1"),
+	'array_size_greater'=> array("1"),
+	'array_size_lesser' => array("1","2","3")
 );
 
 $valid_data = array(
@@ -75,8 +81,10 @@ $valid_data = array(
 	'valid_ipv4'            => "255.255.255.255",
 	'valid_ipv6'            => "2001:0db8:85a3:08d3:1319:8a2e:0370:7334",
 	'valid_name' 	        => 'Sean Nieuwoudt',
-	'contains'		        => 'free'
-
+	'contains'		        => 'free',
+	'array_size_equal'		=> array("1","2"),
+    'array_size_greater'	=> array("1","2","3"),
+    'array_size_lesser' 	=> array("1")
 );
 
 echo "\nBEFORE SANITIZE:\n\n";
