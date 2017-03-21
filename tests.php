@@ -1,7 +1,5 @@
 <?php
-
 error_reporting(-1);
-
 ini_set('display_errors', 1);
 
 require "gump.class.php";
@@ -78,6 +76,7 @@ $valid_data = array(
 	'valid_ipv6'            => "2001:0db8:85a3:08d3:1319:8a2e:0370:7334",
 	'valid_name' 	        => 'Sean Nieuwoudt',
 	'contains'		        => 'free'
+
 );
 
 echo "\nBEFORE SANITIZE:\n\n";
