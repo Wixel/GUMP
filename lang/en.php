@@ -35,4 +35,8 @@ return array(
     'validate_extension'            => 'The {field} field can have the following extensions {param}',
     'validate_required_file'        => 'The {field} field is required',
     'validate_equalsfield'          => 'The {field} field does not equal {param} field',
+    'validate_iban'                 => 'The {field} field needs to contain a valid IBAN',
+    'validate_phone_number'         => 'The {field} field needs to contain a valid Phone Number',
+    'validate_regex'                => 'The {field} field needs to contain a valid value',
+    'validate_valid_json_string'    => 'The {field} field needs to contain a valid JSON format string',
 );

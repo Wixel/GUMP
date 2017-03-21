@@ -35,4 +35,8 @@ return array(
     'validate_extension'            => 'El campo {field} puede contener una de las siguientes extensiones {param}',
     'validate_required_file'        => 'El campo {field} es requerido',
     'validate_equalsfield'          => 'El campo {field} no equivale al campo {param}',
+    'validate_iban'                 => 'El campo {field} debe contener un IBAN válido',
+    'validate_phone_number'         => 'El campo {field} debe contener un número de teléfono válido',
+    'validate_regex'                => 'El campo {field} debe contener un valor válido',
+    'validate_valid_json_string'    => 'El campo {field} debe contener una cadena con el formato JSON válido',
 );
