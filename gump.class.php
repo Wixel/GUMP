@@ -505,11 +505,17 @@ class GUMP
 
         foreach ($this->errors as $e) {
             $field = ucwords(str_replace($this->fieldCharsToRemove, chr(32), $e['field']));
-            $param = $e['param'];
+                $param = $e['param'];
+
 
             // Let's fetch explicit field names if they exist
             if (array_key_exists($e['field'], self::$fields)) {
                 $field = self::$fields[$e['field']];
+
+                // If param is a field (i.e. equalsfield validator)
+                if (array_key_exists($param, self::$fields)) {
+                    $param = self::$fields[$e['param']];
+                }
             }
 
             // Messages
@@ -562,6 +568,11 @@ class GUMP
             // Let's fetch explicit field names if they exist
             if (array_key_exists($e['field'], self::$fields)) {
                 $field = self::$fields[$e['field']];
+
+                // If param is a field (i.e. equalsfield validator)
+                if (array_key_exists($param, self::$fields)) {
+                    $param = self::$fields[$e['param']];
+                }
             }
 
             // Messages
@@ -893,10 +904,10 @@ class GUMP
             return;
         } else {
             return array(
-                    'field' => $field,
-                    'value' => $value,
-                    'rule' => __FUNCTION__,
-                    'param' => $param,
+                'field' => $field,
+                'value' => $value,
+                'rule' => __FUNCTION__,
+                'param' => $param,
             );
         }
     }
@@ -917,7 +928,7 @@ class GUMP
     	if (!isset($input[$field])) {
             return;
         }
-        
+
         $param = trim(strtolower($param));
 
         $value = trim(strtolower($input[$field]));
@@ -954,10 +965,10 @@ class GUMP
         }
 
         return array(
-        'field' => $field,
-        'value' => null,
-        'rule' => __FUNCTION__,
-        'param' => $param,
+            'field' => $field,
+            'value' => null,
+            'rule' => __FUNCTION__,
+            'param' => $param,
         );
     }
 
