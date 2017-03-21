@@ -8,6 +8,7 @@ return array(
     'validate_exact_len'            => 'The {field} field needs to be exactly {param} characters',
     'validate_alpha'                => 'The {field} field may only contain letters',
     'validate_alpha_numeric'        => 'The {field} field may only contain letters and numbers',
+    'validate_alpha_numeric_space'  => 'The {field} field may only contain letters, numbers and spaces',
     'validate_alpha_dash'           => 'The {field} field may only contain letters and dashes',
     'validate_alpha_space'          => 'The {field} field may only contain letters and spaces',
     'validate_numeric'              => 'The {field} field must be a number',
