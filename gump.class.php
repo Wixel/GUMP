@@ -378,7 +378,10 @@ class GUMP
 
             $rules = explode('|', $rules);
 
-            if (in_array('required', $rules) || (isset($input[$field]) && !is_array($input[$field]))) {
+            $lookFor = array('required_file', 'required');
+
+            // if (in_array('required', $rules) || (isset($input[$field]) && !is_array($input[$field]))) {
+            if (count(array_intersect($lookFor, $rules)) > 0 || (isset($input[$field]) && !is_array($input[$field]))) {
                 foreach ($rules as $rule) {
                     $method = null;
                     $param = null;
@@ -1800,7 +1803,11 @@ class GUMP
        */
       protected function validate_required_file($field, $input, $param = null)
       {
-          if ($input[$field]['error'] !== 4) {
+          if (!isset($input[$field])) {
+              return;
+          }
+
+          if (is_array($input[$field]) && $input[$field]['error'] !== 4) {
               return;
           }
 
@@ -1814,9 +1821,9 @@ class GUMP
 
     /**
      * check the uploaded file for extension
-     * for now checks onlt the ext should add mime type check.
+     * for now checks only the ext should add mime type check.
      *
-     * Usage: '<index>' => 'starts,Z'
+     * Usage: '<index>' => 'extension,png;jpg;gif
      *
      * @param string $field
      * @param array  $input
@@ -1825,7 +1832,11 @@ class GUMP
      */
     protected function validate_extension($field, $input, $param = null)
     {
-        if ($input[$field]['error'] !== 4) {
+        if (!isset($input[$field])) {
+            return;
+        }
+
+        if (is_array($input[$field]) && $input[$field]['error'] !== 4) {
             $param = trim(strtolower($param));
             $allowed_extensions = explode(';', $param);
 
