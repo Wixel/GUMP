@@ -155,6 +155,7 @@ class GUMP
      *
      * @param string   $rule
      * @param callable $callback
+     * @param string   $error_message
      *
      * @return bool
      *
