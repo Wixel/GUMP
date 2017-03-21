@@ -29,6 +29,9 @@ class GUMP
     // Custom validation methods
     protected static $validation_methods = array();
 
+    // Custom validation methods error messages
+    protected static $validation_methods_errors = array();
+
     // Customer filter methods
     protected static $filter_methods = array();
 
@@ -157,7 +160,7 @@ class GUMP
      *
      * @throws Exception
      */
-    public static function add_validator($rule, $callback)
+    public static function add_validator($rule, $callback, $error_message = null)
     {
         $method = 'validate_'.$rule;
 
@@ -166,6 +169,9 @@ class GUMP
         }
 
         self::$validation_methods[$rule] = $callback;
+        if ($error_message) {
+            self::$validation_methods_errors[$rule] = $error_message;
+        }
 
         return true;
     }
@@ -482,6 +488,10 @@ class GUMP
     {
         $lang_file = __DIR__.DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$this->lang.'.php';
         $messages = require_once $lang_file;
+
+        if ($validation_methods_errors = self::$validation_methods_errors) {
+            $messages = array_merge($validation_methods_errors, $messages);
+        }
         return $messages;
     }
 
