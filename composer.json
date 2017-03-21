@@ -7,10 +7,6 @@
             "homepage": "https://wixelhq.com"
         },
         {
-            "name": "Filis Futsarov",
-            "homepage": "http://filis.me"
-        },
-        {
             "name": "Colleen Emryss",
             "homepage": "http://skitter.tv"
         },
@@ -33,7 +29,11 @@
         {
             "name": "Inge Brattaas",
             "homepage": "http://res.no/"
-        }
+        },
+        {
+            "name": "Filis Futsarov",
+            "homepage": "http://filis.me"
+        },
     ],
     "license": "MIT",
     "homepage": "https://wixelhq.com/",
