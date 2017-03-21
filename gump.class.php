@@ -878,6 +878,9 @@ class GUMP
      */
     protected function validate_contains_list($field, $input, $param = null)
     {
+    	if (!isset($input[$field])) {
+            return;
+        }
         $param = trim(strtolower($param));
 
         $value = trim(strtolower($input[$field]));
