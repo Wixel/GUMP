@@ -29,7 +29,7 @@ class GUMP
     // Custom validation methods
     protected static $validation_methods = array();
 
-    // Custom validation methods error messages
+    // Custom validation methods error messages and custom ones
     protected static $validation_methods_errors = array();
 
     // Customer filter methods
@@ -476,12 +476,43 @@ class GUMP
     public static function set_field_names(array $array)
     {
         foreach ($array as $field => $readable_name) {
-            self::$fields[$field] = $readable_name;
+            self::set_field_name($field, $readable_name);
         }
     }
 
     /**
-     * Get error translated messages
+     * Set a custom error message for a validation rule.
+     *
+     * @param string $rule
+     * @param string $message
+     */
+    public static function set_error_message($rule, $message)
+    {
+        $gump = self::get_instance();
+        self::$validation_methods_errors[$rule] = $message;
+    }
+
+    /**
+     * Set custom error messages for validation rules in an array.
+     *
+     * Usage:
+     *
+     * GUMP::set_error_messages(array(
+     *  "validate_required"     => "{field} is required",
+     *  "validate_valid_email"  => "{field} must be a valid email",
+     * ));
+     *
+     * @param array $array
+     */
+    public static function set_error_messages(array $array)
+    {
+        foreach ($array as $rule => $message) {
+            self::set_error_message($rule, $message);
+        }
+    }
+
+    /**
+     * Get error messages.
      *
      * @return array
      */
@@ -491,7 +522,7 @@ class GUMP
         $messages = require_once $lang_file;
 
         if ($validation_methods_errors = self::$validation_methods_errors) {
-            $messages = array_merge($validation_methods_errors, $messages);
+            $messages = array_merge($messages, $validation_methods_errors);
         }
         return $messages;
     }
@@ -519,7 +550,7 @@ class GUMP
 
         foreach ($this->errors as $e) {
             $field = ucwords(str_replace($this->fieldCharsToRemove, chr(32), $e['field']));
-                $param = $e['param'];
+            $param = $e['param'];
 
 
             // Let's fetch explicit field names if they exist
