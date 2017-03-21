@@ -19,6 +19,7 @@ return array(
     'validate_valid_ip'             => 'El campo {field} debe contener una dirección IP válida',
     'validate_valid_ipv4'           => 'El campo {field} debe contener una dirección IPv4 válida',
     'validate_valid_ipv6'           => 'El campo {field} debe contener una dirección IPv6 válida',
+    'validate_guidv4'               => 'El campo {field} debe contener un GUID válido',
     'validate_valid_cc'             => 'El campo {field} debe contener un número de tarjeta de crédito válido',
     'validate_valid_name'           => 'El campo {field} debe contener un nombre humano válido',
     'validate_contains'             => 'El campo {field} debe contener uno de los siguientes valores: {param}',

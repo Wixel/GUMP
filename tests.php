@@ -1,7 +1,5 @@
 <?php
-
 error_reporting(-1);
-
 ini_set('display_errors', 1);
 
 require "gump.class.php";
@@ -28,7 +26,8 @@ $rules = array(
 	'valid_ipv4'	=> 'valid_ipv4',
 	'valid_ipv6'	=> 'valid_ipv6',
 	'valid_name'    => 'valid_name',
-	'contains'		=> 'contains,free pro basic'
+	'contains'		=> 'contains,free pro basic',
+	'guid'			=> 'guidv4'
 );
 
 $invalid_data = array(
@@ -51,7 +50,8 @@ $invalid_data = array(
 	'valid_ipv4'    => "google.com",
 	'valid_ipv6'    => "google.com",
 	'valid_name' 	=> '*&((*S))(*09890uiadaiusyd)',
-	'contains'		=> 'premium'
+	'contains'		=> 'premium',
+	'guid'			=> 'A98C5A1E-A742-4808-96FA'
 );
 
 $valid_data = array(
@@ -74,7 +74,8 @@ $valid_data = array(
 	'valid_ipv4'    => "255.255.255.255",
 	'valid_ipv6'    => "2001:0db8:85a3:08d3:1319:8a2e:0370:7334",
 	'valid_name' 	=> 'Sean Nieuwoudt',
-	'contains'		=> 'free'
+	'contains'		=> 'free',
+	'guid'		=> 'A98C5A1E-A742-4808-96FA-6F409E799937'
 );
 
 echo "\nBEFORE SANITIZE:\n\n";
