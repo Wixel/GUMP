@@ -1,4 +1,4 @@
-<?php
+<?php   
 
 /**
  * GUMP - A fast, extensible PHP input validation class.
@@ -32,6 +32,9 @@ class GUMP
 
     // Customer filter methods
     protected static $filter_methods = array();
+	
+	//
+	protected $params=[];
 
     // ** ------------------------- Instance Helper ---------------------------- ** //
     /**
@@ -371,9 +374,14 @@ class GUMP
                     // Check if we have rule parameters
                     if (strstr($rule, ',') !== false) {
                         $rule   = explode(',', $rule);
+						 
                         $method = 'validate_'.$rule[0];
                         $param  = $rule[1];
-                        $rule   = $rule[0];
+                        
+						if(count($rule) > 2){ 
+							$this->params = (array_slice($rule,1));
+							}
+						$rule   = $rule[0];
                     } else {
                         $method = 'validate_'.$rule;
                     }
@@ -572,6 +580,9 @@ class GUMP
                     break;
                 case 'validate_min_age':
                     $resp[] = "The <span class=\"$field_class\">$field</span> field needs to have an age greater than or equal to $param";
+                    break;
+				case 'validate_In':
+                    $resp[] = "The <span class=\"$field_class\">$field</span> field needs to be in the list: $param";
                     break;
                 default:
                     $resp[] = "The <span class=\"$field_class\">$field</span> field is invalid";
@@ -1129,6 +1140,7 @@ class GUMP
      */
     protected function validate_required($field, $input, $param = null)
     {
+	
         if (isset($input[$field]) && ($input[$field] === false || $input[$field] === 0 || $input[$field] === 0.0 || $input[$field] === '0' || !empty($input[$field]))) {
             return;
         }
@@ -2176,4 +2188,37 @@ class GUMP
         );
         }
     }
+	
+	
+	   /**
+     * Field in list validator.
+     *
+     * Usage: '<index>' => 'In,/item,item,item,../'
+     *
+     * @param string $field
+     * @param array  $input
+     *
+     * @return mixed
+     */
+	protected function validate_In($field, $input, $param = null){
+		   if (!isset($input[$field]) || empty($input[$field]) || empty($this->params)) {
+            return;
+        }
+	 
+
+        $inarray = in_array($input[$field],$this->params);  
+        if (!$inarray) {
+            return array(
+          'field' => $field,
+          'value' => $input[$field],
+          'rule' => __FUNCTION__,
+          'param' => implode(",",$this->params),
+        );
+        }
+	}
+	
+	
+	
+	
+	
 } // EOC

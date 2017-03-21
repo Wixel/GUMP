@@ -28,7 +28,8 @@ $rules = array(
 	'valid_ipv4'	=> 'valid_ipv4',
 	'valid_ipv6'	=> 'valid_ipv6',
 	'valid_name'    => 'valid_name',
-	'contains'		=> 'contains,free pro basic'
+	'contains'		=> 'contains,free pro basic',
+	'In'		=>'In,1,2,3,4,5,6'
 );
 
 $invalid_data = array(
@@ -51,7 +52,8 @@ $invalid_data = array(
 	'valid_ipv4'    => "google.com",
 	'valid_ipv6'    => "google.com",
 	'valid_name' 	=> '*&((*S))(*09890uiadaiusyd)',
-	'contains'		=> 'premium'
+	'contains'		=> 'premium',
+	'In'		=>'7',
 );
 
 $valid_data = array(
@@ -74,7 +76,8 @@ $valid_data = array(
 	'valid_ipv4'    => "255.255.255.255",
 	'valid_ipv6'    => "2001:0db8:85a3:08d3:1319:8a2e:0370:7334",
 	'valid_name' 	=> 'Sean Nieuwoudt',
-	'contains'		=> 'free'
+	'contains'		=> 'free',
+	'In'		=>'3',
 );
 
 echo "\nBEFORE SANITIZE:\n\n";
