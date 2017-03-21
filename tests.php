@@ -6,9 +6,7 @@ ini_set('display_errors', 1);
 
 require "gump.class.php";
 
-$validator = new GUMP('es');
-
-// GUMP::set_field_name('missing', 'jeje');
+$validator = new GUMP();
 
 $rules = array(
 	'missing'   	=> 'required',
