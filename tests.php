@@ -83,8 +83,8 @@ $valid_data = array(
 	'valid_name' 	        => 'Sean Nieuwoudt',
 	'contains'		        => 'free',
 	'array_size_equal'		=> array("1","2"),
-    'array_size_greater'	=> array("1","2","3"),
-    'array_size_lesser' 	=> array("1")
+	'array_size_greater'	=> array("1","2","3"),
+	'array_size_lesser' 	=> array("1")
 );
 
 echo "\nBEFORE SANITIZE:\n\n";
