@@ -1355,8 +1355,9 @@ class GUMP
             return;
         }
 
-        if($input[$field] === true || $input[$field] === false) {
-          return;
+        $booleans = array('1','true',true,1,'0','false',false,0,'yes','no','on','off');
+        if (in_array($input[$field], $booleans, true )) {
+            return;
         }
 
         return array(
