@@ -4,7 +4,7 @@ return array(
     'validate_required'                 => 'The {field} field is required',
     'validate_valid_email'              => 'The {field} field must be a valid email address',
     'validate_max_len'                  => 'The {field} field needs to be {param} characters or less',
-    'validate_min_len'                  => 'The {field} field needs to be at least{param} characters',
+    'validate_min_len'                  => 'The {field} field needs to be at least {param} characters',
     'validate_exact_len'                => 'The {field} field needs to be exactly {param} characters',
     'validate_alpha'                    => 'The {field} field may only contain letters',
     'validate_alpha_numeric'            => 'The {field} field may only contain letters and numbers',
