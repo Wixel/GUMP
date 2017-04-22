@@ -399,15 +399,20 @@ class GUMP
                         $method = 'validate_'.$rule[0];
                         $param  = $rule[1];
                         $rule   = $rule[0];
+
+                        // If there is a reference to a field
+                        if (preg_match('/(?:(?:^|;)_([a-z_]+))/', $param, $matches)) {
+
+                            // If provided parameter is a field
+                            if (isset($input[$matches[1]])) {
+                                $param = str_replace('_'.$matches[1], $input[$matches[1]], $param);
+                            }
+                        }
                     } else {
                         $method = 'validate_'.$rule;
                     }
 
                     //self::$validation_methods[$rule] = $callback;
-                                        
-                    if (substr($param, 0, 1) == '_' && isset($input[substr($param, 1)])) {
-                        $param = $input[substr($param, 1)];
-                    }
 
                     if (is_callable(array($this, $method))) {
                         $result = $this->$method(
@@ -1933,6 +1938,7 @@ class GUMP
     /**
      * Determine if the provided field value equals current field value.
      *
+     *
      * Usage: '<index>' => 'equalsfield,Z'
      *
      * @param string $field
@@ -1948,7 +1954,7 @@ class GUMP
         }
 
         if ($input[$field] == $input[$param]) {
-          return;
+            return;
         }
 
         return array(
