@@ -407,25 +407,23 @@ class GUMP
 
                     if (is_callable(array($this, $method))) {
                         $result = $this->$method(
-                          $field, $input, $param
+                            $field, $input, $param
                         );
 
                         if (is_array($result)) {
                             $this->errors[] = $result;
                         }
                     } elseif(isset(self::$validation_methods[$rule])) {
-
                         $result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
 
                         if($result === false) {
-                          $this->errors[] = array(
-                            'field' => $field,
-                            'value' => $input,
-                            'rule' => $rule,
-                            'param' => $param,
-                          );
+                            $this->errors[] = array(
+                                'field' => $field,
+                                'value' => $input,
+                                'rule' => $rule,
+                                'param' => $param,
+                            );
                         }
-
                     } else {
                         throw new Exception("Validator method '$method' does not exist.");
                     }
@@ -552,7 +550,6 @@ class GUMP
             $field = ucwords(str_replace($this->fieldCharsToRemove, chr(32), $e['field']));
             $param = $e['param'];
 
-
             // Let's fetch explicit field names if they exist
             if (array_key_exists($e['field'], self::$fields)) {
                 $field = self::$fields[$e['field']];
@@ -582,7 +579,6 @@ class GUMP
             foreach ($resp as $s) {
                 $buffer .= "<span class=\"$error_class\">$s</span>";
             }
-
             return $buffer;
         }
     }
@@ -622,11 +618,14 @@ class GUMP
 
             // Messages
             if (isset($messages[$e['rule']])) {
-                if (is_array($param)) {
-                    $param = implode(', ', $param);
+                // Show first validation error and don't allow to be overwritten
+                if (!isset($resp[$e['field']])) {
+                    if (is_array($param)) {
+                        $param = implode(', ', $param);
+                    }
+                    $message = str_replace('{param}', $param, str_replace('{field}', $field, $messages[$e['rule']]));
+                    $resp[$e['field']] = $message;
                 }
-                $message = str_replace('{param}', $param, str_replace('{field}', $field, $messages[$e['rule']]));
-                $resp[$e['field']] = $message;
             } else {
                 throw new \Exception ('Rule "'.$e['rule'].'" does not have an error message');
             }
@@ -934,9 +933,10 @@ class GUMP
      */
     protected function validate_contains_list($field, $input, $param = null)
     {
-    	if (!isset($input[$field])) {
+        if (!isset($input[$field]) || empty($input[$field])) {
             return;
         }
+
         $param = trim(strtolower($param));
 
         $value = trim(strtolower($input[$field]));
@@ -970,7 +970,7 @@ class GUMP
      */
     protected function validate_doesnt_contain_list($field, $input, $param = null)
     {
-    	if (!isset($input[$field])) {
+        if (!isset($input[$field]) || empty($input[$field])) {
             return;
         }
 
@@ -1092,7 +1092,7 @@ class GUMP
      */
     protected function validate_min_len($field, $input, $param = null)
     {
-        if (!isset($input[$field])) {
+        if (!isset($input[$field]) || empty($input[$field])) {
             return;
         }
 
@@ -1127,7 +1127,7 @@ class GUMP
      */
     protected function validate_exact_len($field, $input, $param = null)
     {
-        if (!isset($input[$field])) {
+        if (!isset($input[$field]) || empty($input[$field])) {
             return;
         }
 
@@ -1819,7 +1819,7 @@ class GUMP
      */
     protected function validate_min_numeric($field, $input, $param = null)
     {
-        if (!isset($input[$field])) {
+        if (!isset($input[$field]) || empty($input[$field])) {
             return;
         }
 
@@ -1890,8 +1890,8 @@ class GUMP
       }
 
     /**
-     * check the uploaded file for extension
-     * for now checks only the ext should add mime type check.
+     * Check the uploaded file for extension for now
+     * checks only the ext should add mime type check.
      *
      * Usage: '<index>' => 'extension,png;jpg;gif
      *
