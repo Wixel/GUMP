@@ -596,10 +596,11 @@ class GUMP
      * Process the validation errors and return an array of errors with field names as keys.
      *
      * @param $convert_to_string
+     * @param $return_keys
      *
      * @return array | null (if empty)
      */
-    public function get_errors_array($convert_to_string = null)
+    public function get_errors_array($convert_to_string = null, $return_keys = false)
     {
         if (empty($this->errors)) {
             return ($convert_to_string) ? null : array();
@@ -625,18 +626,20 @@ class GUMP
                 }
             }
 
-            // Messages
-            if (isset($messages[$e['rule']])) {
-                // Show first validation error and don't allow to be overwritten
-                if (!isset($resp[$e['field']])) {
+            if($return_keys) {
+              $resp[$e['field']] = $e['rule'];
+            }
+            else {
+              // Messages
+              if (isset($messages[$e['rule']])) {
                     if (is_array($param)) {
                         $param = implode(', ', $param);
                     }
                     $message = str_replace('{param}', $param, str_replace('{field}', $field, $messages[$e['rule']]));
                     $resp[$e['field']] = $message;
-                }
-            } else {
-                throw new \Exception ('Rule "'.$e['rule'].'" does not have an error message');
+              } else {
+                  throw new \Exception ('Rule "'.$e['rule'].'" does not have an error message');
+              }
             }
         }
 
