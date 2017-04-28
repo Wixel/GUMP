@@ -526,7 +526,7 @@ class GUMP
     protected function get_messages()
     {
         $lang_file = __DIR__.DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$this->lang.'.php';
-        $messages = require_once $lang_file;
+        $messages = require $lang_file;
 
         if ($validation_methods_errors = self::$validation_methods_errors) {
             $messages = array_merge($messages, $validation_methods_errors);
