@@ -393,6 +393,10 @@ class GUMP
                     $method = null;
                     $param = null;
 
+                    if (empty(trim($rule))) {
+                        throw new \InvalidArgumentException(sprintf('Rule cannot be empty for field: %s', $field));
+                    }
+
                     // Check if we have rule parameters
                     if (strstr($rule, ',') !== false) {
                         $rule   = explode(',', $rule);
