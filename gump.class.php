@@ -3,9 +3,8 @@
  * GUMP - A fast, extensible PHP input validation class.
  *
  * @author      Sean Nieuwoudt (http://twitter.com/SeanNieuwoudt)
+ * @author      Filis Futsarov (http://twitter.com/FilisCode)
  * @copyright   Copyright (c) 2017 wixelhq.com
- *
- * @link        http://github.com/Wixel/GUMP
  *
  * @version     1.5
  */
@@ -387,54 +386,71 @@ class GUMP
 
             $lookFor = array('required_file', 'required');
 
-            // if (in_array('required', $rules) || (isset($input[$field]) && !is_array($input[$field]))) {
             if (count(array_intersect($lookFor, $rules)) > 0 || (isset($input[$field]) && !is_array($input[$field]))) {
-                foreach ($rules as $rule) {
-                    $method = null;
-                    $param = null;
 
-                    // Check if we have rule parameters
-                    if (strstr($rule, ',') !== false) {
-                        $rule   = explode(',', $rule);
-                        $method = 'validate_'.$rule[0];
-                        $param  = $rule[1];
-                        $rule   = $rule[0];
+                if (is_array($input[$field])) {
+                    $input_array = $input[$field];
+                } else {
+                    $input_array = array($input[$field]);
+                }
 
-                        // If there is a reference to a field
-                        if (preg_match('/(?:(?:^|;)_([a-z_]+))/', $param, $matches)) {
+                foreach ($input_array as $value) {
 
-                            // If provided parameter is a field
-                            if (isset($input[$matches[1]])) {
-                                $param = str_replace('_'.$matches[1], $input[$matches[1]], $param);
+                    $input[$field] = $value;
+
+                    foreach ($rules as $rule) {
+                        $method = null;
+                        $param = null;
+
+                        // Check if we have rule parameters
+                        if (strstr($rule, ',') !== false) {
+                            $rule   = explode(',', $rule);
+                            $method = 'validate_'.$rule[0];
+                            $param  = $rule[1];
+                            $rule   = $rule[0];
+
+                            // If there is a reference to a field
+                            if (preg_match('/(?:(?:^|;)_([a-z_]+))/', $param, $matches)) {
+
+                                // If provided parameter is a field
+                                if (isset($input[$matches[1]])) {
+                                    $param = str_replace('_'.$matches[1], $input[$matches[1]], $param);
+                                }
                             }
+                        } else {
+                            $method = 'validate_'.$rule;
                         }
-                    } else {
-                        $method = 'validate_'.$rule;
-                    }
 
-                    //self::$validation_methods[$rule] = $callback;
+                        //self::$validation_methods[$rule] = $callback;
 
-                    if (is_callable(array($this, $method))) {
-                        $result = $this->$method(
-                            $field, $input, $param
-                        );
-
-                        if (is_array($result)) {
-                            $this->errors[] = $result;
-                        }
-                    } elseif(isset(self::$validation_methods[$rule])) {
-                        $result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
-
-                        if($result === false) {
-                            $this->errors[] = array(
-                                'field' => $field,
-                                'value' => $input,
-                                'rule' => $rule,
-                                'param' => $param,
+                        if (is_callable(array($this, $method))) {
+                            $result = $this->$method(
+                                $field, $input, $param
                             );
+
+                            if (is_array($result)) {
+                                if (count(array_column($this->errors, 'field')) === 0) {
+                                    $this->errors[] = $result;
+                                }
+                            }
+
+                        } elseif(isset(self::$validation_methods[$rule])) {
+                            $result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
+
+                            if($result === false) {
+                                if (count(array_column($this->errors, 'field')) === 0) {
+                                    $this->errors[] = array(
+                                        'field' => $field,
+                                        'value' => $input,
+                                        'rule' => $rule,
+                                        'param' => $param,
+                                    );
+                                }
+                            }
+
+                        } else {
+                            throw new Exception("Validator method '$method' does not exist.");
                         }
-                    } else {
-                        throw new Exception("Validator method '$method' does not exist.");
                     }
                 }
             }
@@ -675,15 +691,23 @@ class GUMP
                     $filter = $filter[0];
                 }
 
-                if (is_callable(array($this, 'filter_'.$filter))) {
-                    $method = 'filter_'.$filter;
-                    $input[$field] = $this->$method($input[$field], $params);
-                } elseif (function_exists($filter)) {
-                    $input[$field] = $filter($input[$field]);
-                } elseif (isset(self::$filter_methods[$filter])) {
-                    $input[$field] = call_user_func(self::$filter_methods[$filter], $input[$field], $params);
+                if (is_array($input[$field])) {
+                    $input_array = &$input[$field];
                 } else {
-                    throw new Exception("Filter method '$filter' does not exist.");
+                    $input_array = array(&$input[$field]);
+                }
+
+                foreach ($input_array as &$value) {
+                    if (is_callable(array($this, 'filter_'.$filter))) {
+                        $method = 'filter_'.$filter;
+                        $value = $this->$method($value, $params);
+                    } elseif (function_exists($filter)) {
+                        $value = $filter($value);
+                    } elseif (isset(self::$filter_methods[$filter])) {
+                        $value = call_user_func(self::$filter_methods[$filter], $value, $params);
+                    } else {
+                        throw new Exception("Filter method '$filter' does not exist.");
+                    }
                 }
             }
         }
