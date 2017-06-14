@@ -36,7 +36,7 @@ return array(
     'validate_extension'                => 'O campo {field} permite apenas os seguintes formatos: {param}',
     'validate_required_file'            => 'O campo {field} é de preenchimento obrigatório',
     'validate_equalsfield'              => 'O campo {field} não é igual ao campo {param}',
-    //'validate_iban'                     => 'O campo {field} field needs to contain a valid IBAN',
+    'validate_iban'                     => 'O campo {field} precisa conter um número IBAN válido',
     'validate_phone_number'             => 'O campo {field} precisa conter um número de telefone válido',
     'validate_regex'                    => 'O campo {field} precisa conter um valor com formato válido',
     'validate_valid_json_string'        => 'O campo {field} precisa conter um string com formato JSON',
