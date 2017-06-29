@@ -371,12 +371,13 @@ class GUMP
      *
      * @param mixed $input
      * @param array $ruleset
+     * @param bool $showError
      *
      * @return mixed
      *
      * @throws Exception
      */
-    public function validate(array $input, array $ruleset)
+    public function validate(array $input, array $ruleset, bool $showError = false)
     {
         $this->errors = array();
 
@@ -456,7 +457,7 @@ class GUMP
             }
         }
 
-        return (count($this->errors) > 0) ? $this->errors : true;
+        return (count($this->errors) > 0) ? ($showError ? $this->errors ? false) : true;
     }
 
     /**
