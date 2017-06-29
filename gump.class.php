@@ -457,7 +457,7 @@ class GUMP
             }
         }
 
-        return (count($this->errors) > 0) ? ($showError ? $this->errors ? false) : true;
+        return (count($this->errors) > 0) ? ($showError ? $this->errors : false) : true;
     }
 
     /**
