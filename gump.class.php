@@ -377,7 +377,7 @@ class GUMP
      *
      * @throws Exception
      */
-    public function validate(array $input, array $ruleset, bool $showError = false)
+    public function validate(array $input, array $ruleset, $showError = false)
     {
         $this->errors = array();
 
