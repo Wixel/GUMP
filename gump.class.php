@@ -441,7 +441,7 @@ class GUMP
                                 if (count(array_column($this->errors, 'field')) === 0) {
                                     $this->errors[] = array(
                                         'field' => $field,
-                                        'value' => $input,
+                                        'value' => $input[$field],
                                         'rule' => $rule,
                                         'param' => $param,
                                     );
