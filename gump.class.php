@@ -1749,13 +1749,14 @@ class GUMP
     }
 
     /**
-     * Determine if the provided input is a valid date (ISO 8601).
-     *
+     * Determine if the provided input is a valid date (ISO 8601)
+     * or specify a custom format.
+     * 
      * Usage: '<index>' => 'date'
      *
      * @param string $field
      * @param string $input date ('Y-m-d') or datetime ('Y-m-d H:i:s')
-     * @param null   $param
+     * @param string $param Custom date format
      *
      * @return mixed
      */
@@ -1765,16 +1766,33 @@ class GUMP
             return;
         }
 
-        $cdate1 = date('Y-m-d', strtotime($input[$field]));
-        $cdate2 = date('Y-m-d H:i:s', strtotime($input[$field]));
+        // Default
+        if (!$param)
+        {
+            $cdate1 = date('Y-m-d', strtotime($input[$field]));
+            $cdate2 = date('Y-m-d H:i:s', strtotime($input[$field]));
 
-        if ($cdate1 != $input[$field] && $cdate2 != $input[$field]) {
-            return array(
-                'field' => $field,
-                'value' => $input[$field],
-                'rule' => __FUNCTION__,
-                'param' => $param,
-            );
+            if ($cdate1 != $input[$field] && $cdate2 != $input[$field])
+            {
+                return array(
+                    'field'      => $field,
+                    'value'      => $input[$field],
+                    'rule'       => __FUNCTION__,
+                    'param' => $param,
+                );
+            }
+        } else {
+            $date = \DateTime::createFromFormat($param, $input[$field]);
+
+            if ($date === false || $input[$field] != date($param, $date->getTimestamp()))
+            {
+                return array(
+                    'field'      => $field,
+                    'value'      => $input[$field],
+                    'rule'       => __FUNCTION__,
+                    'param' => $param,
+                );
+            }
         }
     }
 
