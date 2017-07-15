@@ -376,7 +376,7 @@ class GUMP
      *
      * @throws Exception
      */
-    public function validate(array $input, array $ruleset)
+    public function validate(array $input, array $ruleset, $showError = false)
     {
         $this->errors = array();
 
@@ -386,7 +386,10 @@ class GUMP
 
             $lookFor = array('required_file', 'required');
 
-            if (count(array_intersect($lookFor, $rules)) > 0 || (isset($input[$field]) && !is_array($input[$field]))) {
+            $is_sometimes = in_array("sometimes", $rules);
+
+            if ( (count(array_intersect($lookFor, $rules)) > 0 || (isset($input[$field]) && !is_array($input[$field]))) 
+                && !($is_sometimes && empty($input[$field])) ) {
 
                 if (is_array($input[$field])) {
                     $input_array = $input[$field];
@@ -428,9 +431,12 @@ class GUMP
                                 $field, $input, $param
                             );
 
+
+
                             if (is_array($result)) {
                                 if (count(array_column($this->errors, 'field')) === 0) {
-                                    $this->errors[] = $result;
+                                    //if( !$is_sometimes )
+                                        $this->errors[] = $result;
                                 }
                             }
 
@@ -449,14 +455,16 @@ class GUMP
                             }
 
                         } else {
-                            throw new Exception("Validator method '$method' does not exist.");
+
+                            if( !$is_sometimes )
+                                throw new Exception("Validator method '$method' does not exist.");
                         }
                     }
                 }
             }
         }
 
-        return (count($this->errors) > 0) ? $this->errors : true;
+        return (count($this->errors) > 0) ? ($showError ? $this->errors : false) : true;
     }
 
     /**
