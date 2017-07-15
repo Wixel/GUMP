@@ -1479,7 +1479,7 @@ class GUMP
         }
 
         if (function_exists('checkdnsrr')) {
-            if (checkdnsrr($url) === false) {
+            if (checkdnsrr(idn_to_ascii($url), 'A') === false) {
                 return array(
                     'field' => $field,
                     'value' => $input[$field],
