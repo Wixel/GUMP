@@ -384,9 +384,9 @@ class GUMP
 
             $rules = explode('|', $rules);
 
-            $lookFor = array('required_file', 'required');
+            $look_for = array('required_file', 'required');
 
-            if (count(array_intersect($lookFor, $rules)) > 0 || (isset($input[$field]) && !is_array($input[$field]))) {
+            if (count(array_intersect($look_for, $rules)) > 0 || (isset($input[$field]) && !is_array($input[$field]))) {
 
                 if (is_array($input[$field])) {
                     $input_array = $input[$field];
@@ -457,20 +457,6 @@ class GUMP
         }
 
         return (count($this->errors) > 0) ? $this->errors : true;
-    }
-
-    /**
-     * Overloadable method to invoke validation.
-     *
-     * @param array $input
-     * @param $rules
-     * @param $field
-     *
-     * @return bool
-     */
-    protected function shouldRunValidation(array $input, $rules, $field)
-    {
-        return in_array('required', $rules) || (isset($input[$field]) && trim($input[$field]) != '');
     }
 
     /**
