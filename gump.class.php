@@ -561,7 +561,7 @@ class GUMP
             $field = ucwords(str_replace($this->fieldCharsToRemove, chr(32), $e['field']));
             $param = $e['param'];
 
-            // Let's fetch explicit field names if they exist
+            // Let's fetch explicitly if the field names exist
             if (array_key_exists($e['field'], self::$fields)) {
                 $field = self::$fields[$e['field']];
 
@@ -617,7 +617,7 @@ class GUMP
             $field = ucwords(str_replace(array('_', '-'), chr(32), $e['field']));
             $param = $e['param'];
 
-            // Let's fetch explicit field names if they exist
+            // Let's fetch explicitly if the field names exist
             if (array_key_exists($e['field'], self::$fields)) {
                 $field = self::$fields[$e['field']];
 
@@ -626,7 +626,7 @@ class GUMP
                     $param = self::$fields[$e['param']];
                 }
             }
-
+            
             // Messages
             if (isset($messages[$e['rule']])) {
                 // Show first validation error and don't allow to be overwritten
@@ -1856,7 +1856,7 @@ class GUMP
      */
     protected function validate_min_numeric($field, $input, $param = null)
     {
-        if (!isset($input[$field]) || empty($input[$field])) {
+        if (!isset($input[$field]) || $input[$field] === '') {
             return;
         }
 
