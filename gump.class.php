@@ -388,11 +388,16 @@ class GUMP
 
             if (count(array_intersect($look_for, $rules)) > 0 || (isset($input[$field]) && !is_array($input[$field]))) {
 
-                if (is_array($input[$field])) {
-                    $input_array = $input[$field];
+                if (isset($input[$field])) {
+                    if (is_array($input[$field])) {
+                        $input_array = $input[$field];
+                    } else {
+                        $input_array = array($input[$field]);
+                    }
                 } else {
-                    $input_array = array($input[$field]);
+                    $input_array = array('');
                 }
+
 
                 foreach ($input_array as $value) {
 
