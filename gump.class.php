@@ -386,10 +386,10 @@ class GUMP
 
             $look_for = array('required_file', 'required');
 
-            if (count(array_intersect($look_for, $rules)) > 0 || (isset($input[$field]) && !is_array($input[$field]))) {
+            if (count(array_intersect($look_for, $rules)) > 0 || (isset($input[$field]))) {
 
                 if (isset($input[$field])) {
-                    if (is_array($input[$field])) {
+                    if (is_array($input[$field]) && in_array('required_file', $ruleset)) {
                         $input_array = $input[$field];
                     } else {
                         $input_array = array($input[$field]);
@@ -397,7 +397,6 @@ class GUMP
                 } else {
                     $input_array = array('');
                 }
-
 
                 foreach ($input_array as $value) {
 
@@ -1953,9 +1952,9 @@ class GUMP
             $allowed_extensions = explode(';', $param);
 
             $path_info = pathinfo($input[$field]['name']);
-            $extension = $path_info['extension'];
+            $extension = isset($path_info['extension']) ? $path_info['extension'] : false;
 
-            if (in_array($extension, $allowed_extensions)) {
+            if ($extension && in_array($extension, $allowed_extensions)) {
                 return;
             }
 
