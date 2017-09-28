@@ -630,7 +630,7 @@ class GUMP
                     $param = self::$fields[$e['param']];
                 }
             }
-            
+
             // Messages
             if (isset($messages[$e['rule']])) {
                 // Show first validation error and don't allow to be overwritten
@@ -1243,7 +1243,7 @@ class GUMP
             return;
         }
 
-        if (!preg_match('/^([a-z0-9ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ_-])+$/i', $input[$field]) !== false) {
+        if (!preg_match('/^([a-zÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ_-])+$/i', $input[$field]) !== false) {
             return array(
                 'field' => $field,
                 'value' => $input[$field],
@@ -1741,7 +1741,7 @@ class GUMP
     /**
      * Determine if the provided input is a valid date (ISO 8601)
      * or specify a custom format.
-     * 
+     *
      * Usage: '<index>' => 'date'
      *
      * @param string $field
