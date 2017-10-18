@@ -894,11 +894,56 @@ class GUMP
         $value = str_replace($word_em, $web_safe_em, $value);
 
         $word_ellipsis = '…';
-        $web_safe_em   = '...';
+        $web_ellipsis  = '...';
 
-        $value = str_replace($word_ellipsis, $web_safe_em, $value);
+        $value = str_replace($word_ellipsis, $web_ellipsis, $value);
 
         return $value;
+    }
+
+    /**
+     * Converts to lowercase.
+     *
+     * @param string $value
+     * @param array  $params
+     *
+     * @return string
+     */
+    protected function filter_lower_case($value, $params = null)
+    {
+        return strtolower($value);
+    }
+
+    /**
+     * Converts to uppercase.
+     *
+     * @param string $value
+     * @param array  $params
+     *
+     * @return string
+     */
+    protected function filter_upper_case($value, $params = null)
+    {
+        return strtoupper($value);
+    }
+
+    /**
+     * Converts value to url-web-slugs. 
+     * 
+     * Credit: 
+     * https://stackoverflow.com/questions/40641973/php-to-convert-string-to-slug
+     * http://cubiq.org/the-perfect-php-clean-url-generator
+     *
+     * @param string $value
+     * @param array  $params
+     *
+     * @return string
+     */
+    protected function filter_slug($value, $params = null)
+    {
+        $delimiter = '-';
+        $slug = strtolower(trim(preg_replace('/[\s-]+/', $delimiter, preg_replace('/[^A-Za-z0-9-]+/', $delimiter, preg_replace('/[&]/', 'and', preg_replace('/[\']/', '', iconv('UTF-8', 'ASCII//TRANSLIT', $str))))), $delimiter));
+        return $slug;
     }
 
     // ** ------------------------- Validators ------------------------------------ ** //
