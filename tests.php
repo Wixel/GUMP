@@ -28,9 +28,9 @@ $rules = array(
     'valid_ipv6'			=> 'valid_ipv6',
     'valid_name'			=> 'valid_name',
     'contains'				=> 'contains,free pro basic',
-    'array_size_equal'		=> 'validate_valid_array_size_equal,2',
-    'array_size_greater'	=> 'validate_valid_array_size_greater,2',
-    'array_size_lesser'		=> 'validate_valid_array_size_lesser,2'
+    'array_size_equal'		=> 'valid_array_size_equal,2',
+    'array_size_greater'	=> 'valid_array_size_greater,2',
+    'array_size_lesser'		=> 'valid_array_size_lesser,2'
 );
 
 $invalid_data = array(
@@ -55,7 +55,7 @@ $invalid_data = array(
     'valid_ipv6'            => "google.com",
     'valid_name'            => '*&((*S))(*09890uiadaiusyd)',
     'contains'              => 'premium',
-    'array_size_equal'        => array("1"),
+    'array_size_equal'      => array("1"),
     'array_size_greater'    => array("1"),
     'array_size_lesser'     => array("1","2","3")
 );
