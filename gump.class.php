@@ -408,10 +408,10 @@ class GUMP
 
                         // Check if we have rule parameters
                         if (strstr($rule, ',') !== false) {
-                            $rule   = explode(',', $rule);
-                            $method = 'validate_'.$rule[0];
-                            $param  = $rule[1];
-                            $rule   = $rule[0];
+                            $rules  = explode(',', $rule);
+                            $rule   = array_shift($rules);
+                            $param  = implode(',', $rules);
+                            $method = 'validate_'.$rule;
 
                             // If there is a reference to a field
                             if (preg_match('/(?:(?:^|;)_([a-z_]+))/', $param, $matches)) {
