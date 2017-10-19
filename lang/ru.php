@@ -42,5 +42,5 @@ return array(
     'validate_valid_json_string'        => 'Поле {field} должно быть валидной JSON строкой',
     'validate_valid_array_size_greater' => 'Поле {field} должно содержать минимум {param} значений',
     'validate_valid_array_size_lesser'  => 'Поле {field} должно содержать максимум {param} значений',
-    'validate_valid_array_size_equal'   => 'Поле {field} должго содержать ровно {param} значений',
+    'validate_valid_array_size_equal'   => 'Поле {field} должно содержать ровно {param} значений',
 );
