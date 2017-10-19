@@ -1,6 +1,6 @@
 <?php
 return array(
-    'validate_required' => 'Поле {field} є обов\'язковим',
+    'validate_required' => 'Поле {field} є обов’язковим',
     'validate_valid_email' => 'Поле {field} має бути Email адресою',
     'validate_max_len' => 'У полі {field} має бути максимум {param} символів',
     'validate_min_len' => 'У полі {field} має бути мінімум {param} символів',
@@ -21,7 +21,7 @@ return array(
     'validate_valid_ipv6' => 'Поле {field} має бути IPv6 адресою',
     'validate_guidv4' => 'Поле {field} має бути GUIDом',
     'validate_valid_cc' => 'Номер картки {field} не є валідним',
-    'validate_valid_name' => 'Поле {field} має містити повне ім\'я',
+    'validate_valid_name' => 'Поле {field} має містити повне ім’я',
     'validate_contains' => 'Поле {field} може містити наступні значення: {param}',
     'validate_contains_list' => 'Значення {field} не може бути використано як відповідь',
     'validate_doesnt_contain_list' => 'Значення {field} не може бути використано',
@@ -33,7 +33,7 @@ return array(
     'validate_invalid' => 'Поле {field} не пройшло перевірку',
     'validate_starts' => 'Поле {field} має починатися з {param}',
     'validate_extension' => 'Файл {field} повинен бути наступного типу: {param}',
-    'validate_required_file' => 'Файл {field} обов\'язковий до завантаження',
+    'validate_required_file' => 'Файл {field} обов’язковий до завантаження',
     'validate_equalsfield' => 'Поле {field} має бути ідентичним {param}',
     'validate_iban' => 'Поле {field} має бути валідним IBAN',
     'validate_phone_number' => 'Поле {field} має бути правильним номером телефону',
