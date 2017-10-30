@@ -11,7 +11,7 @@ $_POST = array(
 );
 
 $rules = array(
-	'persian_name'    		    => 'valid_eng_per_pas_name',
+	'persian_name'    		    => 'valid_persian_name',
 	'valid_eng_per_pas_name'    => 'valid_eng_per_pas_name',
 	'persian_digit'    		    => 'valid_persian_digit',
 	'persian_text'    	        => 'valid_persian_text',
