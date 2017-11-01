@@ -1999,7 +1999,7 @@ class GUMP
             $path_info = pathinfo($input[$field]['name']);
             $extension = isset($path_info['extension']) ? $path_info['extension'] : false;
 
-            if ($extension && in_array($extension, $allowed_extensions)) {
+            if ($extension && in_array(strtolower($extension), $allowed_extensions)) {
                 return;
             }
 
