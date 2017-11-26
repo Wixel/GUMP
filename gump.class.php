@@ -433,7 +433,20 @@ class GUMP
                             );
 
                             if (is_array($result)) {
-                                if (array_search($result['field'], array_column($this->errors, 'field')) === false) {
+                                $error_fields = array();
+                                // support under php 5.0
+                                if (function_exists('array_column')) {
+                                    $error_fields = array_column($this->errors, 'field');
+                                } else {
+                                    foreach($this->errors as $k => $v) {
+                                        if (isset($v['field'])) {
+                                            $error_fields[$k] = $v['field'];
+                                        } else {
+                                            $error_fields[$k] = null;
+                                        }
+                                    }
+                                }
+                                if (array_search($result['field'], $error_fields) === false) {
                                     $this->errors[] = $result;
                                 }
                             }
@@ -442,7 +455,20 @@ class GUMP
                             $result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
 
                             if($result === false) {
-                                if (array_search($result['field'], array_column($this->errors, 'field')) === false) {
+                                $error_fields = array();
+                                // support under php 5.0
+                                if (function_exists('array_column')) {
+                                    $error_fields = array_column($this->errors, 'field');
+                                } else {
+                                    foreach($this->errors as $k => $v) {
+                                        if (isset($v['field'])) {
+                                            $error_fields[$k] = $v['field'];
+                                        } else {
+                                            $error_fields[$k] = null;
+                                        }
+                                    }
+                                }
+                                if (array_search($result['field'], $error_fields) === false) {
                                     $this->errors[] = array(
                                         'field' => $field,
                                         'value' => $input[$field],
