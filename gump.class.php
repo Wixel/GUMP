@@ -434,7 +434,7 @@ class GUMP
 
                             if (is_array($result)) {
                                 $error_fields = array();
-                                // support under php 5.0
+                                // support under php 5.4
                                 if (function_exists('array_column')) {
                                     $error_fields = array_column($this->errors, 'field');
                                 } else {
@@ -456,7 +456,7 @@ class GUMP
 
                             if($result === false) {
                                 $error_fields = array();
-                                // support under php 5.0
+                                // support under php 5.4
                                 if (function_exists('array_column')) {
                                     $error_fields = array_column($this->errors, 'field');
                                 } else {
