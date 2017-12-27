@@ -1646,6 +1646,23 @@ class GUMP
             $number_length = strlen($number);
         }
 
+
+        /**
+         * Bail out if $number_lenght is 0. 
+         * This can be the case if a user has entered only digits
+         * 
+         * @since 1.5
+         */
+        if( $number_length == 0 ) {
+            return array(
+                'field' => $field,
+                'value' => $input[$field],
+                'rule' => __FUNCTION__,
+                'param' => $param,
+            );
+        }
+
+
         $parity = $number_length % 2;
 
         $total = 0;
