@@ -1648,8 +1648,8 @@ class GUMP
 
 
         /**
-         * Bail out if $number_lenght is 0. 
-         * This can be the case if a user has entered only digits
+         * Bail out if $number_length is 0. 
+         * This can be the case if a user has entered only alphabets
          * 
          * @since 1.5
          */
