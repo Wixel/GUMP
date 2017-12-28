@@ -29,7 +29,7 @@ return array(
     'validate_date'                 => 'Le champ {field} doit &#234;tre une date valide',
     'validate_min_numeric'          => 'Le champ {field} doit &#234;tre une valeur num&#233;rique &#233;gale ou sup&#233;rieur à {param}',
     'validate_max_numeric'          => 'Le champ {field} doit &#234;tre une valeur num&#233;rique &#233;gale ou inf&#233;rieur à {param}',
-    'validate_min_age'              => 'Le champ {field} doit &#234;tre un &#226;ge &#233;gale ou sup&#233;rieur à {param}',
+    'validate_min_age'              => 'Le champ {field} doit &#234;tre un &#226;ge &#233;gal ou sup&#233;rieur à {param}',
     'validate_invalid'              => 'Le champ {field} est invalide',
     'validate_starts'               => 'Le champ {field} doit commencer par {param}',
     'validate_extension'            => 'Le champ {field} doit avoir les extensions suivantes {param}',
