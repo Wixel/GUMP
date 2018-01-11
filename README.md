@@ -230,6 +230,9 @@ Filters can be any PHP function that returns a string. You don't need to create 
 * basic_tags `Remove all layout orientated HTML tags from text. Leaving only basic tags`
 * whole_number `Ensure that the provided numeric value is represented as a whole number`
 * ms_word_characters `Converts MS Word special characters [“”‘’–…] to web safe characters`
+* lower_case `Converts to lowercase`
+* upper_case `Converts to uppercase`
+* slug `Creates web safe url slug`
 
 #  Creating your own validators and filters
 
