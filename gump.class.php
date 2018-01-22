@@ -2116,6 +2116,7 @@ class GUMP
      * Examples:
      *
      *  555-555-5555: valid
+     *  555.555.5555: valid
      *  5555425555: valid
      *  555 555 5555: valid
      *  1(519) 555-4444: valid
@@ -2129,7 +2130,7 @@ class GUMP
             return;
         }
 
-        $regex = '/^(\d[\s-]?)?[\(\[\s-]{0,2}?\d{3}[\)\]\s-]{0,2}?\d{3}[\s-]?\d{4}$/i';
+        $regex = '/^(\d[\s-\.]?)?[\(\[\s-\.]{0,2}?\d{3}[\)\]\s-\.]{0,2}?\d{3}[\s-\.]?\d{4}$/i';
         if (!preg_match($regex, $input[$field])) {
             return array(
               'field' => $field,
