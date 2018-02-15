@@ -1710,7 +1710,7 @@ class GUMP
             return;
         }
 
-        if (!preg_match("/^([a-zÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïñðòóôõöùúûüýÿ '-])+$/i", $input[$field]) !== false) {
+        if (!preg_match("/^([a-z \p{L} '-])+$/i", $input[$field]) !== false) {
             return array(
                 'field' => $field,
                 'value' => $input[$field],
