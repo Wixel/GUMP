@@ -2404,4 +2404,31 @@ class GUMP
         }
     }
     
+    /**
+     * Determine if the provided value is a valid twitter handle.
+     *
+     * @access protected
+     * @param  string $field
+     * @param  array $input
+     * @return mixed
+     */
+    protected function validate_valid_twitter($field, $input, $param = NULL)
+    {
+        if(!isset($input[$field]) || empty($input[$field]))
+        {
+            return;
+        }
+        $json_twitter = file_get_contents("http://twitter.com/users/username_available?username=".$input[$field]);
+        
+        $twitter_response = json_decode($json_twitter);
+        if($twitter_response->reason != "taken"){
+            return array(
+                'field' => $field,
+                'value' => $input[$field],
+                'rule' => __FUNCTION__,
+                'param' => $param
+            );
+        }
+    }
+    
 }
