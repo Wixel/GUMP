@@ -1513,7 +1513,7 @@ class GUMP
             $url = $url['host'];
         }
 
-        if (function_exists('checkdnsrr')) {
+        if (function_exists('checkdnsrr')  && function_exists('idn_to_ascii')) {
             if (checkdnsrr(idn_to_ascii($url), 'A') === false) {
                 return array(
                     'field' => $field,
