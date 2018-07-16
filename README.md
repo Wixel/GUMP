@@ -31,10 +31,10 @@ To install the older version on GUMP, please use:
 ```php
 require 'gump.class.php';
 
-// Load any language files
+# Load any language files
 GUMP::load_lang('lang/en.yaml');
 
-// Manually create a validator or filter function
+# Manually create a validator or filter function
 GUMP::register('required', function($value, $params = null) { 
 	$value = trim($value);
 
@@ -46,13 +46,13 @@ GUMP::register('required', function($value, $params = null) {
 });
 
 
-// Get or set config value (accesible inside GUMP functions)
+# Get or set config value (accesible inside GUMP functions)
 GUMP::config('key', 'value');
 
-// Call an individual GUMP method
+# Call an individual GUMP method
 $value = GUMP::call('method', $value, $params);
 
-// Override a field with a custom field name
+# Override a field with a custom field name
 GUMP::set_field_name('key', 'Field Name');
 
 $input = array(
