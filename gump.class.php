@@ -278,6 +278,10 @@ class GUMP
             return false;
         }
 
+		if(count($this->errors) > 0) {
+			return false;
+		}
+
         return $data;
     }
 
