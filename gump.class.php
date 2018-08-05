@@ -382,7 +382,20 @@ class GUMP
 
         foreach ($ruleset as $field => $rules) {
 
-            $rules = explode('|', $rules);
+            if (preg_match('#regex,(?<delimiter>[^0-9a-z ]{1})(?<regex>.*)\1(?<modifiers>[^|]+)?\|?(?<rules>.*)?#i', $rules, $arr)) {
+                $regex = 'regex,' . $arr['delimiter'] . $arr['regex'] . $arr['delimiter'];
+                if (!empty($arr['modifiers'])) {
+                    $regex .= $arr['modifiers'];
+                }
+
+                $rules = array($regex);
+
+                if (!empty($arr['rules'])) {
+                    $rules = array_merge($rules, explode('|', $arr['rules']));
+                }
+            } else {
+                $rules = explode('|', $rules);
+            }
 
             $look_for = array('required_file', 'required');
 
@@ -408,7 +421,7 @@ class GUMP
 
                         // Check if we have rule parameters
                         if (strstr($rule, ',') !== false) {
-                            $rule   = explode(',', $rule);
+                            $rule   = explode(',', $rule, 2);
                             $method = 'validate_'.$rule[0];
                             $param  = $rule[1];
                             $rule   = $rule[0];
@@ -2430,5 +2443,78 @@ class GUMP
             );
         }
     }
-    
+
+    /**
+     * Validate data using respect/validation
+     *
+     * @param string $method
+     * @param array  $arguments
+     *
+     * @return mixed
+     *
+     * @throws Exception
+     */
+    public function __call($method, $arguments) {
+        if (!class_exists('\Respect\Validation\Validator')) {
+            throw new \Exception('To use extended validators respect/validation is required. To install: composer require respect/validation');
+        }
+
+        $method  = str_replace('validate_respect_', 'validate_', $method);
+
+        // Check error messages has set
+        $messages = $this->get_messages();
+        if (!isset($messages[$method])) {
+            throw new \Exception ('Rule "' . $method . '" does not have an error message');
+        }
+
+        $field = $arguments[0];
+        $input = $arguments[1];
+        $param = !empty($arguments[2]) ? explode(';', $arguments[2]) : false;
+
+        if (empty($input[$field])) {
+            return;
+        }
+
+        // Capture Exception Externally
+        // try {
+        $rule  = str_replace('validate_', '', $method);
+        $class = '\Respect\Validation\Validator::' . $rule;
+        if (!$param) {
+            if (!$class()->validate($input[$field])) {
+                return array(
+                    'field' => $field,
+                    'value' => $input[$field],
+                    'rule'  => $method,
+                    'param' => $param,
+                );
+            }
+        } else {
+            $class_instance = current($class(null)->getRules());
+            if (method_exists($class_instance, '__construct')) {
+                $class_instance = call_user_func_array($class, $param);
+                if (!$class_instance->validate($input[$field])) {
+                    return array(
+                        'field' => $field,
+                        'value' => $input[$field],
+                        'rule'  => $method,
+                        'param' => $param,
+                    );
+                }
+            } else {
+                if (!$class()->validate($input[$field])) {
+                    return array(
+                        'field' => $field,
+                        'value' => $input[$field],
+                        'rule'  => $method,
+                        'param' => $param,
+                    );
+                }   
+            }
+        }
+
+        return;
+        // } catch (\Exception $ex) {
+        //     throw new \Exception($ex->getMessage());
+        // }
+    }
 }
