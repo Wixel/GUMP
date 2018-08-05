@@ -382,7 +382,20 @@ class GUMP
 
         foreach ($ruleset as $field => $rules) {
 
-            $rules = explode('|', $rules);
+            if (preg_match('#regex,(?<delimiter>[^0-9a-z ]{1})(?<regex>.*)\1(?<modifiers>[^|]+)?\|?(?<rules>.*)?#i', $rules, $arr)) {
+                $regex = 'regex,' . $arr['delimiter'] . $arr['regex'] . $arr['delimiter'];
+                if (!empty($arr['modifiers'])) {
+                    $regex .= $arr['modifiers'];
+                }
+
+                $rules = array($regex);
+
+                if (!empty($arr['rules'])) {
+                    $rules = array_merge($rules, explode('|', $arr['rules']));
+                }
+            } else {
+                $rules = explode('|', $rules);
+            }
 
             $look_for = array('required_file', 'required');
 
@@ -408,7 +421,7 @@ class GUMP
 
                         // Check if we have rule parameters
                         if (strstr($rule, ',') !== false) {
-                            $rule   = explode(',', $rule);
+                            $rule   = explode(',', $rule, 2);
                             $method = 'validate_'.$rule[0];
                             $param  = $rule[1];
                             $rule   = $rule[0];
