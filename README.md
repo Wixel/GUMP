@@ -336,6 +336,37 @@ if($is_valid === true) {
 }
 ```
 
+# Some examples to use Respect/Validation to validating file fields
+
+```php
+require_once('vendor/autoload.php');
+
+GUMP::set_error_message('validate_cpf', 'cpf invalid');
+GUMP::set_error_message('validate_between', 'birth date expected value between 10 and 20');
+GUMP::set_error_message('validate_identical', 'identical is different');
+GUMP::set_error_message('validate_length', 'length invalid');
+GUMP::set_error_message('validate_exists', 'file not found');
+GUMP::set_error_message('validate_size', 'size invalid');
+$is_valid = GUMP::is_valid(array_merge($_POST,$_FILES), array(
+	'cpf' => 'required|cpf',
+	'birth_date' => 'between,10;20', // between 10 and 20
+	'identical' => 'identical,abc',
+	'length' => 'length,1;5' // 1 to 5 characters
+	'file' => 'exists', // check if file exists
+	// 'size' => 'size,1MB', FROM 1MB
+	'size' => 'size,1KB;100KB', // greater than or equal to 10KB and less than or equal to 100KB
+	'date' => 'respect_date,d/m/Y' // replace validator gump by respect
+));
+
+if($is_valid === true) {
+	// continue
+} else {
+	print_r($is_valid);
+}
+
+// view all validators in https://github.com/Respect/Validation/blob/1.1/docs/VALIDATORS.md
+```
+
 Running the examples:
 ------------------
 
@@ -356,6 +387,7 @@ The output will depend on the input data.
 * Adam Curtis http://alc.im
 * Sean Hickey
 * Dennis Thompson http://atomicpages.net
+* Cristiano Soares <crisnao2> http://comerciobr.com
 
 # TODO
 
@@ -378,3 +410,4 @@ The output will depend on the input data.
 * Add an 'is empty' validator check
 * Check that arrays have a positive count (if type is array)
 * A secure password validator
+* Integration with https://github.com/Respect/Validation
