@@ -427,18 +427,7 @@ class GUMP
 
                         //self::$validation_methods[$rule] = $callback;
 
-                        if (is_callable(array($this, $method))) {
-                            $result = $this->$method(
-                                $field, $input, $param
-                            );
-
-                            if (is_array($result)) {
-                                if (array_search($result['field'], array_column($this->errors, 'field')) === false) {
-                                    $this->errors[] = $result;
-                                }
-                            }
-
-                        } elseif(isset(self::$validation_methods[$rule])) {
+                        if (isset(self::$validation_methods[$rule])) {
                             $result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
 
                             if($result === false) {
@@ -449,6 +438,17 @@ class GUMP
                                         'rule' => $rule,
                                         'param' => $param,
                                     );
+                                }
+                            }
+
+                        } elseif (is_callable(array($this, $method))) {
+                            $result = $this->$method(
+                                $field, $input, $param
+                            );
+
+                            if (is_array($result)) {
+                                if (array_search($result['field'], array_column($this->errors, 'field')) === false) {
+                                    $this->errors[] = $result;
                                 }
                             }
 
@@ -688,13 +688,13 @@ class GUMP
                 }
 
                 foreach ($input_array as &$value) {
-                    if (is_callable(array($this, 'filter_'.$filter))) {
-                        $method = 'filter_'.$filter;
-                        $value = $this->$method($value, $params);
+                    if (isset(self::$filter_methods[$filter])) {
+                        $value = call_user_func(self::$filter_methods[$filter], $value, $params);
                     } elseif (function_exists($filter)) {
                         $value = $filter($value);
-                    } elseif (isset(self::$filter_methods[$filter])) {
-                        $value = call_user_func(self::$filter_methods[$filter], $value, $params);
+                    } elseif (is_callable(array($this, 'filter_'.$filter))) {
+                        $method = 'filter_'.$filter;
+                        $value = $this->$method($value, $params);
                     } else {
                         throw new Exception("Filter method '$filter' does not exist.");
                     }
@@ -2431,4 +2431,77 @@ class GUMP
         }
     }
     
+    /**
+     * Validate data using respect/validation
+     *
+     * @param string $method
+     * @param array  $arguments
+     *
+     * @return mixed
+     *
+     * @throws Exception
+     */
+    public function __call($method, $arguments) {
+        if (!class_exists('\Respect\Validation\Validator')) {
+            throw new \Exception('To use extended validators respect/validation is required. To install: composer require respect/validation');
+        }
+
+        $method  = str_replace('validate_respect_', 'validate_', $method);
+
+        // Check error messages has set
+        $messages = $this->get_messages();
+        if (!isset($messages[$method])) {
+            throw new \Exception ('Rule "' . $method . '" does not have an error message');
+        }
+
+        $field = $arguments[0];
+        $input = $arguments[1];
+        $param = !empty($arguments[2]) ? explode(';', $arguments[2]) : false;
+
+        if (empty($input[$field])) {
+            return;
+        }
+
+        // Capture Exception Externally
+        // try {
+        $rule  = str_replace('validate_', '', $method);
+        $class = '\Respect\Validation\Validator::' . $rule;
+        if (!$param) {
+            if (!$class()->validate($input[$field])) {
+                return array(
+                    'field' => $field,
+                    'value' => $input[$field],
+                    'rule'  => $method,
+                    'param' => $param,
+                );
+            }
+        } else {
+            $class_instance = current((call_user_func_array($class, $param))->getRules());
+            if (method_exists($class_instance, '__construct')) {
+                $class_instance = call_user_func_array($class, $param);
+                if (!$class_instance->validate($input[$field])) {
+                    return array(
+                        'field' => $field,
+                        'value' => $input[$field],
+                        'rule'  => $method,
+                        'param' => $param,
+                    );
+                }
+            } else {
+                if (!$class()->validate($input[$field])) {
+                    return array(
+                        'field' => $field,
+                        'value' => $input[$field],
+                        'rule'  => $method,
+                        'param' => $param,
+                    );
+        }
+    }
+        }
+    
+        return;
+        // } catch (\Exception $ex) {
+        //     throw new \Exception($ex->getMessage());
+        // }
+    }
 }
