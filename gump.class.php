@@ -2489,8 +2489,9 @@ class GUMP
                 );
             }
         } else {
-            $class_instance = current((call_user_func_array($class, $param))->getRules());
-            if (method_exists($class_instance, '__construct')) {
+            $class_instance = call_user_func_array($class, $param); // returns instance of validation class
+            $instance = current($class_instance->getRules());
+            if (method_exists($instance, '__construct')) {
                 $class_instance = call_user_func_array($class, $param);
                 if (!$class_instance->validate($input[$field])) {
                     return array(
