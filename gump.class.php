@@ -583,8 +583,10 @@ class GUMP
                 $field = self::$fields[$e['field']];
 
                 // If param is a field (i.e. equalsfield validator)
-                if (array_key_exists($param, self::$fields)) {
-                    $param = self::$fields[$e['param']];
+                if (!is_array($param)) {
+                    if (array_key_exists($param, self::$fields)) {
+                        $param = self::$fields[$e['param']];
+                    }
                 }
             }
 
@@ -639,8 +641,10 @@ class GUMP
                 $field = self::$fields[$e['field']];
 
                 // If param is a field (i.e. equalsfield validator)
-                if (array_key_exists($param, self::$fields)) {
-                    $param = self::$fields[$e['param']];
+                if (!is_array($param)) {
+                    if (array_key_exists($param, self::$fields)) {
+                        $param = self::$fields[$e['param']];
+                    }
                 }
             }
 
