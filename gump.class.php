@@ -388,11 +388,16 @@ class GUMP
                     $regex .= $arr['modifiers'];
                 }
 
-                $rules = array($regex);
+                $_rules = array($regex);
 
                 if (!empty($arr['rules'])) {
-                    $rules = array_merge($rules, explode('|', $arr['rules']));
+                    $_rules = array_merge($_rules, explode('|', $arr['rules']));
                 }
+
+                $join = implode('|', $_rules);
+                $rules = str_replace(array('|' . $join, $join), '', $rules);
+
+                $rules = array_merge(explode('|', $rules), $_rules);
             } else {
                 $rules = explode('|', $rules);
             }
