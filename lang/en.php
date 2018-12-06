@@ -34,6 +34,7 @@ return array(
     'validate_invalid'                  => 'The {field} field is invalid',
     'validate_starts'                   => 'The {field} field needs to start with {param}',
     'validate_extension'                => 'The {field} field can only have one of the following extensions: {param}',
+    'validate_file_size'                => 'The {field} must be smaller than: {param}',
     'validate_required_file'            => 'The {field} field is required',
     'validate_equalsfield'              => 'The {field} field does not equal {param} field',
     'validate_iban'                     => 'The {field} field needs to contain a valid IBAN',
