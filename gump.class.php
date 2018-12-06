@@ -257,17 +257,20 @@ class GUMP
      *
      * @param array $data
      * @param bool  $check_fields
+     * @param string $rules_delimiter
+     * @param string $parameters_delimiters
      *
      * @return array
      *
      * @throws Exception
      */
-    public function run(array $data, $check_fields = false)
+    public function run(array $data, $check_fields = false, $rules_delimiter='|', $parameters_delimiters=',')
     {
-        $data = $this->filter($data, $this->filter_rules());
+        $data = $this->filter($data, $this->filter_rules(), $rules_delimiter, $parameters_delimiters);
 
         $validated = $this->validate(
-            $data, $this->validation_rules()
+            $data, $this->validation_rules(),
+            $rules_delimiter, $parameters_delimiters
         );
 
         if ($check_fields === true) {
@@ -368,21 +371,24 @@ class GUMP
 
     /**
      * Perform data validation against the provided ruleset.
+     * If any rule's parameter contains either '|' or ',', the corresponding default separator can be changed
      *
      * @param mixed $input
      * @param array $ruleset
+     * @param string $rules_delimiter
+     * @param string $parameters_delimiter
      *
      * @return mixed
      *
      * @throws Exception
      */
-    public function validate(array $input, array $ruleset)
+    public function validate(array $input, array $ruleset, $rules_delimiter='|', $parameters_delimiter=',')
     {
         $this->errors = array();
 
         foreach ($ruleset as $field => $rules) {
 
-            $rules = explode('|', $rules);
+            $rules = explode($rules_delimiter, $rules);
 
             $look_for = array('required_file', 'required');
 
@@ -407,8 +413,8 @@ class GUMP
                         $param = null;
 
                         // Check if we have rule parameters
-                        if (strstr($rule, ',') !== false) {
-                            $rule   = explode(',', $rule);
+                        if (strstr($rule, $parameters_delimiter) !== false) {
+                            $rule   = explode($parameters_delimiter, $rule);
                             $method = 'validate_'.$rule[0];
                             $param  = $rule[1];
                             $rule   = $rule[0];
@@ -651,9 +657,12 @@ class GUMP
 
     /**
      * Filter the input data according to the specified filter set.
+     * If any filter's parameter contains either '|' or ',', the corresponding default separator can be changed
      *
      * @param mixed $input
      * @param array $filterset
+     * @param string $filters_delimeter
+     * @param string $parameters_delimiter
      *
      * @throws Exception
      *
@@ -661,20 +670,20 @@ class GUMP
      *
      * @throws Exception
      */
-    public function filter(array $input, array $filterset)
+    public function filter(array $input, array $filterset, $filters_delimeter='|', $parameters_delimiter=',')
     {
         foreach ($filterset as $field => $filters) {
             if (!array_key_exists($field, $input)) {
                 continue;
             }
 
-            $filters = explode('|', $filters);
+            $filters = explode($filters_delimeter, $filters);
 
             foreach ($filters as $filter) {
                 $params = null;
 
-                if (strstr($filter, ',') !== false) {
-                    $filter = explode(',', $filter);
+                if (strstr($filter, $parameters_delimiter) !== false) {
+                    $filter = explode($parameters_delimiter, $filter);
 
                     $params = array_slice($filter, 1, count($filter) - 1);
 
@@ -2116,6 +2125,7 @@ class GUMP
      * Examples:
      *
      *  555-555-5555: valid
+     *  555.555.5555: valid
      *  5555425555: valid
      *  555 555 5555: valid
      *  1(519) 555-4444: valid
@@ -2129,7 +2139,7 @@ class GUMP
             return;
         }
 
-        $regex = '/^(\d[\s-]?)?[\(\[\s-]{0,2}?\d{3}[\)\]\s-]{0,2}?\d{3}[\s-]?\d{4}$/i';
+        $regex = '/^(\d[\s-\.]?)?[\(\[\s-\.]{0,2}?\d{3}[\)\]\s-\.]{0,2}?\d{3}[\s-\.]?\d{4}$/i';
         if (!preg_match($regex, $input[$field])) {
             return array(
               'field' => $field,

@@ -1,1 +1,11 @@
 .DS_Store
+.idea
+nbproject
+nb-configuration.xml
+Session.vim
+*.tmproj
+*.tmproject
+tmtags
+Thumbs.db
+Desktop.ini
+
