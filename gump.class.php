@@ -400,7 +400,7 @@ class GUMP
                 $join = implode('|', $_rules);
                 $rules = str_replace(array('|' . $join, $join), '', $rules);
 
-                $rules = array_merge(explode('|', $rules), $_rules);
+                $rules = array_filter(array_merge(explode('|', $rules), $_rules));
             } else {
                 $rules = explode('|', $rules);
             }
