@@ -552,12 +552,25 @@ class GUMP
      */
     protected function get_messages()
     {
-        $lang_file = __DIR__.DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$this->lang.'.php';
-        $messages = require $lang_file;
+        $messages = array();
+
+        if ($this->lang != 'en') {
+            $default_lang_file = __DIR__ . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . 'en.php';
+    
+            if (is_file($default_lang_file)) {
+                $messages = require $default_lang_file;
+            }
+        }
+
+        $lang_file = __DIR__ . DIRECTORY_SEPARATOR . 'lang' . DIRECTORY_SEPARATOR . $this->lang . '.php';
+        $_messages = require $lang_file;
+
+        $messages = array_merge($messages, $_messages);
 
         if ($validation_methods_errors = self::$validation_methods_errors) {
             $messages = array_merge($messages, $validation_methods_errors);
         }
+
         return $messages;
     }
 
