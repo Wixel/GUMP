@@ -269,8 +269,7 @@ class GUMP
         $data = $this->filter($data, $this->filter_rules(), $rules_delimiter, $parameters_delimiters);
 
         $validated = $this->validate(
-            $data, $this->validation_rules(),
-            $rules_delimiter, $parameters_delimiters
+            $data, $this->validation_rules()
         );
 
         if ($check_fields === true) {
@@ -375,14 +374,12 @@ class GUMP
      *
      * @param mixed $input
      * @param array $ruleset
-     * @param string $rules_delimiter
-     * @param string $parameters_delimiter
      *
      * @return mixed
      *
      * @throws Exception
      */
-    public function validate(array $input, array $ruleset, $rules_delimiter='|', $parameters_delimiter=',')
+    public function validate(array $input, array $ruleset)
     {
         $this->errors = array();
 
