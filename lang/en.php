@@ -49,4 +49,5 @@ return array(
 	'validate_valid_persian_text'       => 'The {field} should be a valid text in Persian/Dari or Arabic format',
 	'validate_valid_pashtu_text'        => 'The {field} should be a valid text in Pashtu format',
     'validate_valid_twitter'            => 'The {field} is not a valid twitter handle',
+    'mismatch'                          => 'The {field} is mismatch!'
 );
