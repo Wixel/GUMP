@@ -274,6 +274,10 @@ class GUMP
 
         if ($check_fields === true) {
             $this->check_fields($data);
+
+            if ($validated === true) {
+                $validated = !$this->errors;
+            }
         }
 
         if ($validated !== true) {
