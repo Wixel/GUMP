@@ -46,7 +46,7 @@ $validated = $validator->validate(
 
 // Check if validation was successful
 
-if($validated === TRUE)
+if($validated === true)
 {
 	echo "Successful Validation\n\n";
 	

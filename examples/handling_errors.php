@@ -44,7 +44,7 @@ $validated = $validator->validate(
 	$_POST, $rules
 );
 
-if($validated === TRUE)
+if($validated === true)
 {
 	echo "Successful Validation\n\n";
 	

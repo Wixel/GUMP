@@ -29,7 +29,7 @@ $_POST = $validator->sanitize( $_POST, $whitelist );
 
 $validated = $validator->validate($_POST, $rules);
 
-if( $validated === TRUE ) 
+if( $validated === true ) 
 {
 	/**
 	 * Now you are sure that the $_POST array contains only the fields 

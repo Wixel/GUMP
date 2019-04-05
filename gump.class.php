@@ -2422,7 +2422,7 @@ class GUMP
      * @param  array $input
      * @return mixed
      */
-    protected function validate_valid_twitter($field, $input, $param = NULL)
+    protected function validate_valid_twitter($field, $input, $param = null)
     {
         if(!isset($input[$field]) || empty($input[$field]))
         {

@@ -4,7 +4,7 @@
 require "../gump.class.php";
 
 // Add the custom validator
-GUMP::add_validator("is_object", function($field, $input, $param = NULL) {
+GUMP::add_validator("is_object", function($field, $input, $param = null) {
     return is_object($input[$field]);
 });
 

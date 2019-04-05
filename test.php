@@ -31,7 +31,7 @@ $validated = $validator->is_valid($_POST, $rules);
 $_POST = $validator->sanitize($_POST);
 $_POST = $validator->filter($_POST, $filters);
 
-if($validated === TRUE) {
+if($validated === true) {
 	echo "Successful Validation\n\n";
 	echo "<pre>";
 	print_r($_POST);
