@@ -971,6 +971,32 @@ class GUMP
         return $slug;
     }
 
+    /**
+     * filter form input is true or false
+     *
+     * @param      $value
+     * @param null $params
+     *
+     * @return bool
+     */
+    protected function filter_bool($value, $params = null) {
+        return $this->filter_boolean($value, $params);
+    }
+
+    /**
+     * filter form input is true or false
+     *
+     * @param      $value
+     * @param null $params
+     *
+     * @return bool
+     */
+    protected function filter_boolean($value, $params = null) {
+        $is_true = array('1', 'true', true, 1, 'yes', 'on');
+
+        return in_array($value, $is_true, true );
+    }
+
     // ** ------------------------- Validators ------------------------------------ ** //
 
 
@@ -2421,6 +2447,32 @@ class GUMP
         }
 
         if (!preg_match("/^([ا آ أ ب پ ت ټ ث څ ج چ ح ځ خ د ډ ذ ر ړ ز ږ ژ س ش ښ ص ض ط ظ ع غ ف ق ک ګ ل م ن ڼ و ؤ ه ة ی ې ۍ ي ئ ء ْ ٌ ٍ ً ُ ِ َ ّ ؋ \. \/ \\ = \- \| \{ \} \[ \] ؛ : « » ؟ > < \+ \( \) \* ، × ٪ ٫ ٬ ! ۰۱۲۳۴۵۶۷۸۹٠١٢٣٤٥٦٧٨٩ \x{200B}-\x{200D} \x{FEFF} \x{22} \x{27} \x{60} \x{B4} \x{2018} \x{2019} \x{201C} \x{201D} \s])+$/u", $input[$field]) !== false) {
+            return array(
+                'field' => $field,
+                'value' => $input[$field],
+                'rule' => __FUNCTION__,
+                'param' => $param,
+            );
+        }
+    }
+
+    /**
+     * Determine if the input is a valid text in Chinese characters.
+     *
+     * Usage: '<index>' => 'valid_chinese_text'
+     *
+     * @param string $field
+     * @param array  $input
+     *
+     * @return mixed
+     */
+    protected function validate_valid_chinese_text($field, $input, $param = null)
+    {
+        if (!isset($input[$field]) || empty($input[$field])) {
+            return;
+        }
+
+        if (!preg_match("/^[\x{4e00}-\x{9fa5}]+$/u", $input[$field]) !== false) {
             return array(
                 'field' => $field,
                 'value' => $input[$field],

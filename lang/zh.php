@@ -13,7 +13,7 @@ return array(
     'validate_alpha_space'              => '{field} 只能是字母和空格',
     'validate_numeric'                  => '{field} 只能是数字',
     'validate_integer'                  => '{field} 只能是整数',
-    'validate_boolean'                  => '{field} 只能为真(true)或假(false)',
+    'validate_boolean'                  => '{field} 只能为布尔值',
     'validate_float'                    => '{field} 只能是浮点数',
     'validate_valid_url'                => '{field} 不是一个有效的网址',
     'validate_url_exists'               => '{field} 该网址不可访问或者不存在',
@@ -48,5 +48,6 @@ return array(
 	'validate_valid_persian_digit'      => '{field} 不是一个有效的波斯语/达里语或阿拉伯语格式的数字',
 	'validate_valid_persian_text'       => '{field} 不是一个有效的波斯语/达里语或阿拉伯语格式的文本',
 	'validate_valid_pashtu_text'        => '{field} 不是一个有效的普什图格式文本',
+    'validate_valid_chinese_text'       => '{field} 只能输入中文',
     'validate_valid_twitter'            => '{field} 不是一个有效的Twitter账户',
 );
