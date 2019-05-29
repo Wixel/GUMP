@@ -40,12 +40,15 @@ class GUMP
      * Function to create and return previously created instance
      *
      * @return GUMP
+     *
+     * @throws Exception
      */
-
     public static function get_instance(){
         if(self::$instance === null)
         {
-            self::$instance = new static();
+            $lang = defined('GUMP_LANG') ? GUMP_LANG : 'en';
+
+            self::$instance = new static($lang);
         }
         return self::$instance;
     }
@@ -72,6 +75,11 @@ class GUMP
 
     // ** ------------------------- Validation Helpers ---------------------------- ** //
 
+    /**
+     * @param string $lang
+     *
+     * @throws Exception
+     */
     public function __construct($lang = 'en')
     {
         if ($lang) {
@@ -91,7 +99,9 @@ class GUMP
      * @param array $data       The data to be validated
      * @param array $validators The GUMP validators
      *
-     * @return mixed True(boolean) or the array of error messages
+     * @return true|array True(boolean) or the array of error messages
+     *
+     * @throws Exception
      */
     public static function is_valid(array $data, array $validators)
     {
@@ -113,6 +123,8 @@ class GUMP
      * @param array $filters
      *
      * @return mixed
+     *
+     * @throws Exception
      */
     public static function filter_input(array $data, array $filters)
     {
@@ -125,6 +137,8 @@ class GUMP
      * Magic method to generate the validation error messages.
      *
      * @return string
+     *
+     * @throws Exception
      */
     public function __toString()
     {
@@ -260,7 +274,7 @@ class GUMP
      * @param string $rules_delimiter
      * @param string $parameters_delimiters
      *
-     * @return array
+     * @return array|false
      *
      * @throws Exception
      */
@@ -309,7 +323,7 @@ class GUMP
      * Sanitize the input data.
      *
      * @param array $input
-     * @param null  $fields
+     * @param array  $fields
      * @param bool  $utf8_encode
      *
      * @return array
@@ -507,7 +521,6 @@ class GUMP
      */
     public static function set_error_message($rule, $message)
     {
-        $gump = self::get_instance();
         self::$validation_methods_errors[$rule] = $message;
     }
 
@@ -522,6 +535,8 @@ class GUMP
      * ));
      *
      * @param array $array
+     *
+     * @throws Exception
      */
     public static function set_error_messages(array $array)
     {
@@ -553,8 +568,9 @@ class GUMP
      * @param string $field_class
      * @param string $error_class
      *
-     * @return array
-     * @return string
+     * @return array|string
+     *
+     * @throws Exception
      */
     public function get_readable_errors($convert_to_string = false, $field_class = 'gump-field', $error_class = 'gump-error-message')
     {
@@ -610,6 +626,8 @@ class GUMP
      * @param $convert_to_string
      *
      * @return array | null (if empty)
+     *
+     * @throws Exception
      */
     public function get_errors_array($convert_to_string = null)
     {
@@ -663,8 +681,6 @@ class GUMP
      * @param array $filterset
      * @param string $filters_delimeter
      * @param string $parameters_delimiter
-     *
-     * @throws Exception
      *
      * @return mixed
      *
