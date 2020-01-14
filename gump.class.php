@@ -1523,7 +1523,7 @@ class GUMP
         }
 
         if (function_exists('checkdnsrr')  && function_exists('idn_to_ascii')) {
-            if (checkdnsrr(idn_to_ascii($url), 'A') === false) {
+            if (checkdnsrr(idn_to_ascii($url, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46), 'A') === false) {
                 return array(
                     'field' => $field,
                     'value' => $input[$field],
