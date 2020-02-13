@@ -448,7 +448,7 @@ class GUMP
                             $result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
 
                             if($result === false) {
-                                if (array_search($result['field'], array_column($this->errors, 'field')) === false) {
+                                if (array_search($field, array_column($this->errors, 'field')) === false) {
                                     $this->errors[] = array(
                                         'field' => $field,
                                         'value' => $input[$field],
