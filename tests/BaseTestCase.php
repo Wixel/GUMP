@@ -40,6 +40,14 @@ abstract class BaseTestCase extends TestCase
         $reflectionProperty->setValue($object, $value);
     }
 
+    public static function getPrivateField($obj, $prop)
+    {
+        $reflection = new ReflectionClass($obj);
+        $property = $reflection->getProperty($prop);
+        $property->setAccessible(true);
+        return $property->getValue($obj);
+    }
+
     public function resetCustomValidators()
     {
         self::setPrivateField(GUMP::class, $this->gump, 'validation_methods', []);
