@@ -5,6 +5,11 @@ namespace Tests;
 use GUMP;
 use Exception;
 
+/**
+ * Class ValidateTest
+ *
+ * @package Tests
+ */
 class ValidateTest extends BaseTestCase
 {
     public function testIntegratedValidatorReturnsOneErrorOnOneFailure()

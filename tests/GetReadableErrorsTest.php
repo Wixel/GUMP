@@ -5,54 +5,75 @@ namespace Tests;
 use GUMP;
 use Exception;
 
-class GetErrorsArrayTest extends BaseTestCase
+/**
+ * Class GetErrorsArrayTest
+ *
+ * @package Tests
+ */
+class GetReadableErrorsTest extends BaseTestCase
 {
     public function testReturnsEmptyArrayWhenNoErrors()
     {
         $result = $this->gump->validate([
-            'test_number' => '111'
+            'test_number' => '123'
         ], [
             'test_number' => 'numeric'
         ]);
 
-        $this->assertEquals([], $this->gump->get_errors_array());
+        $this->assertEquals([], $this->gump->get_readable_errors());
     }
 
-    public function testReturnsNullWhenNoErrorsAndConvertingToStringIsSet()
+    public function testReturnsNullWhenNoErrorsAndConvertingToString()
     {
         $result = $this->gump->validate([
-            'test_number' => '111'
+            'test_number' => '123'
         ], [
             'test_number' => 'numeric'
         ]);
 
-        $this->assertNull($this->gump->get_errors_array(true));
+        $this->assertNull($this->gump->get_readable_errors(true));
     }
 
-    public function testReturnsErrorsWithFieldAsKey()
+    public function testReturnsArray()
     {
         $result = $this->gump->validate([
-            'test_number' => 'aaa'
+            'test_number' => 'text'
         ], [
             'test_number' => 'numeric'
         ]);
 
-        $this->assertArrayHasKey('test_number', $this->gump->get_errors_array());
+        $this->assertEquals([
+            "The <span class=\"gump-field\">Test Number</span> field must be a number"
+        ], $this->gump->get_readable_errors());
+    }
+
+    public function testReturnsString()
+    {
+        $result = $this->gump->validate([
+            'test_number' => 'text'
+        ], [
+            'test_number' => 'numeric'
+        ]);
+
+        $this->assertEquals(
+            '<span class="gump-error-message">The <span class="gump-field">Test Number</span> field must be a number</span>',
+            $this->gump->get_readable_errors(true)
+        );
     }
 
     public function testPrintsCustomFieldLabelsOnErrors()
     {
-        GUMP::set_field_name('test', 'Test Num.');
+        GUMP::set_field_name('testnumber', 'Test Num.');
 
         $result = $this->gump->validate([
-            'test' => 'hey'
+            'testnumber' => 'hey'
         ], [
-            'test' => 'numeric'
+            'testnumber' => 'numeric'
         ]);
 
         $this->assertEquals([
-            'test' => 'The Test Num. field must be a number'
-        ], $this->gump->get_errors_array());
+            'The <span class="gump-field">Test Num.</span> field must be a number'
+        ], $this->gump->get_readable_errors());
     }
 
     public function testThrowsExceptionOnValidatorWithoutErrorMessage()
@@ -70,9 +91,8 @@ class GetErrorsArrayTest extends BaseTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Rule "custom" does not have an error message');
 
-        $this->gump->get_errors_array();
+        $this->gump->get_readable_errors();
     }
-
 
     public function testEqualsFieldValidator()
     {
@@ -87,7 +107,7 @@ class GetErrorsArrayTest extends BaseTestCase
         ]);
 
         $this->assertEquals([
-            'test_number' => 'The Test Num. field does not equal The Other Test Field field'
-        ], $this->gump->get_errors_array());
+            'The <span class="gump-field">Test Num.</span> field does not equal The Other Test Field field'
+        ], $this->gump->get_readable_errors());
     }
 }

@@ -5,6 +5,11 @@ namespace Tests;
 use GUMP;
 use Exception;
 
+/**
+ * Class GetErrorsArrayTest
+ *
+ * @package Tests
+ */
 class FilterTest extends BaseTestCase
 {
     public function testIntegratedFilterIsSuccessfullyRun()

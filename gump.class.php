@@ -210,15 +210,15 @@ class GUMP
      */
     public static function field($key, array $array, $default = null)
     {
-      if(!is_array($array)) {
-        return null;
-      }
+        if (!is_array($array)) {
+            return null;
+        }
 
-      if(isset($array[$key])) {
-        return $array[$key];
-      } else {
-        return $default;
-      }
+        if (isset($array[$key])) {
+            return $array[$key];
+        } else {
+            return $default;
+        }
     }
 
     /**
