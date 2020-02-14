@@ -448,7 +448,7 @@ class GUMP
                             $result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
 
                             if($result === false) {
-                                if (array_search($result['field'], array_column($this->errors, 'field')) === false) {
+                                if (array_search($field, array_column($this->errors, 'field')) === false) {
                                     $this->errors[] = array(
                                         'field' => $field,
                                         'value' => $input[$field],
@@ -937,9 +937,9 @@ class GUMP
     }
 
     /**
-     * Converts value to url-web-slugs. 
-     * 
-     * Credit: 
+     * Converts value to url-web-slugs.
+     *
+     * Credit:
      * https://stackoverflow.com/questions/40641973/php-to-convert-string-to-slug
      * http://cubiq.org/the-perfect-php-clean-url-generator
      *
@@ -1657,9 +1657,9 @@ class GUMP
 
 
         /**
-         * Bail out if $number_length is 0. 
+         * Bail out if $number_length is 0.
          * This can be the case if a user has entered only alphabets
-         * 
+         *
          * @since 1.5
          */
         if( $number_length == 0 ) {
@@ -2308,7 +2308,7 @@ class GUMP
             );
         }
     }
-	
+
 	/**
      * Determine if the input is a valid person name in English, Persian/Dari/Pashtu or Arabic mainly in Afghanistan and Iran.
      *
@@ -2334,7 +2334,7 @@ class GUMP
             );
         }
     }
-	
+
 	/**
      * Determine if the input is valid digits in Persian/Dari, Pashtu or Arabic format.
      *
@@ -2360,8 +2360,8 @@ class GUMP
             );
         }
     }
-	
-	
+
+
 	/**
      * Determine if the input is a valid text in Persian/Dari or Arabic mainly in Afghanistan and Iran.
      *
@@ -2377,7 +2377,7 @@ class GUMP
         if (!isset($input[$field]) || empty($input[$field])) {
             return;
         }
-		
+
         if (!preg_match("/^([ا آ أ إ ب پ ت ث ج چ ح خ د ذ ر ز ژ س ش ص ض ط ظ ع غ ف ق ک ك گ ل م ن و ؤ ه ة ی ي ئ ء ّ َ ِ ُ ً ٍ ٌ \. \/ \\ = \- \| \{ \} \[ \] ؛ : « » ؟ > < \+ \( \) \* ، × ٪ ٫ ٬ ! ۰۱۲۳۴۵۶۷۸۹٠١٢٣٤٥٦٧٨٩\x{200B}-\x{200D} \x{FEFF} \x{22} \x{27} \x{60} \x{B4} \x{2018} \x{2019} \x{201C} \x{201D} \s])+$/u", $input[$field]) !== false) {
             return array(
                 'field' => $field,
@@ -2387,7 +2387,7 @@ class GUMP
             );
         }
     }
-	
+
 	/**
      * Determine if the input is a valid text in Pashtu mainly in Afghanistan.
      *
@@ -2413,7 +2413,7 @@ class GUMP
             );
         }
     }
-    
+
     /**
      * Determine if the provided value is a valid twitter handle.
      *
@@ -2429,7 +2429,7 @@ class GUMP
             return;
         }
         $json_twitter = file_get_contents("http://twitter.com/users/username_available?username=".$input[$field]);
-        
+
         $twitter_response = json_decode($json_twitter);
         if($twitter_response->reason != "taken"){
             return array(
@@ -2440,5 +2440,5 @@ class GUMP
             );
         }
     }
-    
+
 }

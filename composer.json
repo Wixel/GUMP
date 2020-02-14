@@ -15,5 +15,8 @@
     "homepage": "https://wixelhq.com/",
     "autoload": {
         "files": ["gump.class.php"]
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8"
     }
 }
