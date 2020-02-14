@@ -4,7 +4,7 @@
  *
  * @author      Sean Nieuwoudt (http://twitter.com/SeanNieuwoudt)
  * @author      Filis Futsarov (http://twitter.com/FilisCode)
- * @copyright   Copyright (c) 2017 wixelhq.com
+ * @copyright   Copyright (c) 2020 wixelhq.com
  *
  * @version     1.5
  */
@@ -80,7 +80,7 @@ class GUMP
             if (file_exists($lang_file)) {
                 $this->lang = $lang;
             } else {
-                throw new \Exception('Language with key "'.$lang.'" does not exist');
+                throw new Exception('Language with key "'.$lang.'" does not exist');
             }
         }
     }
@@ -125,6 +125,7 @@ class GUMP
      * Magic method to generate the validation error messages.
      *
      * @return string
+     * @throws Exception
      */
     public function __toString()
     {
@@ -418,15 +419,6 @@ class GUMP
                             $method = 'validate_'.$rule[0];
                             $param  = $rule[1];
                             $rule   = $rule[0];
-
-                            // If there is a reference to a field
-                            if (preg_match('/(?:(?:^|;)_([a-z_]+))/', $param, $matches)) {
-
-                                // If provided parameter is a field
-                                if (isset($input[$matches[1]])) {
-                                    $param = str_replace('_'.$matches[1], $input[$matches[1]], $param);
-                                }
-                            }
                         } else {
                             $method = 'validate_'.$rule;
                         }
@@ -549,12 +541,13 @@ class GUMP
     /**
      * Process the validation errors and return human readable error messages.
      *
-     * @param bool   $convert_to_string = false
+     * @param bool $convert_to_string = false
      * @param string $field_class
      * @param string $error_class
      *
      * @return array
      * @return string
+     * @throws Exception when validator doesn't have a set error message
      */
     public function get_readable_errors($convert_to_string = false, $field_class = 'gump-field', $error_class = 'gump-error-message')
     {
@@ -589,7 +582,7 @@ class GUMP
                 $message = str_replace('{param}', $param, str_replace('{field}', '<span class="'.$field_class.'">'.$field.'</span>', $messages[$e['rule']]));
                 $resp[] = $message;
             } else {
-                throw new \Exception ('Rule "'.$e['rule'].'" does not have an error message');
+                throw new Exception ('Rule "'.$e['rule'].'" does not have an error message');
             }
         }
 
@@ -610,6 +603,7 @@ class GUMP
      * @param $convert_to_string
      *
      * @return array | null (if empty)
+     * @throws Exception
      */
     public function get_errors_array($convert_to_string = null)
     {
@@ -648,7 +642,7 @@ class GUMP
                     $resp[$e['field']] = $message;
                 }
             } else {
-                throw new \Exception ('Rule "'.$e['rule'].'" does not have an error message');
+                throw new Exception ('Rule "'.$e['rule'].'" does not have an error message');
             }
         }
 
