@@ -8,4 +8,6 @@ Session.vim
 tmtags
 Thumbs.db
 Desktop.ini
-
+vendor
+coverage
+.phpunit.result.cache
