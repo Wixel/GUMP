@@ -18,5 +18,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^8"
+    },
+    "autoload-dev": {
+        "psr-4": { "Tests\\": "tests/" }
     }
 }
