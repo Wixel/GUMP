@@ -199,7 +199,7 @@ Available Validators
 * contains_list,n `Verify that a value is contained within the pre-defined value set. The list of valid values must be provided in semicolon-separated list format (like so: value1;value2;value3;..;valuen). If a validation error occurs, the list of valid values is not revelead (this means, the error will just say the input is invalid, but it won't reveal the valid set to the user.`
 * doesnt_contain_list,n `Verify that a value is not contained within the pre-defined value set. Semicolon (;) separated, list not outputted. See the rule above for more info.`
 * street_address `Checks that the provided string is a likely street address. 1 number, 1 or more space, 1 or more letters`
-* iban `Check for a valid IBAN`
+* iban `Check for a valid IBAN` (requires php*.*-bcmath module)
 * min_numeric `Determine if the provided numeric value is higher or equal to a specific value`
 * max_numeric `Determine if the provided numeric value is lower or equal to a specific value`
 * date `Determine if the provided input is a valid date (ISO 8601)`

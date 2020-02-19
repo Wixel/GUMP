@@ -8,6 +8,10 @@
  *
  * @version     1.5
  */
+
+//use function GUMP\gump_date;
+use GUMP\Helpers;
+
 class GUMP
 {
     // Singleton instance of GUMP
@@ -1329,7 +1333,7 @@ class GUMP
     }
 
     /**
-     * Determine if the provided value contains only alpha numeric characters with spaces.
+     * Determine if the provided value contains only alpha characters with spaces.
      *
      * Usage: '<index>' => 'alpha_space'
      *
@@ -1345,7 +1349,7 @@ class GUMP
             return;
         }
 
-        if (!preg_match("/^([0-9a-zÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ\s])+$/i", $input[$field]) !== false) {
+        if (!preg_match("/^([a-zÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ\s])+$/i", $input[$field]) !== false) {
             return array(
                 'field' => $field,
                 'value' => $input[$field],
@@ -1868,20 +1872,22 @@ class GUMP
             return;
         }
 
-        $cdate1 = new DateTime(date('Y-m-d', strtotime($input[$field])));
-        $today = new DateTime(date('d-m-Y'));
+        $inputDatetime = new DateTime(Helpers::date('Y-m-d', strtotime($input[$field])));
+        $todayDatetime = new DateTime(Helpers::date('Y-m-d'));
 
-        $interval = $cdate1->diff($today);
-        $age = $interval->y;
+        $interval = $todayDatetime->diff($inputDatetime);
+        $yearsPassed = $interval->y;
 
-        if ($age <= $param) {
-            return array(
-                'field' => $field,
-                'value' => $input[$field],
-                'rule' => __FUNCTION__,
-                'param' => $param,
-            );
+        if ($yearsPassed >= $param) {
+            return;
         }
+
+        return array(
+            'field' => $field,
+            'value' => $input[$field],
+            'rule' => __FUNCTION__,
+            'param' => $param,
+        );
     }
 
     /**
@@ -2434,5 +2440,4 @@ class GUMP
             );
         }
     }
-
 }
