@@ -1521,7 +1521,7 @@ class GUMP
         }
 
         if (Helpers::functionExists('checkdnsrr') && Helpers::functionExists('idn_to_ascii')) {
-            if (Helpers::checkdnsrr(idn_to_ascii($url), 'A') === false) {
+            if (Helpers::checkdnsrr(idn_to_ascii($url, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46), 'A') === false) {
                 return array(
                     'field' => $field,
                     'value' => $input[$field],
