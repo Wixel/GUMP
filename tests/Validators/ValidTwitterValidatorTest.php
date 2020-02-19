@@ -5,9 +5,6 @@ namespace Tests\Validators;
 use GUMP;
 use Exception;
 use Tests\BaseTestCase;
-use Tests\MockableGump;
-use phpmock\MockBuilder;
-
 use Mockery as m;
 
 /**
@@ -17,8 +14,6 @@ use Mockery as m;
  */
 class ValidTwitterValidatorTest extends BaseTestCase
 {
-    use \phpmock\phpunit\PHPMock;
-
     public function testWhenReasonIsTakenIsSuccess()
     {
         $externalMock = m::mock('overload:GUMP\Helpers');

@@ -5,8 +5,6 @@ namespace Tests\Validators;
 use GUMP;
 use Exception;
 use Tests\BaseTestCase;
-use Tests\MockableGump;
-use phpmock\MockBuilder;
 
 use Mockery as m;
 
@@ -17,8 +15,6 @@ use Mockery as m;
  */
 class RegexValidatorTest extends BaseTestCase
 {
-    use \phpmock\phpunit\PHPMock;
-
     public function testExpressionMatchesIsSuccess()
     {
         $result = $this->gump->validate([
