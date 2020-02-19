@@ -2,7 +2,7 @@
 
 GUMP is a standalone PHP data validation and filtering class that makes validating any data easy and painless without the reliance on a framework.
 
-[![Coverage Status](https://coveralls.io/repos/Wixel/GUMP/badge.png?branch=master)](https://coveralls.io/r/Wixel/GUMP?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/Wixel/GUMP/badge.svg?branch=master)](https://coveralls.io/github/Wixel/GUMP?branch=master)
 
 #### There are 2 ways to install GUMP
 
