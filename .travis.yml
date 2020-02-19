@@ -5,11 +5,11 @@ php:
   - "7.2"
 
 before_install:
-  - composer install
+  - composer install --dev
 
 script:
-- mkdir -p build/logs
-- php vendor/bin/phpunit -c phpunit.xml.dist
+  - mkdir -p build/logs
+  - php vendor/bin/phpunit -c phpunit.xml.dist
 
 after_script:
   - php vendor/bin/coveralls -v
