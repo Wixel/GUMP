@@ -9,7 +9,6 @@
  * @version     1.5
  */
 
-//use function GUMP\gump_date;
 use GUMP\Helpers;
 
 class GUMP
@@ -46,14 +45,14 @@ class GUMP
      * @return GUMP
      */
 
-    public static function get_instance(){
-        if(self::$instance === null)
-        {
+    public static function get_instance()
+    {
+        if (self::$instance === null) {
             self::$instance = new static();
         }
+
         return self::$instance;
     }
-
 
     // ** ------------------------- Validation Data ------------------------------- ** //
 
@@ -2075,7 +2074,7 @@ class GUMP
      *
      * @param string $field
      * @param string $input
-     * @param string $param field to compare with
+     * @param string $param
      * @return mixed
      */
     protected function validate_guidv4($field, $input, $param = null)
@@ -2125,7 +2124,6 @@ class GUMP
      * Examples:
      *
      *  555-555-5555: valid
-     *  555.555.5555: valid
      *  5555425555: valid
      *  555 555 5555: valid
      *  1(519) 555-4444: valid
@@ -2139,7 +2137,8 @@ class GUMP
             return;
         }
 
-        $regex = '/^(\d[\s-\.]?)?[\(\[\s-\.]{0,2}?\d{3}[\)\]\s-\.]{0,2}?\d{3}[\s-\.]?\d{4}$/i';
+        $regex = '/^(\d[\s-]?)?[\(\[\s-]{0,2}?\d{3}[\)\]\s-]{0,2}?\d{3}[\s-]?\d{4}$/i';
+
         if (!preg_match($regex, $input[$field])) {
             return array(
               'field' => $field,
@@ -2271,7 +2270,7 @@ class GUMP
             return;
         }
 
-        if (!is_array($input[$field]) || sizeof($input[$field]) == (int)$param) {
+        if (!is_array($input[$field]) || sizeof($input[$field]) != (int)$param) {
             return array(
                 'field' => $field,
                 'value' => $input[$field],
