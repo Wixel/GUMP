@@ -39,7 +39,9 @@ Add the following to your composer.json file:
 ```
 Then open your terminal in your project directory and run:
 
-`composer install`
+```
+composer install
+```
 
 
 #### Available Methods
