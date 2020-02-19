@@ -12,4 +12,4 @@ script:
   - php vendor/bin/phpunit -c phpunit.xml.dist
 
 after_script:
-  - php vendor/bin/coveralls -v
+  -  php vendor/bin/php-coveralls -v
