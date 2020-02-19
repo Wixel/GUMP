@@ -273,8 +273,10 @@ class GUMP
         $data = $this->filter($data, $this->filter_rules(), $rules_delimiter, $parameters_delimiters);
 
         $validated = $this->validate(
-            $data, $this->validation_rules(),
-            $rules_delimiter, $parameters_delimiters
+            $data,
+            $this->validation_rules(),
+            $rules_delimiter,
+            $parameters_delimiters
         );
 
         if ($check_fields === true) {
@@ -320,8 +322,6 @@ class GUMP
      */
     public function sanitize(array $input, array $fields = array(), $utf8_encode = true)
     {
-        $magic_quotes = (bool) get_magic_quotes_gpc();
-
         if (empty($fields)) {
             $fields = array_keys($input);
         }
@@ -337,10 +337,6 @@ class GUMP
                     $value = $this->sanitize($value);
                 }
                 if (is_string($value)) {
-                    if ($magic_quotes === true) {
-                        $value = stripslashes($value);
-                    }
-
                     if (strpos($value, "\r") !== false) {
                         $value = trim($value);
                     }
@@ -391,13 +387,11 @@ class GUMP
         $this->errors = array();
 
         foreach ($ruleset as $field => $rules) {
-
             $rules = explode($rules_delimiter, $rules);
 
             $look_for = array('required_file', 'required');
 
             if (count(array_intersect($look_for, $rules)) > 0 || (isset($input[$field]))) {
-
                 if (isset($input[$field])) {
                     if (is_array($input[$field]) && in_array('required_file', $ruleset)) {
                         $input_array = $input[$field];
@@ -409,7 +403,6 @@ class GUMP
                 }
 
                 foreach ($input_array as $value) {
-
                     $input[$field] = $value;
 
                     foreach ($rules as $rule) {
@@ -430,7 +423,9 @@ class GUMP
 
                         if (is_callable(array($this, $method))) {
                             $result = $this->$method(
-                                $field, $input, $param
+                                $field,
+                                $input,
+                                $param
                             );
 
                             if (is_array($result)) {
@@ -438,11 +433,10 @@ class GUMP
                                     $this->errors[] = $result;
                                 }
                             }
-
-                        } elseif(isset(self::$validation_methods[$rule])) {
+                        } elseif (isset(self::$validation_methods[$rule])) {
                             $result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
 
-                            if($result === false) {
+                            if ($result === false) {
                                 if (array_search($field, array_column($this->errors, 'field')) === false) {
                                     $this->errors[] = array(
                                         'field' => $field,
@@ -452,7 +446,6 @@ class GUMP
                                     );
                                 }
                             }
-
                         } else {
                             throw new Exception("Validator method '$method' does not exist.");
                         }
@@ -585,7 +578,7 @@ class GUMP
                 $message = str_replace('{param}', $param, str_replace('{field}', '<span class="'.$field_class.'">'.$field.'</span>', $messages[$e['rule']]));
                 $resp[] = $message;
             } else {
-                throw new Exception ('Rule "'.$e['rule'].'" does not have an error message');
+                throw new Exception('Rule "'.$e['rule'].'" does not have an error message');
             }
         }
 
@@ -619,8 +612,7 @@ class GUMP
         // Error messages
         $messages = $this->get_messages();
 
-        foreach ($this->errors as $e)
-        {
+        foreach ($this->errors as $e) {
             $field = ucwords(str_replace(array('_', '-'), chr(32), $e['field']));
             $param = $e['param'];
 
@@ -645,7 +637,7 @@ class GUMP
                     $resp[$e['field']] = $message;
                 }
             } else {
-                throw new Exception ('Rule "'.$e['rule'].'" does not have an error message');
+                throw new Exception('Rule "'.$e['rule'].'" does not have an error message');
             }
         }
 
@@ -1430,7 +1422,7 @@ class GUMP
         }
 
         $booleans = array('1','true',true,1,'0','false',false,0,'yes','no','on','off');
-        if (in_array($input[$field], $booleans, true )) {
+        if (in_array($input[$field], $booleans, true)) {
             return;
         }
 
@@ -1659,7 +1651,7 @@ class GUMP
          *
          * @since 1.5
          */
-        if( $number_length == 0 ) {
+        if ($number_length == 0) {
             return array(
                 'field' => $field,
                 'value' => $input[$field],
@@ -1825,13 +1817,11 @@ class GUMP
         }
 
         // Default
-        if (!$param)
-        {
+        if (!$param) {
             $cdate1 = date('Y-m-d', strtotime($input[$field]));
             $cdate2 = date('Y-m-d H:i:s', strtotime($input[$field]));
 
-            if ($cdate1 != $input[$field] && $cdate2 != $input[$field])
-            {
+            if ($cdate1 != $input[$field] && $cdate2 != $input[$field]) {
                 return array(
                     'field'      => $field,
                     'value'      => $input[$field],
@@ -1842,8 +1832,7 @@ class GUMP
         } else {
             $date = \DateTime::createFromFormat($param, $input[$field]);
 
-            if ($date === false || $input[$field] != date($param, $date->getTimestamp()))
-            {
+            if ($date === false || $input[$field] != date($param, $date->getTimestamp())) {
                 return array(
                     'field'      => $field,
                     'value'      => $input[$field],
@@ -1972,33 +1961,33 @@ class GUMP
         }
     }
 
-      /**
-       * Checks if a file was uploaded.
-       *
-       * Usage: '<index>' => 'required_file'
-       *
-       * @param  string $field
-       * @param  array $input
-       *
-       * @return mixed
-       */
-      protected function validate_required_file($field, $input, $param = null)
-      {
-          if (!isset($input[$field])) {
-              return;
-          }
+    /**
+     * Checks if a file was uploaded.
+     *
+     * Usage: '<index>' => 'required_file'
+     *
+     * @param  string $field
+     * @param  array $input
+     *
+     * @return mixed
+     */
+    protected function validate_required_file($field, $input, $param = null)
+    {
+        if (!isset($input[$field])) {
+            return;
+        }
 
-          if (is_array($input[$field]) && $input[$field]['error'] !== 4) {
-              return;
-          }
+        if (is_array($input[$field]) && $input[$field]['error'] !== 4) {
+            return;
+        }
 
-          return array(
+        return array(
               'field' => $field,
               'value' => $input[$field],
               'rule' => __FUNCTION__,
               'param' => $param,
           );
-      }
+    }
 
     /**
      * Check the uploaded file for extension for now
@@ -2084,7 +2073,7 @@ class GUMP
         }
 
         if (preg_match("/\{?[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}\}?$/", $input[$field])) {
-          return;
+            return;
         }
 
         return array(
@@ -2288,7 +2277,7 @@ class GUMP
      * @param  array $input
      * @return mixed
      */
-    protected function validate_valid_twitter($field, $input, $param = NULL)
+    protected function validate_valid_twitter($field, $input, $param = null)
     {
         if (!isset($input[$field]) || empty($input[$field])) {
             return;
