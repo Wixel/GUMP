@@ -1520,8 +1520,8 @@ class GUMP
             $url = $url['host'];
         }
 
-        if (function_exists('checkdnsrr')  && function_exists('idn_to_ascii')) {
-            if (checkdnsrr(idn_to_ascii($url), 'A') === false) {
+        if (Helpers::functionExists('checkdnsrr') && Helpers::functionExists('idn_to_ascii')) {
+            if (Helpers::checkdnsrr(idn_to_ascii($url), 'A') === false) {
                 return array(
                     'field' => $field,
                     'value' => $input[$field],
@@ -1530,7 +1530,7 @@ class GUMP
                 );
             }
         } else {
-            if (gethostbyname($url) == $url) {
+            if (Helpers::gethostbyname($url) == $url) {
                 return array(
                     'field' => $field,
                     'value' => $input[$field],
@@ -2424,14 +2424,15 @@ class GUMP
      */
     protected function validate_valid_twitter($field, $input, $param = NULL)
     {
-        if(!isset($input[$field]) || empty($input[$field]))
-        {
+        if (!isset($input[$field]) || empty($input[$field])) {
             return;
         }
-        $json_twitter = file_get_contents("http://twitter.com/users/username_available?username=".$input[$field]);
 
-        $twitter_response = json_decode($json_twitter);
-        if($twitter_response->reason != "taken"){
+        $json = Helpers::file_get_contents("http://twitter.com/users/username_available?username=".$input[$field]);
+
+        $result = json_decode($json);
+
+        if ($result->reason !== "taken") {
             return array(
                 'field' => $field,
                 'value' => $input[$field],
