@@ -10,5 +10,4 @@ before_install:
   - composer install
 
 script:
- - php tests.php
  - php ./vendor/bin/phpunit
