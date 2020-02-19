@@ -20,6 +20,6 @@ class ValidEmailValidatorTest extends BaseTestCase
 
     public function testFailure()
     {
-        $this->assertNotTrue($this->validate('valid_email', 's0meth1ng-notEmail'));
+        $this->assertNotTrue($this->validate('valid_email', 's0meth1ng-notEmail\r'));
     }
 }
