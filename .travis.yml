@@ -8,4 +8,5 @@ before_install:
   - composer install
 
 script:
- - php ./vendor/bin/phpunit
+- mkdir -p build/logs
+- php vendor/bin/phpunit -c phpunit.xml.dist
