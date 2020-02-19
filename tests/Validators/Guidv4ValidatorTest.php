@@ -26,7 +26,7 @@ class Guidv4ValidatorTest extends BaseTestCase
     public function successProvider()
     {
         return [
-            ['42878fd4-94fc-42a5-8d5e-6b2377a10b0d'],
+            ['A98C5A1E-A742-4808-96FA-6F409E799937'],
             ['7deca41a-3479-4f18-9771-3531f742061b'],
         ];
     }
@@ -42,8 +42,8 @@ class Guidv4ValidatorTest extends BaseTestCase
     public function errorProvider()
     {
         return [
-            ['666111222'],
-            ['004461234123'],
+            ['A98C5A1EA742480896FA6F409E799937'],
+            ['7deca41a-9771-3531f742061b'],
         ];
     }
 }
