@@ -19,7 +19,8 @@
     "homepage": "https://wixelhq.com/",
     "require-dev": {
         "phpunit/phpunit": "^8",
-        "mockery/mockery": "^1.3"
+        "mockery/mockery": "^1.3",
+        "satooshi/php-coveralls": "^2.2"
     },
     "autoload-dev": {
         "psr-4": { "Tests\\": "tests/" }
