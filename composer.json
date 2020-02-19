@@ -11,13 +11,19 @@
             "homepage": "https://filis.me"
         }
     ],
+    "autoload": {
+        "files": ["gump.class.php"],
+        "psr-4": { "GUMP\\": "src/" }
+    },
     "license": "MIT",
     "homepage": "https://wixelhq.com/",
-    "autoload": {
-        "files": ["gump.class.php"]
-    },
     "require-dev": {
-        "phpunit/phpunit": "^8"
+        "phpunit/phpunit": "^8",
+        "php-mock/php-mock-phpunit": "^2.6",
+        "badoo/soft-mocks": "^3.0",
+        "mockery/mockery": "^1.3",
+        "php-mock/php-mock": "^2.2",
+        "codeception/aspect-mock": "^3.0"
     },
     "autoload-dev": {
         "psr-4": { "Tests\\": "tests/" }

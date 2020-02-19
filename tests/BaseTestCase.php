@@ -26,6 +26,8 @@ abstract class BaseTestCase extends TestCase
     {
         $this->prophet->checkPredictions();
 
+        \Mockery::close();
+
         $this->resetCustomFieldsLabels();
         $this->resetCustomValidators();
         $this->resetCustomFilters();
@@ -62,5 +64,14 @@ abstract class BaseTestCase extends TestCase
     public function resetCustomFieldsLabels()
     {
         self::setPrivateField(GUMP::class, $this->gump, 'fields', []);
+    }
+
+    public function validate($rule, $value)
+    {
+        return $this->gump->validate([
+            'test' => $value
+        ], [
+            'test' => $rule
+        ]);
     }
 }
