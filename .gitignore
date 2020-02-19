@@ -10,4 +10,5 @@ Thumbs.db
 Desktop.ini
 vendor
 coverage
+build
 .phpunit.result.cache
