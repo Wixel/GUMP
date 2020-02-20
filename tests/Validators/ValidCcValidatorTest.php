@@ -5,6 +5,7 @@ namespace Tests\Validators;
 use GUMP;
 use Exception;
 use Tests\BaseTestCase;
+use Mockery as m;
 
 /**
  * Class ValidCcValidatorTest
@@ -18,8 +19,30 @@ class ValidCcValidatorTest extends BaseTestCase
     /**
      * @dataProvider successProvider
      */
-    public function testSuccess($input)
+    public function testSuccessWithMbStrlen($input)
     {
+        $externalMock = m::mock('overload:GUMP\Helpers');
+
+        $externalMock->shouldReceive('functionExists')
+            ->once()
+            ->with('mb_strlen')
+            ->andReturnTrue();
+
+        $this->assertTrue($this->validate(self::RULE, $input));
+    }
+
+    /**
+     * @dataProvider successProvider
+     */
+    public function testSuccessWithStrlen($input)
+    {
+        $externalMock = m::mock('overload:GUMP\Helpers');
+
+        $externalMock->shouldReceive('functionExists')
+            ->once()
+            ->with('mb_strlen')
+            ->andReturnFalse();
+
         $this->assertTrue($this->validate(self::RULE, $input));
     }
 
@@ -33,8 +56,30 @@ class ValidCcValidatorTest extends BaseTestCase
     /**
      * @dataProvider errorProvider
      */
-    public function testError($input)
+    public function testErrorWithMbStrlen($input)
     {
+        $externalMock = m::mock('overload:GUMP\Helpers');
+
+        $externalMock->shouldReceive('functionExists')
+            ->once()
+            ->with('mb_strlen')
+            ->andReturnTrue();
+
+        $this->assertNotTrue($this->validate(self::RULE, $input));
+    }
+
+    /**
+     * @dataProvider errorProvider
+     */
+    public function testErrorWithStrlen($input)
+    {
+        $externalMock = m::mock('overload:GUMP\Helpers');
+
+        $externalMock->shouldReceive('functionExists')
+            ->once()
+            ->with('mb_strlen')
+            ->andReturnFalse();
+
         $this->assertNotTrue($this->validate(self::RULE, $input));
     }
 

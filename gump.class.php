@@ -399,11 +399,7 @@ class GUMP
             if (count(array_intersect($look_for, $rules)) > 0 || (isset($input[$field]))) {
 
                 if (isset($input[$field])) {
-                    if (is_array($input[$field]) && in_array('required_file', $ruleset)) {
-                        $input_array = array($input[$field]);
-                    } else {
-                        $input_array = array($input[$field]);
-                    }
+                    $input_array = array($input[$field]);
                 } else {
                     $input_array = array('');
                 }
@@ -1135,14 +1131,12 @@ class GUMP
             return;
         }
 
-        if (function_exists('mb_strlen')) {
+        if (Helpers::functionExists('mb_strlen')) {
             if (mb_strlen($input[$field]) <= (int) $param) {
                 return;
             }
-        } else {
-            if (strlen($input[$field]) <= (int) $param) {
-                return;
-            }
+        } else if (strlen($input[$field]) <= (int) $param) {
+            return;
         }
 
         return array(
@@ -1170,14 +1164,12 @@ class GUMP
             return;
         }
 
-        if (function_exists('mb_strlen')) {
+        if (Helpers::functionExists('mb_strlen')) {
             if (mb_strlen($input[$field]) >= (int) $param) {
                 return;
             }
-        } else {
-            if (strlen($input[$field]) >= (int) $param) {
-                return;
-            }
+        } else if (strlen($input[$field]) >= (int) $param) {
+            return;
         }
 
         return array(
@@ -1205,14 +1197,12 @@ class GUMP
             return;
         }
 
-        if (function_exists('mb_strlen')) {
+        if (Helpers::functionExists('mb_strlen')) {
             if (mb_strlen($input[$field]) == (int) $param) {
                 return;
             }
-        } else {
-            if (strlen($input[$field]) == (int) $param) {
-                return;
-            }
+        } else if (strlen($input[$field]) == (int) $param) {
+            return;
         }
 
         return array(
@@ -1646,12 +1636,11 @@ class GUMP
 
         $number = preg_replace('/\D/', '', $input[$field]);
 
-        if (function_exists('mb_strlen')) {
+        if (Helpers::functionExists('mb_strlen')) {
             $number_length = mb_strlen($number);
         } else {
             $number_length = strlen($number);
         }
-
 
         /**
          * Bail out if $number_length is 0.
@@ -1659,7 +1648,7 @@ class GUMP
          *
          * @since 1.5
          */
-        if( $number_length == 0 ) {
+        if ($number_length == 0 ) {
             return array(
                 'field' => $field,
                 'value' => $input[$field],
@@ -1667,7 +1656,6 @@ class GUMP
                 'param' => $param,
             );
         }
-
 
         $parity = $number_length % 2;
 
