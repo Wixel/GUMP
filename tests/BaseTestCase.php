@@ -74,4 +74,15 @@ abstract class BaseTestCase extends TestCase
             'test' => $rule
         ]);
     }
+
+    public function filter($rule, $value)
+    {
+        $result = $this->gump->filter([
+            'test' => $value
+        ], [
+            'test' => $rule
+        ]);
+
+        return $result['test'];
+    }
 }
