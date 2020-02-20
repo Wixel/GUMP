@@ -25,16 +25,16 @@ class ContainsValidatorTest extends BaseTestCase
 
     public function testSuccessWithRegexSeparator()
     {
-        $this->assertTrue($this->validate("contains,#'one'##'two'#", 'one'));
+        $this->assertTrue($this->validate("contains,'one' 'two' 'half three'", 'half three'));
     }
 
     public function testFailureWithRegexSeparator()
     {
-        $this->assertNotTrue($this->validate("contains,#'one'##'two'#", 'three'));
+        $this->assertNotTrue($this->validate("contains,'one' 'two'", 'three'));
     }
 
     public function testFailureWithRegexSeparatora()
     {
-        $this->assertNotTrue($this->validate("contains,#'one'##'two'#", ''));
+        $this->assertNotTrue($this->validate("contains,'one' 'two'", ''));
     }
 }
