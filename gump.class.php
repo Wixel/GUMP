@@ -2096,22 +2096,6 @@ class GUMP
     }
 
     /**
-     * Trims whitespace only when the value is a scalar.
-     *
-     * @param mixed $value
-     *
-     * @return mixed
-     */
-    private function trimScalar($value)
-    {
-        if (is_scalar($value)) {
-            $value = trim($value);
-        }
-
-        return $value;
-    }
-
-    /**
      * Determine if the provided value is a valid phone number.
      *
      * Usage: '<index>' => 'phone_number'
