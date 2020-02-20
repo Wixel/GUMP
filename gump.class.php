@@ -400,7 +400,7 @@ class GUMP
 
                 if (isset($input[$field])) {
                     if (is_array($input[$field]) && in_array('required_file', $ruleset)) {
-                        $input_array = $input[$field];
+                        $input_array = array($input[$field]);
                     } else {
                         $input_array = array($input[$field]);
                     }
@@ -1972,33 +1972,33 @@ class GUMP
         }
     }
 
-      /**
-       * Checks if a file was uploaded.
-       *
-       * Usage: '<index>' => 'required_file'
-       *
-       * @param  string $field
-       * @param  array $input
-       *
-       * @return mixed
-       */
-      protected function validate_required_file($field, $input, $param = null)
-      {
-          if (!isset($input[$field])) {
-              return;
-          }
+    /**
+      * Checks if a file was uploaded.
+      *
+      * Usage: '<index>' => 'required_file'
+      *
+      * @param  string $field
+      * @param  array $input
+      *
+      * @return mixed
+      */
+    protected function validate_required_file($field, $input, $param = null)
+    {
+        if (!isset($input[$field])) {
+            return;
+        }
 
-          if (is_array($input[$field]) && $input[$field]['error'] !== 4) {
-              return;
-          }
+        if (is_array($input[$field]) && $input[$field]['error'] === 0) {
+            return;
+        }
 
-          return array(
-              'field' => $field,
-              'value' => $input[$field],
-              'rule' => __FUNCTION__,
-              'param' => $param,
-          );
-      }
+        return array(
+            'field' => $field,
+            'value' => $input[$field],
+            'rule' => __FUNCTION__,
+            'param' => $param,
+        );
+    }
 
     /**
      * Check the uploaded file for extension for now
@@ -2017,7 +2017,7 @@ class GUMP
             return;
         }
 
-        if (is_array($input[$field]) && $input[$field]['error'] !== 4) {
+        if (is_array($input[$field]) && $input[$field]['error'] === 0) {
             $param = trim(strtolower($param));
             $allowed_extensions = explode(';', $param);
 
@@ -2027,14 +2027,14 @@ class GUMP
             if ($extension && in_array(strtolower($extension), $allowed_extensions)) {
                 return;
             }
-
-            return array(
-                'field' => $field,
-                'value' => $input[$field],
-                'rule' => __FUNCTION__,
-                'param' => $param,
-            );
         }
+
+        return array(
+            'field' => $field,
+            'value' => $input[$field],
+            'rule' => __FUNCTION__,
+            'param' => $param,
+        );
     }
 
     /**

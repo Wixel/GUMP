@@ -174,14 +174,15 @@ class ValidateTest extends BaseTestCase
         ]], $result);
     }
 
-    public function testRequired()
+    public function testRequiredAndRequiredFile()
     {
         $result = $this->gump->validate([
-            'test' => 'failing'
+            'field_without_validation_rules' => '123'
         ], [
-            'nonexistent' => 'required'
+            'some_field' => 'required',
+            'file_field' => 'required_file',
         ]);
 
-        $this->assertTrue(count($result) ===1);
+        $this->assertTrue(count($result) === 2);
     }
 }
