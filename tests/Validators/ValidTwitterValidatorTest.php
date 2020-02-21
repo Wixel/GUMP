@@ -14,6 +14,8 @@ use Mockery as m;
  */
 class ValidTwitterValidatorTest extends BaseTestCase
 {
+    private const RULE = 'valid_twitter';
+
     public function testWhenReasonIsTakenIsSuccess()
     {
         $externalMock = m::mock('overload:GUMP\Helpers');
@@ -26,7 +28,7 @@ class ValidTwitterValidatorTest extends BaseTestCase
         $result = $this->gump->validate([
             'test' => 'filisdev',
         ], [
-            'test' => 'valid_twitter'
+            'test' => self::RULE
         ]);
 
         $this->assertTrue($result);
@@ -44,9 +46,14 @@ class ValidTwitterValidatorTest extends BaseTestCase
         $result = $this->gump->validate([
             'test' => 'filisdev',
         ], [
-            'test' => 'valid_twitter'
+            'test' => self::RULE
         ]);
 
         $this->assertNotTrue($result);
+    }
+
+    public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
+    {
+         $this->assertTrue($this->validate(self::RULE, ''));
     }
 }

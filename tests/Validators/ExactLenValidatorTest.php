@@ -86,4 +86,9 @@ class ExactLenValidatorTest extends BaseTestCase
 
         $this->assertNotTrue($this->validate('exact_len,2', 'n'));
     }
+
+    public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
+    {
+         $this->assertTrue($this->validate('exact_len,2', ''));
+    }
 }

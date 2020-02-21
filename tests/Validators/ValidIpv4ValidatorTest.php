@@ -48,4 +48,9 @@ class ValidIpv4ValidatorTest extends BaseTestCase
             [ '256.0.0.0' ],
         ];
     }
+
+    public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
+    {
+         $this->assertTrue($this->validate(self::RULE, ''));
+    }
 }

@@ -51,4 +51,9 @@ class PhoneNumberValidatorTest extends BaseTestCase
             ['004461234123'],
         ];
     }
+
+    public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
+    {
+         $this->assertTrue($this->validate(self::RULE, ''));
+    }
 }

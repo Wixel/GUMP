@@ -44,4 +44,9 @@ class ValidNameValidatorTest extends BaseTestCase
             [ 'Mr. Filis Futsarov' ],
         ];
     }
+
+    public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
+    {
+         $this->assertTrue($this->validate(self::RULE, ''));
+    }
 }

@@ -28,4 +28,9 @@ class NumericValidatorTest extends BaseTestCase
     {
         $this->assertNotTrue($this->validate('numeric', 'n0t'));
     }
+
+    public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
+    {
+         $this->assertTrue($this->validate('numeric', ''));
+    }
 }

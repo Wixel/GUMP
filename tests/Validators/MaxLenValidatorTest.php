@@ -86,4 +86,16 @@ class MaxLenValidatorTest extends BaseTestCase
 
         $this->assertNotTrue($this->validate('max_len,2', 'nan'));
     }
+
+    public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
+    {
+        $externalMock = m::mock('overload:GUMP\Helpers');
+
+        $externalMock->shouldReceive('functionExists')
+            ->once()
+            ->with('mb_strlen')
+            ->andReturnTrue();
+
+         $this->assertTrue($this->validate('max_len,2', ''));
+    }
 }

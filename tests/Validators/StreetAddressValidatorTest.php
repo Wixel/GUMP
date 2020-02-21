@@ -47,4 +47,9 @@ class StreetAddressValidatorTest extends BaseTestCase
             [ 'text' ],
         ];
     }
+
+    public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
+    {
+         $this->assertTrue($this->validate(self::RULE, ''));
+    }
 }

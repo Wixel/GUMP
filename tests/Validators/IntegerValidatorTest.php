@@ -52,4 +52,9 @@ class IntegerValidatorTest extends BaseTestCase
             ['1.1'],
         ];
     }
+
+    public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
+    {
+         $this->assertTrue($this->validate('integer', ''));
+    }
 }
