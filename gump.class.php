@@ -320,8 +320,6 @@ class GUMP
      */
     public function sanitize(array $input, array $fields = array(), $utf8_encode = true)
     {
-        $magic_quotes = (bool) get_magic_quotes_gpc();
-
         if (empty($fields)) {
             $fields = array_keys($input);
         }
@@ -337,10 +335,6 @@ class GUMP
                     $value = $this->sanitize($value);
                 }
                 if (is_string($value)) {
-                    if ($magic_quotes === true) {
-                        $value = stripslashes($value);
-                    }
-
                     if (strpos($value, "\r") !== false) {
                         $value = trim($value);
                     }
