@@ -22,7 +22,7 @@ class WholeNumberFilterTest extends BaseTestCase
     {
         $result = $this->filter(self::FILTER, $input);
 
-        $this->assertEquals($result, $expected);
+        $this->assertEquals($expected, $result);
     }
 
     public function successProvider()
