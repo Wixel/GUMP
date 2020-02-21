@@ -13,13 +13,20 @@ use Tests\BaseTestCase;
  */
 class ValidEmailValidatorTest extends BaseTestCase
 {
+    private const RULE = 'valid_email';
+
     public function testSuccess()
     {
-        $this->assertTrue($this->validate('valid_email', 'myemail@host.com'));
+        $this->assertTrue($this->validate(self::RULE, 'myemail@host.com'));
     }
 
     public function testFailure()
     {
-        $this->assertNotTrue($this->validate('valid_email', 's0meth1ng-notEmail\r'));
+        $this->assertNotTrue($this->validate(self::RULE, 's0meth1ng-notEmail\r'));
+    }
+
+    public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
+    {
+         $this->assertTrue($this->validate(self::RULE, ''));
     }
 }

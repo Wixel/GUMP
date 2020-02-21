@@ -22,4 +22,9 @@ class AlphaValidatorTest extends BaseTestCase
     {
         $this->assertNotTrue($this->validate('alpha', 'hello *(^*^*&'));
     }
+
+    public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
+    {
+         $this->assertTrue($this->validate('alpha', ''));
+    }
 }

@@ -125,4 +125,31 @@ class UrlExistsValidatorTest extends BaseTestCase
 
         $this->assertNotTrue($result);
     }
+
+    public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
+    {
+        $externalMock = m::mock('overload:GUMP\Helpers');
+
+        $externalMock->shouldReceive('functionExists')
+            ->once()
+            ->with('checkdnsrr')
+            ->andReturnTrue();
+
+        $externalMock->shouldReceive('functionExists')
+            ->once()
+            ->with('idn_to_ascii')
+            ->andReturnTrue();
+
+        $externalMock->shouldReceive('gethostbyname')
+            ->once()
+            ->andReturn('google.es');
+
+        $result = $this->gump->validate([
+            'test' => '',
+        ], [
+            'test' => 'url_exists'
+        ]);
+
+        $this->assertTrue($result);
+    }
 }

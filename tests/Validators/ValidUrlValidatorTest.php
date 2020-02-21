@@ -49,4 +49,9 @@ class ValidUrlValidatorTest extends BaseTestCase
             [ 'text' ]
         ];
     }
+
+    public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
+    {
+         $this->assertTrue($this->validate(self::RULE, ''));
+    }
 }

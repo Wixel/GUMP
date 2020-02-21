@@ -27,4 +27,9 @@ class MaxNumericValidatorTest extends BaseTestCase
     {
         $this->assertNotTrue($this->validate('max_numeric,2', 3));
     }
+
+    public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
+    {
+         $this->assertTrue($this->validate('max_numeric,2', ''));
+    }
 }

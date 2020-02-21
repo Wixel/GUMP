@@ -27,4 +27,9 @@ class MinNumericValidatorTest extends BaseTestCase
     {
         $this->assertNotTrue($this->validate('min_numeric,2', 1));
     }
+
+    public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
+    {
+         $this->assertTrue($this->validate('min_numeric,2', ''));
+    }
 }

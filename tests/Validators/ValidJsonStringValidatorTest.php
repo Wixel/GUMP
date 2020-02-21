@@ -47,4 +47,9 @@ class ValidJsonStringValidatorTest extends BaseTestCase
             ['{"test":text}'],
         ];
     }
+
+    public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
+    {
+         $this->assertTrue($this->validate(self::RULE, ''));
+    }
 }

@@ -84,4 +84,27 @@ class MinAgeValidatorTest extends BaseTestCase
 
         $this->assertNotTrue($result);
     }
+
+    public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
+    {
+        $externalMock = m::mock('overload:GUMP\Helpers');
+
+        $externalMock->shouldReceive('date')
+            ->once()
+            ->with('Y-m-d', 866419200)
+            ->andReturn('1997-06-16');
+
+        $externalMock->shouldReceive('date')
+            ->once()
+            ->with('Y-m-d')
+            ->andReturn('2020-06-15');
+
+        $result = $this->gump->validate([
+            'test' => '',
+        ], [
+            'test' => 'min_age,23'
+        ]);
+
+        $this->assertTrue($result);
+    }
 }

@@ -46,4 +46,9 @@ class StartsValidatorTest extends BaseTestCase
             ['tst'],
         ];
     }
+
+    public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
+    {
+         $this->assertTrue($this->validate(self::RULE, ''));
+    }
 }

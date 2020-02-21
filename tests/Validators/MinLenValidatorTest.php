@@ -86,4 +86,16 @@ class MinLenValidatorTest extends BaseTestCase
 
         $this->assertNotTrue($this->validate('min_len,2', 'n'));
     }
+
+    public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
+    {
+        $externalMock = m::mock('overload:GUMP\Helpers');
+
+        $externalMock->shouldReceive('functionExists')
+            ->once()
+            ->with('mb_strlen')
+            ->andReturnTrue();
+
+         $this->assertTrue($this->validate('min_len,2', ''));
+    }
 }
