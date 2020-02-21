@@ -13,17 +13,43 @@ use Tests\BaseTestCase;
  */
 class IntegerValidatorTest extends BaseTestCase
 {
-    public function testSuccess()
+    private const RULE = 'required|integer';
+
+    /**
+     * @dataProvider successProvider
+     */
+    public function testSuccess($input)
     {
-        $this->assertTrue($this->validate('integer', '123'));
-        $this->assertTrue($this->validate('integer', 123));
-        $this->assertTrue($this->validate('integer', -1));
-        $this->assertTrue($this->validate('integer', 0));
-        $this->assertTrue($this->validate('integer', '0'));
+        $this->assertTrue($this->validate(self::RULE, $input));
     }
 
-    public function testError()
+    public function successProvider()
     {
-        $this->assertNotTrue($this->validate('integer', 1.1));
+        return [
+            ['123'],
+            [123],
+            [-1],
+            [0],
+            ['0'],
+        ];
+    }
+
+    /**
+     * @dataProvider errorProvider
+     */
+    public function testError($input)
+    {
+        $this->assertNotTrue($this->validate(self::RULE, $input));
+    }
+
+    public function errorProvider()
+    {
+        return [
+            ['text'],
+            [true],
+            [null],
+            [1.1],
+            ['1.1'],
+        ];
     }
 }
