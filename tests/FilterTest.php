@@ -12,7 +12,7 @@ use Exception;
  */
 class FilterTest extends BaseTestCase
 {
-    public function testIntegratedFilterIsSuccessfullyRun()
+    public function testGumpFilterIsSuccessfullyRun()
     {
         $result = $this->gump->filter([
             'test' => 'text'
@@ -60,7 +60,7 @@ class FilterTest extends BaseTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage("Filter method 'custom' does not exist.");
 
-        $result = $this->gump->filter([
+        $this->gump->filter([
             'test' => 'text'
         ], [
             'test' => 'custom'
@@ -73,7 +73,7 @@ class FilterTest extends BaseTestCase
             'test' => 'text',
             'other' => 'text'
         ], [
-            'testa' => 'upper_case',
+            'non_existent' => 'upper_case',
             'other' => 'upper_case',
         ]);
 
