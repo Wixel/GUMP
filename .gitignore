@@ -1,5 +1,6 @@
 .DS_Store
 .idea
+.ddev
 nbproject
 nb-configuration.xml
 Session.vim
