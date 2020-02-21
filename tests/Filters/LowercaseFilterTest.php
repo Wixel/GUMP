@@ -21,7 +21,7 @@ class LowerFilterTest extends BaseTestCase
     public function testSuccess($input, $expected)
     {
         $result = $this->filter(self::FILTER, $input);
-        $this->assertEquals($result, $expected);
+        $this->assertEquals($expected, $result);
     }
 
     public function successProvider()
