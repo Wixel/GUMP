@@ -1385,7 +1385,7 @@ class GUMP
             return;
         }
 
-        if (filter_var($input[$field], FILTER_VALIDATE_INT) === false) {
+        if (filter_var($input[$field], FILTER_VALIDATE_INT) === false || is_bool($input[$field]) || is_null($input[$field])) {
             return array(
                 'field' => $field,
                 'value' => $input[$field],
