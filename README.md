@@ -7,7 +7,7 @@ GUMP is a standalone PHP data validation and filtering class that makes validati
 
 #### There are 2 ways to install GUMP
 
-##### Install with composer 
+##### Install with composer (prefered, modern way)
 
 ```
 composer require wixel/gump
@@ -105,9 +105,9 @@ $gump->filter_rules([
 $validated_data = $gump->run($_POST);
 
 if ($validated_data === false) {
-	echo $gump->get_readable_errors(true);
+    echo $gump->get_readable_errors(true);
 } else {
-	print_r($validated_data); // validation successful
+    print_r($validated_data); // validation successful
 }
 ```
 
