@@ -7,7 +7,7 @@ GUMP is a standalone PHP data validation and filtering class that makes validati
 
 #### There are 2 ways to install GUMP
 
-###### Install Manually
+##### Install Manually
 
 1. Download GUMP
 2. Unzip it and copy the directory into your PHP project directory.
@@ -30,7 +30,7 @@ if($is_valid === true) {
 }
 ```
 
-###### Install with composer
+##### Install with composer
 
 ```
 composer require wixel/gump
