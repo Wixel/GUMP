@@ -23,4 +23,25 @@ class StaticSetErrorMessagesTest extends BaseTestCase
 
         $this->assertEquals($keysValues, self::getPrivateField(GUMP::class, 'validation_methods_errors'));
     }
+
+    public function testSetErrorMessageAlsoAppliesForCustomValidators()
+    {
+        GUMP::add_validator("custom", function($field, $input, $param = NULL) {
+            return $input[$field] === 'ok';
+        });
+
+        GUMP::set_error_messages([
+            'custom' =>'Field {field} should be numeric'
+        ]);
+
+        $result = GUMP::is_valid([
+            'test' => 'notOk'
+        ], [
+            'test' => 'custom'
+        ]);
+
+        $this->assertEquals([
+            'Field <span class="gump-field">Test</span> should be numeric'
+        ], $result);
+    }
 }

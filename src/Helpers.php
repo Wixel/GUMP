@@ -51,7 +51,8 @@ class Helpers
     /**
      * @inheritDoc file_exists
      */
-    public static function file_exists($filename) {
+    public static function file_exists($filename)
+    {
         return file_exists($filename);
     }
 }
