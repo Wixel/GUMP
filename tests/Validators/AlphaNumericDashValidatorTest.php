@@ -15,16 +15,16 @@ class AlphaDashValidatorTest extends BaseTestCase
 {
     public function testSuccess()
     {
-        $this->assertTrue($this->validate('alpha_dash', 'my_username-with_dash'));
+        $this->assertTrue($this->validate('alpha_numeric_dash', 'My_username-with_dash123'));
     }
 
     public function testError()
     {
-        $this->assertNotTrue($this->validate('alpha_dash', 'hello123'));
+        $this->assertNotTrue($this->validate('alpha_numeric_dash', 'hello *(^*^*&'));
     }
 
     public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
     {
-         $this->assertTrue($this->validate('alpha_dash', ''));
+         $this->assertTrue($this->validate('alpha_numeric_dash', ''));
     }
 }
