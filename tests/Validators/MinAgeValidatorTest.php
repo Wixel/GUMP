@@ -17,14 +17,14 @@ class MinAgeValidatorTest extends BaseTestCase
 {
     public function testSameDayAsBirthdayIsSuccess()
     {
-        $externalMock = m::mock('overload:GUMP\Helpers');
 
-        $externalMock->shouldReceive('date')
+
+        $this->helpersMock->shouldReceive('date')
             ->once()
             ->with('Y-m-d', 866419200)
             ->andReturn('1997-06-16');
 
-        $externalMock->shouldReceive('date')
+        $this->helpersMock->shouldReceive('date')
             ->once()
             ->with('Y-m-d')
             ->andReturn('2020-06-16');
@@ -41,14 +41,14 @@ class MinAgeValidatorTest extends BaseTestCase
 
     public function testOneDayAfterBirthdayIsSuccess()
     {
-        $externalMock = m::mock('overload:GUMP\Helpers');
 
-        $externalMock->shouldReceive('date')
+
+        $this->helpersMock->shouldReceive('date')
             ->once()
             ->with('Y-m-d', 866419200)
             ->andReturn('1997-06-16');
 
-        $externalMock->shouldReceive('date')
+        $this->helpersMock->shouldReceive('date')
             ->once()
             ->with('Y-m-d')
             ->andReturn('2020-06-17');
@@ -64,14 +64,14 @@ class MinAgeValidatorTest extends BaseTestCase
 
     public function testOneDayBeforeBirthdayFails()
     {
-        $externalMock = m::mock('overload:GUMP\Helpers');
 
-        $externalMock->shouldReceive('date')
+
+        $this->helpersMock->shouldReceive('date')
             ->once()
             ->with('Y-m-d', 866419200)
             ->andReturn('1997-06-16');
 
-        $externalMock->shouldReceive('date')
+        $this->helpersMock->shouldReceive('date')
             ->once()
             ->with('Y-m-d')
             ->andReturn('2020-06-15');
@@ -87,14 +87,14 @@ class MinAgeValidatorTest extends BaseTestCase
 
     public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
     {
-        $externalMock = m::mock('overload:GUMP\Helpers');
+        $this->helpersMock = m::mock('overload:GUMP\Helpers');
 
-        $externalMock->shouldReceive('date')
+        $this->helpersMock->shouldReceive('date')
             ->once()
             ->with('Y-m-d', 866419200)
             ->andReturn('1997-06-16');
 
-        $externalMock->shouldReceive('date')
+        $this->helpersMock->shouldReceive('date')
             ->once()
             ->with('Y-m-d')
             ->andReturn('2020-06-15');

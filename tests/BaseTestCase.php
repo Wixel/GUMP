@@ -17,14 +17,19 @@ abstract class BaseTestCase extends TestCase
      */
     protected $gump;
 
+    /**
+     * @var \Mockery\MockInterface|\Mockery\LegacyMockInterface
+     */
+    protected $helpersMock;
+
     public function setUp(): void
     {
         $this->prophet = new Prophet;
 
-//        $externalMock = m::mock('overload:GUMP\Helpers');
-//        $externalMock->shouldReceive('file_exists')
-//            ->once()
-//            ->andReturnTrue();
+        $this->helpersMock = m::mock('overload:GUMP\Helpers');
+        $this->helpersMock->shouldReceive('file_exists')
+            ->once()
+            ->andReturnTrue();
 
         $this->gump = new GUMP;
     }

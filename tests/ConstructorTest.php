@@ -4,7 +4,7 @@ namespace Tests;
 
 use GUMP;
 use Exception;
-//use Mockery as m;
+use Mockery as m;
 
 /**
  * Class ConstructorTest
@@ -27,17 +27,15 @@ class ConstructorTest extends BaseTestCase
         $this->assertEquals('es', self::getPrivateField($gump, 'lang'));
     }
 
-//    public function testItThrowsExceptionWhenLanguageFileDoesntExist()
-//    {
-//        $externalMock = m::mock('overload:GUMP\Helpers');
-//
-//        $externalMock->shouldReceive('file_exists')
-//            ->once()
-//            ->andReturnFalse();
-//
-//        $this->expectException(Exception::class);
-//        $this->expectExceptionMessage('Language with key "es" does not exist');
-//
-//        $gump = new GUMP('es');
-//    }
+    public function testItThrowsExceptionWhenLanguageFileDoesntExist()
+    {
+        $this->helpersMock->shouldReceive('file_exists')
+            ->once()
+            ->andReturnFalse();
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Language with key "es" does not exist');
+
+        $gump = new GUMP('es');
+    }
 }

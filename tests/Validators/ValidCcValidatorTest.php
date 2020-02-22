@@ -21,9 +21,7 @@ class ValidCcValidatorTest extends BaseTestCase
      */
     public function testSuccessWithMbStrlen($input)
     {
-        $externalMock = m::mock('overload:GUMP\Helpers');
-
-        $externalMock->shouldReceive('functionExists')
+        $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('mb_strlen')
             ->andReturnTrue();
@@ -36,9 +34,9 @@ class ValidCcValidatorTest extends BaseTestCase
      */
     public function testSuccessWithStrlen($input)
     {
-        $externalMock = m::mock('overload:GUMP\Helpers');
 
-        $externalMock->shouldReceive('functionExists')
+
+        $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('mb_strlen')
             ->andReturnFalse();
@@ -58,9 +56,9 @@ class ValidCcValidatorTest extends BaseTestCase
      */
     public function testErrorWithMbStrlen($input)
     {
-        $externalMock = m::mock('overload:GUMP\Helpers');
 
-        $externalMock->shouldReceive('functionExists')
+
+        $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('mb_strlen')
             ->andReturnTrue();
@@ -73,9 +71,9 @@ class ValidCcValidatorTest extends BaseTestCase
      */
     public function testErrorWithStrlen($input)
     {
-        $externalMock = m::mock('overload:GUMP\Helpers');
 
-        $externalMock->shouldReceive('functionExists')
+
+        $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('mb_strlen')
             ->andReturnFalse();

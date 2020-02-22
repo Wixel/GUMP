@@ -18,9 +18,9 @@ class ValidTwitterValidatorTest extends BaseTestCase
 
     public function testWhenReasonIsTakenIsSuccess()
     {
-        $externalMock = m::mock('overload:GUMP\Helpers');
 
-        $externalMock->shouldReceive('file_get_contents')
+
+        $this->helpersMock->shouldReceive('file_get_contents')
             ->once()
             ->with('http://twitter.com/users/username_available?username=filisdev')
             ->andReturn('{"reason":"taken"}');
@@ -36,9 +36,9 @@ class ValidTwitterValidatorTest extends BaseTestCase
 
     public function testWhenReasonIsNotTakenFails()
     {
-        $externalMock = m::mock('overload:GUMP\Helpers');
 
-        $externalMock->shouldReceive('file_get_contents')
+
+        $this->helpersMock->shouldReceive('file_get_contents')
             ->once()
             ->with('http://twitter.com/users/username_available?username=filisdev')
             ->andReturn('{"reason":"available"}');

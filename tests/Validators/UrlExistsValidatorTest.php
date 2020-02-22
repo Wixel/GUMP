@@ -16,20 +16,20 @@ class UrlExistsValidatorTest extends BaseTestCase
 {
     public function testWhenCheckdnsrrEqualsTrueIsSuccessful()
     {
-        $externalMock = m::mock('overload:GUMP\Helpers');
 
-        $externalMock->shouldReceive('functionExists')
+
+        $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('checkdnsrr')
             ->andReturnTrue();
 
-        $externalMock->shouldReceive('functionExists')
+        $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('idn_to_ascii')
             ->andReturnTrue();
 
 
-        $externalMock->shouldReceive('checkdnsrr')
+        $this->helpersMock->shouldReceive('checkdnsrr')
             ->once()
             ->with('google.es', 'A')
             ->andReturnTrue();
@@ -45,19 +45,19 @@ class UrlExistsValidatorTest extends BaseTestCase
 
     public function testWhenCheckdnsrrEqualsFalseIsFailure()
     {
-        $externalMock = m::mock('overload:GUMP\Helpers');
 
-        $externalMock->shouldReceive('functionExists')
+
+        $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('checkdnsrr')
             ->andReturnTrue();
 
-        $externalMock->shouldReceive('functionExists')
+        $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('idn_to_ascii')
             ->andReturnTrue();
 
-        $externalMock->shouldReceive('checkdnsrr')
+        $this->helpersMock->shouldReceive('checkdnsrr')
             ->once()
             ->with('google.es', 'A')
             ->andReturnFalse();
@@ -73,19 +73,19 @@ class UrlExistsValidatorTest extends BaseTestCase
 
     public function testWhenGethostbynameReturnsIpAddressIsSuccess()
     {
-        $externalMock = m::mock('overload:GUMP\Helpers');
 
-        $externalMock->shouldReceive('functionExists')
+
+        $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('checkdnsrr')
             ->andReturnFalse();
 
-        $externalMock->shouldReceive('functionExists')
+        $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('idn_to_ascii')
             ->andReturnFalse();
 
-        $externalMock->shouldReceive('gethostbyname')
+        $this->helpersMock->shouldReceive('gethostbyname')
             ->once()
             ->andReturn('127.0.0.1');
 
@@ -101,19 +101,19 @@ class UrlExistsValidatorTest extends BaseTestCase
 
     public function testWhenGethostbynameReturnsUrlIsFailure()
     {
-        $externalMock = m::mock('overload:GUMP\Helpers');
 
-        $externalMock->shouldReceive('functionExists')
+
+        $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('checkdnsrr')
             ->andReturnFalse();
 
-        $externalMock->shouldReceive('functionExists')
+        $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('idn_to_ascii')
             ->andReturnFalse();
 
-        $externalMock->shouldReceive('gethostbyname')
+        $this->helpersMock->shouldReceive('gethostbyname')
             ->once()
             ->andReturn('google.es');
 
@@ -128,19 +128,19 @@ class UrlExistsValidatorTest extends BaseTestCase
 
     public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
     {
-        $externalMock = m::mock('overload:GUMP\Helpers');
 
-        $externalMock->shouldReceive('functionExists')
+
+        $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('checkdnsrr')
             ->andReturnTrue();
 
-        $externalMock->shouldReceive('functionExists')
+        $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('idn_to_ascii')
             ->andReturnTrue();
 
-        $externalMock->shouldReceive('gethostbyname')
+        $this->helpersMock->shouldReceive('gethostbyname')
             ->once()
             ->andReturn('google.es');
 

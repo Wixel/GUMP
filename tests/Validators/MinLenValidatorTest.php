@@ -16,9 +16,9 @@ class MinLenValidatorTest extends BaseTestCase
 {
     public function testSuccessWhenEqualWithMbStrlen()
     {
-        $externalMock = m::mock('overload:GUMP\Helpers');
 
-        $externalMock->shouldReceive('functionExists')
+
+        $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('mb_strlen')
             ->andReturnTrue();
@@ -28,9 +28,9 @@ class MinLenValidatorTest extends BaseTestCase
 
     public function testSuccessWhenMoreWithMbStrlen()
     {
-        $externalMock = m::mock('overload:GUMP\Helpers');
 
-        $externalMock->shouldReceive('functionExists')
+
+        $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('mb_strlen')
             ->andReturnTrue();
@@ -40,9 +40,9 @@ class MinLenValidatorTest extends BaseTestCase
 
     public function testErrorWhenLessWithMbStrlen()
     {
-        $externalMock = m::mock('overload:GUMP\Helpers');
 
-        $externalMock->shouldReceive('functionExists')
+
+        $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('mb_strlen')
             ->andReturnTrue();
@@ -52,9 +52,9 @@ class MinLenValidatorTest extends BaseTestCase
 
     public function testSuccessWhenEqualWithStrlen()
     {
-        $externalMock = m::mock('overload:GUMP\Helpers');
 
-        $externalMock->shouldReceive('functionExists')
+
+        $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('mb_strlen')
             ->andReturnFalse();
@@ -65,9 +65,9 @@ class MinLenValidatorTest extends BaseTestCase
 
     public function testSuccessWhenMoreWithStrlen()
     {
-        $externalMock = m::mock('overload:GUMP\Helpers');
 
-        $externalMock->shouldReceive('functionExists')
+
+        $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('mb_strlen')
             ->andReturnFalse();
@@ -77,9 +77,9 @@ class MinLenValidatorTest extends BaseTestCase
 
     public function testErrorWhenLessWithStrlen()
     {
-        $externalMock = m::mock('overload:GUMP\Helpers');
 
-        $externalMock->shouldReceive('functionExists')
+
+        $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('mb_strlen')
             ->andReturnFalse();
@@ -89,9 +89,9 @@ class MinLenValidatorTest extends BaseTestCase
 
     public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
     {
-        $externalMock = m::mock('overload:GUMP\Helpers');
 
-        $externalMock->shouldReceive('functionExists')
+
+        $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('mb_strlen')
             ->andReturnTrue();
