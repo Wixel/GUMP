@@ -185,4 +185,20 @@ class ValidateTest extends BaseTestCase
 
         $this->assertTrue(count($result) === 2);
     }
+
+    public function testOnlyFirstErrorOfTheSameFieldIsReturnedAsError()
+    {
+        $this->helpersMock->shouldReceive('functionExists')
+            ->once()
+            ->with('mb_strlen')
+            ->andReturnTrue();
+
+        $result = $this->gump->validate([
+            'some_field' => '123'
+        ], [
+            'some_field' => 'alpha|max_len,2',
+        ]);
+
+        $this->assertTrue(count($result) === 1);
+    }
 }
