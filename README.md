@@ -326,20 +326,7 @@ Running the examples:
 
 The output will depend on the input data.
 
-# Contributors
-
-* Colleen Emryss http://skitter.tv
-* Mark Slingsby http://www.rsaweb.co.za
-* Rob Crowe http://vivalacrowe.com
-* Roy de Kleijn http://roydekleijn.com
-* Christian Klisch http://www.christian-klisch.de/
-* Inge Brattaas http://res.no/
-* Adam Curtis http://alc.im
-* Sean Hickey
-* Dennis Thompson http://atomicpages.net
-
 # TODO
-
 * A currency validator
 * A country validator
 * Location co-ordinates validator
@@ -357,3 +344,7 @@ The output will depend on the input data.
 * Add an 'is empty' validator check
 * A secure password validator
 * alpha_dash_number validator
+
+
+# Contributors
+https://github.com/Wixel/GUMP/graphs/contributors
