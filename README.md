@@ -238,7 +238,7 @@ Adding custom validators and filters is made easy by using callback functions.
 */
 GUMP::add_validator("is_object", function($field, $input, $param = NULL) {
     return is_object($input[$field]);
-});
+}, 'Your custom error message here');
 
 /*
    Create a custom filter named "upper".
@@ -248,7 +248,6 @@ GUMP::add_validator("is_object", function($field, $input, $param = NULL) {
 GUMP::add_filter("upper", function($value, $params = NULL) {
     return strtoupper($value);
 });
-
 ```
 
 Alternately, you can simply create your own class that extends the GUMP class.
@@ -263,7 +262,7 @@ class MyClass extends GUMP
 
     public function validate_myvalidator($field, $input, $param = NULL)
     {
-        // 
+        // validator
     }
 }
 
