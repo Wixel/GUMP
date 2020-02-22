@@ -7,11 +7,11 @@ use Exception;
 use Tests\BaseTestCase;
 
 /**
- * Class AlphaDashValidatorTest
+ * Class AlphaNumericDashValidatorTest
  *
  * @package Tests
  */
-class AlphaDashValidatorTest extends BaseTestCase
+class AlphaNumericDashValidatorTest extends BaseTestCase
 {
     public function testSuccess()
     {
