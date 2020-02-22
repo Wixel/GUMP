@@ -20,7 +20,7 @@ class ContainsListValidatorTest extends BaseTestCase
 
     public function testFailure()
     {
-        $this->assertNotTrue($this->validate('contains_list,one;two', 'three'));
+        $this->assertNotTrue($this->validate('contains_list,one;two', '0'));
     }
 
     public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
