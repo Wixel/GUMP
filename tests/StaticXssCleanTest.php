@@ -6,11 +6,11 @@ use GUMP;
 use Exception;
 
 /**
- * Class XssCleanTest
+ * Class StaticXssCleanTest
  *
  * @package Tests
  */
-class XssCleanTest extends BaseTestCase
+class StaticXssCleanTest extends BaseTestCase
 {
     public function testSuccess()
     {

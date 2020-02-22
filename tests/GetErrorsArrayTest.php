@@ -14,7 +14,7 @@ class GetErrorsArrayTest extends BaseTestCase
 {
     public function testReturnsEmptyArrayWhenNoErrors()
     {
-        $result = $this->gump->validate([
+        $this->gump->validate([
             'test_number' => '111'
         ], [
             'test_number' => 'numeric'
@@ -45,41 +45,24 @@ class GetErrorsArrayTest extends BaseTestCase
         $this->assertArrayHasKey('test_number', $this->gump->get_errors_array());
     }
 
-    public function testPrintsCustomFieldLabelsOnErrors()
-    {
-        GUMP::set_field_name('test', 'Test Num.');
-
-        $result = $this->gump->validate([
-            'test' => 'hey'
-        ], [
-            'test' => 'numeric'
-        ]);
-
-        $this->assertEquals([
-            'test' => 'The Test Num. field must be a number'
-        ], $this->gump->get_errors_array());
-    }
-
-    public function testThrowsExceptionOnValidatorWithoutErrorMessage()
+    public function testReturnsErrorsWithErrorMessageOfCustomValidator()
     {
         GUMP::add_validator("custom", function($field, $input, $param = NULL) {
             return $input[$field] === 'ok';
-        });
+        }, 'Custom error message');
 
-        $result = $this->gump->validate([
-            'testnumber' => 'hey'
+        $this->gump->validate([
+            'test_number' => 'notOk'
         ], [
-            'testnumber' => 'custom'
+            'test_number' => 'custom'
         ]);
 
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Rule "custom" does not have an error message');
-
-        $this->gump->get_errors_array();
+        $this->assertEquals([
+            'test_number' => 'Custom error message'
+        ], $this->gump->get_errors_array());
     }
 
-
-    public function testEqualsFieldValidator()
+    public function testErrorMessageReplacesReferencedFieldNameToo()
     {
         GUMP::set_field_name('test_number', 'Test Num.');
         GUMP::set_field_name('test', 'The Other Test Field');
@@ -94,5 +77,23 @@ class GetErrorsArrayTest extends BaseTestCase
         $this->assertEquals([
             'test_number' => 'The Test Num. field does not equal The Other Test Field field'
         ], $this->gump->get_errors_array());
+    }
+
+    public function testItThrowsExceptionWhenCustomValidatorFailsWithoutAnErrorMessageSet()
+    {
+        GUMP::add_validator("custom", function($field, $input, $param = NULL) {
+            return $input[$field] === 'ok';
+        });
+
+        $this->gump->validate([
+            'test_number' => 'notOk'
+        ], [
+            'test_number' => 'custom'
+        ]);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Rule "custom" does not have an error message');
+
+        $this->gump->get_errors_array();
     }
 }

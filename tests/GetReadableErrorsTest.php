@@ -76,13 +76,13 @@ class GetReadableErrorsTest extends BaseTestCase
         ], $this->gump->get_readable_errors());
     }
 
-    public function testThrowsExceptionOnValidatorWithoutErrorMessage()
+    public function testItThrowsExceptionWhenCustomValidatorFailsWithoutAnErrorMessageSet()
     {
         GUMP::add_validator("custom", function($field, $input, $param = NULL) {
             return $input[$field] === 'ok';
         });
 
-        $result = $this->gump->validate([
+        $this->gump->validate([
             'testnumber' => 'hey'
         ], [
             'testnumber' => 'custom'
