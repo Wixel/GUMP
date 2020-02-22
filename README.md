@@ -343,7 +343,7 @@ The output will depend on the input data.
 * A currency validator
 * A country validator
 * Location co-ordinates validator
-* HTML validator
+* HTML validator (HTMLPurifier or similar)
 * Language validation ... determine if a piece of text is a specified language
 * Validate a spam domain or IP.
 * Validate a spam email address
