@@ -356,3 +356,4 @@ The output will depend on the input data.
 * Allow a validator that can check for existing files on the host machine
 * Add an 'is empty' validator check
 * A secure password validator
+* alpha_dash_number validator
