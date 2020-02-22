@@ -98,7 +98,7 @@ $gump->filter_rules([
     'username' => 'trim|sanitize_string',
     'password' => 'trim',
     'email'    => 'trim|sanitize_email',
-    'gender    => 'trim',
+    'gender'   => 'trim',
     'bio'      => 'noise_words'
 ]);
 
