@@ -913,7 +913,7 @@ class GUMP
      */
     protected function filter_lower_case($value, $params = null)
     {
-        return strtolower($value);
+        return mb_strtolower( $value );
     }
 
     /**
@@ -926,7 +926,20 @@ class GUMP
      */
     protected function filter_upper_case($value, $params = null)
     {
-        return strtoupper($value);
+        return mb_strtoupper( $value );
+    }
+    
+    /**
+     * Converts to title case.
+     *
+     * @param string $value
+     * @param array  $params
+     *
+     * @return string
+     */
+    protected function filter_title_case($value, $params = null)
+    {
+        return mb_convert_case( $value, MB_CASE_TITLE );
     }
 
     /**
@@ -944,7 +957,7 @@ class GUMP
     protected function filter_slug($value, $params = null)
     {
         $delimiter = '-';
-        return strtolower(trim(preg_replace('/[\s-]+/', $delimiter, preg_replace('/[^A-Za-z0-9-]+/', $delimiter, preg_replace('/[&]/', 'and', preg_replace('/[\']/', '', iconv('UTF-8', 'ASCII//TRANSLIT', $value))))), $delimiter));
+        return mb_strtolower(trim(preg_replace('/[\s-]+/', $delimiter, preg_replace('/[^A-Za-z0-9-]+/', $delimiter, preg_replace('/[&]/', 'and', preg_replace('/[\']/', '', iconv('UTF-8', 'ASCII//TRANSLIT', $value))))), $delimiter));
     }
 
     // ** ------------------------- Validators ------------------------------------ ** //
@@ -967,9 +980,9 @@ class GUMP
             return;
         }
 
-        $param = trim(strtolower($param));
+        $param = trim(mb_strtolower($param));
 
-        $value = trim(strtolower($input[$field]));
+        $value = trim(mb_strtolower($input[$field]));
 
         if (preg_match_all('#\'(.+?)\'#', $param, $matches, PREG_PATTERN_ORDER)) {
             $param = $matches[1];
@@ -1006,9 +1019,9 @@ class GUMP
             return;
         }
 
-        $param = trim(strtolower($param));
+        $param = trim(mb_strtolower($param));
 
-        $value = trim(strtolower($input[$field]));
+        $value = trim(mb_strtolower($input[$field]));
 
         $param = explode(';', $param);
 
@@ -1043,9 +1056,9 @@ class GUMP
             return;
         }
 
-        $param = trim(strtolower($param));
+        $param = trim(mb_strtolower($param));
 
-        $value = trim(strtolower($input[$field]));
+        $value = trim(mb_strtolower($input[$field]));
 
         $param = explode(';', $param);
 
@@ -1502,7 +1515,7 @@ class GUMP
             return;
         }
 
-        $url = parse_url(strtolower($input[$field]));
+        $url = parse_url(mb_strtolower($input[$field]));
 
         if (isset($url['host'])) {
             $url = $url['host'];
@@ -2005,13 +2018,13 @@ class GUMP
         }
 
         if (is_array($input[$field]) && $input[$field]['error'] === 0) {
-            $param = trim(strtolower($param));
+            $param = trim(mb_strtolower($param));
             $allowed_extensions = explode(';', $param);
 
             $path_info = pathinfo($input[$field]['name']);
             $extension = isset($path_info['extension']) ? $path_info['extension'] : false;
 
-            if ($extension && in_array(strtolower($extension), $allowed_extensions)) {
+            if ($extension && in_array(mb_strtolower($extension), $allowed_extensions)) {
                 return;
             }
         }
