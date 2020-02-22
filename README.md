@@ -7,7 +7,13 @@ GUMP is a standalone PHP data validation and filtering class that makes validati
 
 #### There are 2 ways to install GUMP
 
-##### Install Manually
+##### Install with composer 
+
+```
+composer require wixel/gump
+```
+
+##### Install manually
 
 1. Download GUMP
 2. Unzip it and copy the directory into your PHP project directory.
@@ -18,22 +24,16 @@ Include it in your project:
 require 'gump.class.php';
 require 'src/Helpers.php';
 
-$is_valid = GUMP::is_valid($_POST, array(
-	'username' => 'required|alpha_numeric',
-	'password' => 'required|max_len,100|min_len,6'
-));
+$is_valid = GUMP::is_valid($_POST, [
+    'username' => 'required|alpha_numeric',
+    'password' => 'required|max_len,100|min_len,6'
+]);
 
-if($is_valid === true) {
-	// continue
+if ($is_valid === true) {
+    // continue
 } else {
-	print_r($is_valid);
+    print_r($is_valid);
 }
-```
-
-##### Install with composer
-
-```
-composer require wixel/gump
 ```
 
 
@@ -82,31 +82,29 @@ The following example is part of a registration form, the flow should be pretty 
 ```php
 # Note that filters and validators are separate rule sets and method calls. There is a good reason for this.
 
-require "gump.class.php";
-
 $gump = new GUMP();
 
 $_POST = $gump->sanitize($_POST); // You don't have to sanitize, but it's safest to do so.
 
-$gump->validation_rules(array(
-	'username'    => 'required|alpha_numeric|max_len,100|min_len,6',
-	'password'    => 'required|max_len,100|min_len,6',
-	'email'       => 'required|valid_email',
-	'gender'      => 'required|exact_len,1|contains,m f',
-	'credit_card' => 'required|valid_cc'
-));
+$gump->validation_rules([
+    'username'    => 'required|alpha_numeric|max_len,100|min_len,6',
+    'password'    => 'required|max_len,100|min_len,6',
+    'email'       => 'required|valid_email',
+    'gender'      => 'required|exact_len,1|contains,m f',
+    'credit_card' => 'required|valid_cc'
+]);
 
-$gump->filter_rules(array(
-	'username' => 'trim|sanitize_string',
-	'password' => 'trim',
-	'email'    => 'trim|sanitize_email',
-	'gender'   => 'trim',
-	'bio'	   => 'noise_words'
-));
+$gump->filter_rules([
+    'username' => 'trim|sanitize_string',
+    'password' => 'trim',
+    'email'    => 'trim|sanitize_email',
+    'gender    => 'trim',
+    'bio'      => 'noise_words'
+]);
 
 $validated_data = $gump->run($_POST);
 
-if($validated_data === false) {
+if ($validated_data === false) {
 	echo $gump->get_readable_errors(true);
 } else {
 	print_r($validated_data); // validation successful
@@ -118,18 +116,18 @@ if($validated_data === false) {
 The short format is an alternative way to run the validation.
 
 ```php
-$data = array(
-	'street' => '6 Avondans Road'
-);
+$data = [
+    'street' => '6 Avondans Road'
+];
 
-$validated = GUMP::is_valid($data, array(
-	'street' => 'required|street_address'
-));
+$validated = GUMP::is_valid($data, [
+    'street' => 'required|street_address'
+]);
 
-if($validated === true) {
-	echo "Valid Street Address!";
+if ($validated === true) {
+    echo "Valid Street Address!";
 } else {
-	print_r($validated);
+    print_r($validated);
 }
 ```
 
@@ -232,8 +230,6 @@ Filters can be any PHP function that returns a string. You don't need to create 
 Adding custom validators and filters is made easy by using callback functions.
 
 ```php
-require("gump.class.php");
-
 /*
    Create a custom validation rule named "is_object".
    The callback receives 3 arguments:
@@ -258,27 +254,21 @@ GUMP::add_filter("upper", function($value, $params = NULL) {
 Alternately, you can simply create your own class that extends the GUMP class.
 
 ```php
-
-require("gump.class.php");
-
 class MyClass extends GUMP
 {
-	public function filter_myfilter($value, $param = NULL)
-	{
-		...
-	}
+    public function filter_myfilter($value, $param = NULL)
+    {
+        return strtoupper($value);
+    }
 
-	public function validate_myvalidator($field, $input, $param = NULL)
-	{
-		...
-	}
-
-} // EOC
+    public function validate_myvalidator($field, $input, $param = NULL)
+    {
+        // 
+    }
+}
 
 $validator = new MyClass();
-
 $validated = $validator->validate($_POST, $rules);
-
 ```
 
 Please see `examples/custom_validator.php` for further information.
@@ -293,39 +283,37 @@ Remember to create a public methods with the correct parameter types and paramet
 You can easily override your form field names for improved readability in errors using the `GUMP::set_field_name($field, $readable_name)` method as follows:
 
 ```php
-$data = array(
-	'str' => null
-);
+$data = [
+    'str' => null
+];
 
-$rules = array(
-	'str' => 'required'
-);
+$rules = [
+    'str' => 'required'
+];
 
 GUMP::set_field_name("str", "Street");
 
 $validated = GUMP::is_valid($data, $rules);
 
-if($validated === true) {
-	echo "Valid Street Address\n";
+if ($validated === true) {
+    echo "Valid Street Address\n";
 } else {
-	print_r($validated);
+    print_r($validated);
 }
 ```
 
 # validating file fields
 
 ```php
-require "gump.class.php";
+$is_valid = GUMP::is_valid(array_merge($_POST,$_FILES), [
+    'title' => 'required|alpha_numeric',
+    'image' => 'required_file|extension,png;jpg'
+]);
 
-$is_valid = GUMP::is_valid(array_merge($_POST,$_FILES), array(
-	'title' => 'required|alpha_numeric',
-	'image' => 'required_file|extension,png;jpg'
-));
-
-if($is_valid === true) {
-	// continue
+if ($is_valid === true) {
+    // continue
 } else {
-	print_r($is_valid);
+    print_r($is_valid);
 }
 ```
 
@@ -360,8 +348,6 @@ The output will depend on the input data.
 * Validate a spam domain or IP.
 * Validate a spam email address
 * Validate spam text with askimet or something similar
-* Improve documentation
-* More examples
 * W3C validation filter?
 * A filter that integrates with an HTML tidy service?: http://infohound.net/tidy/
 * Add a twitter & facebook profile url validator: http://stackoverflow.com/questions/2845243/check-if-twitter-username-exists
@@ -369,5 +355,4 @@ The output will depend on the input data.
 * Add validators to allow checking the PHP $_FILES array.
 * Allow a validator that can check for existing files on the host machine
 * Add an 'is empty' validator check
-* Check that arrays have a positive count (if type is array)
 * A secure password validator
