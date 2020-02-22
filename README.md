@@ -15,7 +15,8 @@ GUMP is a standalone PHP data validation and filtering class that makes validati
 Include it in your project:
 
 ```php
-require "gump.class.php";
+require 'gump.class.php';
+require 'src/Helpers.php';
 
 $is_valid = GUMP::is_valid($_POST, array(
 	'username' => 'required|alpha_numeric',
@@ -31,19 +32,8 @@ if($is_valid === true) {
 
 ###### Install with composer
 
-Add the following to your composer.json file:
-
-```json
-{
-    "require": {
-        "wixel/gump": "dev-master"
-    }
-}
 ```
-Then open your terminal in your project directory and run:
-
-```
-composer install
+composer require wixel/gump
 ```
 
 
