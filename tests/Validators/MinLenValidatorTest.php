@@ -16,8 +16,6 @@ class MinLenValidatorTest extends BaseTestCase
 {
     public function testSuccessWhenEqualWithMbStrlen()
     {
-
-
         $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('mb_strlen')
@@ -28,8 +26,6 @@ class MinLenValidatorTest extends BaseTestCase
 
     public function testSuccessWhenMoreWithMbStrlen()
     {
-
-
         $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('mb_strlen')
@@ -40,8 +36,6 @@ class MinLenValidatorTest extends BaseTestCase
 
     public function testErrorWhenLessWithMbStrlen()
     {
-
-
         $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('mb_strlen')
@@ -52,8 +46,6 @@ class MinLenValidatorTest extends BaseTestCase
 
     public function testSuccessWhenEqualWithStrlen()
     {
-
-
         $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('mb_strlen')
@@ -65,8 +57,6 @@ class MinLenValidatorTest extends BaseTestCase
 
     public function testSuccessWhenMoreWithStrlen()
     {
-
-
         $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('mb_strlen')
@@ -77,8 +67,6 @@ class MinLenValidatorTest extends BaseTestCase
 
     public function testErrorWhenLessWithStrlen()
     {
-
-
         $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('mb_strlen')
@@ -89,8 +77,6 @@ class MinLenValidatorTest extends BaseTestCase
 
     public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
     {
-
-
         $this->helpersMock->shouldReceive('functionExists')
             ->once()
             ->with('mb_strlen')

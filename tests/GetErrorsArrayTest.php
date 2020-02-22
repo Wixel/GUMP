@@ -96,4 +96,20 @@ class GetErrorsArrayTest extends BaseTestCase
 
         $this->gump->get_errors_array();
     }
+
+    public function testOnlyFirstErrorIsReturned()
+    {
+        $this->helpersMock->shouldReceive('functionExists')
+            ->once()
+            ->with('mb_strlen')
+            ->andReturnTrue();
+
+        $result = $this->gump->validate([
+            'some_field' => '123'
+        ], [
+            'some_field' => 'alpha|max_len,2',
+        ]);
+
+        $this->assertTrue(count($this->gump->get_errors_array()) === 1);
+    }
 }
