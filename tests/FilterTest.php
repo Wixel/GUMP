@@ -82,17 +82,4 @@ class FilterTest extends BaseTestCase
             'other' => 'TEXT'
         ], $result);
     }
-
-    public function testStaticFilterInputCall()
-    {
-        $result = GUMP::filter_input([
-            'other' => 'text'
-        ], [
-            'other' => 'upper_case',
-        ]);
-
-        $this->assertEquals([
-            'other' => 'TEXT'
-        ], $result);
-    }
 }

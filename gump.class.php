@@ -156,7 +156,7 @@ class GUMP
      *
      * @param string   $rule
      * @param callable $callback
-     * @param string   $error_message
+     * @param string   $error_message optional for backwards compatibility
      *
      * @return bool
      *
@@ -519,8 +519,8 @@ class GUMP
         $lang_file = __DIR__.DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$this->lang.'.php';
         $messages = require $lang_file;
 
-        if ($validation_methods_errors = self::$validation_methods_errors) {
-            $messages = array_merge($messages, $validation_methods_errors);
+        if (count(self::$validation_methods_errors) > 0) {
+            $messages = array_merge($messages, self::$validation_methods_errors);
         }
 
         return $messages;
