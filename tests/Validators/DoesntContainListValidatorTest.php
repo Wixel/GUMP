@@ -22,4 +22,9 @@ class DoesntContainListValidatorTest extends BaseTestCase
     {
         $this->assertNotTrue($this->validate('doesnt_contain_list,one;two', 'one'));
     }
+
+    public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
+    {
+        $this->assertTrue($this->validate('doesnt_contain_list,one;two', ''));
+    }
 }

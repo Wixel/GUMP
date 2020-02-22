@@ -12,7 +12,7 @@ use Exception;
  */
 class GumpTest extends BaseTestCase
 {
-    public function testSetFieldNames()
+    public function testSetFieldNamesStaticCall()
     {
         $keysValues = [
             'test_number' =>'Test Num.',
@@ -24,7 +24,7 @@ class GumpTest extends BaseTestCase
         $this->assertEquals($keysValues, self::getPrivateField(GUMP::class, 'fields'));
     }
 
-    public function testSetErrorMessages()
+    public function testSetErrorMessagesStaticCall()
     {
         $keysValues = [
             'numeric' =>'Field should be numeric',
@@ -36,4 +36,27 @@ class GumpTest extends BaseTestCase
         $this->assertEquals($keysValues, self::getPrivateField(GUMP::class, 'validation_methods_errors'));
     }
 
+    public function testFieldStaticCallRetrievesValueIfKeyExists()
+    {
+        $keysValues = [
+            'numeric' => 'Field should be numeric',
+            'min_len' => 'Field length must be higher than what it is now'
+        ];
+
+        $result = GUMP::field('numeric', $keysValues);
+
+        $this->assertEquals('Field should be numeric', $result);
+    }
+
+    public function testFieldStaticCallRetrievesDefaultWhenKeyDoesntExist()
+    {
+        $keysValues = [
+            'numeric' => 'Field should be numeric',
+            'min_len' => 'Field length must be higher than what it is now'
+        ];
+
+        $result = GUMP::field('input_field', $keysValues, 'Default error message');
+
+        $this->assertEquals('Default error message', $result);
+    }
 }

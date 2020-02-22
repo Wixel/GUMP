@@ -46,4 +46,9 @@ class Guidv4ValidatorTest extends BaseTestCase
             ['7deca41a-9771-3531f742061b'],
         ];
     }
+
+    public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
+    {
+        $this->assertTrue($this->validate(self::RULE, ''));
+    }
 }

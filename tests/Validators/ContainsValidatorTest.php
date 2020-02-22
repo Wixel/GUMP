@@ -33,8 +33,8 @@ class ContainsValidatorTest extends BaseTestCase
         $this->assertNotTrue($this->validate("contains,'one' 'two'", 'three'));
     }
 
-    public function testFailureWithRegexSeparatora()
+    public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
     {
-        $this->assertNotTrue($this->validate("contains,'one' 'two'", ''));
+        $this->assertTrue($this->validate("contains,'one' 'two'", ''));
     }
 }

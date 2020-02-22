@@ -110,4 +110,18 @@ class GetReadableErrorsTest extends BaseTestCase
             'The <span class="gump-field">Test Num.</span> field does not equal The Other Test Field field'
         ], $this->gump->get_readable_errors());
     }
+
+    public function testWhenGumpInstanceIsCastedToStringItReturnsReadableErrorsInStringFormat()
+    {
+        $result = $this->gump->validate([
+            'test_number' => 'text'
+        ], [
+            'test_number' => 'numeric'
+        ]);
+
+        $this->assertEquals(
+            '<span class="gump-error-message">The <span class="gump-field">Test Number</span> field must be a number</span>',
+            (string)$this->gump
+        );
+    }
 }

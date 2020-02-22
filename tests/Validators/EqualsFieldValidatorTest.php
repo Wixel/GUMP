@@ -36,4 +36,9 @@ class EqualsFieldValidatorTest extends BaseTestCase
 
         $this->assertNotTrue($result);
     }
+
+    public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
+    {
+        $this->assertTrue($this->validate('equalsfield,the_other_field', ''));
+    }
 }

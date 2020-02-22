@@ -213,15 +213,11 @@ class GUMP
      */
     public static function field($key, array $array, $default = null)
     {
-        if (!is_array($array)) {
-            return null;
-        }
-
         if (isset($array[$key])) {
             return $array[$key];
-        } else {
-            return $default;
         }
+
+        return $default;
     }
 
     /**
@@ -737,7 +733,7 @@ class GUMP
     /**
      * Remove all known punctuation from a string.
      *
-     * Usage: '<index>' => 'rmpunctuataion'
+     * Usage: '<index>' => 'rmpunctuation'
      *
      * @param string $value
      * @param array  $params
@@ -957,7 +953,7 @@ class GUMP
      */
     protected function validate_contains($field, $input, $param = null)
     {
-        if (!isset($input[$field])) {
+        if (!isset($input[$field]) || empty($input[$field])) {
             return;
         }
 
@@ -1120,7 +1116,7 @@ class GUMP
      */
     protected function validate_max_len($field, $input, $param = null)
     {
-        if (!isset($input[$field])) {
+        if (!isset($input[$field]) || empty($input[$field])) {
             return;
         }
 

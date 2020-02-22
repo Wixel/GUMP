@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Prophet;
 use GUMP;
 use ReflectionClass;
+use Mockery as m;
 
 abstract class BaseTestCase extends TestCase
 {
@@ -19,6 +20,12 @@ abstract class BaseTestCase extends TestCase
     public function setUp(): void
     {
         $this->prophet = new Prophet;
+
+//        $externalMock = m::mock('overload:GUMP\Helpers');
+//        $externalMock->shouldReceive('file_exists')
+//            ->once()
+//            ->andReturnTrue();
+
         $this->gump = new GUMP;
     }
 
