@@ -173,7 +173,7 @@ Available Validators
 * exact_len,n `Ensures that the key value length precisely matches the specified length. n = length parameter.`
 * alpha `Ensure only alpha characters are present in the key value (a-z, A-Z)`
 * alpha_numeric `Ensure only alpha-numeric characters are present in the key value (a-z, A-Z, 0-9)`
-* alpha_dash `Ensure only alpha-numeric characters + dashes and underscores are present in the key value (a-z, A-Z, 0-9, _-)`
+* alpha_dash `Ensure only alpha characters + dashes and underscores are present in the key value (a-z, A-Z, 0-9, _-)`
 * alpha_space `Ensure only alpha-numeric characters + spaces are present in the key value (a-z, A-Z, 0-9, \s)`
 * numeric `Ensure only numeric key values`
 * integer `Ensure only integer key values`
