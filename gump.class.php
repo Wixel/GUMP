@@ -75,17 +75,15 @@ class GUMP
 
     // ** ------------------------- Validation Helpers ---------------------------- ** //
 
-    public function __construct($lang = 'en')
+    public function __construct(string $lang = 'en')
     {
-        if ($lang) {
-            $lang_file = __DIR__.DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$lang.'.php';
+        $lang_file_location = __DIR__.DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$lang.'.php';
 
-            if (file_exists($lang_file)) {
-                $this->lang = $lang;
-            } else {
-                throw new Exception('Language with key "'.$lang.'" does not exist');
-            }
+        if (!Helpers::file_exists($lang_file_location)) {
+             throw new Exception('Language with key "'.$lang.'" does not exist');
         }
+
+        $this->lang = $lang;
     }
 
     /**
@@ -524,6 +522,7 @@ class GUMP
         if ($validation_methods_errors = self::$validation_methods_errors) {
             $messages = array_merge($messages, $validation_methods_errors);
         }
+
         return $messages;
     }
 
