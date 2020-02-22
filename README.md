@@ -174,7 +174,8 @@ Available Validators
 * alpha `Ensure only alpha characters are present in the key value (a-z, A-Z)`
 * alpha_numeric `Ensure only alpha-numeric characters are present in the key value (a-z, A-Z, 0-9)`
 * alpha_dash `Ensure only alpha characters + dashes and underscores are present in the key value (a-z, A-Z, 0-9, _-)`
-* alpha_space `Ensure only alpha-numeric characters + spaces are present in the key value (a-z, A-Z, 0-9, \s)`
+* alpha_space `Ensure only alpha characters + spaces are present in the key value (a-z, A-Z, \s)`
+* alpha_numeric_space `Ensure only alpha-numeric characters + spaces are present in the key value (a-z, A-Z, 0-9, \s)`
 * numeric `Ensure only numeric key values`
 * integer `Ensure only integer key values`
 * boolean `Checks for PHP accepted boolean values, returns TRUE for "1", "true", "on" and "yes"`
@@ -342,7 +343,7 @@ The output will depend on the input data.
 * A currency validator
 * A country validator
 * Location co-ordinates validator
-* HTML validator
+* HTML validator (HTMLPurifier or similar)
 * Language validation ... determine if a piece of text is a specified language
 * Validate a spam domain or IP.
 * Validate a spam email address
@@ -355,3 +356,4 @@ The output will depend on the input data.
 * Allow a validator that can check for existing files on the host machine
 * Add an 'is empty' validator check
 * A secure password validator
+* alpha_dash_number validator
