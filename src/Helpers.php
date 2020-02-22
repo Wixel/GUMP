@@ -47,4 +47,11 @@ class Helpers
     ) {
         return file_get_contents($filename, $use_include_path, $context, $offset, $maxlen);
     }
+
+    /**
+     * @inheritDoc file_exists
+     */
+    public static function file_exists($filename) {
+        return file_exists($filename);
+    }
 }

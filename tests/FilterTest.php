@@ -67,7 +67,7 @@ class FilterTest extends BaseTestCase
         ]);
     }
 
-    public function testApplyFilterToUnknownFieldContinuesWithNextField()
+    public function testWhenApplyingFilterToUnknownFieldContinuesWithNextField()
     {
         $result = $this->gump->filter([
             'test' => 'text',
@@ -79,6 +79,19 @@ class FilterTest extends BaseTestCase
 
         $this->assertEquals([
             'test' => 'text',
+            'other' => 'TEXT'
+        ], $result);
+    }
+
+    public function testStaticFilterInputCall()
+    {
+        $result = GUMP::filter_input([
+            'other' => 'text'
+        ], [
+            'other' => 'upper_case',
+        ]);
+
+        $this->assertEquals([
             'other' => 'TEXT'
         ], $result);
     }

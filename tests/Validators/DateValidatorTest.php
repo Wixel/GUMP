@@ -60,4 +60,9 @@ class DateValidatorTest extends BaseTestCase
         $this->assertNotTrue($this->validate('date,d-m-Y', '32-12-2019'));
         $this->assertNotTrue($this->validate('date,d-m-Y H:i', '31-12-2019 10:70'));
     }
+
+    public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
+    {
+        $this->assertTrue($this->validate(self::RULE, ''));
+    }
 }
