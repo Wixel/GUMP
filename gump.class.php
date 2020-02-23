@@ -421,8 +421,6 @@ class GUMP
                             $method = 'validate_'.$rule;
                         }
 
-                        //self::$validation_methods[$rule] = $callback;
-
                         if (is_callable(array($this, $method))) {
                             $result = $this->$method(
                                 $field, $input, $param
@@ -949,11 +947,34 @@ class GUMP
 
     // ** ------------------------- Validators ------------------------------------ ** //
 
+    /**
+     * Check if the specified key is present and not empty.
+     *
+     * @param string $field
+     * @param array  $input
+     * @param null   $param
+     *
+     * @return mixed
+     */
+    protected function validate_required($field, $input, $param = null)
+    {
+        if (isset($input[$field]) && ($input[$field] === false || $input[$field] === 0 || $input[$field] === 0.0 || $input[$field] === '0' || !empty($input[$field]))) {
+            return;
+        }
+
+        return array(
+            'field' => $field,
+            'value' => null,
+            'rule' => __FUNCTION__,
+            'param' => $param,
+        );
+    }
+
 
     /**
      * Verify that a value is contained within the pre-defined value set.
      *
-     * Usage: '<index>' => 'contains,value value value'
+     * @example_parameter 'value1' 'space separated value'
      *
      * @param string $field
      * @param array  $input
@@ -990,10 +1011,9 @@ class GUMP
     }
 
     /**
-     * Verify that a value is contained within the pre-defined value set.
-     * OUTPUT: will NOT show the list of values.
+     * Verify that a value is contained within the pre-defined value set. Error message will NOT show the list of possible values.
      *
-     * Usage: '<index>' => 'contains_list,value;value;value'
+     * @example_parameter value1;value2
      *
      * @param string $field
      * @param array  $input
@@ -1027,10 +1047,9 @@ class GUMP
     }
 
     /**
-     * Verify that a value is NOT contained within the pre-defined value set.
-     * OUTPUT: will NOT show the list of values.
+     * Verify that a value is contained within the pre-defined value set. Error message will NOT show the list of possible values.
      *
-     * Usage: '<index>' => 'doesnt_contain_list,value;value;value'
+     * @example_parameter value;value;value
      *
      * @param string $field
      * @param array  $input
@@ -1053,43 +1072,16 @@ class GUMP
             return;
         } else {
             return array(
-                    'field' => $field,
-                    'value' => $value,
-                    'rule' => __FUNCTION__,
-                    'param' => $param,
+                'field' => $field,
+                'value' => $value,
+                'rule' => __FUNCTION__,
+                'param' => $param,
             );
         }
     }
 
     /**
-     * Check if the specified key is present and not empty.
-     *
-     * Usage: '<index>' => 'required'
-     *
-     * @param string $field
-     * @param array  $input
-     * @param null   $param
-     *
-     * @return mixed
-     */
-    protected function validate_required($field, $input, $param = null)
-    {
-        if (isset($input[$field]) && ($input[$field] === false || $input[$field] === 0 || $input[$field] === 0.0 || $input[$field] === '0' || !empty($input[$field]))) {
-            return;
-        }
-
-        return array(
-            'field' => $field,
-            'value' => null,
-            'rule' => __FUNCTION__,
-            'param' => $param,
-        );
-    }
-
-    /**
      * Determine if the provided email is valid.
-     *
-     * Usage: '<index>' => 'valid_email'
      *
      * @param string $field
      * @param array  $input
@@ -1116,7 +1108,7 @@ class GUMP
     /**
      * Determine if the provided value length is less or equal to a specific value.
      *
-     * Usage: '<index>' => 'max_len,240'
+     * @example_parameter 240
      *
      * @param string $field
      * @param array  $input
@@ -1149,7 +1141,7 @@ class GUMP
     /**
      * Determine if the provided value length is more or equal to a specific value.
      *
-     * Usage: '<index>' => 'min_len,4'
+     * @example_parameter 4
      *
      * @param string $field
      * @param array  $input
@@ -1182,7 +1174,7 @@ class GUMP
     /**
      * Determine if the provided value length matches a specific value.
      *
-     * Usage: '<index>' => 'exact_len,5'
+     * @example_parameter 5
      *
      * @param string $field
      * @param array  $input
@@ -1215,8 +1207,6 @@ class GUMP
     /**
      * Determine if the provided value contains only alpha characters.
      *
-     * Usage: '<index>' => 'alpha'
-     *
      * @param string $field
      * @param array  $input
      * @param null   $param
@@ -1241,8 +1231,6 @@ class GUMP
 
     /**
      * Determine if the provided value contains only alpha-numeric characters.
-     *
-     * Usage: '<index>' => 'alpha_numeric'
      *
      * @param string $field
      * @param array  $input
@@ -1269,8 +1257,6 @@ class GUMP
     /**
      * Determine if the provided value contains only alpha characters with dashed and underscores.
      *
-     * Usage: '<index>' => 'alpha_dash'
-     *
      * @param string $field
      * @param array  $input
      * @param null   $param
@@ -1295,8 +1281,6 @@ class GUMP
 
     /**
      * Determine if the provided value contains only alpha numeric characters with dashed and underscores.
-     *
-     * Usage: '<index>' => 'alpha_numeric_dash'
      *
      * @param string $field
      * @param array  $input
@@ -1323,8 +1307,6 @@ class GUMP
     /**
      * Determine if the provided value contains only alpha numeric characters with spaces.
      *
-     * Usage: '<index>' => 'alpha_numeric_space'
-     *
      * @param string $field
      * @param array  $input
      * @param null   $param
@@ -1349,8 +1331,6 @@ class GUMP
 
     /**
      * Determine if the provided value contains only alpha characters with spaces.
-     *
-     * Usage: '<index>' => 'alpha_space'
      *
      * @param string $field
      * @param array  $input
@@ -1377,8 +1357,6 @@ class GUMP
     /**
      * Determine if the provided value is a valid number or numeric string.
      *
-     * Usage: '<index>' => 'numeric'
-     *
      * @param string $field
      * @param array  $input
      * @param null   $param
@@ -1404,8 +1382,6 @@ class GUMP
     /**
      * Determine if the provided value is a valid integer.
      *
-     * Usage: '<index>' => 'integer'
-     *
      * @param string $field
      * @param array  $input
      * @param null   $param
@@ -1430,8 +1406,6 @@ class GUMP
 
     /**
      * Determine if the provided value is a PHP accepted boolean.
-     *
-     * Usage: '<index>' => 'boolean'
      *
      * @param string $field
      * @param array  $input
@@ -1461,8 +1435,6 @@ class GUMP
     /**
      * Determine if the provided value is a valid float.
      *
-     * Usage: '<index>' => 'float'
-     *
      * @param string $field
      * @param array  $input
      * @param null   $param
@@ -1488,8 +1460,6 @@ class GUMP
     /**
      * Determine if the provided value is a valid URL.
      *
-     * Usage: '<index>' => 'valid_url'
-     *
      * @param string $field
      * @param array  $input
      * @param null   $param
@@ -1514,8 +1484,6 @@ class GUMP
 
     /**
      * Determine if a URL exists & is accessible.
-     *
-     * Usage: '<index>' => 'url_exists'
      *
      * @param string $field
      * @param array  $input
@@ -1544,22 +1512,18 @@ class GUMP
                     'param' => $param,
                 );
             }
-        } else {
-            if (Helpers::gethostbyname($url) == $url) {
-                return array(
-                    'field' => $field,
-                    'value' => $input[$field],
-                    'rule' => __FUNCTION__,
-                    'param' => $param,
-                );
-            }
+        } elseif (Helpers::gethostbyname($url) == $url) {
+            return array(
+                'field' => $field,
+                'value' => $input[$field],
+                'rule' => __FUNCTION__,
+                'param' => $param,
+            );
         }
     }
 
     /**
      * Determine if the provided value is a valid IP address.
-     *
-     * Usage: '<index>' => 'valid_ip'
      *
      * @param string $field
      * @param array  $input
@@ -1585,19 +1549,13 @@ class GUMP
     /**
      * Determine if the provided value is a valid IPv4 address.
      *
-     * Usage: '<index>' => 'valid_ipv4'
+     * @see What about private networks? What about loop-back address? 127.0.0.1 http://en.wikipedia.org/wiki/Private_network
+     * @see http://pastebin.com/UvUPPYK0
      *
      * @param string $field
      * @param array  $input
      *
      * @return mixed
-     *
-     * @see http://pastebin.com/UvUPPYK0
-     */
-
-    /*
-     * What about private networks? http://en.wikipedia.org/wiki/Private_network
-     * What about loop-back address? 127.0.0.1
      */
     protected function validate_valid_ipv4($field, $input, $param = null)
     {
@@ -1619,8 +1577,6 @@ class GUMP
 
     /**
      * Determine if the provided value is a valid IPv6 address.
-     *
-     * Usage: '<index>' => 'valid_ipv6'
      *
      * @param string $field
      * @param array  $input
@@ -1646,8 +1602,7 @@ class GUMP
     /**
      * Determine if the input is a valid credit card number.
      *
-     * See: http://stackoverflow.com/questions/174730/what-is-the-best-way-to-validate-a-credit-card-in-php
-     * Usage: '<index>' => 'valid_cc'
+     * @see http://stackoverflow.com/questions/174730/what-is-the-best-way-to-validate-a-credit-card-in-php
      *
      * @param string $field
      * @param array  $input
@@ -1716,8 +1671,7 @@ class GUMP
     /**
      * Determine if the input is a valid human name [Credits to http://github.com/ben-s].
      *
-     * See: https://github.com/Wixel/GUMP/issues/5
-     * Usage: '<index>' => 'valid_name'
+     * @see https://github.com/Wixel/GUMP/issues/5
      *
      * @param string $field
      * @param array  $input
@@ -1742,8 +1696,6 @@ class GUMP
 
     /**
      * Determine if the provided input is likely to be a street address using weak detection.
-     *
-     * Usage: '<index>' => 'street_address'
      *
      * @param string $field
      * @param array  $input
@@ -1775,8 +1727,6 @@ class GUMP
 
     /**
      * Determine if the provided value is a valid IBAN.
-     *
-     * Usage: '<index>' => 'iban'
      *
      * @param string $field
      * @param array  $input
@@ -1824,8 +1774,6 @@ class GUMP
      * Determine if the provided input is a valid date (ISO 8601)
      * or specify a custom format.
      *
-     * Usage: '<index>' => 'date'
-     *
      * @param string $field
      * @param string $input date ('Y-m-d') or datetime ('Y-m-d H:i:s')
      * @param string $param Custom date format
@@ -1871,8 +1819,6 @@ class GUMP
     /**
      * Determine if the provided input meets age requirement (ISO 8601).
      *
-     * Usage: '<index>' => 'min_age,13'
-     *
      * @param string $field
      * @param string $input date ('Y-m-d') or datetime ('Y-m-d H:i:s')
      * @param string $param int
@@ -1906,7 +1852,7 @@ class GUMP
     /**
      * Determine if the provided numeric value is lower or equal to a specific value.
      *
-     * Usage: '<index>' => 'max_numeric,50'
+     * @example_parameter 50
      *
      * @param string $field
      * @param array  $input
@@ -1935,11 +1881,12 @@ class GUMP
     /**
      * Determine if the provided numeric value is higher or equal to a specific value.
      *
-     * Usage: '<index>' => 'min_numeric,1'
+     * @example_parameter 1
      *
      * @param string $field
      * @param array  $input
      * @param null   $param
+     *
      * @return mixed
      */
     protected function validate_min_numeric($field, $input, $param = null)
@@ -1963,7 +1910,7 @@ class GUMP
     /**
      * Determine if the provided value starts with param.
      *
-     * Usage: '<index>' => 'starts,Z'
+     * @example_parameter Z
      *
      * @param string $field
      * @param array  $input
@@ -1987,9 +1934,7 @@ class GUMP
     }
 
     /**
-      * Checks if a file was uploaded.
-      *
-      * Usage: '<index>' => 'required_file'
+      * Checks if a file was successfully uploaded.
       *
       * @param  string $field
       * @param  array $input
@@ -2018,7 +1963,7 @@ class GUMP
      * Check the uploaded file for extension for now
      * checks only the ext should add mime type check.
      *
-     * Usage: '<index>' => 'extension,png;jpg;gif
+     * @example_parameter png;jpg;gif
      *
      * @param string $field
      * @param array  $input
@@ -2054,8 +1999,7 @@ class GUMP
     /**
      * Determine if the provided field value equals current field value.
      *
-     *
-     * Usage: '<index>' => 'equalsfield,Z'
+     * @example_parameter other_field_name
      *
      * @param string $field
      * @param string $input
@@ -2084,8 +2028,6 @@ class GUMP
     /**
      * Determine if the provided field value is a valid GUID (v4)
      *
-     * Usage: '<index>' => 'guidv4'
-     *
      * @param string $field
      * @param string $input
      * @param string $param
@@ -2112,22 +2054,16 @@ class GUMP
     /**
      * Determine if the provided value is a valid phone number.
      *
-     * Usage: '<index>' => 'phone_number'
+     * @example_value 5555425555
+     * @example_value 555-555-5555
+     * @example_value 1(519) 555-4444
+     * @example_value 1-555-555-5555
+     * @example_value 1-(555)-555-5555
      *
      * @param string $field
      * @param array  $input
      *
      * @return mixed
-     *
-     * Examples:
-     *
-     *  555-555-5555: valid
-     *  5555425555: valid
-     *  555 555 5555: valid
-     *  1(519) 555-4444: valid
-     *  1 (519) 555-4422: valid
-     *  1-555-555-5555: valid
-     *  1-(555)-555-5555: valid
      */
     protected function validate_phone_number($field, $input, $param = null)
     {
@@ -2150,7 +2086,8 @@ class GUMP
     /**
      * Custom regex validator.
      *
-     * Usage: '<index>' => 'regex,/your-regex-expression/'
+     * @example_parameter /test-[0-9]{3}/
+     * @example_value test-123
      *
      * @param string $field
      * @param array  $input
@@ -2177,7 +2114,7 @@ class GUMP
     /**
      * JSON validator.
      *
-     * Usage: '<index>' => 'valid_json_string'
+     * @example_value {"test": true}
      *
      * @param string $field
      * @param array  $input
@@ -2203,7 +2140,7 @@ class GUMP
     /**
      * Check if an input is an array and if the size is more or equal to a specific value.
      *
-     * Usage: '<index>' => 'valid_array_size_greater,1'
+     * @example_parameter 1
      *
      * @param string $field
      * @param array  $input
@@ -2229,7 +2166,7 @@ class GUMP
     /**
      * Check if an input is an array and if the size is less or equal to a specific value.
      *
-     * Usage: '<index>' => 'valid_array_size_lesser,1'
+     * @example_parameter 1
      *
      * @param string $field
      * @param array $input
@@ -2255,7 +2192,7 @@ class GUMP
     /**
      * Check if an input is an array and if the size is equal to a specific value.
      *
-     * Usage: '<index>' => 'valid_array_size_equal,1'
+     * @example_parameter 1
      *
      * @param string $field
      * @param array $input
@@ -2281,7 +2218,6 @@ class GUMP
     /**
      * Determine if the provided value is a valid twitter handle.
      *
-     * @access protected
      * @param  string $field
      * @param  array $input
      * @return mixed
