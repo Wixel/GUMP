@@ -12,5 +12,5 @@ script:
   - php vendor/bin/phpunit -c phpunit.xml.dist
 
 after_script:
-  - travis_retry php ci/check_docs.php
+  - php ci/check_docs.php
   - travis_retry php vendor/bin/php-coveralls -v
