@@ -2220,6 +2220,8 @@ class GUMP
     /**
      * Determine if the provided value is a valid twitter handle.
      *
+     * @example_parameter dhh
+     *
      * @param  string $field
      * @param  array $input
      * @return mixed
