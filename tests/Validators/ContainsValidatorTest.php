@@ -15,7 +15,7 @@ class ContainsValidatorTest extends BaseTestCase
 {
     public function testSuccess()
     {
-        $this->assertTrue($this->validate('contains,one two', 'one'));
+        $this->assertTrue($this->validate("contains,'one' 'two' 'space separated'", 'space separated'));
     }
 
     public function testFailure()
