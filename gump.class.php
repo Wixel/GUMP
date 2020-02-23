@@ -948,7 +948,7 @@ class GUMP
     // ** ------------------------- Validators ------------------------------------ ** //
 
     /**
-     * Check if the specified key is present and not empty.
+     * Ensures the specified key value exists and is not empty.
      *
      * @param string $field
      * @param array  $input
@@ -1081,7 +1081,7 @@ class GUMP
     }
 
     /**
-     * Determine if the provided email is valid.
+     * Determine if the provided email has valid format.
      *
      * @param string $field
      * @param array  $input
@@ -1405,7 +1405,7 @@ class GUMP
     }
 
     /**
-     * Determine if the provided value is a PHP accepted boolean.
+     * Determine if the provided value is a PHP accepted boolean. Also returns true for strings: yes/no, on/off, 1/0, true/false.
      *
      * @param string $field
      * @param array  $input
@@ -1419,7 +1419,7 @@ class GUMP
             return;
         }
 
-        $booleans = array('1','true',true,1,'0','false',false,0,'yes','no','on','off');
+        $booleans = array('1',1, '0',0, 'true',true, 'false',false, 'yes','no', 'on','off');
         if (in_array($input[$field], $booleans, true )) {
             return;
         }
@@ -1669,7 +1669,7 @@ class GUMP
     }
 
     /**
-     * Determine if the input is a valid human name [Credits to http://github.com/ben-s].
+     * Determine if the input is a valid human name.
      *
      * @see https://github.com/Wixel/GUMP/issues/5
      *
@@ -1771,8 +1771,9 @@ class GUMP
     }
 
     /**
-     * Determine if the provided input is a valid date (ISO 8601)
-     * or specify a custom format.
+     * Determine if the provided input is a valid date (ISO 8601) or specify a custom format (optional).
+     *
+     * @example_parameter d/m/Y
      *
      * @param string $field
      * @param string $input date ('Y-m-d') or datetime ('Y-m-d H:i:s')
@@ -1819,8 +1820,10 @@ class GUMP
     /**
      * Determine if the provided input meets age requirement (ISO 8601).
      *
+     * @example_parameter 18
+     *
      * @param string $field
-     * @param string $input date ('Y-m-d') or datetime ('Y-m-d H:i:s')
+     * @param string $input
      * @param string $param int
      *
      * @return mixed
@@ -1934,7 +1937,7 @@ class GUMP
     }
 
     /**
-      * Checks if a file was successfully uploaded.
+      * Determine if the file was successfully uploaded.
       *
       * @param  string $field
       * @param  array $input
@@ -1960,8 +1963,7 @@ class GUMP
     }
 
     /**
-     * Check the uploaded file for extension for now
-     * checks only the ext should add mime type check.
+     * Check the uploaded file for extension. Doesn't check mime-type yet.
      *
      * @example_parameter png;jpg;gif
      *
@@ -2112,7 +2114,7 @@ class GUMP
     }
 
     /**
-     * JSON validator.
+     * Determine if the provided value is a valid JSON string.
      *
      * @example_value {"test": true}
      *

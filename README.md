@@ -166,39 +166,54 @@ You can use this array along with your language helpers to determine what error 
 
 Available Validators
 --------------------
-* required `Ensures the specified key value exists and is not empty`
-* valid_email `Checks for a valid email address`
-* max_len,n `Checks key value length, makes sure it's not longer than the specified length. n = length parameter.`
-* min_len,n `Checks key value length, makes sure it's not shorter than the specified length. n = length parameter.`
-* exact_len,n `Ensures that the key value length precisely matches the specified length. n = length parameter.`
-* alpha `Ensure only alpha characters are present in the key value (a-z, A-Z)`
-* alpha_numeric `Ensure only alpha-numeric characters are present in the key value (a-z, A-Z, 0-9)`
-* alpha_dash `Ensure only alpha characters + dashes and underscores are present in the key value (a-z, A-Z, 0-9, _-)`
-* alpha_space `Ensure only alpha characters + spaces are present in the key value (a-z, A-Z, \s)`
-* alpha_numeric_space `Ensure only alpha-numeric characters + spaces are present in the key value (a-z, A-Z, 0-9, \s)`
-* numeric `Ensure only numeric key values`
-* integer `Ensure only integer key values`
-* boolean `Checks for PHP accepted boolean values, returns TRUE for "1", "true", "on" and "yes"`
-* float `Checks for float values`
-* valid_url `Check for valid URL or subdomain`
-* url_exists `Check to see if the url exists and is accessible`
-* valid_ip `Check for valid generic IP address`
-* valid_ipv4 `Check for valid IPv4 address`
-* valid_ipv6 `Check for valid IPv6 address`
-* valid_cc `Check for a valid credit card number (Uses the MOD10 Checksum Algorithm)`
-* valid_name `Check for a valid format human name`
-* contains,n `Verify that a value is contained within the pre-defined value set`
-* contains_list,n `Verify that a value is contained within the pre-defined value set. The list of valid values must be provided in semicolon-separated list format (like so: value1;value2;value3;..;valuen). If a validation error occurs, the list of valid values is not revelead (this means, the error will just say the input is invalid, but it won't reveal the valid set to the user.`
-* doesnt_contain_list,n `Verify that a value is not contained within the pre-defined value set. Semicolon (;) separated, list not outputted. See the rule above for more info.`
-* street_address `Checks that the provided string is a likely street address. 1 number, 1 or more space, 1 or more letters`
-* iban `Check for a valid IBAN` (requires php*.*-bcmath module)
-* min_numeric `Determine if the provided numeric value is higher or equal to a specific value`
-* max_numeric `Determine if the provided numeric value is lower or equal to a specific value`
-* date `Determine if the provided input is a valid date (ISO 8601)`
-* starts `Ensures the value starts with a certain character / set of character`
-* phone_number `Validate phone numbers that match the following examples: 555-555-5555 , 5555425555, 555 555 5555, 1(519) 555-4444, 1 (519) 555-4422, 1-555-555-5555`
-* regex `You can pass a custom regex using the following format: 'regex,/your-regex/'`
-* valid_json_string `validate string to check if it's a valid json format`
+<details><summary>Show all validators</summary><div><br>
+
+| Rule                                          | Description                                                                                                                 |
+|-----------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| **required**                                  | Ensures the specified key value exists and is not empty.                                                                    |
+| **contains**,'value1' 'space separated value' | Verify that a value is contained within the pre-defined value set.                                                          |
+| **contains_list**,value1;value2               | Verify that a value is contained within the pre-defined value set. Error message will NOT show the list of possible values. |
+| **doesnt_contain_list**,value;value;value     | Verify that a value is contained within the pre-defined value set. Error message will NOT show the list of possible values. |
+| **valid_email**                               | Determine if the provided email has valid format.                                                                           |
+| **max_len**,240                               | Determine if the provided value length is less or equal to a specific value.                                                |
+| **min_len**,4                                 | Determine if the provided value length is more or equal to a specific value.                                                |
+| **exact_len**,5                               | Determine if the provided value length matches a specific value.                                                            |
+| **alpha**                                     | Determine if the provided value contains only alpha characters.                                                             |
+| **alpha_numeric**                             | Determine if the provided value contains only alpha-numeric characters.                                                     |
+| **alpha_dash**                                | Determine if the provided value contains only alpha characters with dashed and underscores.                                 |
+| **alpha_numeric_dash**                        | Determine if the provided value contains only alpha numeric characters with dashed and underscores.                         |
+| **alpha_numeric_space**                       | Determine if the provided value contains only alpha numeric characters with spaces.                                         |
+| **alpha_space**                               | Determine if the provided value contains only alpha characters with spaces.                                                 |
+| **numeric**                                   | Determine if the provided value is a valid number or numeric string.                                                        |
+| **integer**                                   | Determine if the provided value is a valid integer.                                                                         |
+| **boolean**                                   | Determine if the provided value is a PHP accepted boolean. Also returns true for strings: yes/no, on/off, 1/0, true/false.  |
+| **float**                                     | Determine if the provided value is a valid float.                                                                           |
+| **valid_url**                                 | Determine if the provided value is a valid URL.                                                                             |
+| **url_exists**                                | Determine if a URL exists & is accessible.                                                                                  |
+| **valid_ip**                                  | Determine if the provided value is a valid IP address.                                                                      |
+| **valid_ipv4**                                | Determine if the provided value is a valid IPv4 address.                                                                    |
+| **valid_ipv6**                                | Determine if the provided value is a valid IPv6 address.                                                                    |
+| **valid_cc**                                  | Determine if the input is a valid credit card number.                                                                       |
+| **valid_name**                                | Determine if the input is a valid human name.                                                                               |
+| **street_address**                            | Determine if the provided input is likely to be a street address using weak detection.                                      |
+| **iban**                                      | Determine if the provided value is a valid IBAN.                                                                            |
+| **date**,d/m/Y                                | Determine if the provided input is a valid date (ISO 8601) or specify a custom format (optional).                           |
+| **min_age**,18                                | Determine if the provided input meets age requirement (ISO 8601).                                                           |
+| **max_numeric**,50                            | Determine if the provided numeric value is lower or equal to a specific value.                                              |
+| **min_numeric**,1                             | Determine if the provided numeric value is higher or equal to a specific value.                                             |
+| **starts**,Z                                  | Determine if the provided value starts with param.                                                                          |
+| **required_file**                             | Determine if the file was successfully uploaded.                                                                            |
+| **extension**,png;jpg;gif                     | Check the uploaded file for extension. Doesn't check mime-type yet.                                                         |
+| **equalsfield**,other_field_name              | Determine if the provided field value equals current field value.                                                           |
+| **guidv4**                                    | Determine if the provided field value is a valid GUID (v4)                                                                  |
+| **phone_number**                              | Determine if the provided value is a valid phone number.                                                                    |
+| **regex**,/test-[0-9]{3}/                     | Custom regex validator.                                                                                                     |
+| **valid_json_string**                         | Determine if the provided value is a valid JSON string.                                                                     |
+| **valid_array_size_greater**,1                | Check if an input is an array and if the size is more or equal to a specific value.                                         |
+| **valid_array_size_lesser**,1                 | Check if an input is an array and if the size is less or equal to a specific value.                                         |
+| **valid_array_size_equal**,1                  | Check if an input is an array and if the size is equal to a specific value.                                                 |
+| **valid_twitter**                             | Determine if the provided value is a valid twitter handle.                                                                  |
+</div></details>
 
 Available Filters
 -----------------
@@ -326,20 +341,7 @@ Running the examples:
 
 The output will depend on the input data.
 
-# Contributors
-
-* Colleen Emryss http://skitter.tv
-* Mark Slingsby http://www.rsaweb.co.za
-* Rob Crowe http://vivalacrowe.com
-* Roy de Kleijn http://roydekleijn.com
-* Christian Klisch http://www.christian-klisch.de/
-* Inge Brattaas http://res.no/
-* Adam Curtis http://alc.im
-* Sean Hickey
-* Dennis Thompson http://atomicpages.net
-
 # TODO
-
 * A currency validator
 * A country validator
 * Location co-ordinates validator
@@ -357,3 +359,7 @@ The output will depend on the input data.
 * Add an 'is empty' validator check
 * A secure password validator
 * alpha_dash_number validator
+
+
+# Contributors
+https://github.com/Wixel/GUMP/graphs/contributors
