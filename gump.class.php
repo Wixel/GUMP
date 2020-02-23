@@ -2218,7 +2218,7 @@ class GUMP
     }
 
     /**
-     * Determine if the provided value is a valid twitter handle.
+     * Determine if the provided value is a valid Twitter account.
      *
      * @example_parameter dhh
      *
