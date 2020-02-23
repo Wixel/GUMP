@@ -317,7 +317,7 @@ if ($validated === true) {
 }
 ```
 
-# validating file fields
+# Validating file fields
 
 ```php
 $is_valid = GUMP::is_valid(array_merge($_POST,$_FILES), [
@@ -331,35 +331,3 @@ if ($is_valid === true) {
     print_r($is_valid);
 }
 ```
-
-Running the examples:
-------------------
-
-1. Open up your terminal
-2. cd [GUMP DIRECTORY/examples]
-3. php [file].php
-
-The output will depend on the input data.
-
-# TODO
-* A currency validator
-* A country validator
-* Location co-ordinates validator
-* HTML validator (HTMLPurifier or similar)
-* Language validation ... determine if a piece of text is a specified language
-* Validate a spam domain or IP.
-* Validate a spam email address
-* Validate spam text with askimet or something similar
-* W3C validation filter?
-* A filter that integrates with an HTML tidy service?: http://infohound.net/tidy/
-* Add a twitter & facebook profile url validator: http://stackoverflow.com/questions/2845243/check-if-twitter-username-exists
-* Add more logical examples - log in form, profile update form, blog post form, etc etc.
-* Add validators to allow checking the PHP $_FILES array.
-* Allow a validator that can check for existing files on the host machine
-* Add an 'is empty' validator check
-* A secure password validator
-* alpha_dash_number validator
-
-
-# Contributors
-https://github.com/Wixel/GUMP/graphs/contributors
