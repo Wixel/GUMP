@@ -201,4 +201,20 @@ class ValidateTest extends BaseTestCase
 
         $this->assertTrue(count($result) === 1);
     }
+
+    public function testSimple()
+    {
+        $this->helpersMock->shouldReceive('functionExists')
+            ->once()
+            ->with('mb_strlen')
+            ->andReturnTrue();
+
+        $result = $this->gump->validate([
+            'some_field' => '123'
+        ], [
+            'some_field' => 'date,Y-m-d',
+        ]);
+
+        $this->assertTrue(count($result) === 1);
+    }
 }
