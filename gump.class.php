@@ -409,8 +409,17 @@ class GUMP
 
                     $result = $this->call_rule($parsed_rule['rule'], $parsed_rule['param'], $field, $input);
 
-                    if (is_array($result) || $result === false) {
-                        if ($this->field_doesnt_have_errors($result['field'], $this->errors)) {
+                    if (is_array($result)) {
+                        if ($this->field_doesnt_have_errors($field, $this->errors)) {
+                            $this->errors[] = array(
+                                'field' => $field,
+                                'value' => $input[$field],
+                                'rule' => 'validate_'.$parsed_rule['rule'],
+                                'param' => $parsed_rule['param'],
+                            );
+                        }
+                    } elseif ($result === false) {
+                        if ($this->field_doesnt_have_errors($field, $this->errors)) {
                             $this->errors[] = array(
                                 'field' => $field,
                                 'value' => $input[$field],

@@ -111,17 +111,17 @@ class GetReadableErrorsTest extends BaseTestCase
         ], $this->gump->get_readable_errors());
     }
 
-//    public function testWhenGumpInstanceIsCastedToStringItReturnsReadableErrorsInStringFormat()
-//    {
-//        $result = $this->gump->validate([
-//            'test_number' => 'text'
-//        ], [
-//            'test_number' => 'numeric'
-//        ]);
-//
-//        $this->assertEquals(
-//            '<span class="gump-error-message">The <span class="gump-field">Test Number</span> field must be a number</span>',
-//            (string)$this->gump
-//        );
-//    }
+    public function testWhenGumpInstanceIsCastedToStringItReturnsReadableErrorsInStringFormat()
+    {
+        $result = $this->gump->validate([
+            'test_number' => 'text'
+        ], [
+            'test_number' => 'numeric'
+        ]);
+
+        $this->assertEquals(
+            '<span class="gump-error-message">The <span class="gump-field">Test Number</span> field must be a number</span>',
+            (string)$this->gump
+        );
+    }
 }
