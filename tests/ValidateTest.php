@@ -174,6 +174,22 @@ class ValidateTest extends BaseTestCase
         ]], $result);
     }
 
+    public function testIntegratedValidatorsReturnRightErrorStructure()
+    {
+        $result = $this->gump->validate([
+            'test' => '123'
+        ], [
+            'test' => 'date,Y-m-md'
+        ]);
+
+        $this->assertEquals([[
+            'field' => 'test',
+            'value' => '123',
+            'rule' => 'validate_date',
+            'param' => 'Y-m-md'
+        ]], $result);
+    }
+
     public function testRequiredAndRequiredFile()
     {
         $result = $this->gump->validate([
@@ -197,22 +213,6 @@ class ValidateTest extends BaseTestCase
             'some_field' => '123'
         ], [
             'some_field' => 'alpha|max_len,2',
-        ]);
-
-        $this->assertTrue(count($result) === 1);
-    }
-
-    public function testSimple()
-    {
-        $this->helpersMock->shouldReceive('functionExists')
-            ->once()
-            ->with('mb_strlen')
-            ->andReturnTrue();
-
-        $result = $this->gump->validate([
-            'some_field' => '123'
-        ], [
-            'some_field' => 'date,Y-m-d',
         ]);
 
         $this->assertTrue(count($result) === 1);
