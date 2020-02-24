@@ -389,64 +389,34 @@ class GUMP
         $this->errors = array();
 
         foreach ($ruleset as $field => $rules) {
-
             $rules = explode($rules_delimiter, $rules);
 
-            $look_for = array('required_file', 'required');
+            $requireRules = array('required', 'required_file');
+            $requireRuleFound = array_values(array_intersect($requireRules, $rules));
 
-            if (count(array_intersect($look_for, $rules)) > 0 || (isset($input[$field]))) {
+            if (count($requireRuleFound) > 0 && !isset($input[$field])) {
+                $method = 'validate_'.$requireRuleFound[0];
+                $result = $this->$method($field, $input);
 
-                if (isset($input[$field])) {
-                    $input_array = array($input[$field]);
-                } else {
-                    $input_array = array('');
+                if (is_array($result)) {
+                    $this->errors[] = $result;
                 }
+            }
 
-                foreach ($input_array as $value) {
+            if (isset($input[$field])) {
+                foreach ($rules as $rule) {
+                    $parsed_rule = $this->parse_rule($rule);
 
-                    $input[$field] = $value;
+                    $result = $this->call_rule($parsed_rule['rule'], $parsed_rule['param'], $field, $input);
 
-                    foreach ($rules as $rule) {
-                        $method = null;
-                        $param = null;
-
-                        // Check if we have rule parameters
-                        if (strstr($rule, $parameters_delimiter) !== false) {
-                            $rule   = explode($parameters_delimiter, $rule);
-                            $method = 'validate_'.$rule[0];
-                            $param  = $rule[1];
-                            $rule   = $rule[0];
-                        } else {
-                            $method = 'validate_'.$rule;
-                        }
-
-                        if (is_callable(array($this, $method))) {
-                            $result = $this->$method(
-                                $field, $input, $param
+                    if (is_array($result) || $result === false) {
+                        if ($this->field_doesnt_have_errors($result['field'], $this->errors)) {
+                            $this->errors[] = array(
+                                'field' => $field,
+                                'value' => $input[$field],
+                                'rule' => $parsed_rule['rule'],
+                                'param' => $parsed_rule['param'],
                             );
-
-                            if (is_array($result)) {
-                                if (array_search($result['field'], array_column($this->errors, 'field')) === false) {
-                                    $this->errors[] = $result;
-                                }
-                            }
-
-                        } elseif(isset(self::$validation_methods[$rule])) {
-                            $result = call_user_func(self::$validation_methods[$rule], $field, $input, $param);
-
-                            if($result === false) {
-                                if (array_search($field, array_column($this->errors, 'field')) === false) {
-                                    $this->errors[] = array(
-                                        'field' => $field,
-                                        'value' => $input[$field],
-                                        'rule' => $rule,
-                                        'param' => $param,
-                                    );
-                                }
-                            }
-
-                        } else {
-                            throw new Exception("Validator method '$method' does not exist.");
                         }
                     }
                 }
@@ -454,6 +424,45 @@ class GUMP
         }
 
         return (count($this->errors) > 0) ? $this->errors : true;
+    }
+
+    private function field_doesnt_have_errors($field, $errors)
+    {
+        return array_search($field, array_column($errors, 'field')) === false;
+    }
+
+    private function parse_rule($rule)
+    {
+        $result = [];
+        $result['rule'] = $rule;
+        $result['param'] = null;
+
+        if (strstr($rule, ',') !== false) {
+            list($rule, $param) = explode(',', $rule);
+
+            $result['rule'] = $rule;
+            $result['param'] = $param;
+        }
+
+        return $result;
+    }
+
+    private function rule_to_method($rule)
+    {
+        return sprintf('validate_%s', $rule);
+    }
+
+    private function call_rule($rule, $param = null, $field, $input)
+    {
+        $method = $this->rule_to_method($rule);
+
+        if (is_callable(array($this, $method))) {
+            return $this->$method($field, $input, $param);
+        } elseif (isset(self::$validation_methods[$rule])) {
+            return call_user_func(self::$validation_methods[$rule], $field, $input, $param);
+        }
+
+        throw new Exception("Validator method '$method' does not exist.");
     }
 
     /**
@@ -1945,17 +1954,17 @@ class GUMP
       */
     protected function validate_required_file($field, $input, $param = null)
     {
-        if (!isset($input[$field])) {
-            return;
-        }
+//        if (!isset($input[$field])) {
+//            return;
+//        }
 
-        if (is_array($input[$field]) && $input[$field]['error'] === 0) {
+        if (isset($input[$field]) && is_array($input[$field]) && $input[$field]['error'] === 0) {
             return;
         }
 
         return array(
             'field' => $field,
-            'value' => $input[$field],
+            'value' => null,
             'rule' => __FUNCTION__,
             'param' => $param,
         );
