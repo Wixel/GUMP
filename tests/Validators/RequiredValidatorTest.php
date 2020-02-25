@@ -57,4 +57,34 @@ class RequiredValidatorTest extends BaseTestCase
 
         $this->assertNotTrue($result);
     }
+
+    public function testRequiredValidatorsReturnRightErrorStructureWhenFieldIsNotPresent()
+    {
+        $result = $this->gump->validate([], [
+            'test' => 'required'
+        ]);
+
+        $this->assertEquals([[
+            'field' => 'test',
+            'value' => null,
+            'rule' => 'validate_required',
+            'param' => null
+        ]], $result);
+    }
+
+    public function testRequiredValidatorsReturnRightErrorStructureWhenFieldIsPresentButItsEmpty()
+    {
+        $result = $this->gump->validate([
+            'test' => ''
+        ], [
+            'test' => 'required'
+        ]);
+
+        $this->assertEquals([[
+            'field' => 'test',
+            'value' => '',
+            'rule' => 'validate_required',
+            'param' => null
+        ]], $result);
+    }
 }
