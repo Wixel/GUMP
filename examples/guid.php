@@ -2,6 +2,7 @@
 <?php
 
 require "../gump.class.php";
+require "../src/Helpers.php";
 
 $data = array(
   'guid' => "A98C5A1E-A742-4808-96FA-6F409E799937"

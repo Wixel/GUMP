@@ -6,6 +6,7 @@ error_reporting(-1);
 ini_set('display_errors', 1);
 
 require "../gump.class.php";
+require "../src/Helpers.php";
 
 $data = array(
 	'street' => '6 Avondans Road'

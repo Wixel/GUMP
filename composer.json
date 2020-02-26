@@ -23,12 +23,15 @@
         "php-coveralls/php-coveralls": "^2.2",
         "kamermans/docblock-reflection": "^1.0",
         "maddhatter/markdown-table": "^1.0",
-        "phpstan/phpstan": "^0.12.11"
+        "squizlabs/php_codesniffer": "^3.5"
     },
     "autoload-dev": {
         "psr-4": { "Tests\\": "tests/" }
     },
     "scripts": {
         "test": "php ./vendor/bin/phpunit"
+    },
+    "require": {
+        "phpstan/phpstan": "^0.12.11"
     }
 }

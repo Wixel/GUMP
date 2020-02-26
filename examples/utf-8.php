@@ -6,6 +6,7 @@ error_reporting(-1);
 ini_set('display_errors', 1);
 
 require "../gump.class.php";
+require "../src/Helpers.php";
 
 $data = array(
 	'one' => 'Freiheit, Mobilität und Unabhängigkeit lebt. ö, Ä, é, or ß',

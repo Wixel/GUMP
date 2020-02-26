@@ -2,6 +2,7 @@
 <?php
 
 require "../gump.class.php";
+require "../src/Helpers.php";
 
 // Add the custom validator
 GUMP::add_validator("is_object", function($field, $input, $param = NULL) {
