@@ -2,6 +2,7 @@
 <?php
 
 require "../gump.class.php";
+require "../src/Helpers.php";
 
 $_FILES = array(
 	'attachments' => array(

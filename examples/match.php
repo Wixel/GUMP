@@ -2,6 +2,7 @@
 <?php
 
 require "../gump.class.php";
+require "../src/Helpers.php";
 
 $data = array(
   'username'         => "myusername",

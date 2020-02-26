@@ -398,14 +398,10 @@ class GUMP
                 $this->errors[] = $this->generate_error_array($field, null, $this->rule_to_method($require_rule_found[0]));
             }
 
-//            if (isset($input[$field]) && count($require_rule_found) > 0 && $this->is_empty($input[$field])) {
-//                continue;
-//            }
-
             if (isset($input[$field])) {
-                foreach ($rules as $rule) {
-                    if ($rule !== 'required' && $this->is_empty($input[$field])) continue;
+                if (count($require_rule_found) === 0 && $this->is_empty($input[$field])) continue;
 
+                foreach ($rules as $rule) {
                     $parsed_rule = $this->parse_rule($rule);
 
                     $result = $this->call_rule($parsed_rule['rule'], $field, $input, $parsed_rule['param']);
@@ -453,6 +449,7 @@ class GUMP
         if (is_callable(array($this, $method))) {
             $result = $this->$method($field, $input, $rule_param);
 
+            // is_array for backwards compatibility (classes that extended GUMP)
             return (is_array($result) || $result === false)
                 ? $this->generate_error_array($field, $input[$field], $method, $rule_param)
                 : true;
