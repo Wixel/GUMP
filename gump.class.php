@@ -404,6 +404,8 @@ class GUMP
 
             if (isset($input[$field])) {
                 foreach ($rules as $rule) {
+                    if ($rule !== 'required' && $this->is_empty($input[$field])) continue;
+
                     $parsed_rule = $this->parse_rule($rule);
 
                     $result = $this->call_rule($parsed_rule['rule'], $field, $input, $parsed_rule['param']);
