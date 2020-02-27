@@ -12,7 +12,7 @@ use Exception;
  */
 class FilterTest extends BaseTestCase
 {
-    public function testGumpFilterIsSuccessfullyRun()
+    public function testGumpFilterIsSuccessfullyApplied()
     {
         $result = $this->gump->filter([
             'test' => 'text'
@@ -25,7 +25,24 @@ class FilterTest extends BaseTestCase
         ], $result);
     }
 
-    public function testPHPNativeFilterIsSuccessfullyRun()
+    public function testMoreThanOneFiltersAreSuccessfullyApplied()
+    {
+        GUMP::add_filter("custom", function($value, $params = NULL) {
+            return strtolower($value);
+        });
+
+        $result = $this->gump->filter([
+            'test' => ' text '
+        ], [
+            'test' => 'trim|upper_case|custom'
+        ]);
+
+        $this->assertEquals([
+            'test' => 'text'
+        ], $result);
+    }
+
+    public function testPHPNativeFilterIsSuccessfullyApplied()
     {
         $result = $this->gump->filter([
             'test' => 'TEXT'
@@ -38,7 +55,7 @@ class FilterTest extends BaseTestCase
         ], $result);
     }
 
-    public function testCustomFilterIsSuccessfullyRun()
+    public function testCustomFilterIsSuccessfullyApplied()
     {
         GUMP::add_filter("custom", function($value, $params = NULL) {
             return strtoupper($value);
@@ -54,6 +71,25 @@ class FilterTest extends BaseTestCase
             'test' => 'TEXT'
         ], $result);
     }
+
+    public function testCustomFilterWithParameters()
+    {
+        $this->markTestIncomplete('TODO');
+        GUMP::add_filter("custom", function($value, $params = NULL) {
+            return strtolower($value);
+        });
+
+        $result = $this->gump->filter([
+            'test' => ' text '
+        ], [
+            'test' => 'trim|custom,hello,2'
+        ]);
+
+        $this->assertEquals([
+            'test' => 'text'
+        ], $result);
+    }
+
 
     public function testNonexistentFilterThrowsException()
     {
