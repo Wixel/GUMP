@@ -164,8 +164,8 @@ You can use this array along with your language helpers to determine what error 
 `filter()` returns the exact array structure that was parsed as the `$input` parameter, the only difference would be the filtered data.
 
 
-Available Validators
---------------------
+:star: Available Validators
+---------------------------
 <details><summary>Show all validators</summary><div><br>
 
 | Rule                                          | Description                                                                                                                 |
@@ -215,8 +215,8 @@ Available Validators
 | **valid_twitter**                             | Determine if the provided value is a valid Twitter account.                                                                 |
 </div></details>
 
-Available Filters
------------------
+:star: Available Filters
+------------------------
 Filters can be any PHP function that returns a string. You don't need to create your own if a PHP function exists that does what you want the filter to do.
 
 * sanitize_string `Remove script tags and encode HTML entities, similar to GUMP::xss_clean();`
