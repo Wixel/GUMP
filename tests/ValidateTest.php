@@ -94,6 +94,57 @@ class ValidateTest extends BaseTestCase
         $this->assertTrue(count($result) === 1);
     }
 
+    public function testIntegratedValidatorWithCustomValidatorBothFailingOnDifferentFields()
+    {
+        GUMP::add_validator("custom", function($field, $input, $param = NULL) {
+            return $input[$field] === 'ok';
+        }, 'My custom error');
+
+        $result = $this->gump->validate([
+            'integrated' => 'text',
+            'custom' => 'notOk'
+        ], [
+            'integrated' => 'numeric',
+            'custom' => 'custom'
+        ]);
+
+        $this->assertTrue(count($result) === 2);
+    }
+
+    public function testIntegratedValidatorWithCustomValidatorFailingIntegratedOnDifferentFields()
+    {
+        GUMP::add_validator("custom", function($field, $input, $param = NULL) {
+            return $input[$field] === 'ok';
+        }, 'My custom error');
+
+        $result = $this->gump->validate([
+            'integrated' => 'text',
+            'custom' => 'ok'
+        ], [
+            'integrated' => 'numeric',
+            'custom' => 'custom'
+        ]);
+
+        $this->assertTrue(count($result) === 1);
+    }
+
+    public function testIntegratedValidatorWithCustomValidatorFailingCustomOnDifferentFields()
+    {
+        GUMP::add_validator("custom", function($field, $input, $param = NULL) {
+            return $input[$field] === 'ok';
+        }, 'My custom error');
+
+        $result = $this->gump->validate([
+            'integrated' => '123',
+            'custom' => 'notOk'
+        ], [
+            'integrated' => 'numeric',
+            'custom' => 'custom'
+        ]);
+
+        $this->assertTrue(count($result) === 1);
+    }
+
     public function testValidateThrowsExceptionOnNonexistentValidator()
     {
         $this->expectException(Exception::class);
@@ -190,6 +241,22 @@ class ValidateTest extends BaseTestCase
         ]], $result);
     }
 
+    public function testRequiredValidatorReturnsRightErrorStructure()
+    {
+        $result = $this->gump->validate([
+            'test' => ''
+        ], [
+            'test' => 'required'
+        ]);
+
+        $this->assertEquals($result, [[
+            'field' => 'test',
+            'value' => '',
+            'rule' => 'validate_required',
+            'param' => null
+        ]]);
+    }
+
     public function testRequiredAndRequiredFile()
     {
         $result = $this->gump->validate([
@@ -199,7 +266,17 @@ class ValidateTest extends BaseTestCase
             'file_field' => 'required_file',
         ]);
 
-        $this->assertTrue(count($result) === 2);
+        $this->assertEquals($result, [[
+            'field' => 'some_field',
+            'value' => null,
+            'rule' => 'validate_required',
+            'param' => null
+        ], [
+            'field' => 'file_field',
+            'value' => null,
+            'rule' => 'validate_required_file',
+            'param' => null
+        ]]);
     }
 
     public function testOnlyFirstErrorOfTheSameFieldIsReturnedAsError()
@@ -215,6 +292,11 @@ class ValidateTest extends BaseTestCase
             'some_field' => 'alpha|max_len,2',
         ]);
 
-        $this->assertTrue(count($result) === 1);
+        $this->assertEquals($result, [[
+            'field' => 'some_field',
+            'value' => '123',
+            'rule' => 'validate_alpha',
+            'param' => null
+        ]]);
     }
 }
