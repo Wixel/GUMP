@@ -293,8 +293,6 @@ $validator = new MyClass();
 $validated = $validator->validate($_POST, $rules);
 ```
 
-Please see `examples/custom_validator.php` for further information.
-
 Remember to create a public methods with the correct parameter types and parameter counts.
 
 * For filter methods, prepend the method name with "filter_".
