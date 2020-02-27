@@ -9,7 +9,6 @@
  */
 
 use GUMP\Helpers;
-use GUMP\PureHelpers as pure;
 
 class GUMP
 {
@@ -39,12 +38,12 @@ class GUMP
 
 
     // ** ------------------------- Instance Helper ---------------------------- ** //
+
     /**
      * Function to create and return previously created instance
      *
      * @return GUMP
      */
-
     public static function get_instance()
     {
         if (self::$instance === null) {
@@ -434,7 +433,7 @@ class GUMP
         $result['param'] = null;
 
         if (strstr($rule, ',') !== false) {
-            list($rule, $param) = explode(',', $rule);
+            [$rule, $param] = explode(',', $rule);
 
             $result['rule'] = $rule;
             $result['param'] = $param;
@@ -695,7 +694,6 @@ class GUMP
 
                 if (strstr($filter, $parameters_delimiter) !== false) {
                     $filter = explode($parameters_delimiter, $filter);
-
                     $params = array_slice($filter, 1, count($filter) - 1);
 
                     $filter = $filter[0];
@@ -708,21 +706,26 @@ class GUMP
                 }
 
                 foreach ($input_array as &$value) {
-                    if (is_callable(array($this, 'filter_'.$filter))) {
-                        $method = 'filter_'.$filter;
-                        $value = $this->$method($value, $params);
-                    } elseif (function_exists($filter)) {
-                        $value = $filter($value);
-                    } elseif (isset(self::$filter_methods[$filter])) {
-                        $value = call_user_func(self::$filter_methods[$filter], $value, $params);
-                    } else {
-                        throw new Exception("Filter method '$filter' does not exist.");
-                    }
+                    $value = $this->call_filter($filter, $value, $params);
                 }
             }
         }
 
         return $input;
+    }
+
+    public function call_filter(string $filter, $value, $params)
+    {
+        if (is_callable(array($this, 'filter_'.$filter))) {
+            $method = 'filter_'.$filter;
+            return $this->$method($value, $params);
+        } elseif (function_exists($filter)) {
+            return $filter($value);
+        } elseif (isset(self::$filter_methods[$filter])) {
+            return call_user_func(self::$filter_methods[$filter], $value, $params);
+        }
+
+        throw new Exception("Filter method '$filter' does not exist.");
     }
 
     // ** ------------------------- Filters --------------------------------------- ** //
@@ -1513,7 +1516,8 @@ class GUMP
      * Determine if the provided value is a valid IBAN.
      *
      * @param string $field
-     * @param array  $input
+     * @param array $input
+     * @param null $param
      *
      * @return mixed
      */
