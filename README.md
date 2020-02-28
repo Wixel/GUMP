@@ -246,22 +246,27 @@ Filters can be any PHP function that returns a string. You don't need to create 
 Adding custom validators and filters is made easy by using callback functions.
 
 ```php
-/*
-   Create a custom validation rule named "is_object".
-   The callback receives 3 arguments:
-   The field to validate, the values being validated, and any parameters used in the validation rule.
-   It should return a boolean value indicating whether the value is valid.
-*/
-GUMP::add_validator("is_object", function($field, $input, $param = NULL) {
-    return is_object($input[$field]);
-}, 'Your custom error message here');
+/**
+ * You would call it like 'equals_string,someString'
+ *
+ * @param string  $field Name of the field
+ * @param array   $input Access to the whole input data
+ * @param string  $param Rule parameters (optional)
+ *
+ * @return bool   true or false whether the validation was successful or not
+ */
+GUMP::add_validator("equals_string", function($field, $input, $param = null) {
+    return $input[$field] === $param;
+}, 'Field {field} is not an object');
 
-/*
-   Create a custom filter named "upper".
-   The callback function receives two arguments:
-   The value to filter, and any parameters used in the filter rule. It should returned the filtered value.
-*/
-GUMP::add_filter("upper", function($value, $params = NULL) {
+
+/**
+ * @param string  $value Value
+ * @param string  $param Filter parameters (optional)
+ *
+ * @return mixed  result of filtered value
+ */
+GUMP::add_filter("upper", function($value, $params = null) {
     return strtoupper($value);
 });
 ```
@@ -271,6 +276,12 @@ Alternately, you can simply create your own class that extends the GUMP class.
 ```php
 class MyClass extends GUMP
 {
+    /**
+     * @param string  $value Value
+     * @param string  $param Filter parameters (optional)
+     *
+     * @return mixed  result of filtered value
+     */
     public function filter_myfilter($value, $param = null)
     {
         return strtoupper($value);
@@ -279,7 +290,7 @@ class MyClass extends GUMP
     /**
      * @param string  $field Name of the field
      * @param array   $input Access to the whole input data
-     * @param string  $param Rule parameters
+     * @param string  $param Rule parameters (optional)
      *
      * @return bool   true or false whether the validation was successful or not
      */
