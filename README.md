@@ -202,8 +202,9 @@ Filters can be any PHP function that returns a string. You don't need to create 
 | **basic_tags**         | Filter out all HTML tags except the defined basic tags.                                                             |
 | **whole_number**       | Convert the provided numeric value to a whole number.                                                               |
 | **ms_word_characters** | Convert MS Word special characters to web safe characters. ([“, ”, ‘, ’, –, …] => [", ", ', ', -, ...]) |
-| **lower_case**         | Converts to lowe                                                                                            |
+| **lower_case**         | Converts to lowercase.                                                                                              |
 | **upper_case**         | Converts to uppercase.                                                                                              |
+| **slug**               | Converts value to url-web-slugs.                                                                                    |
 | **trim**               | Remove spaces from the beginning and end of strings. (PHP)                                                          |
 | **base64_encode**      | Base64 encode the input. (PHP)                                                                                      |
 | **base64_decode**      | Base64 decode the input. (PHP)                                                                                      |
