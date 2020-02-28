@@ -32,8 +32,6 @@ if ($is_valid === true) {
 ### Long format example
 
 ```php
-# Note that filters and validators are separate rule sets and method calls.
-
 $gump = new GUMP();
 
 $_POST = $gump->sanitize($_POST); // You don't have to sanitize, but it's safest to do so.
