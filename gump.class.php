@@ -336,7 +336,7 @@ class GUMP
             } else {
                 $value = $input[$field];
                 if (is_array($value)) {
-                    $value = $this->sanitize($value);
+                    $value = $this->sanitize($value, [], $utf8_encode);
                 }
                 if (is_string($value)) {
                     if (strpos($value, "\r") !== false) {
