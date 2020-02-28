@@ -6,16 +6,20 @@ GUMP is a standalone PHP data validation and filtering class that makes validati
 [![Build Status](https://travis-ci.org/Wixel/GUMP.svg?branch=master)](https://travis-ci.org/Wixel/GUMP)
 [![Coverage Status](https://coveralls.io/repos/github/Wixel/GUMP/badge.svg?branch=master)](https://coveralls.io/github/Wixel/GUMP?branch=master)
 
-#### There are 2 ways to install GUMP
-
-##### Install with composer
+#### Install GUMP with composer
 
 ```
 composer require wixel/gump
 ```
 
+### Short format example
 
 ```php
+$data = [
+    'username' => 'username123',
+    'password' => 'password'
+];
+
 $is_valid = GUMP::is_valid($_POST, [
     'username' => 'required|alpha_numeric',
     'password' => 'required|max_len,100|min_len,6'
@@ -25,6 +29,40 @@ if ($is_valid === true) {
     // continue
 } else {
     print_r($is_valid);
+}
+```
+
+### Long format example
+
+```php
+# Note that filters and validators are separate rule sets and method calls. There is a good reason for this.
+
+$gump = new GUMP();
+
+$_POST = $gump->sanitize($_POST); // You don't have to sanitize, but it's safest to do so.
+
+$gump->validation_rules([
+    'username'    => 'required|alpha_numeric|max_len,100|min_len,6',
+    'password'    => 'required|max_len,100|min_len,6',
+    'email'       => 'required|valid_email',
+    'gender'      => 'required|exact_len,1|contains,m f',
+    'credit_card' => 'required|valid_cc'
+]);
+
+$gump->filter_rules([
+    'username' => 'trim|sanitize_string',
+    'password' => 'trim',
+    'email'    => 'trim|sanitize_email',
+    'gender'   => 'trim',
+    'bio'      => 'noise_words'
+]);
+
+$validated_data = $gump->run($_POST);
+
+if ($validated_data === false) {
+    echo $gump->get_readable_errors(true);
+} else {
+    print_r($validated_data); // validation successful
 }
 ```
 
@@ -64,62 +102,6 @@ get_errors_array();
 
 // Override field names with readable ones for errors
 set_field_name($field, $readable_name);
-```
-
-# Example (Long format)
-
-The following example is part of a registration form, the flow should be pretty standard
-
-```php
-# Note that filters and validators are separate rule sets and method calls. There is a good reason for this.
-
-$gump = new GUMP();
-
-$_POST = $gump->sanitize($_POST); // You don't have to sanitize, but it's safest to do so.
-
-$gump->validation_rules([
-    'username'    => 'required|alpha_numeric|max_len,100|min_len,6',
-    'password'    => 'required|max_len,100|min_len,6',
-    'email'       => 'required|valid_email',
-    'gender'      => 'required|exact_len,1|contains,m f',
-    'credit_card' => 'required|valid_cc'
-]);
-
-$gump->filter_rules([
-    'username' => 'trim|sanitize_string',
-    'password' => 'trim',
-    'email'    => 'trim|sanitize_email',
-    'gender'   => 'trim',
-    'bio'      => 'noise_words'
-]);
-
-$validated_data = $gump->run($_POST);
-
-if ($validated_data === false) {
-    echo $gump->get_readable_errors(true);
-} else {
-    print_r($validated_data); // validation successful
-}
-```
-
-# Example (Short format)
-
-The short format is an alternative way to run the validation.
-
-```php
-$data = [
-    'street' => '6 Avondans Road'
-];
-
-$validated = GUMP::is_valid($data, [
-    'street' => 'required|street_address'
-]);
-
-if ($validated === true) {
-    echo "Valid Street Address!";
-} else {
-    print_r($validated);
-}
 ```
 
 
