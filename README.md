@@ -214,7 +214,7 @@ Filters can be any PHP function that returns a string. You don't need to create 
 * upper_case `Converts to uppercase`
 * slug `Creates web safe url slug`
 
-#  Creating your own validators and filters
+###  Creating your own validators and filters
 
 Adding custom validators and filters is made easy by using callback functions.
 
@@ -282,7 +282,7 @@ Remember to create a public methods with the correct parameter types and paramet
 * For filter methods, prepend the method name with "filter_".
 * For validator methods, prepend the method name with "validate_".
 
-# Set Custom Field Names
+### Set Custom Field Names
 
 You can easily override your form field names for improved readability in errors using the `GUMP::set_field_name($field, $readable_name)` method as follows:
 
@@ -306,7 +306,7 @@ if ($validated === true) {
 }
 ```
 
-# Validating file fields
+### Validating file fields
 
 ```php
 $is_valid = GUMP::is_valid(array_merge($_POST,$_FILES), [
