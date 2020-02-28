@@ -139,7 +139,7 @@ You can use this array along with your language helpers to determine what error 
 
 :star: Available Validators
 ---------------------------
-<details><summary>Show all validators</summary><div><br>
+<div id="available_validators">
 
 | Rule                                          | Description                                                                                                                 |
 |-----------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
@@ -186,33 +186,34 @@ You can use this array along with your language helpers to determine what error 
 | **valid_array_size_lesser**,1                 | Check if an input is an array and if the size is less or equal to a specific value.                                         |
 | **valid_array_size_equal**,1                  | Check if an input is an array and if the size is equal to a specific value.                                                 |
 | **valid_twitter**                             | Determine if the provided value is a valid Twitter account.                                                                 |
-</div></details>
+</div>
 
 :star: Available Filters
 ------------------------
 Filters can be any PHP function that returns a string. You don't need to create your own if a PHP function exists that does what you want the filter to do.
 
-* sanitize_string `Remove script tags and encode HTML entities, similar to GUMP::xss_clean();`
-* urlencode `Encode url entities`
-* htmlencode `Encode HTML entities`
-* sanitize_email `Remove illegal characters from email addresses`
-* sanitize_numbers `Remove any non-numeric characters`
-* sanitize_floats `Remove any non-float characters`
-* trim `Remove spaces from the beginning and end of strings`
-* base64_encode `Base64 encode the input`
-* base64_decode `Base64 decode the input`
-* sha1 `Encrypt the input with the secure sha1 algorithm`
-* md5 `MD5 encode the input`
-* noise_words `Remove noise words from string`
-* json_encode `Create a json representation of the input`
-* json_decode `Decode a json string`
-* rmpunctuation `Remove all known punctuation characters from a string`
-* basic_tags `Remove all layout orientated HTML tags from text. Leaving only basic tags`
-* whole_number `Ensure that the provided numeric value is represented as a whole number`
-* ms_word_characters `Converts MS Word special characters [“”‘’–…] to web safe characters`
-* lower_case `Converts to lowercase`
-* upper_case `Converts to uppercase`
-* slug `Creates web safe url slug`
+<div id="available_filters">
+
+| Filter                 | Description                                                                                                         |
+|------------------------|---------------------------------------------------------------------------------------------------------------------|
+| **noise_words**        | Replace noise words in a string (http://tax.cchgroup.com/help/Avoiding_noise_words_in_your_search.htm).             |
+| **rmpunctuation**      | Remove all known punctuation from a string.                                                                         |
+| **sanitize_string**    | Sanitize the string by removing any script tags.                                                                    |
+| **urlencode**          | Sanitize the string by urlencoding characters.                                                                      |
+| **htmlencode**         | Sanitize the string by converting HTML characters to their HTML entities.                                           |
+| **sanitize_email**     | Sanitize the string by removing illegal characters from emails.                                                     |
+| **sanitize_numbers**   | Sanitize the string by removing illegal characters from numbers.                                                    |
+| **sanitize_floats**    | Sanitize the string by removing illegal characters from float numbers.                                              |
+| **basic_tags**         | Filter out all HTML tags except the defined basic tags.                                                             |
+| **whole_number**       | Convert the provided numeric value to a whole number.                                                               |
+| **ms_word_characters** | Convert MS Word special characters to web safe characters. ([“, ”, ‘, ’, –, …] => [", ", ', ', -, ...]) |
+| **lower_case**         | Converts to lowercase.                                                                                              |
+| **upper_case**         | Converts to uppercase.                                                                                              |
+| **slug**               | Converts value to url-web-slugs.                                                                                    |
+| **trim**               | Remove spaces from the beginning and end of strings. (PHP)                                                          |
+| **base64_encode**      | Base64 encode the input. (PHP)                                                                                      |
+| **base64_decode**      | Base64 decode the input. (PHP)                                                                                      |
+</div>
 
 ###  Creating your own validators and filters
 

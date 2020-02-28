@@ -14,11 +14,11 @@ $tableBuilder
 
 $readme = file_get_contents(README_FILE);
 
-$regex = '/(?<=<details><summary>Show all validators<.summary><div><br>)(.*?)(?=<.div><.details>)/ms';
+$regex = '/(?<=<div id="available_validators">)(.*?)(?=<.div>)/ms';
 
 $replaced = preg_replace($regex, PHP_EOL.PHP_EOL.$tableBuilder->render(), $readme);
 
 file_put_contents(README_FILE, $replaced);
 
-print('Docs updated!'.PHP_EOL);
+print('Validators docs updated!'.PHP_EOL);
 

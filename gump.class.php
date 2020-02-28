@@ -733,8 +733,6 @@ class GUMP
     /**
      * Replace noise words in a string (http://tax.cchgroup.com/help/Avoiding_noise_words_in_your_search.htm).
      *
-     * Usage: '<index>' => 'noise_words'
-     *
      * @param string $value
      * @param array  $params
      *
@@ -764,8 +762,6 @@ class GUMP
     /**
      * Remove all known punctuation from a string.
      *
-     * Usage: '<index>' => 'rmpunctuation'
-     *
      * @param string $value
      * @param array  $params
      *
@@ -778,8 +774,6 @@ class GUMP
 
     /**
      * Sanitize the string by removing any script tags.
-     *
-     * Usage: '<index>' => 'sanitize_string'
      *
      * @param string $value
      * @param array  $params
@@ -794,8 +788,6 @@ class GUMP
     /**
      * Sanitize the string by urlencoding characters.
      *
-     * Usage: '<index>' => 'urlencode'
-     *
      * @param string $value
      * @param array  $params
      *
@@ -809,8 +801,6 @@ class GUMP
     /**
      * Sanitize the string by converting HTML characters to their HTML entities.
      *
-     * Usage: '<index>' => 'htmlencode'
-     *
      * @param string $value
      * @param array  $params
      *
@@ -823,8 +813,6 @@ class GUMP
 
     /**
      * Sanitize the string by removing illegal characters from emails.
-     *
-     * Usage: '<index>' => 'sanitize_email'
      *
      * @param string $value
      * @param array  $params
@@ -889,8 +877,7 @@ class GUMP
     }
 
     /**
-     * Convert MS Word special characters to web safe characters.
-     * [“, ”, ‘, ’, –, …] => [", ", ', ', -, ...]
+     * Convert MS Word special characters to web safe characters. ([“, ”, ‘, ’, –, …] => [", ", ', ', -, ...])
      *
      * @param string $value
      * @param array  $params
@@ -953,9 +940,8 @@ class GUMP
     /**
      * Converts value to url-web-slugs.
      *
-     * Credit:
-     * https://stackoverflow.com/questions/40641973/php-to-convert-string-to-slug
-     * http://cubiq.org/the-perfect-php-clean-url-generator
+     * @see https://stackoverflow.com/questions/40641973/php-to-convert-string-to-slug
+     * @see http://cubiq.org/the-perfect-php-clean-url-generator
      *
      * @param string $value
      * @param array  $params
