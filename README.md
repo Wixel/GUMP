@@ -227,7 +227,7 @@ Adding custom validators and filters is made easy by using callback functions.
  */
 GUMP::add_validator("equals_string", function($field, $input, $param = null) {
     return $input[$field] === $param;
-}, 'Field {field} is not an object');
+}, 'Field {field} does not equal {param}.');
 
 
 /**
