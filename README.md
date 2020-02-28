@@ -8,23 +8,14 @@ GUMP is a standalone PHP data validation and filtering class that makes validati
 
 #### There are 2 ways to install GUMP
 
-##### Install with composer (prefered, modern way)
+##### Install with composer
 
 ```
 composer require wixel/gump
 ```
 
-##### Install manually
-
-1. Download GUMP
-2. Unzip it and copy the directory into your PHP project directory.
-
-Include it in your project:
 
 ```php
-require 'gump.class.php';
-require 'src/Helpers.php';
-
 $is_valid = GUMP::is_valid($_POST, [
     'username' => 'required|alpha_numeric',
     'password' => 'required|max_len,100|min_len,6'
@@ -36,7 +27,6 @@ if ($is_valid === true) {
     print_r($is_valid);
 }
 ```
-
 
 #### Available Methods
 
