@@ -61,75 +61,6 @@ if ($validated_data === false) {
 }
 ```
 
-#### Available Methods
-
-```php
-// Shorthand validation
-is_valid(array $data, array $rules)
-
-// Get or set the validation rules
-validation_rules(array $rules);
-
-// Get or set the filtering rules
-filter_rules(array $rules);
-
-// Runs the filter and validation routines
-run(array $data);
-
-// Strips and encodes unwanted characters
-xss_clean(array $data);
-
-// Sanitizes data and converts strings to UTF-8 (if available),
-// optionally according to the provided field whitelist
-sanitize(array $input, $whitelist = NULL);
-
-// Validates input data according to the provided ruleset (see example)
-validate(array $input, array $ruleset);
-
-// Filters input data according to the provided filterset (see example)
-filter(array $input, array $filterset);
-
-// Returns human readable error text in an array or string
-get_readable_errors($convert_to_string = false);
-
-// Fetch an array of validation errors indexed by the field names
-get_errors_array();
-
-// Override field names with readable ones for errors
-set_field_name($field, $readable_name);
-```
-
-
-Match data-keys against rules-keys
--------------
-We can check if there is a rule specified for every data-key, by adding an extra parameter to the run method.
-
-```
-$gump->run($_POST, true);
-```
-
-If it doesn't match the output will be:
-```
-There is no validation rule for <span class=\"$field_class\">$field</span>
-```
-
-Return Values
--------------
-`run()` returns one of two types:
-
-*ARRAY* containing the successfully validated and filtered data when the validation is successful
-
-*BOOLEAN* False when the validation has failed
-
-`validate()` returns one of two types:
-
-*ARRAY* containing key names and validator names when data does not pass the validation.
-
-You can use this array along with your language helpers to determine what error message to show.
-
-*BOOLEAN* value of TRUE if the validation was successful.
-
-`filter()` returns the exact array structure that was parsed as the `$input` parameter, the only difference would be the filtered data.
 
 
 :star: Available Validators
@@ -209,6 +140,76 @@ Filters can be any PHP function that returns a string. You don't need to create 
 | **base64_encode**      | Base64 encode the input. (PHP)                                                                                      |
 | **base64_decode**      | Base64 decode the input. (PHP)                                                                                      |
 </div>
+
+#### Available Methods
+
+```php
+// Shorthand validation
+is_valid(array $data, array $rules)
+
+// Get or set the validation rules
+validation_rules(array $rules);
+
+// Get or set the filtering rules
+filter_rules(array $rules);
+
+// Runs the filter and validation routines
+run(array $data);
+
+// Strips and encodes unwanted characters
+xss_clean(array $data);
+
+// Sanitizes data and converts strings to UTF-8 (if available),
+// optionally according to the provided field whitelist
+sanitize(array $input, $whitelist = NULL);
+
+// Validates input data according to the provided ruleset (see example)
+validate(array $input, array $ruleset);
+
+// Filters input data according to the provided filterset (see example)
+filter(array $input, array $filterset);
+
+// Returns human readable error text in an array or string
+get_readable_errors($convert_to_string = false);
+
+// Fetch an array of validation errors indexed by the field names
+get_errors_array();
+
+// Override field names with readable ones for errors
+set_field_name($field, $readable_name);
+```
+
+
+Match data-keys against rules-keys
+-------------
+We can check if there is a rule specified for every data-key, by adding an extra parameter to the run method.
+
+```
+$gump->run($_POST, true);
+```
+
+If it doesn't match the output will be:
+```
+There is no validation rule for <span class=\"$field_class\">$field</span>
+```
+
+Return Values
+-------------
+`run()` returns one of two types:
+
+*ARRAY* containing the successfully validated and filtered data when the validation is successful
+
+*BOOLEAN* False when the validation has failed
+
+`validate()` returns one of two types:
+
+*ARRAY* containing key names and validator names when data does not pass the validation.
+
+You can use this array along with your language helpers to determine what error message to show.
+
+*BOOLEAN* value of TRUE if the validation was successful.
+
+`filter()` returns the exact array structure that was parsed as the `$input` parameter, the only difference would be the filtered data.
 
 ###  Creating your own validators and filters
 
