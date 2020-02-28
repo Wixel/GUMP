@@ -35,7 +35,7 @@ if ($is_valid === true) {
 ### Long format example
 
 ```php
-# Note that filters and validators are separate rule sets and method calls. There is a good reason for this.
+# Note that filters and validators are separate rule sets and method calls.
 
 $gump = new GUMP();
 
