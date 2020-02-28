@@ -44,9 +44,9 @@ return array(
     'validate_valid_array_size_lesser'  => '{field}フィールドは{param}個以下の配列でなければいけません',
     'validate_valid_array_size_equal'   => '{field}フィールドは{param}個の配列でなければいけません',
     'validate_valid_persian_name'       => '{field}フィールドはダリー語/アラビア語/パシュトゥー語の人名でなければいけません',
-	'validate_valid_eng_per_pas_name'   => '{field}フィールドは英語/ダリー語/アラビア語/パシュトゥー語の人名でなければいけません',
-	'validate_valid_persian_digit'      => '{field}フィールドはダリー語/アラビア語/パシュトゥー語の数値でなければいけません',
-	'validate_valid_persian_text'       => '{field}フィールドはダリー語/アラビア語/パシュトゥー語の文字列でなければいけません',
-	'validate_valid_pashtu_text'        => '{field}フィールドはパシュトゥー語の文字列でなければいけません',
+    'validate_valid_eng_per_pas_name'   => '{field}フィールドは英語/ダリー語/アラビア語/パシュトゥー語の人名でなければいけません',
+    'validate_valid_persian_digit'      => '{field}フィールドはダリー語/アラビア語/パシュトゥー語の数値でなければいけません',
+    'validate_valid_persian_text'       => '{field}フィールドはダリー語/アラビア語/パシュトゥー語の文字列でなければいけません',
+    'validate_valid_pashtu_text'        => '{field}フィールドはパシュトゥー語の文字列でなければいけません',
     'validate_valid_twitter'            => '{field}フィールドは有効なツイッターユーザー名でなければいけません',
 );
