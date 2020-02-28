@@ -139,7 +139,7 @@ You can use this array along with your language helpers to determine what error 
 
 :star: Available Validators
 ---------------------------
-<details><summary>Show all validators</summary><div><br>
+<div id="available_validators">
 
 | Rule                                          | Description                                                                                                                 |
 |-----------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
@@ -186,7 +186,7 @@ You can use this array along with your language helpers to determine what error 
 | **valid_array_size_lesser**,1                 | Check if an input is an array and if the size is less or equal to a specific value.                                         |
 | **valid_array_size_equal**,1                  | Check if an input is an array and if the size is equal to a specific value.                                                 |
 | **valid_twitter**                             | Determine if the provided value is a valid Twitter account.                                                                 |
-</div></details>
+</div>
 
 :star: Available Filters
 ------------------------
