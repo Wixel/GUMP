@@ -167,7 +167,6 @@ You can use this array along with your language helpers to determine what error 
 | **iban**                                      | Determine if the provided value is a valid IBAN.                                                                            |
 | **date**,d/m/Y                                | Determine if the provided input is a valid date (ISO 8601) or specify a custom format (optional).                           |
 | **min_age**,18                                | Determine if the provided input meets age requirement (ISO 8601).                                                           |
-| **max_numeric**,50                            | Determine if the provided numeric value is lower or equal to a specific value.                                              |
 | **min_numeric**,1                             | Determine if the provided numeric value is higher or equal to a specific value.                                             |
 | **starts**,Z                                  | Determine if the provided value starts with param.                                                                          |
 | **required_file**                             | Determine if the file was successfully uploaded.                                                                            |
@@ -202,7 +201,7 @@ Filters can be any PHP function that returns a string. You don't need to create 
 | **basic_tags**         | Filter out all HTML tags except the defined basic tags.                                                             |
 | **whole_number**       | Convert the provided numeric value to a whole number.                                                               |
 | **ms_word_characters** | Convert MS Word special characters to web safe characters. ([“, ”, ‘, ’, –, …] => [", ", ', ', -, ...]) |
-| **lower_case**         | Converts to lowercase.                                                                                              |
+| **lower_case**         | Converts to lowe                                                                                            |
 | **upper_case**         | Converts to uppercase.                                                                                              |
 | **trim**               | Remove spaces from the beginning and end of strings. (PHP)                                                          |
 | **base64_encode**      | Base64 encode the input. (PHP)                                                                                      |
