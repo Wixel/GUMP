@@ -15,16 +15,11 @@ composer require wixel/gump
 ### Short format example
 
 ```php
-$_POST = [
-    'username' => 'username123',
-    'password' => 'password'
-];
 
-// note $_FILES if you want to validate files
 $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
     'username' => 'required|alpha_numeric',
     'password' => 'required|max_len,100|min_len,6',
-    'avatar' => 'required_file|extension,png;jpg'
+    'avatar'   => 'required_file|extension,png;jpg'
 ]);
 
 if ($is_valid === true) {
@@ -306,20 +301,5 @@ if ($validated === true) {
     echo "Valid Street Address\n";
 } else {
     print_r($validated);
-}
-```
-
-### Validating file fields
-
-```php
-$is_valid = GUMP::is_valid(array_merge($_POST,$_FILES), [
-    'title' => 'required|alpha_numeric',
-    'image' => 'required_file|extension,png;jpg'
-]);
-
-if ($is_valid === true) {
-    // continue
-} else {
-    print_r($is_valid);
 }
 ```
