@@ -26,7 +26,7 @@ if (count($errors) > 0) {
         print(sprintf('⮕ %s', $error).PHP_EOL);
     }
 
-    print(PHP_EOL.PHP_EOL.'Run "php ci/dump_validators_docs.php" to fix this!');
+    print(PHP_EOL.'Run "php ci/dump_validators_docs.php" to fix this!');
     exit(1);
 } else {
     print('Docs checks successfully passed for validators!'.PHP_EOL);

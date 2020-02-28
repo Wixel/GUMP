@@ -167,6 +167,7 @@ You can use this array along with your language helpers to determine what error 
 | **iban**                                      | Determine if the provided value is a valid IBAN.                                                                            |
 | **date**,d/m/Y                                | Determine if the provided input is a valid date (ISO 8601) or specify a custom format (optional).                           |
 | **min_age**,18                                | Determine if the provided input meets age requirement (ISO 8601).                                                           |
+| **max_numeric**,50                            | Determine if the provided numeric value is lower or equal to a specific value.                                              |
 | **min_numeric**,1                             | Determine if the provided numeric value is higher or equal to a specific value.                                             |
 | **starts**,Z                                  | Determine if the provided value starts with param.                                                                          |
 | **required_file**                             | Determine if the file was successfully uploaded.                                                                            |
