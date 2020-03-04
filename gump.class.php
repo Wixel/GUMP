@@ -433,7 +433,7 @@ class GUMP
         $result['param'] = null;
 
         if (strstr($rule, ',') !== false) {
-            list($rule, $param) = explode(',', $rule);
+            [$rule, $param] = explode(',', $rule);
 
             $result['rule'] = $rule;
             $result['param'] = $param;
