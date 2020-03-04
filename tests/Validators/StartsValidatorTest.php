@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class StartsValidatorTest extends BaseTestCase
 {
-    private const RULE = 'starts,tes';
+    const RULE = 'starts,tes';
 
     /**
      * @dataProvider successProvider

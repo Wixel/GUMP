@@ -14,7 +14,7 @@ use Mockery as m;
  */
 class ValidTwitterValidatorTest extends BaseTestCase
 {
-    private const RULE = 'valid_twitter';
+    const RULE = 'valid_twitter';
 
     public function testWhenReasonIsTakenIsSuccess()
     {

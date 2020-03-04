@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class FloatValidatorTest extends BaseTestCase
 {
-    private const RULE = 'float';
+    const RULE = 'float';
 
     /**
      * @dataProvider successProvider

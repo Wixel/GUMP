@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class ValidIpValidatorTest extends BaseTestCase
 {
-    private const RULE = 'valid_ip';
+    const RULE = 'valid_ip';
 
     /**
      * @dataProvider successProvider

@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class ValidNameValidatorTest extends BaseTestCase
 {
-    private const RULE = 'valid_name';
+    const RULE = 'valid_name';
 
     /**
      * @dataProvider successProvider

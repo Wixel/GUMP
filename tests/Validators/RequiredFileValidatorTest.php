@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class RequiredFileValidatorTest extends BaseTestCase
 {
-    private const RULE = 'required_file';
+    const RULE = 'required_file';
 
     public function testItFailsWhenThereIsNoInputFile()
     {

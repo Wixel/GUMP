@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class ValidIpv6ValidatorTest extends BaseTestCase
 {
-    private const RULE = 'valid_ipv6';
+    const RULE = 'valid_ipv6';
 
     /**
      * @dataProvider successProvider

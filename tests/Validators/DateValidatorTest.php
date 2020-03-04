@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class DateValidatorTest extends BaseTestCase
 {
-    private const RULE = 'date';
+    const RULE = 'date';
 
     /**
      * @dataProvider successProvider

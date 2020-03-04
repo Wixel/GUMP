@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class ExtensionValidatorTest extends BaseTestCase
 {
-    private const RULE = 'extension,png;jpg;gif';
+    const RULE = 'extension,png;jpg;gif';
 
     public function testItSuccessesWhenExtensionMatches()
     {

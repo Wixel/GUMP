@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class ValidJsonStringValidatorTest extends BaseTestCase
 {
-    private const RULE = 'valid_json_string';
+    const RULE = 'valid_json_string';
 
     /**
      * @dataProvider successProvider

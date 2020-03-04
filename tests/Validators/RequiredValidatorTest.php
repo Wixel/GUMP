@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class RequiredValidatorTest extends BaseTestCase
 {
-    private const RULE = 'required';
+    const RULE = 'required';
     /**
      * @dataProvider successProvider
      */
