@@ -7,7 +7,7 @@ php:
   - "7.0"
   
 before_install:
-  - composer install --dev
+  - composer install
 
 script:
   - mkdir -p build/logs
