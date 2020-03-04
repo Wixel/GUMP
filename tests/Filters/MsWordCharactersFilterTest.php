@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class MsWordCharactersFilterTest extends BaseTestCase
 {
-    private const FILTER = 'ms_word_characters';
+    const FILTER = 'ms_word_characters';
 
     /**
      * @dataProvider successProvider

@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class HtmlencodeFilterTest extends BaseTestCase
 {
-    private const FILTER = 'htmlencode';
+    const FILTER = 'htmlencode';
 
     /**
      * @dataProvider successProvider

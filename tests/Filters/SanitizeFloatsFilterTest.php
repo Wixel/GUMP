@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class SanitizeFloatsFilterTest extends BaseTestCase
 {
-    private const FILTER = 'sanitize_floats';
+    const FILTER = 'sanitize_floats';
 
     /**
      * @dataProvider successProvider

@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class BasicTagsFilterTest extends BaseTestCase
 {
-    private const FILTER = 'basic_tags';
+    const FILTER = 'basic_tags';
 
     /**
      * @dataProvider successProvider

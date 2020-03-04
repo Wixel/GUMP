@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class UrlencodeFilterTest extends BaseTestCase
 {
-    private const FILTER = 'urlencode';
+    const FILTER = 'urlencode';
 
     /**
      * @dataProvider successProvider
