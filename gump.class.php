@@ -998,11 +998,7 @@ class GUMP
             $param = explode(chr(32), $param);
         }
 
-        if (in_array($value, $param)) { // valid, return nothing
-            return;
-        }
-
-        return false;
+        return in_array($value, $param);
     }
 
     /**
@@ -1025,11 +1021,7 @@ class GUMP
 
         // consider: in_array(mb_strtolower($value), array_map('mb_strtolower', $param)
 
-        if (in_array($value, $param)) { // valid, return nothing
-            return;
-        } else {
-            return false;
-        }
+        return in_array($value, $param);
     }
 
     /**
@@ -1050,11 +1042,7 @@ class GUMP
 
         $param = explode(';', $param);
 
-        if (!in_array($value, $param)) { // valid, return nothing
-            return;
-        } else {
-            return false;
-        }
+        return !in_array($value, $param);
     }
 
     /**
@@ -1228,9 +1216,7 @@ class GUMP
      */
     protected function validate_numeric($field, $input, $param = null)
     {
-        if (!is_numeric($input[$field])) {
-            return false;
-        }
+        return is_numeric($input[$field]);
     }
 
     /**
@@ -1359,8 +1345,6 @@ class GUMP
     protected function validate_valid_ipv4($field, $input, $param = null)
     {
         if (!filter_var($input[$field], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-            // removed !== FALSE
-
             return false;
         }
     }
@@ -1424,11 +1408,7 @@ class GUMP
             $total += $digit;
         }
 
-        if ($total % 10 == 0) {
-            return; // Valid
-        }
-
-        return false;
+        return $total % 10 == 0;
     }
 
     /**
@@ -1463,11 +1443,7 @@ class GUMP
         $hasDigit = preg_match('/\d/', $input[$field]);
         $hasSpace = preg_match('/\s/', $input[$field]);
 
-        $passes = $hasLetter && $hasDigit && $hasSpace;
-
-        if (!$passes) {
-            return false;
-        }
+        return $hasLetter && $hasDigit && $hasSpace;
     }
 
     /**
@@ -1497,9 +1473,7 @@ class GUMP
         $iban = substr($iban, 4).substr($iban, 0, 4);
         $iban = strtr($iban, $character);
 
-        if (bcmod($iban, 97) != 1) {
-            return false;
-        }
+        return bcmod($iban, 97) == 1;
     }
 
     /**
@@ -1551,11 +1525,7 @@ class GUMP
         $interval = $todayDatetime->diff($inputDatetime);
         $yearsPassed = $interval->y;
 
-        if ($yearsPassed >= $param) {
-            return;
-        }
-
-        return false;
+        return $yearsPassed >= $param;
     }
 
     /**
@@ -1571,11 +1541,7 @@ class GUMP
      */
     protected function validate_max_numeric($field, $input, $param = null)
     {
-        if (is_numeric($input[$field]) && is_numeric($param) && ($input[$field] <= $param)) {
-            return;
-        }
-
-        return false;
+        return is_numeric($input[$field]) && is_numeric($param) && ($input[$field] <= $param);
     }
 
     /**
@@ -1591,11 +1557,7 @@ class GUMP
      */
     protected function validate_min_numeric($field, $input, $param = null)
     {
-        if (is_numeric($input[$field]) && is_numeric($param) && ($input[$field] >= $param)) {
-            return;
-        }
-
-        return false;
+        return is_numeric($input[$field]) && is_numeric($param) && ($input[$field] >= $param);
     }
 
     /**
@@ -1610,9 +1572,7 @@ class GUMP
      */
     protected function validate_starts($field, $input, $param = null)
     {
-        if (strpos($input[$field], $param) !== 0) {
-            return false;
-        }
+        return strpos($input[$field], $param) === 0;
     }
 
     /**
@@ -1625,11 +1585,7 @@ class GUMP
      */
     protected function validate_required_file($field, $input, $param = null)
     {
-        if (isset($input[$field]) && is_array($input[$field]) && $input[$field]['error'] === 0) {
-            return;
-        }
-
-        return false;
+        return isset($input[$field]) && is_array($input[$field]) && $input[$field]['error'] === 0;
     }
 
     /**
@@ -1672,11 +1628,7 @@ class GUMP
      */
     protected function validate_equalsfield($field, $input, $param = null)
     {
-        if ($input[$field] == $input[$param]) {
-            return;
-        }
-
-        return false;
+        return $input[$field] == $input[$param];
     }
 
     /**
@@ -1819,8 +1771,6 @@ class GUMP
 
         $result = json_decode($json);
 
-        if ($result->reason !== "taken") {
-            return false;
-        }
+        return $result->reason === "taken";
     }
 }
