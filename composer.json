@@ -20,7 +20,6 @@
     "homepage": "https://wixelhq.com/",
     "require-dev": {
         "mockery/mockery": "^1.3",
-        "php-coveralls/php-coveralls": "^2.2",
         "kamermans/docblock-reflection": "^1.0",
         "maddhatter/markdown-table": "^1.0",
         "phpunit/phpunit": "^6"
@@ -31,6 +30,5 @@
     "scripts": {
         "test": "php ./vendor/bin/phpunit"
     },
-    "require": {
-    }
+    "platform": {"php": "7.0.3"}
 }
