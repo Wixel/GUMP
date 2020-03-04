@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class Guidv4ValidatorTest extends BaseTestCase
 {
-    private const RULE = 'guidv4';
+    const RULE = 'guidv4';
 
     /**
      * @dataProvider successProvider

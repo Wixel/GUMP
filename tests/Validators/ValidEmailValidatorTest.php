@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class ValidEmailValidatorTest extends BaseTestCase
 {
-    private const RULE = 'valid_email';
+    const RULE = 'valid_email';
 
     public function testSuccess()
     {

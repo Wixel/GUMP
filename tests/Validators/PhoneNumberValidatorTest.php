@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class PhoneNumberValidatorTest extends BaseTestCase
 {
-    private const RULE = 'phone_number';
+    const RULE = 'phone_number';
 
     /**
      * @dataProvider successProvider

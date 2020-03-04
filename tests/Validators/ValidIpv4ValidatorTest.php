@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class ValidIpv4ValidatorTest extends BaseTestCase
 {
-    private const RULE = 'valid_ipv4';
+    const RULE = 'valid_ipv4';
 
     /**
      * @dataProvider successProvider

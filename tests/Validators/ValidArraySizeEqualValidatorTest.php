@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class ValidArraySizeEqualValidatorTest extends BaseTestCase
 {
-    private const RULE = 'valid_array_size_equal,3';
+    const RULE = 'valid_array_size_equal,3';
 
     public function testWhenEqualIsSuccess()
     {

@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class IntegerValidatorTest extends BaseTestCase
 {
-    private const RULE = 'required|integer';
+    const RULE = 'required|integer';
 
     /**
      * @dataProvider successProvider

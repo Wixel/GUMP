@@ -15,7 +15,7 @@ use Mockery as m;
  */
 class RegexValidatorTest extends BaseTestCase
 {
-    private const RULE = 'regex,/test-[0-9]{3}/';
+    const RULE = 'regex,/test-[0-9]{3}/';
 
     public function testExpressionMatchesIsSuccess()
     {

@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class ValidUrlValidatorTest extends BaseTestCase
 {
-    private const RULE = 'valid_url';
+    const RULE = 'valid_url';
 
     /**
      * @dataProvider successProvider

@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class StreetAddressValidatorTest extends BaseTestCase
 {
-    private const RULE = 'street_address';
+    const RULE = 'street_address';
 
     /**
      * @dataProvider successProvider

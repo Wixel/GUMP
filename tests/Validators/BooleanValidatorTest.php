@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class BooleanValidatorTest extends BaseTestCase
 {
-    private const RULE = 'boolean';
+    const RULE = 'boolean';
 
     /**
      * @dataProvider successProvider

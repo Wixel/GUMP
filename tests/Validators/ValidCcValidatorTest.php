@@ -14,7 +14,7 @@ use Mockery as m;
  */
 class ValidCcValidatorTest extends BaseTestCase
 {
-    private const RULE = 'valid_cc';
+    const RULE = 'valid_cc';
 
     /**
      * @dataProvider successProvider

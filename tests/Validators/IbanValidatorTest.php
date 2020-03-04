@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class IbanValidatorTest extends BaseTestCase
 {
-    private const RULE = 'iban';
+    const RULE = 'iban';
 
     /**
      * @dataProvider successProvider
