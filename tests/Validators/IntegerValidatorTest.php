@@ -50,6 +50,7 @@ class IntegerValidatorTest extends BaseTestCase
             [null],
             [1.1],
             ['1.1'],
+            [['array']],
         ];
     }
 

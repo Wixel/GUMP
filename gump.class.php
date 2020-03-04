@@ -1056,9 +1056,7 @@ class GUMP
      */
     protected function validate_valid_email($field, $input, $param = null)
     {
-        if (!filter_var($input[$field], FILTER_VALIDATE_EMAIL)) {
-            return false;
-        }
+        return filter_var($input[$field], FILTER_VALIDATE_EMAIL) !== false;
     }
 
     /**
@@ -1120,9 +1118,7 @@ class GUMP
      */
     protected function validate_alpha($field, $input, $param = null)
     {
-        if (!preg_match('/^([a-zÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ])+$/i', $input[$field]) !== false) {
-            return false;
-        }
+        return preg_match('/^([a-zÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ])+$/i', $input[$field]) > 0;
     }
 
     /**
@@ -1136,9 +1132,7 @@ class GUMP
      */
     protected function validate_alpha_numeric($field, $input, $param = null)
     {
-        if (!preg_match('/^([a-z0-9ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ])+$/i', $input[$field]) !== false) {
-            return false;
-        }
+        return preg_match('/^([a-z0-9ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ])+$/i', $input[$field]) > 0;
     }
 
     /**
@@ -1152,9 +1146,7 @@ class GUMP
      */
     protected function validate_alpha_dash($field, $input, $param = null)
     {
-        if (!preg_match('/^([a-zÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ_-])+$/i', $input[$field]) !== false) {
-            return false;
-        }
+        return preg_match('/^([a-zÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ_-])+$/i', $input[$field]) > 0;
     }
 
     /**
@@ -1168,9 +1160,7 @@ class GUMP
      */
     protected function validate_alpha_numeric_dash($field, $input, $param = null)
     {
-        if (!preg_match('/^([a-z0-9ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ_-])+$/i', $input[$field]) !== false) {
-            return false;
-        }
+        return preg_match('/^([a-z0-9ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ_-])+$/i', $input[$field]) > 0;
     }
 
     /**
@@ -1184,9 +1174,7 @@ class GUMP
      */
     protected function validate_alpha_numeric_space($field, $input, $param = null)
     {
-        if (!preg_match("/^([a-z0-9ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ\s])+$/i", $input[$field]) !== false) {
-            return false;
-        }
+        return preg_match("/^([a-z0-9ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ\s])+$/i", $input[$field]) > 0;
     }
 
     /**
@@ -1200,9 +1188,7 @@ class GUMP
      */
     protected function validate_alpha_space($field, $input, $param = null)
     {
-        if (!preg_match("/^([a-zÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ\s])+$/i", $input[$field]) !== false) {
-            return false;
-        }
+        return preg_match("/^([a-zÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ\s])+$/i", $input[$field]) > 0;
     }
 
     /**
@@ -1233,6 +1219,8 @@ class GUMP
         if (filter_var($input[$field], FILTER_VALIDATE_INT) === false || is_bool($input[$field]) || is_null($input[$field])) {
             return false;
         }
+
+        return true;
     }
 
     /**
@@ -1247,15 +1235,12 @@ class GUMP
     protected function validate_boolean($field, $input, $param = null)
     {
         if (!isset($input[$field]) || empty($input[$field]) && $input[$field] !== 0) {
-            return;
+            return true;
         }
 
-        $booleans = array('1',1, '0',0, 'true',true, 'false',false, 'yes','no', 'on','off');
-        if (in_array($input[$field], $booleans, true)) {
-            return;
-        }
+        $booleans = ['1', 1, '0', 0, 'true', true, 'false', false, 'yes', 'no', 'on', 'off'];
 
-        return false;
+        return in_array($input[$field], $booleans, true);
     }
 
     /**
@@ -1269,9 +1254,7 @@ class GUMP
      */
     protected function validate_float($field, $input, $param = null)
     {
-        if (filter_var($input[$field], FILTER_VALIDATE_FLOAT) === false) {
-            return false;
-        }
+        return filter_var($input[$field], FILTER_VALIDATE_FLOAT) !== false;
     }
 
     /**
@@ -1285,9 +1268,7 @@ class GUMP
      */
     protected function validate_valid_url($field, $input, $param = null)
     {
-        if (!filter_var($input[$field], FILTER_VALIDATE_URL)) {
-            return false;
-        }
+        return filter_var($input[$field], FILTER_VALIDATE_URL) !== false;
     }
 
     /**
@@ -1326,9 +1307,7 @@ class GUMP
      */
     protected function validate_valid_ip($field, $input, $param = null)
     {
-        if (!filter_var($input[$field], FILTER_VALIDATE_IP) !== false) {
-            return false;
-        }
+        return filter_var($input[$field], FILTER_VALIDATE_IP) !== false;
     }
 
     /**
@@ -1344,9 +1323,7 @@ class GUMP
      */
     protected function validate_valid_ipv4($field, $input, $param = null)
     {
-        if (!filter_var($input[$field], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-            return false;
-        }
+        return filter_var($input[$field], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false;
     }
 
     /**
@@ -1359,9 +1336,7 @@ class GUMP
      */
     protected function validate_valid_ipv6($field, $input, $param = null)
     {
-        if (!filter_var($input[$field], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-            return false;
-        }
+        return filter_var($input[$field], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false;
     }
 
     /**
@@ -1423,9 +1398,7 @@ class GUMP
      */
     protected function validate_valid_name($field, $input, $param = null)
     {
-        if (!preg_match("/^([a-z \p{L} '-])+$/i", $input[$field]) !== false) {
-            return false;
-        }
+        return preg_match("/^([a-z \p{L} '-])+$/i", $input[$field]) > 0;
     }
 
     /**
@@ -1439,11 +1412,11 @@ class GUMP
     protected function validate_street_address($field, $input, $param = null)
     {
         // Theory: 1 number, 1 or more spaces, 1 or more words
-        $hasLetter = preg_match('/[a-zA-Z]/', $input[$field]);
-        $hasDigit = preg_match('/\d/', $input[$field]);
-        $hasSpace = preg_match('/\s/', $input[$field]);
+        $has_letter = preg_match('/[a-zA-Z]/', $input[$field]);
+        $has_digit = preg_match('/\d/', $input[$field]);
+        $has_space = preg_match('/\s/', $input[$field]);
 
-        return $hasLetter && $hasDigit && $hasSpace;
+        return $has_letter && $has_digit && $has_space;
     }
 
     /**
@@ -1494,16 +1467,12 @@ class GUMP
             $cdate1 = date('Y-m-d', strtotime($input[$field]));
             $cdate2 = date('Y-m-d H:i:s', strtotime($input[$field]));
 
-            if ($cdate1 != $input[$field] && $cdate2 != $input[$field]) {
-                return false;
-            }
-        } else {
-            $date = \DateTime::createFromFormat($param, $input[$field]);
-
-            if ($date === false || $input[$field] != date($param, $date->getTimestamp())) {
-                return false;
-            }
+            return !($cdate1 != $input[$field] && $cdate2 != $input[$field]);
         }
+
+        $date = \DateTime::createFromFormat($param, $input[$field]);
+
+        return !($date === false || $input[$field] != date($param, $date->getTimestamp()));
     }
 
     /**
@@ -1608,7 +1577,7 @@ class GUMP
             $extension = isset($path_info['extension']) ? $path_info['extension'] : false;
 
             if ($extension && in_array(mb_strtolower($extension), $allowed_extensions)) {
-                return;
+                return true;
             }
         }
 
@@ -1642,7 +1611,7 @@ class GUMP
     protected function validate_guidv4($field, $input, $param = null)
     {
         if (preg_match("/\{?[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}\}?$/", $input[$field])) {
-            return;
+            return true;
         }
 
         return false;
@@ -1666,9 +1635,7 @@ class GUMP
     {
         $regex = '/^(\d[\s-]?)?[\(\[\s-]{0,2}?\d{3}[\)\]\s-]{0,2}?\d{3}[\s-]?\d{4}$/i';
 
-        if (!preg_match($regex, $input[$field])) {
-            return false;
-        }
+        return preg_match($regex, $input[$field]) > 0;
     }
 
     /**
@@ -1684,10 +1651,7 @@ class GUMP
      */
     protected function validate_regex($field, $input, $param = null)
     {
-        $regex = $param;
-        if (!preg_match($regex, $input[$field])) {
-            return false;
-        }
+        return preg_match($param, $input[$field]) > 0;
     }
 
     /**
@@ -1705,6 +1669,8 @@ class GUMP
         if (!is_string($input[$field]) || !is_object(json_decode($input[$field]))) {
             return false;
         }
+
+        return true;
     }
 
     /**
@@ -1722,6 +1688,8 @@ class GUMP
         if (!is_array($input[$field]) || sizeof($input[$field]) < (int)$param) {
             return false;
         }
+
+        return true;
     }
 
     /**
@@ -1739,6 +1707,8 @@ class GUMP
         if (!is_array($input[$field]) || sizeof($input[$field]) > (int)$param) {
             return false;
         }
+
+        return true;
     }
 
     /**
@@ -1756,6 +1726,8 @@ class GUMP
         if (!is_array($input[$field]) || sizeof($input[$field]) != (int)$param) {
             return false;
         }
+
+        return true;
     }
 
     /**
