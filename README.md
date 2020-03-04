@@ -15,7 +15,6 @@ composer require wixel/gump
 ### Short format example
 
 ```php
-
 $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
     'username' => 'required|alpha_numeric',
     'password' => 'required|max_len,100|min_len,6',
