@@ -16,4 +16,4 @@ script:
 after_script:
   - php ci/check_validators_docs.php || travis_terminate 1;
   - php ci/check_filters_docs.php || travis_terminate 1;
-#  - travis_retry php vendor/bin/php-coveralls -v
+  - travis_retry php vendor/bin/php-coveralls -v
