@@ -19,28 +19,8 @@ class ValidCcValidatorTest extends BaseTestCase
     /**
      * @dataProvider successProvider
      */
-    public function testSuccessWithMbStrlen($input)
+    public function testSuccess($input)
     {
-        $this->helpersMock->shouldReceive('functionExists')
-            ->once()
-            ->with('mb_strlen')
-            ->andReturnTrue();
-
-        $this->assertTrue($this->validate(self::RULE, $input));
-    }
-
-    /**
-     * @dataProvider successProvider
-     */
-    public function testSuccessWithStrlen($input)
-    {
-
-
-        $this->helpersMock->shouldReceive('functionExists')
-            ->once()
-            ->with('mb_strlen')
-            ->andReturnFalse();
-
         $this->assertTrue($this->validate(self::RULE, $input));
     }
 
@@ -54,30 +34,8 @@ class ValidCcValidatorTest extends BaseTestCase
     /**
      * @dataProvider errorProvider
      */
-    public function testErrorWithMbStrlen($input)
+    public function testError($input)
     {
-
-
-        $this->helpersMock->shouldReceive('functionExists')
-            ->once()
-            ->with('mb_strlen')
-            ->andReturnTrue();
-
-        $this->assertNotTrue($this->validate(self::RULE, $input));
-    }
-
-    /**
-     * @dataProvider errorProvider
-     */
-    public function testErrorWithStrlen($input)
-    {
-
-
-        $this->helpersMock->shouldReceive('functionExists')
-            ->once()
-            ->with('mb_strlen')
-            ->andReturnFalse();
-
         $this->assertNotTrue($this->validate(self::RULE, $input));
     }
 

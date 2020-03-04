@@ -14,74 +14,23 @@ use Mockery as m;
  */
 class MaxLenValidatorTest extends BaseTestCase
 {
-    public function testSuccessWhenEqualWithMbStrlen()
+    public function testSuccessWhenEqual()
     {
-        $this->helpersMock->shouldReceive('functionExists')
-            ->once()
-            ->with('mb_strlen')
-            ->andReturnTrue();
-
         $this->assertTrue($this->validate('max_len,5', 'ñándú'));
     }
 
-    public function testSuccessWhenLessWithMbStrlen()
+    public function testSuccessWhenLess()
     {
-        $this->helpersMock->shouldReceive('functionExists')
-            ->once()
-            ->with('mb_strlen')
-            ->andReturnTrue();
-
         $this->assertTrue($this->validate('max_len,2', 'ñ'));
     }
 
-    public function testErrorWhenMoreWithMbStrlen()
+    public function testErrorWhenMore()
     {
-        $this->helpersMock->shouldReceive('functionExists')
-            ->once()
-            ->with('mb_strlen')
-            ->andReturnTrue();
-
         $this->assertNotTrue($this->validate('max_len,2', 'ñán'));
-    }
-
-    public function testSuccessWhenEqualWithStrlen()
-    {
-        $this->helpersMock->shouldReceive('functionExists')
-            ->once()
-            ->with('mb_strlen')
-            ->andReturnFalse();
-
-        $this->assertTrue($this->validate('max_len,3', 'ña'));
-        $this->assertTrue($this->validate('max_len,2', 'na'));
-    }
-
-    public function testSuccessWhenLessWithStrlen()
-    {
-        $this->helpersMock->shouldReceive('functionExists')
-            ->once()
-            ->with('mb_strlen')
-            ->andReturnFalse();
-
-        $this->assertTrue($this->validate('max_len,2', 'n'));
-    }
-
-    public function testErrorWhenMoreWithStrlen()
-    {
-        $this->helpersMock->shouldReceive('functionExists')
-            ->once()
-            ->with('mb_strlen')
-            ->andReturnFalse();
-
-        $this->assertNotTrue($this->validate('max_len,2', 'nan'));
     }
 
     public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
     {
-        $this->helpersMock->shouldReceive('functionExists')
-            ->once()
-            ->with('mb_strlen')
-            ->andReturnTrue();
-
          $this->assertTrue($this->validate('max_len,2', ''));
     }
 }
