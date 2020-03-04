@@ -921,7 +921,7 @@ class GUMP
      */
     protected function filter_lower_case($value, $params = null)
     {
-        return strtolower($value);
+        return mb_strtolower($value);
     }
 
     /**
@@ -934,7 +934,7 @@ class GUMP
      */
     protected function filter_upper_case($value, $params = null)
     {
-        return strtoupper($value);
+        return mb_strtoupper($value);
     }
 
     /**
@@ -951,7 +951,7 @@ class GUMP
     protected function filter_slug($value, $params = null)
     {
         $delimiter = '-';
-        return strtolower(trim(preg_replace('/[\s-]+/', $delimiter, preg_replace('/[^A-Za-z0-9-]+/', $delimiter, preg_replace('/[&]/', 'and', preg_replace('/[\']/', '', iconv('UTF-8', 'ASCII//TRANSLIT', $value))))), $delimiter));
+        return mb_strtolower(trim(preg_replace('/[\s-]+/', $delimiter, preg_replace('/[^A-Za-z0-9-]+/', $delimiter, preg_replace('/[&]/', 'and', preg_replace('/[\']/', '', iconv('UTF-8', 'ASCII//TRANSLIT', $value))))), $delimiter));
     }
 
     // ** ------------------------- Validators ------------------------------------ ** //
@@ -988,9 +988,9 @@ class GUMP
      */
     protected function validate_contains($field, $input, $param = null)
     {
-        $param = trim(strtolower($param));
+        $param = trim(mb_strtolower($param));
 
-        $value = trim(strtolower($input[$field]));
+        $value = trim(mb_strtolower($input[$field]));
 
         if (preg_match_all('#\'(.+?)\'#', $param, $matches, PREG_PATTERN_ORDER)) {
             $param = $matches[1];
@@ -1017,13 +1017,13 @@ class GUMP
      */
     protected function validate_contains_list($field, $input, $param = null)
     {
-        $param = trim(strtolower($param));
+        $param = trim(mb_strtolower($param));
 
-        $value = trim(strtolower($input[$field]));
+        $value = trim(mb_strtolower($input[$field]));
 
         $param = explode(';', $param);
 
-        // consider: in_array(strtolower($value), array_map('strtolower', $param)
+        // consider: in_array(mb_strtolower($value), array_map('mb_strtolower', $param)
 
         if (in_array($value, $param)) { // valid, return nothing
             return;
@@ -1044,9 +1044,9 @@ class GUMP
      */
     protected function validate_doesnt_contain_list($field, $input, $param = null)
     {
-        $param = trim(strtolower($param));
+        $param = trim(mb_strtolower($param));
 
-        $value = trim(strtolower($input[$field]));
+        $value = trim(mb_strtolower($input[$field]));
 
         $param = explode(';', $param);
 
@@ -1086,15 +1086,7 @@ class GUMP
      */
     protected function validate_max_len($field, $input, $param = null)
     {
-        if (Helpers::functionExists('mb_strlen')) {
-            if (mb_strlen($input[$field]) <= (int) $param) {
-                return;
-            }
-        } else if (strlen($input[$field]) <= (int) $param) {
-            return;
-        }
-
-        return false;
+        return mb_strlen($input[$field]) <= (int) $param;
     }
 
     /**
@@ -1110,15 +1102,7 @@ class GUMP
      */
     protected function validate_min_len($field, $input, $param = null)
     {
-        if (Helpers::functionExists('mb_strlen')) {
-            if (mb_strlen($input[$field]) >= (int) $param) {
-                return;
-            }
-        } else if (strlen($input[$field]) >= (int) $param) {
-            return;
-        }
-
-        return false;
+        return mb_strlen($input[$field]) >= (int) $param;
     }
 
     /**
@@ -1134,15 +1118,7 @@ class GUMP
      */
     protected function validate_exact_len($field, $input, $param = null)
     {
-        if (Helpers::functionExists('mb_strlen')) {
-            if (mb_strlen($input[$field]) == (int) $param) {
-                return;
-            }
-        } else if (strlen($input[$field]) == (int) $param) {
-            return;
-        }
-
-        return false;
+        return mb_strlen($input[$field]) == (int) $param;
     }
 
     /**
@@ -1339,7 +1315,7 @@ class GUMP
      */
     protected function validate_url_exists($field, $input, $param = null)
     {
-        $url = parse_url(strtolower($input[$field]));
+        $url = parse_url(mb_strtolower($input[$field]));
 
         if (isset($url['host'])) {
             $url = $url['host'];
@@ -1418,11 +1394,7 @@ class GUMP
     {
         $number = preg_replace('/\D/', '', $input[$field]);
 
-        if (Helpers::functionExists('mb_strlen')) {
-            $number_length = mb_strlen($number);
-        } else {
-            $number_length = strlen($number);
-        }
+        $number_length = mb_strlen($number);
 
         /**
          * Bail out if $number_length is 0.
@@ -1673,13 +1645,13 @@ class GUMP
     protected function validate_extension($field, $input, $param = null)
     {
         if (is_array($input[$field]) && $input[$field]['error'] === 0) {
-            $param = trim(strtolower($param));
+            $param = trim(mb_strtolower($param));
             $allowed_extensions = explode(';', $param);
 
             $path_info = pathinfo($input[$field]['name']);
             $extension = isset($path_info['extension']) ? $path_info['extension'] : false;
 
-            if ($extension && in_array(strtolower($extension), $allowed_extensions)) {
+            if ($extension && in_array(mb_strtolower($extension), $allowed_extensions)) {
                 return;
             }
         }
