@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class SlugFilterTest extends BaseTestCase
 {
-    private const FILTER = 'slug';
+    const FILTER = 'slug';
 
     /**
      * @dataProvider successProvider

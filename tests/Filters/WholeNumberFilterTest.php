@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class WholeNumberFilterTest extends BaseTestCase
 {
-    private const FILTER = 'whole_number';
+    const FILTER = 'whole_number';
 
     /**
      * @dataProvider successProvider

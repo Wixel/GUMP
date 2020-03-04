@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class SanitizeNumbersFilterTest extends BaseTestCase
 {
-    private const FILTER = 'sanitize_numbers';
+    const FILTER = 'sanitize_numbers';
 
     /**
      * @dataProvider successProvider

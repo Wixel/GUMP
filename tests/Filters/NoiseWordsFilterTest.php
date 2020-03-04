@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class NoiseWordsFilterTest extends BaseTestCase
 {
-    private const FILTER = 'noise_words';
+    const FILTER = 'noise_words';
 
     /**
      * @dataProvider successProvider

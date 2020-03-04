@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class LowerFilterTest extends BaseTestCase
 {
-    private const FILTER = 'lower_case';
+    const FILTER = 'lower_case';
 
     /**
      * @dataProvider successProvider

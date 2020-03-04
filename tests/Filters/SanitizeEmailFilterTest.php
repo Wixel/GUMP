@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class SanitizeEmailFilterTest extends BaseTestCase
 {
-    private const FILTER = 'sanitize_email';
+    const FILTER = 'sanitize_email';
 
     /**
      * @dataProvider successProvider

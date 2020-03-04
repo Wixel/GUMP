@@ -13,7 +13,7 @@ use Tests\BaseTestCase;
  */
 class RmpunctuationFilterTest extends BaseTestCase
 {
-    private const FILTER = 'rmpunctuation';
+    const FILTER = 'rmpunctuation';
 
     /**
      * @dataProvider successProvider
