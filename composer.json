@@ -30,5 +30,6 @@
     },
     "scripts": {
         "test": "php ./vendor/bin/phpunit"
-    }
+    },
+    "platform": {"php": "7.0"}
 }
