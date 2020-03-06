@@ -101,9 +101,9 @@ class GUMP
 
         if ($gump->run($data) === false) {
             return $gump->get_readable_errors(false);
-        } else {
-            return true;
         }
+
+        return true;
     }
 
     /**
@@ -174,13 +174,12 @@ class GUMP
      */
     public static function add_validator(string $rule, callable $callback, string $error_message = null)
     {
-        $method = 'validate_'.$rule;
-
-        if (method_exists(__CLASS__, $method) || isset(self::$validation_methods[$rule])) {
+        if (method_exists(__CLASS__, self::validator_to_method($rule)) || isset(self::$validation_methods[$rule])) {
             throw new Exception("Validator rule '$rule' already exists.");
         }
 
         self::$validation_methods[$rule] = $callback;
+
         if ($error_message) {
             self::$validation_methods_errors[$rule] = $error_message;
         }
@@ -200,9 +199,7 @@ class GUMP
      */
     public static function add_filter(string $rule, callable $callback)
     {
-        $method = 'filter_'.$rule;
-
-        if (method_exists(__CLASS__, $method) || isset(self::$filter_methods[$rule])) {
+        if (method_exists(__CLASS__, self::filter_to_method($rule)) || isset(self::$filter_methods[$rule])) {
             throw new Exception("Filter rule '$rule' already exists.");
         }
 
@@ -442,14 +439,14 @@ class GUMP
         return $result;
     }
 
-    private function rule_to_method(string $rule)
+    private static function validator_to_method(string $rule)
     {
         return sprintf('validate_%s', $rule);
     }
 
     private function call_rule(string $rule, string $field, $input, string $rule_param = null)
     {
-        $method = $this->rule_to_method($rule);
+        $method = self::validator_to_method($rule);
 
         if (is_callable([$this, $method])) {
             $result = $this->$method($field, $input, $rule_param);
@@ -606,13 +603,11 @@ class GUMP
 
         if (!$convert_to_string) {
             return $resp;
-        } else {
-            $buffer = '';
-            foreach ($resp as $s) {
-                $buffer .= "<span class=\"$error_class\">$s</span>";
-            }
-            return $buffer;
         }
+
+        return array_reduce($resp, function($prev, $next) use($error_class) {
+            return sprintf('%s<span class="%s">%s</span>', $prev, $error_class, $next);
+        });
     }
 
     /**
@@ -714,10 +709,16 @@ class GUMP
         return $input;
     }
 
+    private static function filter_to_method(string $rule)
+    {
+        return sprintf('filter_%s', $rule);
+    }
+
     public function call_filter(string $filter, $value, $params)
     {
-        if (is_callable(array($this, 'filter_'.$filter))) {
-            $method = 'filter_'.$filter;
+        $method = self::filter_to_method($filter);
+
+        if (is_callable(array($this, $method))) {
             return $this->$method($value, $params);
         } elseif (function_exists($filter)) {
             return $filter($value);
@@ -1430,13 +1431,13 @@ class GUMP
      */
     protected function validate_iban($field, $input, $param = null)
     {
-        static $character = array(
+        $character = [
             'A' => 10, 'C' => 12, 'D' => 13, 'E' => 14, 'F' => 15, 'G' => 16,
             'H' => 17, 'I' => 18, 'J' => 19, 'K' => 20, 'L' => 21, 'M' => 22,
             'N' => 23, 'O' => 24, 'P' => 25, 'Q' => 26, 'R' => 27, 'S' => 28,
             'T' => 29, 'U' => 30, 'V' => 31, 'W' => 32, 'X' => 33, 'Y' => 34,
             'Z' => 35, 'B' => 11
-        );
+        ];
 
         if (!preg_match("/\A[A-Z]{2}\d{2} ?[A-Z\d]{4}( ?\d{4}){1,} ?\d{1,4}\z/", $input[$field])) {
             return false;
@@ -1610,11 +1611,7 @@ class GUMP
      */
     protected function validate_guidv4($field, $input, $param = null)
     {
-        if (preg_match("/\{?[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}\}?$/", $input[$field])) {
-            return true;
-        }
-
-        return false;
+        return preg_match("/\{?[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}\}?$/", $input[$field]) > 0;
     }
 
     /**
@@ -1742,6 +1739,10 @@ class GUMP
         $json = Helpers::file_get_contents("http://twitter.com/users/username_available?username=".$input[$field]);
 
         $result = json_decode($json);
+
+        if (!isset($result->reason)) {
+            throw new Exception('Twitter JSON response changed. Please report this on GitHub.');
+        }
 
         return $result->reason === "taken";
     }
