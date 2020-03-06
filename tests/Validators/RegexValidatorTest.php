@@ -43,4 +43,15 @@ class RegexValidatorTest extends BaseTestCase
     {
          $this->assertTrue($this->validate(self::RULE, ''));
     }
+
+    public function testRegexWithPipeArrayFormat()
+    {
+        $result = $this->gump->validate([
+            'some_field' => 'test|123'
+        ], [
+            'some_field' => ['required', 'regex' => '/test\|[0-9]{3}/'],
+        ]);
+
+        $this->assertTrue($result);
+    }
 }

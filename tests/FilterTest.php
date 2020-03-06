@@ -90,7 +90,6 @@ class FilterTest extends BaseTestCase
         ], $result);
     }
 
-
     public function testNonexistentFilterThrowsException()
     {
         $this->expectException(Exception::class);

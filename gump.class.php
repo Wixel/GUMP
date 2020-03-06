@@ -386,7 +386,7 @@ class GUMP
         $this->errors = [];
 
         foreach ($ruleset as $field => $rules) {
-            $rules = explode($rules_delimiter, $rules);
+            $rules = $this->parse_rules($rules, $rules_delimiter);
 
             if (!isset($input[$field])) {
                 $input[$field] = null;
@@ -398,7 +398,7 @@ class GUMP
                 if (is_null($require_rule_found) && self::is_empty($input[$field])) continue;
                 if (!$this->field_doesnt_have_errors($field, $this->errors)) continue;
 
-                $parsed_rule = $this->parse_rule($rule);
+                $parsed_rule = $this->parse_rule($rule, $parameters_delimiter);
                 $result = $this->call_rule($parsed_rule['rule'], $field, $input, $parsed_rule['param']);
 
                 if (is_array($result)) {
@@ -410,11 +410,44 @@ class GUMP
         return (count($this->errors) > 0) ? $this->errors : true;
     }
 
+    /**
+     * @param string|array $rules
+     * @param string $rules_delimiter
+     * @return array
+     */
+    private function parse_rules($rules, string $rules_delimiter)
+    {
+        if (is_array($rules)) {
+            $theKeys = [];
+            foreach ($rules as $k => $v) {
+                $theKeys[] = is_numeric($k) ? $v : $k;
+            }
+
+            return array_map(function($value, $key) use($rules) {
+                if ($value === $key) {
+                    return [ $key ];
+                }
+
+                return [$key, $value];
+            }, $rules, $theKeys);
+        }
+
+        return explode($rules_delimiter, $rules);;
+    }
+
     private function find_required_rule(array $rules)
     {
         $require_type_of_rules = ['required', 'required_file'];
-        $found = array_values(array_intersect($require_type_of_rules, $rules));
 
+        // v2
+        if (is_array($rules) && is_array($rules[0])) {
+            $found = array_filter($rules, function($item) use($require_type_of_rules) {
+                return in_array($item[0], $require_type_of_rules);
+            });
+            return $found > 0 ? true : false;
+        }
+
+        $found = array_values(array_intersect($require_type_of_rules, $rules));
         return count($found) > 0 ? $found[0] : null;
     }
 
@@ -423,14 +456,27 @@ class GUMP
         return array_search($field, array_column($errors, 'field')) === false;
     }
 
-    private function parse_rule(string $rule)
+    /**
+     * @param string|array $rule
+     * @param string $parameters_delimiter
+     * @return array
+     */
+    private function parse_rule($rule, string $parameters_delimiter)
     {
+        // v2
+        if (is_array($rule)) {
+            return [
+                'rule' => $rule[0],
+                'param' => $rule[1] ?? null
+            ];
+        }
+
         $result = [];
         $result['rule'] = $rule;
         $result['param'] = null;
 
-        if (strstr($rule, ',') !== false) {
-            list($rule, $param) = explode(',', $rule);
+        if (strstr($rule, $parameters_delimiter) !== false) {
+            list($rule, $param) = explode($parameters_delimiter, $rule);
 
             $result['rule'] = $rule;
             $result['param'] = $param;
@@ -444,7 +490,15 @@ class GUMP
         return sprintf('validate_%s', $rule);
     }
 
-    private function call_rule(string $rule, string $field, $input, string $rule_param = null)
+    /**
+     * @param string $rule
+     * @param string $field
+     * @param mixed $input
+     * @param string|array $rule_param
+     * @return array|bool
+     * @throws Exception
+     */
+    private function call_rule(string $rule, string $field, $input, $rule_param = null)
     {
         $method = self::validator_to_method($rule);
 
@@ -466,7 +520,14 @@ class GUMP
         throw new Exception("Validator method '$method' does not exist.");
     }
 
-    private function generate_error_array(string $field, $value, string $rule, string $rule_param = null)
+    /**
+     * @param string $field
+     * @param mixed $value
+     * @param string $rule
+     * @param string|array $rule_param
+     * @return array
+     */
+    private function generate_error_array(string $field, $value, string $rule, $rule_param = null)
     {
         return [
             'field' => $field,
@@ -1020,7 +1081,7 @@ class GUMP
 
         $param = explode(';', $param);
 
-        // consider: in_array(mb_strtolower($value), array_map('mb_strtolower', $param)
+//         consider: in_array(mb_strtolower($value), array_map('mb_strtolower', $param)
 
         return in_array($value, $param);
     }
@@ -1090,6 +1151,23 @@ class GUMP
     protected function validate_min_len($field, $input, $param = null)
     {
         return mb_strlen($input[$field]) >= (int) $param;
+    }
+
+    /**
+     * Determine if the provided value length is between min and max values.
+     *
+     * @example_parameter 3;11
+     *
+     * @param string $field
+     * @param array  $input
+     * @param null   $param
+     *
+     * @return mixed
+     */
+    protected function validate_between_len($field, $input, $param)
+    {
+        return $this->validate_min_len($field, $input, $param[0])
+            && $this->validate_max_len($field, $input, $param[1]);
     }
 
     /**

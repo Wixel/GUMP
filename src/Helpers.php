@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace GUMP;
 
 class Helpers
@@ -55,4 +57,5 @@ class Helpers
     {
         return file_exists($filename);
     }
+
 }
