@@ -50,13 +50,19 @@ class GetReadableErrorsTest extends BaseTestCase
     public function testReturnsString()
     {
         $result = $this->gump->validate([
-            'test_number' => 'text'
+            'test_number' => 'text',
+            'test_name' => '123',
+            'test_email' => 'notemail.com',
         ], [
-            'test_number' => 'numeric'
+            'test_number' => 'numeric',
+            'test_name' => 'valid_name',
+            'test_email' => 'valid_email'
         ]);
 
         $this->assertEquals(
-            '<span class="gump-error-message">The <span class="gump-field">Test Number</span> field must be a number</span>',
+            '<span class="gump-error-message">The <span class="gump-field">Test Number</span> field must be a number</span>'
+            .'<span class="gump-error-message">The <span class="gump-field">Test Name</span> should be a full name</span>'
+            .'<span class="gump-error-message">The <span class="gump-field">Test Email</span> field must be a valid email address</span>',
             $this->gump->get_readable_errors(true)
         );
     }
@@ -114,13 +120,16 @@ class GetReadableErrorsTest extends BaseTestCase
     public function testWhenGumpInstanceIsCastedToStringItReturnsReadableErrorsInStringFormat()
     {
         $result = $this->gump->validate([
-            'test_number' => 'text'
+            'test_number' => 'text',
+            'test_name' => '123',
         ], [
-            'test_number' => 'numeric'
+            'test_number' => 'numeric',
+            'test_name' => 'valid_name'
         ]);
 
         $this->assertEquals(
-            '<span class="gump-error-message">The <span class="gump-field">Test Number</span> field must be a number</span>',
+            '<span class="gump-error-message">The <span class="gump-field">Test Number</span> field must be a number</span>'
+            .'<span class="gump-error-message">The <span class="gump-field">Test Name</span> should be a full name</span>',
             (string)$this->gump
         );
     }
