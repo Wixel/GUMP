@@ -57,8 +57,6 @@ var_dump($filtered['other_field']); // result: "cool-title"
 ```php
 $gump = new GUMP();
 
-$_POST = $gump->sanitize($_POST); // You don't have to sanitize, but it's safest to do so.
-
 $gump->validation_rules([
     'username'    => 'required|alpha_numeric|max_len,100|min_len,6',
     'password'    => 'required|max_len,100|min_len,6',
@@ -78,9 +76,13 @@ $gump->filter_rules([
 $validated_data = $gump->run($_POST);
 
 if ($validated_data === false) {
-    echo $gump->get_readable_errors(true);
+    var_dump($gump->get_readable_errors()); // ['Field X is required.', 'Field X must be an email.', ...];
+    
+    // or
+    
+    var_dump($gump->get_errors_array()); // ['field' => 'Field X is required']
 } else {
-    print_r($validated_data); // validation successful
+    var_dump($validated_data); // validation successful
 }
 ```
 
