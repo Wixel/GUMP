@@ -386,12 +386,9 @@ class GUMP
         $this->errors = [];
 
         foreach ($ruleset as $field => $rules) {
+            $input[$field] = $input[$field] ?? null;
+
             $rules = $this->parse_rules($rules, $rules_delimiter);
-
-            if (!isset($input[$field])) {
-                $input[$field] = null;
-            }
-
             $require_rule_found = $this->find_required_rule($rules);
 
             foreach ($rules as $rule) {
