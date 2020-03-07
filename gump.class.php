@@ -1051,7 +1051,7 @@ class GUMP
     /**
      * Verify that a value is contained within the pre-defined value set.
      *
-     * @example_parameter one;two;use array format for rules if semicolons
+     * @example_parameter one;two;use array format if semicolons
      *
      * @param string $field
      * @param array  $input
@@ -1063,6 +1063,7 @@ class GUMP
     {
         $value = trim(mb_strtolower($input[$field]));
 
+        // v2
         if (is_array($param)) {
             $param = array_map(function($value) {
                 return trim(mb_strtolower($value));
@@ -1111,7 +1112,7 @@ class GUMP
     /**
      * Verify that a value is contained within the pre-defined value set. Error message will NOT show the list of possible values.
      *
-     * @example_parameter value;value;value
+     * @example_parameter value1;value2
      *
      * @param string $field
      * @param array $input
