@@ -4,15 +4,7 @@ require_once 'ci/boot.php';
 $extraRules = [
     [
         'rule' => '**trim**',
-        'description' => 'Remove spaces from the beginning and end of strings. (PHP)'
-    ],
-    [
-        'rule' => '**base64_encode**',
-        'description' => 'Base64 encode the input. (PHP)'
-    ],
-    [
-        'rule' => '**base64_decode**',
-        'description' => 'Base64 decode the input. (PHP)'
+        'description' => 'Remove spaces from the beginning and end of strings (PHP).'
     ]
 ];
 
