@@ -14,7 +14,7 @@ GUMP is a standalone PHP data validation and filtering class that makes validati
 composer require wixel/gump
 ```
 
-### Short format example
+### Short format example for validations
 
 ```php
 $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
@@ -23,7 +23,7 @@ $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
     'avatar'   => 'required_file|extension,png;jpg'
 ]);
 
-// array format (recommended way, supported since v1.7)
+// recommended format (supported since v1.7)
 $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
     'username' => ['required', 'alpha_numeric'],
     'password' => ['required', 'max_len' => 100, 'min_len' => 6],
@@ -35,6 +35,21 @@ if ($is_valid === true) {
 } else {
     print_r($is_valid);
 }
+```
+
+### Short format example for filtering
+
+```php
+$filtered = GUMP::filter_input([
+    'field' => ' text ',
+    'other_field' => 'Cool Title'
+], [
+    'field' => ['trim', 'upper_case'],
+    'other_field' => 'slug'
+]);
+
+var_dump($filtered['field']); // will equal to: "TEXT"
+var_dump($filtered['other_field']); // will equal to: "cool-title"
 ```
 
 ### Long format example
@@ -68,7 +83,6 @@ if ($validated_data === false) {
     print_r($validated_data); // validation successful
 }
 ```
-
 
 
 :star: Available Validators
