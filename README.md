@@ -128,7 +128,7 @@ $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
 | **street_address**                                                             | Determine if the provided input is likely to be a street address using weak detection.                                      |
 | **iban**                                                                       | Determine if the provided value is a valid IBAN.                                                                            |
 | **date**,d/m/Y                                                                 | Determine if the provided input is a valid date (ISO 8601) or specify a custom format (optional).                           |
-| **min_age**,18                                                                 | Determine if the provided input meets age requirement (ISO 8601).                                                           |
+| **min_age**,18                                                                 | Determine if the provided input meets age requirement (ISO 8601). Input should be a date (Y-m-d).                           |
 | **max_numeric**,50                                                             | Determine if the provided numeric value is lower or equal to a specific value.                                              |
 | **min_numeric**,1                                                              | Determine if the provided numeric value is higher or equal to a specific value.                                             |
 | **starts**,Z                                                                   | Determine if the provided value starts with param.                                                                          |
@@ -167,9 +167,7 @@ Filters can be any PHP function that returns a string. You don't need to create 
 | **lower_case**         | Converts to lowercase.                                                                                              |
 | **upper_case**         | Converts to uppercase.                                                                                              |
 | **slug**               | Converts value to url-web-slugs.                                                                                    |
-| **trim**               | Remove spaces from the beginning and end of strings. (PHP)                                                          |
-| **base64_encode**      | Base64 encode the input. (PHP)                                                                                      |
-| **base64_decode**      | Base64 decode the input. (PHP)                                                                                      |
+| **trim**               | Remove spaces from the beginning and end of strings (PHP).                                                          |
 </div>
 
 #### Available Methods

@@ -34,7 +34,8 @@
         "psr-4": { "Tests\\": "tests/" }
     },
     "scripts": {
-        "test": "php ./vendor/bin/phpunit"
+        "test": "php ./vendor/bin/phpunit",
+        "dump": "php ./ci/dump_filters_docs.php && php ./ci/dump_validators_docs.php"
     },
     "config": {
         "platform": {"php": "7.0"}

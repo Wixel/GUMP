@@ -1582,7 +1582,7 @@ class GUMP
     }
 
     /**
-     * Determine if the provided input meets age requirement (ISO 8601).
+     * Determine if the provided input meets age requirement (ISO 8601). Input should be a date (Y-m-d).
      *
      * @example_parameter 18
      *
