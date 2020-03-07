@@ -128,7 +128,7 @@ class FilterTest extends BaseTestCase
             'field_one' => 'tests',
             'field_two' => ' CUSTOM ',
         ], [
-            'field_one' => ['upper_case'],
+            'field_one' => 'upper_case',
             'field_two' => ['trim', 'custom' => 'strtolower'],
         ]);
 

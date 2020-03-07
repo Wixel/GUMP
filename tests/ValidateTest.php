@@ -307,7 +307,7 @@ class ValidateTest extends BaseTestCase
             'some_other_field' => '123'
         ], [
             'some_field' => ['required', 'alpha', 'max_len' => 2],
-            'some_other_field' => ['alpha'],
+            'some_other_field' => 'alpha',
         ]);
 
         $this->assertEquals([[
