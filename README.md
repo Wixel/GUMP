@@ -61,7 +61,7 @@ $gump->validation_rules([
     'username'    => 'required|alpha_numeric|max_len,100|min_len,6',
     'password'    => 'required|max_len,100|min_len,6',
     'email'       => 'required|valid_email',
-    'gender'      => 'required|exact_len,1|contains,m f',
+    'gender'      => 'required|exact_len,1|contains,m;f',
     'credit_card' => 'required|valid_cc'
 ]);
 
