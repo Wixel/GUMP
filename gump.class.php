@@ -1051,7 +1051,7 @@ class GUMP
     /**
      * Verify that a value is contained within the pre-defined value set.
      *
-     * @example_parameter one;two;use array format if semicolons
+     * @example_parameter one;two;use array format if one of the values contains semicolons
      *
      * @param string $field
      * @param array  $input
@@ -1182,6 +1182,22 @@ class GUMP
     }
 
     /**
+     * Determine if the provided value length matches a specific value.
+     *
+     * @example_parameter 5
+     *
+     * @param string $field
+     * @param array  $input
+     * @param null   $param
+     *
+     * @return mixed
+     */
+    protected function validate_exact_len($field, $input, $param = null)
+    {
+        return mb_strlen($input[$field]) == (int) $param;
+    }
+
+    /**
      * Determine if the provided value length is between min and max values.
      *
      * @example_parameter 3;11
@@ -1196,22 +1212,6 @@ class GUMP
     {
         return $this->validate_min_len($field, $input, $param[0])
             && $this->validate_max_len($field, $input, $param[1]);
-    }
-
-    /**
-     * Determine if the provided value length matches a specific value.
-     *
-     * @example_parameter 5
-     *
-     * @param string $field
-     * @param array  $input
-     * @param null   $param
-     *
-     * @return mixed
-     */
-    protected function validate_exact_len($field, $input, $param = null)
-    {
-        return mb_strlen($input[$field]) == (int) $param;
     }
 
     /**
