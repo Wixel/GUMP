@@ -6,11 +6,11 @@ use GUMP;
 use Exception;
 
 /**
- * Class IsValidTest
+ * Class StaticIsValidTest
  *
  * @package Tests
  */
-class IsValidTest extends BaseTestCase
+class StaticIsValidTest extends BaseTestCase
 {
     public function testOnSuccessReturnsTrue()
     {

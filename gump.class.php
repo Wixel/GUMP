@@ -448,22 +448,44 @@ class GUMP
         if (is_array($rule)) {
             return [
                 'rule' => $rule[0],
-                'param' => $rule[1] ?? null
+                'param' => $this->parse_rule_param($rule[1] ?? null)
             ];
         }
 
-        $result = [];
-        $result['rule'] = $rule;
-        $result['param'] = null;
+        $result = [
+            'rule' => $rule,
+            'param' => null
+        ];
 
         if (strstr($rule, $parameters_delimiter) !== false) {
             list($rule, $param) = explode($parameters_delimiter, $rule);
 
             $result['rule'] = $rule;
-            $result['param'] = $param;
+            $result['param'] = $this->parse_rule_param($param);
         }
 
         return $result;
+    }
+
+    /**
+     * @param string|array $param
+     * @return array|string|null
+     */
+    private function parse_rule_param($param)
+    {
+        if (is_null($param)) {
+            return null;
+        }
+
+        if (is_array($param)) {
+            return $param;
+        }
+
+        if (strstr($param, ';') !== false) {
+            return explode(';', $param);
+        }
+
+        return $param;
     }
 
     private function find_required_rule(array $rules)
@@ -1022,18 +1044,14 @@ class GUMP
      */
     protected function validate_required($field, $input, $param = null)
     {
-        if (isset($input[$field]) && !self::is_empty($input[$field])) {
-            return;
-        }
-
-        return false;
+        return isset($input[$field]) && !self::is_empty($input[$field]);
     }
 
 
     /**
      * Verify that a value is contained within the pre-defined value set.
      *
-     * @example_parameter 'value1' 'space separated value'
+     * @example_parameter one;two;use array format for rules if semicolons
      *
      * @param string $field
      * @param array  $input
@@ -1043,9 +1061,17 @@ class GUMP
      */
     protected function validate_contains($field, $input, $param = null)
     {
-        $param = trim(mb_strtolower($param));
-
         $value = trim(mb_strtolower($input[$field]));
+
+        if (is_array($param)) {
+            $param = array_map(function($value) {
+                return trim(mb_strtolower($value));
+            }, $param);
+
+            return in_array($value, $param);
+        }
+
+        $param = trim(mb_strtolower($param));
 
         if (preg_match_all('#\'(.+?)\'#', $param, $matches, PREG_PATTERN_ORDER)) {
             $param = $matches[1];
@@ -1062,19 +1088,22 @@ class GUMP
      * @example_parameter value1;value2
      *
      * @param string $field
-     * @param array  $input
+     * @param array $input
      *
+     * @param array $param
      * @return mixed
      */
-    protected function validate_contains_list($field, $input, $param = null)
+    protected function validate_contains_list($field, $input, array $param)
     {
-        $param = trim(mb_strtolower($param));
+        $param = array_map(function($value) {
+            return trim(mb_strtolower($value));
+        }, $param);
+
+        $param = array_map(function($value) {
+            return trim(mb_strtolower($value));
+        }, $param);
 
         $value = trim(mb_strtolower($input[$field]));
-
-        $param = explode(';', $param);
-
-//         consider: in_array(mb_strtolower($value), array_map('mb_strtolower', $param)
 
         return in_array($value, $param);
     }
@@ -1085,17 +1114,22 @@ class GUMP
      * @example_parameter value;value;value
      *
      * @param string $field
-     * @param array  $input
+     * @param array $input
+     * @param array $param
      *
      * @return mixed
      */
-    protected function validate_doesnt_contain_list($field, $input, $param = null)
+    protected function validate_doesnt_contain_list($field, $input, array $param)
     {
-        $param = trim(mb_strtolower($param));
+        $param = array_map(function($value) {
+            return trim(mb_strtolower($value));
+        }, $param);
+
+        $param = array_map(function($value) {
+            return trim(mb_strtolower($value));
+        }, $param);
 
         $value = trim(mb_strtolower($input[$field]));
-
-        $param = explode(';', $param);
 
         return !in_array($value, $param);
     }
@@ -1157,7 +1191,7 @@ class GUMP
      *
      * @return mixed
      */
-    protected function validate_between_len($field, $input, $param)
+    protected function validate_between_len($field, $input, array $param)
     {
         return $this->validate_min_len($field, $input, $param[0])
             && $this->validate_max_len($field, $input, $param[1]);
@@ -1635,22 +1669,22 @@ class GUMP
      * @example_parameter png;jpg;gif
      *
      * @param string $field
-     * @param array  $input
+     * @param array $input
+     * @param array $param
      *
      * @return mixed
      */
-    protected function validate_extension($field, $input, $param = null)
+    protected function validate_extension($field, $input, array $param)
     {
         if (is_array($input[$field]) && $input[$field]['error'] === 0) {
-            $param = trim(mb_strtolower($param));
-            $allowed_extensions = explode(';', $param);
+            $param = array_map(function($value) {
+                return trim(mb_strtolower($value));
+            }, $param);
 
             $path_info = pathinfo($input[$field]['name']);
-            $extension = isset($path_info['extension']) ? $path_info['extension'] : false;
+            $extension = $path_info['extension'] ?? null;
 
-            if ($extension && in_array(mb_strtolower($extension), $allowed_extensions)) {
-                return true;
-            }
+            return $extension && in_array(mb_strtolower($extension), $param);
         }
 
         return false;

@@ -125,16 +125,16 @@ class FilterTest extends BaseTestCase
         });
 
         $result = $this->gump->filter([
-            'some_field' => 'tests',
-            'some_other_field' => ' CUSTOM '
+            'field_one' => 'tests',
+            'field_two' => ' CUSTOM ',
         ], [
-            'some_field' => ['upper_case'],
-            'some_other_field' => ['trim', 'custom' => 'strtolower'],
+            'field_one' => ['upper_case'],
+            'field_two' => ['trim', 'custom' => 'strtolower'],
         ]);
 
         $this->assertEquals([
-            'some_field' => 'TESTS',
-            'some_other_field' => 'custom',
+            'field_one' => 'TESTS',
+            'field_two' => 'custom',
         ], $result);
     }
 }
