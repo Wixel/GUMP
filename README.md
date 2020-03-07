@@ -23,6 +23,14 @@ $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
     'avatar'   => 'required_file|extension,png;jpg'
 ]);
 
+// or
+
+$is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
+    'username' => ['required', 'alpha_numeric'],
+    'password' => ['required', 'max_len' => 100, 'min_len' => 6],
+    'avatar'   => ['required_file', 'extension' => ['png', 'jpg']]
+]);
+
 if ($is_valid === true) {
     // continue
 } else {
