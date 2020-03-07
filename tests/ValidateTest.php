@@ -339,9 +339,25 @@ class ValidateTest extends BaseTestCase
         ]], $result);
     }
 
+    public function testRulesWithSemicolonSeparatorMapsToArrayInsideValidator()
+    {
+        $result = $this->gump->validate([
+            'some_field' => 'tests'
+        ], [
+            'some_field' => 'alpha|between_len,2;4',
+        ]);
+
+        $this->assertEquals([[
+            'field' => 'some_field',
+            'value' => 'tests',
+            'rule' => 'validate_between_len',
+            'param' => [2, 4] // ;)
+        ]], $result);
+    }
+
     public function testRulesArrayFormatWithMultidimensionalArrayParameters()
     {
-        GUMP::add_validator("custom", function($field, $input, $param = null) {
+        GUMP::add_validator("custom", function($field, $input, array $param) {
             return $param['min'] === 2 && $param['max'] === 5;
         }, 'My custom error');
 

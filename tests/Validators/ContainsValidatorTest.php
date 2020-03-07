@@ -18,6 +18,11 @@ class ContainsValidatorTest extends BaseTestCase
         $this->assertTrue($this->validate("contains,'one' 'two' 'space separated'", 'space separated'));
     }
 
+    public function testSuccessWithSemicolonFormat()
+    {
+        $this->assertTrue($this->validate("contains,one;two;as long as it does not contain a semicolon", 'as long as it does not contain a semicolon'));
+    }
+
     public function testFailure()
     {
         $this->assertNotTrue($this->validate('contains,one two', 'three'));
