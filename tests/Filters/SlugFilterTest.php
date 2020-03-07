@@ -29,6 +29,7 @@ class SlugFilterTest extends BaseTestCase
         return [
             ['test space.!@`~;:/\\<>', 'test-space'],
             ['test', 'test'],
+            ['Test case', 'test-case'],
         ];
     }
 }

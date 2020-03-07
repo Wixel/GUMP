@@ -1047,7 +1047,6 @@ class GUMP
         return isset($input[$field]) && !self::is_empty($input[$field]);
     }
 
-
     /**
      * Verify that a value is contained within the pre-defined value set.
      *
