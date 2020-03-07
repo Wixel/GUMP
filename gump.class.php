@@ -411,6 +411,8 @@ class GUMP
     }
 
     /**
+     * Parses filters and validators rules group.
+     *
      * @param string|array $rules
      * @param string $rules_delimiter
      * @return array
@@ -436,28 +438,9 @@ class GUMP
         return explode($rules_delimiter, $rules);;
     }
 
-    private function find_required_rule(array $rules)
-    {
-        $require_type_of_rules = ['required', 'required_file'];
-
-        // v2
-        if (is_array($rules) && is_array($rules[0])) {
-            $found = array_filter($rules, function($item) use($require_type_of_rules) {
-                return in_array($item[0], $require_type_of_rules);
-            });
-            return $found > 0 ? true : false;
-        }
-
-        $found = array_values(array_intersect($require_type_of_rules, $rules));
-        return count($found) > 0 ? $found[0] : null;
-    }
-
-    private function field_doesnt_have_errors(string $field, array $errors)
-    {
-        return array_search($field, array_column($errors, 'field')) === false;
-    }
-
     /**
+     * Parses filters and validators individual rules.
+     *
      * @param string|array $rule
      * @param string $parameters_delimiter
      * @return array
@@ -484,6 +467,27 @@ class GUMP
         }
 
         return $result;
+    }
+
+    private function find_required_rule(array $rules)
+    {
+        $require_type_of_rules = ['required', 'required_file'];
+
+        // v2
+        if (is_array($rules) && is_array($rules[0])) {
+            $found = array_filter($rules, function($item) use($require_type_of_rules) {
+                return in_array($item[0], $require_type_of_rules);
+            });
+            return $found > 0 ? true : false;
+        }
+
+        $found = array_values(array_intersect($require_type_of_rules, $rules));
+        return count($found) > 0 ? $found[0] : null;
+    }
+
+    private function field_doesnt_have_errors(string $field, array $errors)
+    {
+        return array_search($field, array_column($errors, 'field')) === false;
     }
 
     private static function validator_to_method(string $rule)
@@ -724,14 +728,12 @@ class GUMP
 
     /**
      * Filter the input data according to the specified filter set.
-     * If any filter's parameter contains either '|' or ',', the corresponding default separator can be changed
+     * If any filter's parameter contains either '|' or ',', the corresponding default separator can be changed.
      *
      * @param mixed  $input
      * @param array  $filterset
      * @param string $filters_delimeter
      * @param string $parameters_delimiter
-     *
-     * @throws Exception
      *
      * @return mixed
      *
@@ -744,17 +746,10 @@ class GUMP
                 continue;
             }
 
-            $filters = explode($filters_delimeter, $filters);
+            $filters = $this->parse_rules($filters, $filters_delimeter);
 
             foreach ($filters as $filter) {
-                $params = null;
-
-                if (strstr($filter, $parameters_delimiter) !== false) {
-                    $filter = explode($parameters_delimiter, $filter);
-                    $params = array_slice($filter, 1, count($filter) - 1);
-
-                    $filter = $filter[0];
-                }
+                $parsed_rule = $this->parse_rule($filter, $parameters_delimiter);
 
                 if (is_array($input[$field])) {
                     $input_array = &$input[$field];
@@ -763,7 +758,7 @@ class GUMP
                 }
 
                 foreach ($input_array as &$value) {
-                    $value = $this->call_filter($filter, $value, $params);
+                    $value = $this->call_filter($parsed_rule['rule'], $value, $parsed_rule['param']);
                 }
             }
         }

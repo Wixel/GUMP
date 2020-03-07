@@ -27,7 +27,7 @@ class FilterTest extends BaseTestCase
 
     public function testMoreThanOneFiltersAreSuccessfullyApplied()
     {
-        GUMP::add_filter("custom", function($value, $params = NULL) {
+        GUMP::add_filter("custom", function($value, $params = null) {
             return strtolower($value);
         });
 
@@ -57,7 +57,7 @@ class FilterTest extends BaseTestCase
 
     public function testCustomFilterIsSuccessfullyApplied()
     {
-        GUMP::add_filter("custom", function($value, $params = NULL) {
+        GUMP::add_filter("custom", function($value, $params = null) {
             return strtoupper($value);
         });
 
@@ -75,7 +75,7 @@ class FilterTest extends BaseTestCase
     public function testCustomFilterWithParameters()
     {
         $this->markTestIncomplete('TODO');
-        GUMP::add_filter("custom", function($value, $params = NULL) {
+        GUMP::add_filter("custom", function($value, $params = null) {
             return strtolower($value);
         });
 
@@ -115,6 +115,26 @@ class FilterTest extends BaseTestCase
         $this->assertEquals([
             'test' => 'text',
             'other' => 'TEXT'
+        ], $result);
+    }
+
+    public function testRulesArrayFormatWithSimpleArrayParameters()
+    {
+        GUMP::add_filter("custom", function($value, $param = null) {
+            return call_user_func($param, $value);
+        });
+
+        $result = $this->gump->filter([
+            'some_field' => 'tests',
+            'some_other_field' => ' CUSTOM '
+        ], [
+            'some_field' => ['upper_case'],
+            'some_other_field' => ['trim', 'custom' => 'strtolower'],
+        ]);
+
+        $this->assertEquals([
+            'some_field' => 'TESTS',
+            'some_other_field' => 'custom',
         ], $result);
     }
 }
