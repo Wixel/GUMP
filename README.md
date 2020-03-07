@@ -17,14 +17,14 @@ composer require wixel/gump
 ### Short format example
 
 ```php
+// rules defined as text
 $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
     'username' => 'required|alpha_numeric',
     'password' => 'required|max_len,100|min_len,6',
     'avatar'   => 'required_file|extension,png;jpg'
 ]);
 
-// or
-
+// rules defined as array
 $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
     'username' => ['required', 'alpha_numeric'],
     'password' => ['required', 'max_len' => 100, 'min_len' => 6],
