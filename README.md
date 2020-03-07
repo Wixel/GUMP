@@ -147,7 +147,7 @@ $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
 
 :star: Available Filters
 ------------------------
-Filters can be any PHP function that returns a string. You don't need to create your own if a PHP function exists that does what you want the filter to do.
+Filter rules can also be any PHP native function (e.g.: rim).
 
 <div id="available_filters">
 
