@@ -87,7 +87,7 @@ if ($validated_data === false) {
 
 :star: Available Validators
 ---------------------------
-:exclamation: If you use Pipe or Semicolon as parameters values, you **must** use array format.
+**Important:** If you use Pipe or Semicolon as parameters values, you **must** use array format.
 ```php
 $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
     'field' => 'regex,/partOf;my|Regex/', // NO
