@@ -76,10 +76,8 @@ $gump->filter_rules([
 $validated_data = $gump->run($_POST);
 
 if ($validated_data === false) {
-    var_dump($gump->get_readable_errors()); // ['Field X is required.', 'Field X must be an email.', ...];
-    
+    var_dump($gump->get_readable_errors()); // ['Field X is required.'];
     // or
-    
     var_dump($gump->get_errors_array()); // ['field' => 'Field X is required']
 } else {
     var_dump($validated_data); // validation successful
