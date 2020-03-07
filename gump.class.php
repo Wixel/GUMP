@@ -1039,8 +1039,7 @@ class GUMP
      * @param string $field
      * @param array  $input
      * @param null   $param
-     *
-     * @return mixed
+     * @return bool
      */
     protected function validate_required($field, array $input, $param = null)
     {
@@ -1055,8 +1054,7 @@ class GUMP
      * @param string $field
      * @param array  $input
      * @param null   $param
-     *
-     * @return mixed
+     * @return bool
      */
     protected function validate_contains($field, array $input, $param = null)
     {
@@ -1089,9 +1087,8 @@ class GUMP
      *
      * @param string $field
      * @param array $input
-     *
      * @param array $param
-     * @return mixed
+     * @return bool
      */
     protected function validate_contains_list($field, $input, array $param)
     {
@@ -1116,8 +1113,7 @@ class GUMP
      * @param string $field
      * @param array $input
      * @param array $param
-     *
-     * @return mixed
+     * @return bool
      */
     protected function validate_doesnt_contain_list($field, $input, array $param)
     {
@@ -1140,8 +1136,7 @@ class GUMP
      * @param string $field
      * @param array  $input
      * @param null   $param
-     *
-     * @return mixed
+     * @return bool
      */
     protected function validate_valid_email($field, array $input, $param = null)
     {
@@ -1156,8 +1151,7 @@ class GUMP
      * @param string $field
      * @param array  $input
      * @param null   $param
-     *
-     * @return mixed
+     * @return bool
      */
     protected function validate_max_len($field, array $input, $param = null)
     {
@@ -1172,8 +1166,7 @@ class GUMP
      * @param string $field
      * @param array  $input
      * @param null   $param
-     *
-     * @return mixed
+     * @return bool
      */
     protected function validate_min_len($field, array $input, $param = null)
     {
@@ -1188,8 +1181,7 @@ class GUMP
      * @param string $field
      * @param array  $input
      * @param null   $param
-     *
-     * @return mixed
+     * @return bool
      */
     protected function validate_exact_len($field, array $input, $param = null)
     {
@@ -1202,10 +1194,9 @@ class GUMP
      * @example_parameter 3;11
      *
      * @param string $field
-     * @param array  $input
-     * @param null   $param
-     *
-     * @return mixed
+     * @param array $input
+     * @param array $param
+     * @return bool
      */
     protected function validate_between_len($field, $input, array $param)
     {
@@ -1219,8 +1210,7 @@ class GUMP
      * @param string $field
      * @param array  $input
      * @param null   $param
-     *
-     * @return mixed
+     * @return bool
      */
     protected function validate_alpha($field, array $input, $param = null)
     {
@@ -1233,8 +1223,7 @@ class GUMP
      * @param string $field
      * @param array  $input
      * @param null   $param
-     *
-     * @return mixed
+     * @return bool
      */
     protected function validate_alpha_numeric($field, array $input, $param = null)
     {
@@ -1247,8 +1236,7 @@ class GUMP
      * @param string $field
      * @param array  $input
      * @param null   $param
-     *
-     * @return mixed
+     * @return bool
      */
     protected function validate_alpha_dash($field, array $input, $param = null)
     {
@@ -1261,8 +1249,7 @@ class GUMP
      * @param string $field
      * @param array  $input
      * @param null   $param
-     *
-     * @return mixed
+     * @return bool
      */
     protected function validate_alpha_numeric_dash($field, array $input, $param = null)
     {
@@ -1275,8 +1262,7 @@ class GUMP
      * @param string $field
      * @param array  $input
      * @param null   $param
-     *
-     * @return mixed
+     * @return bool
      */
     protected function validate_alpha_numeric_space($field, array $input, $param = null)
     {
@@ -1289,8 +1275,7 @@ class GUMP
      * @param string $field
      * @param array  $input
      * @param null   $param
-     *
-     * @return mixed
+     * @return bool
      */
     protected function validate_alpha_space($field, array $input, $param = null)
     {
@@ -1303,8 +1288,7 @@ class GUMP
      * @param string $field
      * @param array  $input
      * @param null   $param
-     *
-     * @return mixed
+     * @return bool
      */
     protected function validate_numeric($field, array $input, $param = null)
     {
@@ -1317,8 +1301,7 @@ class GUMP
      * @param string $field
      * @param array  $input
      * @param null   $param
-     *
-     * @return mixed
+     * @return bool
      */
     protected function validate_integer($field, array $input, $param = null)
     {
@@ -1335,8 +1318,7 @@ class GUMP
      * @param string $field
      * @param array  $input
      * @param null   $param
-     *
-     * @return mixed
+     * @return bool
      */
     protected function validate_boolean($field, array $input, $param = null)
     {
@@ -1355,8 +1337,7 @@ class GUMP
      * @param string $field
      * @param array  $input
      * @param null   $param
-     *
-     * @return mixed
+     * @return bool
      */
     protected function validate_float($field, array $input, $param = null)
     {
@@ -1369,8 +1350,7 @@ class GUMP
      * @param string $field
      * @param array  $input
      * @param null   $param
-     *
-     * @return mixed
+     * @return bool
      */
     protected function validate_valid_url($field, array $input, $param = null)
     {
@@ -1383,8 +1363,7 @@ class GUMP
      * @param string $field
      * @param array  $input
      * @param null   $param
-     *
-     * @return mixed
+     * @return bool
      */
     protected function validate_url_exists($field, array $input, $param = null)
     {
@@ -1407,9 +1386,9 @@ class GUMP
      * Determine if the provided value is a valid IP address.
      *
      * @param string $field
-     * @param array  $input
-     *
-     * @return mixed
+     * @param array $input
+     * @param null $param
+     * @return bool
      */
     protected function validate_valid_ip($field, array $input, $param = null)
     {
@@ -1423,9 +1402,9 @@ class GUMP
      * @see http://pastebin.com/UvUPPYK0
      *
      * @param string $field
-     * @param array  $input
-     *
-     * @return mixed
+     * @param array $input
+     * @param null $param
+     * @return bool
      */
     protected function validate_valid_ipv4($field, array $input, $param = null)
     {
@@ -1436,9 +1415,9 @@ class GUMP
      * Determine if the provided value is a valid IPv6 address.
      *
      * @param string $field
-     * @param array  $input
-     *
-     * @return mixed
+     * @param array $input
+     * @param null $param
+     * @return bool
      */
     protected function validate_valid_ipv6($field, array $input, $param = null)
     {
@@ -1451,9 +1430,9 @@ class GUMP
      * @see http://stackoverflow.com/questions/174730/what-is-the-best-way-to-validate-a-credit-card-in-php
      *
      * @param string $field
-     * @param array  $input
-     *
-     * @return mixed
+     * @param array $input
+     * @param null $param
+     * @return bool
      */
     protected function validate_valid_cc($field, array $input, $param = null)
     {
@@ -1498,9 +1477,9 @@ class GUMP
      * @see https://github.com/Wixel/GUMP/issues/5
      *
      * @param string $field
-     * @param array  $input
-     *
-     * @return mixed
+     * @param array $input
+     * @param null $param
+     * @return bool
      */
     protected function validate_valid_name($field, array $input, $param = null)
     {
@@ -1511,9 +1490,9 @@ class GUMP
      * Determine if the provided input is likely to be a street address using weak detection.
      *
      * @param string $field
-     * @param array  $input
-     *
-     * @return mixed
+     * @param array $input
+     * @param null $param
+     * @return bool
      */
     protected function validate_street_address($field, array $input, $param = null)
     {
@@ -1531,8 +1510,7 @@ class GUMP
      * @param string $field
      * @param array $input
      * @param null $param
-     *
-     * @return mixed
+     * @return bool
      */
     protected function validate_iban($field, array $input, $param = null)
     {
@@ -1561,10 +1539,9 @@ class GUMP
      * @example_parameter d/m/Y
      *
      * @param string $field
-     * @param string $input date ('Y-m-d') or datetime ('Y-m-d H:i:s')
+     * @param array $input
      * @param string $param Custom date format
-     *
-     * @return mixed
+     * @return bool
      */
     protected function validate_date($field, array $input, $param = null)
     {
@@ -1587,12 +1564,11 @@ class GUMP
      * @example_parameter 18
      *
      * @param string $field
-     * @param string $input
-     * @param string $param int
-     *
-     * @return mixed
+     * @param array $input
+     * @param int $param
+     * @return bool
      */
-    protected function validate_min_age($field, array $input, $param = null)
+    protected function validate_min_age($field, array $input, int $param)
     {
         $inputDatetime = new DateTime(Helpers::date('Y-m-d', strtotime($input[$field])));
         $todayDatetime = new DateTime(Helpers::date('Y-m-d'));
@@ -1611,8 +1587,7 @@ class GUMP
      * @param string $field
      * @param array  $input
      * @param null   $param
-     *
-     * @return mixed
+     * @return bool
      */
     protected function validate_max_numeric($field, array $input, $param = null)
     {
@@ -1627,8 +1602,7 @@ class GUMP
      * @param string $field
      * @param array  $input
      * @param null   $param
-     *
-     * @return mixed
+     * @return bool
      */
     protected function validate_min_numeric($field, array $input, $param = null)
     {
@@ -1641,11 +1615,11 @@ class GUMP
      * @example_parameter Z
      *
      * @param string $field
-     * @param array  $input
-     *
-     * @return mixed
+     * @param array $input
+     * @param string $param
+     * @@return bool
      */
-    protected function validate_starts($field, array $input, $param = null)
+    protected function validate_starts($field, array $input, string $param)
     {
         return strpos($input[$field], $param) === 0;
     }
@@ -1654,9 +1628,9 @@ class GUMP
      * Determine if the file was successfully uploaded.
      *
      * @param string $field
-     * @param array  $input
-     *
-     * @return mixed
+     * @param array $input
+     * @param null $param
+     * @return bool
      */
     protected function validate_required_file($field, array $input, $param = null)
     {
@@ -1671,8 +1645,7 @@ class GUMP
      * @param string $field
      * @param array $input
      * @param array $param
-     *
-     * @return mixed
+     * @return bool
      */
     protected function validate_extension($field, $input, array $param)
     {
@@ -1696,12 +1669,11 @@ class GUMP
      * @example_parameter other_field_name
      *
      * @param string $field
-     * @param string $input
+     * @param array $input
      * @param string $param field to compare with
-     *
-     * @return mixed
+     * @return bool
      */
-    protected function validate_equalsfield($field, array $input, $param = null)
+    protected function validate_equalsfield($field, array $input, string $param)
     {
         return $input[$field] == $input[$param];
     }
@@ -1709,10 +1681,10 @@ class GUMP
     /**
      * Determine if the provided field value is a valid GUID (v4)
      *
-     * @param  string $field
-     * @param  string $input
-     * @param  string $param
-     * @return mixed
+     * @param string $field
+     * @param array $input
+     * @param null $param
+     * @return bool
      */
     protected function validate_guidv4($field, array $input, $param = null)
     {
@@ -1729,9 +1701,9 @@ class GUMP
      * @example_value 1-(555)-555-5555
      *
      * @param string $field
-     * @param array  $input
-     *
-     * @return mixed
+     * @param array $input
+     * @param null $param
+     * @return bool
      */
     protected function validate_phone_number($field, array $input, $param = null)
     {
@@ -1747,11 +1719,11 @@ class GUMP
      * @example_value     test-123
      *
      * @param string $field
-     * @param array  $input
-     *
-     * @return mixed
+     * @param array $input
+     * @param string $param
+     * @return bool
      */
-    protected function validate_regex($field, array $input, $param = null)
+    protected function validate_regex($field, array $input, string $param)
     {
         return preg_match($param, $input[$field]) > 0;
     }
@@ -1762,9 +1734,9 @@ class GUMP
      * @example_value {"test": true}
      *
      * @param string $field
-     * @param array  $input
-     *
-     * @return mixed
+     * @param array $input
+     * @param null $param
+     * @return bool
      */
     protected function validate_valid_json_string($field, array $input, $param = null)
     {
@@ -1781,13 +1753,13 @@ class GUMP
      * @example_parameter 1
      *
      * @param string $field
-     * @param array  $input
-     *
-     * @return mixed
+     * @param array $input
+     * @param int $param
+     * @return bool
      */
-    protected function validate_valid_array_size_greater($field, array $input, $param = null)
+    protected function validate_valid_array_size_greater($field, array $input, int $param)
     {
-        if (!is_array($input[$field]) || sizeof($input[$field]) < (int)$param) {
+        if (!is_array($input[$field]) || sizeof($input[$field]) < $param) {
             return false;
         }
 
@@ -1800,13 +1772,13 @@ class GUMP
      * @example_parameter 1
      *
      * @param string $field
-     * @param array  $input
-     *
-     * @return mixed
+     * @param array $input
+     * @param int $param
+     * @return bool
      */
-    protected function validate_valid_array_size_lesser($field, array $input, $param = null)
+    protected function validate_valid_array_size_lesser($field, array $input, int $param)
     {
-        if (!is_array($input[$field]) || sizeof($input[$field]) > (int)$param) {
+        if (!is_array($input[$field]) || sizeof($input[$field]) >$param) {
             return false;
         }
 
@@ -1819,13 +1791,13 @@ class GUMP
      * @example_parameter 1
      *
      * @param string $field
-     * @param array  $input
-     *
-     * @return mixed
+     * @param array $input
+     * @param int $param
+     * @return bool
      */
-    protected function validate_valid_array_size_equal($field, array $input, $param = null)
+    protected function validate_valid_array_size_equal($field, array $input, int $param)
     {
-        if (!is_array($input[$field]) || sizeof($input[$field]) != (int)$param) {
+        if (!is_array($input[$field]) || sizeof($input[$field]) != $param) {
             return false;
         }
 
@@ -1835,9 +1807,11 @@ class GUMP
     /**
      * Determine if the provided value is a valid Twitter account.
      *
-     * @param  string $field
-     * @param  array  $input
-     * @return mixed
+     * @param string $field
+     * @param array $input
+     * @param null $param
+     * @return bool
+     * @throws Exception If Twitter API changed
      */
     protected function validate_valid_twitter($field, array $input, $param = null)
     {
