@@ -48,8 +48,8 @@ $filtered = GUMP::filter_input([
     'other_field' => 'slug'
 ]);
 
-var_dump($filtered['field']); // will equal to: "TEXT"
-var_dump($filtered['other_field']); // will equal to: "cool-title"
+var_dump($filtered['field']); // result: "TEXT"
+var_dump($filtered['other_field']); // result: "cool-title"
 ```
 
 ### Long format example
