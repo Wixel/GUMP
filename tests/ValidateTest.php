@@ -300,7 +300,7 @@ class ValidateTest extends BaseTestCase
         ]], $result);
     }
 
-    public function testArrayFormatWithOneParameter()
+    public function testRulesArrayFormatWithOneParameter()
     {
         $result = $this->gump->validate([
             'some_field' => 'test',
@@ -323,7 +323,7 @@ class ValidateTest extends BaseTestCase
         ]], $result);
     }
 
-    public function testArrayFormatWithSimpleArrayParameters()
+    public function testRulesArrayFormatWithSimpleArrayParameters()
     {
         $result = $this->gump->validate([
             'some_field' => 'tests'
@@ -339,7 +339,7 @@ class ValidateTest extends BaseTestCase
         ]], $result);
     }
 
-    public function testArrayFormatWithMultidimensionalArrayParameters()
+    public function testRulesArrayFormatWithMultidimensionalArrayParameters()
     {
         GUMP::add_validator("custom", function($field, $input, $param = null) {
             return $param['min'] === 2 && $param['max'] === 5;

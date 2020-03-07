@@ -417,10 +417,11 @@ class GUMP
      */
     private function parse_rules($rules, string $rules_delimiter)
     {
+        // v2
         if (is_array($rules)) {
-            $theKeys = [];
-            foreach ($rules as $k => $v) {
-                $theKeys[] = is_numeric($k) ? $v : $k;
+            $rules_names = [];
+            foreach ($rules as $key => $value) {
+                $rules_names[] = is_numeric($key) ? $value : $key;
             }
 
             return array_map(function($value, $key) use($rules) {
@@ -429,7 +430,7 @@ class GUMP
                 }
 
                 return [$key, $value];
-            }, $rules, $theKeys);
+            }, $rules, $rules_names);
         }
 
         return explode($rules_delimiter, $rules);;
