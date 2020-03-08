@@ -928,7 +928,7 @@ class GUMP
     }
 
     /**
-     * Filter booleans.
+     * Filter booleans. ['1', 1, 'true', true, 'yes', 'on'] will be converted to true, anything else is false.
      *
      * @param string $value
      * @param array  $params
@@ -1309,11 +1309,13 @@ class GUMP
     }
 
     /**
-     * Determine if the provided value is a PHP accepted boolean. Also returns true for strings: yes/no, on/off, 1/0, true/false.
+     * Determine if the provided value is a valid boolean. Returns true for: yes/no, on/off, 1/0, true/false. In strict mode (optional) only true/false will be valid which you can combine with boolean filter.
+     *
+     * @example_parameter strict
      *
      * @param string $field
-     * @param array  $input
-     * @param null   $param
+     * @param array $input
+     * @param string $param
      * @return bool
      */
     protected function validate_boolean($field, array $input, string $param = null)
