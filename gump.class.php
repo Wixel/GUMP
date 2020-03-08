@@ -301,12 +301,7 @@ class GUMP
         $fields = array_keys($mismatch);
 
         foreach ($fields as $field) {
-            $this->errors[] = array(
-                'field' => $field,
-                'value' => $data[$field],
-                'rule' => 'mismatch',
-                'param' => null,
-            );
+            $this->errors[] = $this->generate_error_array($field, $data[$field], 'mismatch', null);
         }
     }
 
