@@ -943,19 +943,6 @@ class GUMP
     }
 
     /**
-     * Filter out all HTML tags except the defined basic tags.
-     *
-     * @param string $value
-     * @param array  $params
-     *
-     * @return string
-     */
-    protected function filter_basic_tags($value, $params = null)
-    {
-        return strip_tags($value, self::$basic_tags);
-    }
-
-    /**
      * Filter booleans. ['1', 1, 'true', true, 'yes', 'on'] will be converted to true, anything else is false.
      *
      * @param string $value
@@ -970,6 +957,19 @@ class GUMP
         }
 
         return false;
+    }
+
+    /**
+     * Filter out all HTML tags except the defined basic tags.
+     *
+     * @param string $value
+     * @param array  $params
+     *
+     * @return string
+     */
+    protected function filter_basic_tags($value, $params = null)
+    {
+        return strip_tags($value, self::$basic_tags);
     }
 
     /**

@@ -161,8 +161,8 @@ Filter rules can also be any PHP native function (e.g.: rim).
 | **sanitize_numbers**   | Sanitize the string by removing illegal characters from numbers.                                                    |
 | **sanitize_floats**    | Sanitize the string by removing illegal characters from float numbers.                                              |
 | **sanitize_string**    | Sanitize the string by removing any script tags.                                                                    |
-| **basic_tags**         | Filter out all HTML tags except the defined basic tags.                                                             |
 | **boolean**            | Filter booleans. ['1', 1, 'true', true, 'yes', 'on'] will be converted to true, anything else is false.             |
+| **basic_tags**         | Filter out all HTML tags except the defined basic tags.                                                             |
 | **whole_number**       | Convert the provided numeric value to a whole number.                                                               |
 | **ms_word_characters** | Convert MS Word special characters to web safe characters. ([“, ”, ‘, ’, –, …] => [", ", ', ', -, ...]) |
 | **lower_case**         | Converts to lowercase.                                                                                              |
