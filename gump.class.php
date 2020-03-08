@@ -916,33 +916,6 @@ class GUMP
     }
 
     /**
-     * Determine if the provided value is a valid boolean. Returns true for: yes/no, on/off, 1/0, true/false. In strict mode (optional) only true/false will be valid which you can combine with boolean filter.
-     *
-     * @example_parameter strict
-     *
-     * @param string $field
-     * @param array $input
-     * @param string $param
-     * @return bool
-     */
-    protected function validate_boolean($field, array $input, string $param = null)
-    {
-        if ($param === 'strict') {
-            return in_array($input[$field], [true, false], true);
-        }
-
-        $booleans = [];
-        foreach (self::$trues as $true) {
-            $booleans[] = $true;
-        }
-        foreach (self::$falses as $false) {
-            $booleans[] = $false;
-        }
-
-        return in_array($input[$field], $booleans, true);
-    }
-
-    /**
      * Converts ['1', 1, 'true', true, 'yes', 'on'] to true, anything else is false ('on' is specially useful for form checkboxes).
      *
      * @param string $value
@@ -1152,6 +1125,33 @@ class GUMP
         $value = trim(mb_strtolower($input[$field]));
 
         return !in_array($value, $param);
+    }
+
+     /**
+     * Determine if the provided value is a valid boolean. Returns true for: yes/no, on/off, 1/0, true/false. In strict mode (optional) only true/false will be valid which you can combine with boolean filter.
+     *
+     * @example_parameter strict
+     *
+     * @param string $field
+     * @param array $input
+     * @param string $param
+     * @return bool
+     */
+    protected function validate_boolean($field, array $input, string $param = null)
+    {
+        if ($param === 'strict') {
+            return in_array($input[$field], [true, false], true);
+        }
+
+        $booleans = [];
+        foreach (self::$trues as $true) {
+            $booleans[] = $true;
+        }
+        foreach (self::$falses as $false) {
+            $booleans[] = $false;
+        }
+
+        return in_array($input[$field], $booleans, true);
     }
 
     /**
