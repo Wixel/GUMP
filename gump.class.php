@@ -943,7 +943,7 @@ class GUMP
     }
 
     /**
-     * Filter booleans. ['1', 1, 'true', true, 'yes', 'on'] will be converted to true, anything else is false.
+     * Converts ['1', 1, 'true', true, 'yes', 'on'] to true, anything else is false (on is specially useful for HTML checkboxes).
      *
      * @param string $value
      * @param array  $params
