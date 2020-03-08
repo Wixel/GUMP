@@ -66,6 +66,9 @@ class GUMP
                                      very,was,way,we,well,were,what,where,which,while,who,with,would,you,your,a,
                                      b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,$,1,2,3,4,5,6,7,8,9,0,_";
 
+    public static $trues = ['1', 1, 'true', true, 'yes', 'on'];
+    public static $falses = ['0', 0, 'false', false, 'no', 'off'];
+
     // field characters below will be replaced with a space.
     protected $fieldCharsToRemove = array('_', '-');
 
@@ -925,6 +928,23 @@ class GUMP
     }
 
     /**
+     * Filter booleans.
+     *
+     * @param string $value
+     * @param array  $params
+     *
+     * @return string
+     */
+    protected function filter_boolean($value, $params = null)
+    {
+        if (in_array($value, self::$trues, true)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Convert the provided numeric value to a whole number.
      *
      * @param string $value
@@ -1080,10 +1100,6 @@ class GUMP
             return trim(mb_strtolower($value));
         }, $param);
 
-        $param = array_map(function($value) {
-            return trim(mb_strtolower($value));
-        }, $param);
-
         $value = trim(mb_strtolower($input[$field]));
 
         return in_array($value, $param);
@@ -1101,10 +1117,6 @@ class GUMP
      */
     protected function validate_doesnt_contain_list($field, $input, array $param)
     {
-        $param = array_map(function($value) {
-            return trim(mb_strtolower($value));
-        }, $param);
-
         $param = array_map(function($value) {
             return trim(mb_strtolower($value));
         }, $param);
@@ -1304,13 +1316,19 @@ class GUMP
      * @param null   $param
      * @return bool
      */
-    protected function validate_boolean($field, array $input, $param = null)
+    protected function validate_boolean($field, array $input, string $param = null)
     {
-        if (!isset($input[$field]) || empty($input[$field]) && $input[$field] !== 0) {
-            return true;
+        if ($param === 'strict') {
+            return in_array($input[$field], [true, false], true);
         }
 
-        $booleans = ['1', 1, '0', 0, 'true', true, 'false', false, 'yes', 'no', 'on', 'off'];
+        $booleans = [];
+        foreach (self::$trues as $true) {
+            $booleans[] = $true;
+        }
+        foreach (self::$falses as $false) {
+            $booleans[] = $false;
+        }
 
         return in_array($input[$field], $booleans, true);
     }

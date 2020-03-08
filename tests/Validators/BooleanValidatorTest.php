@@ -42,6 +42,22 @@ class BooleanValidatorTest extends BaseTestCase
     }
 
     /**
+     * @dataProvider successProviderForStrictMode
+     */
+    public function testSuccessStrictMode($input)
+    {
+        $this->assertTrue($this->validate(self::RULE.',strict', $input));
+    }
+
+    public function successProviderForStrictMode()
+    {
+        return [
+            [ true ],
+            [ false ],
+        ];
+    }
+
+    /**
      * @dataProvider errorProvider
      */
     public function testError($input)
@@ -56,6 +72,26 @@ class BooleanValidatorTest extends BaseTestCase
             [ 111 ],
             [ 'TRUE' ],
             [ 'False' ]
+        ];
+    }
+
+    /**
+     * @dataProvider errorProviderForStrictMode
+     */
+    public function testErrorStrictMode($input)
+    {
+        $this->assertNotTrue($this->validate(self::RULE.',strict', $input));
+    }
+
+    public function errorProviderForStrictMode()
+    {
+        return [
+            [ 'true' ],
+            [ 'false' ],
+            [ 'yes' ],
+            [ 'no' ],
+            [ 1 ],
+            [ 0 ],
         ];
     }
 }
