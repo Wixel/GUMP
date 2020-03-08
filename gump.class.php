@@ -88,10 +88,10 @@ class GUMP
     /**
      * Shorthand method for inline validation.
      *
-     * @param array $data       The data to be validated
+     * @param array $data The data to be validated
      * @param array $validators The GUMP validators
-     *
      * @return mixed True(boolean) or the array of error messages
+     * @throws Exception If validation rule does not exist
      */
     public static function is_valid(array $data, array $validators)
     {
@@ -111,8 +111,8 @@ class GUMP
      *
      * @param array $data
      * @param array $filters
-     *
      * @return mixed
+     * @throws Exception If filter does not exist
      */
     public static function filter_input(array $data, array $filters)
     {
@@ -393,13 +393,13 @@ class GUMP
 
             foreach ($rules as $rule) {
                 if (is_null($require_rule_found) && self::is_empty($input[$field])) continue;
-                if (!$this->field_doesnt_have_errors($field, $this->errors)) continue;
 
                 $parsed_rule = $this->parse_rule($rule, $parameters_delimiter);
                 $result = $this->call_rule($parsed_rule['rule'], $field, $input, $parsed_rule['param']);
 
                 if (is_array($result)) {
                     $this->errors[] = $result;
+                    break; // exit on first error
                 }
             }
         }
@@ -502,11 +502,6 @@ class GUMP
 
         $found = array_values(array_intersect($require_type_of_rules, $rules));
         return count($found) > 0 ? $found[0] : null;
-    }
-
-    private function field_doesnt_have_errors(string $field, array $errors)
-    {
-        return array_search($field, array_column($errors, 'field')) === false;
     }
 
     private static function validator_to_method(string $rule)
@@ -644,10 +639,8 @@ class GUMP
      * @param bool   $convert_to_string = false
      * @param string $field_class
      * @param string $error_class
-     *
-     * @return array
-     * @return string
-     * @throws Exception when validator doesn't have a set error message
+     * @return array|string
+     * @throws Exception if validator doesn't have an error message to set
      */
     public function get_readable_errors(bool $convert_to_string = false, string $field_class = 'gump-field', string $error_class = 'gump-error-message')
     {
@@ -655,52 +648,38 @@ class GUMP
             return ($convert_to_string) ? null : [];
         }
 
-        $resp = [];
-
-        // Error messages
         $messages = $this->get_messages();
+        $result = [];
 
         foreach ($this->errors as $e) {
-            $field = ucwords(str_replace($this->fieldCharsToRemove, chr(32), $e['field']));
-            $param = $e['param'];
-
-            // Let's fetch explicitly if the field names exist
-            if (array_key_exists($e['field'], self::$fields)) {
-                $field = self::$fields[$e['field']];
-
-                // If param is a field (i.e. equalsfield validator)
-                if (array_key_exists($param, self::$fields)) {
-                    $param = self::$fields[$e['param']];
-                }
-            }
-
-            // Messages
-            if (isset($messages[$e['rule']])) {
-                if (is_array($param)) {
-                    $param = implode(', ', $param);
-                }
-                $message = str_replace('{param}', $param, str_replace('{field}', '<span class="'.$field_class.'">'.$field.'</span>', $messages[$e['rule']]));
-                $resp[] = $message;
-            } else {
+            if (!isset($messages[$e['rule']])) {
                 throw new Exception('Rule "'.$e['rule'].'" does not have an error message');
             }
+
+            $result[] = $this->process_error_message(
+                $e['field'],  $e['param'],  $messages[$e['rule']],
+
+                function($replace) use($field_class) {
+                    $replace['{field}'] = sprintf('<span class="%s">%s</span>', $field_class, $replace['{field}']);
+                    return $replace;
+                }
+            );
         }
 
-        if (!$convert_to_string) {
-            return $resp;
+        if ($convert_to_string) {
+            return array_reduce($result, function($prev, $next) use($error_class) {
+                return sprintf('%s<span class="%s">%s</span>', $prev, $error_class, $next);
+            });
         }
 
-        return array_reduce($resp, function($prev, $next) use($error_class) {
-            return sprintf('%s<span class="%s">%s</span>', $prev, $error_class, $next);
-        });
+        return $result;
     }
 
     /**
      * Process the validation errors and return an array of errors with field names as keys.
      *
-     * @param $convert_to_string
-     *
-     * @return array | null (if empty)
+     * @param bool $convert_to_string
+     * @return array
      * @throws Exception
      */
     public function get_errors_array(bool $convert_to_string = false)
@@ -709,40 +688,50 @@ class GUMP
             return ($convert_to_string) ? null : [];
         }
 
-        $resp = [];
-
-        // Error messages
         $messages = $this->get_messages();
+        $result = [];
 
         foreach ($this->errors as $e) {
-            $field = ucwords(str_replace(array('_', '-'), chr(32), $e['field']));
-            $param = $e['param'];
-
-            // Let's fetch explicitly if the field names exist
-            if (array_key_exists($e['field'], self::$fields)) {
-                $field = self::$fields[$e['field']];
-
-                // If param is a field (i.e. equalsfield validator)
-                if (array_key_exists($param, self::$fields)) {
-                    $param = self::$fields[$e['param']];
-                }
-            }
-
             if (!isset($messages[$e['rule']])) {
                 throw new Exception('Rule "'.$e['rule'].'" does not have an error message');
             }
 
-            // show first validation error
-            if (!isset($resp[$e['field']])) {
-                if (is_array($param)) {
-                    $param = implode(', ', $param);
-                }
-                $message = str_replace('{param}', $param, str_replace('{field}', $field, $messages[$e['rule']]));
-                $resp[$e['field']] = $message;
+            $result[$e['field']] = $this->process_error_message($e['field'], $e['param'], $messages[$e['rule']]);
+        }
+
+        return $result;
+    }
+
+    private function process_error_message($field, $param, string $message, callable $transformer = null)
+    {
+        // if field name is explicitly set, use it
+        if (array_key_exists($field, self::$fields)) {
+            $field = self::$fields[$field];
+        } else {
+            $field = ucwords(str_replace($this->fieldCharsToRemove, chr(32), $field));
+        }
+
+        // if param is a field (i.e. equalsfield validator)
+        if (!is_array($param) && array_key_exists($param, self::$fields)) {
+            $param = self::$fields[$param];
+        }
+
+        $replace = [
+            '{field}' => $field,
+            '{param}' => $param,
+        ];
+
+        if (is_array($param)) {
+            $replace['{param}'] = implode(', ', $param);
+            foreach ($param as $key => $value) {
+                $replace[sprintf('{param[%s]}', $key)] = $value;
             }
         }
 
-        return $resp;
+        // for get_readable_errors() <span>
+        if ($transformer) $replace = $transformer($replace);
+
+        return strtr($message, $replace);
     }
 
     /**

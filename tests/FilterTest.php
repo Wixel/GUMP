@@ -72,24 +72,6 @@ class FilterTest extends BaseTestCase
         ], $result);
     }
 
-    public function testCustomFilterWithParameters()
-    {
-        $this->markTestIncomplete('TODO');
-        GUMP::add_filter("custom", function($value, $params = null) {
-            return strtolower($value);
-        });
-
-        $result = $this->gump->filter([
-            'test' => ' text '
-        ], [
-            'test' => 'trim|custom,hello,2'
-        ]);
-
-        $this->assertEquals([
-            'test' => 'text'
-        ], $result);
-    }
-
     public function testNonexistentFilterThrowsException()
     {
         $this->expectException(Exception::class);

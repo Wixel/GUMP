@@ -35,7 +35,8 @@
     },
     "scripts": {
         "test": "php ./vendor/bin/phpunit",
-        "docs": "php ./ci/dump_filters_docs.php && php ./ci/dump_validators_docs.php"
+        "dump": "php ./ci/dump_filters_docs.php && php ./ci/dump_validators_docs.php",
+        "check": "php ./ci/check_filters_docs.php && php ./ci/check_validators_docs.php && php ./ci/check_validators_translations.php"
     },
     "config": {
         "platform": {"php": "7.0"}
