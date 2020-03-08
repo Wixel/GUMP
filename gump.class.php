@@ -943,7 +943,7 @@ class GUMP
     }
 
     /**
-     * Converts ['1', 1, 'true', true, 'yes', 'on'] to true, anything else is false (on is specially useful for HTML checkboxes).
+     * Converts ['1', 1, 'true', true, 'yes', 'on'] to true, anything else is false ('on' is specially useful for form checkboxes).
      *
      * @param string $value
      * @param array  $params
