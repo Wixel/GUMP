@@ -99,6 +99,7 @@ $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
 
 | Rule                                                                           | Description                                                                                                                                                                                               |
 |--------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **boolean**,strict                                                             | Determine if the provided value is a valid boolean. Returns true for: yes/no, on/off, 1/0, true/false. In strict mode (optional) only true/false will be valid which you can combine with boolean filter. |
 | **required**                                                                   | Ensures the specified key value exists and is not empty.                                                                                                                                                  |
 | **contains**,one;two;use array format if one of the values contains semicolons | Verify that a value is contained within the pre-defined value set.                                                                                                                                        |
 | **contains_list**,value1;value2                                                | Verify that a value is contained within the pre-defined value set. Error message will NOT show the list of possible values.                                                                               |
@@ -116,7 +117,6 @@ $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
 | **alpha_space**                                                                | Determine if the provided value contains only alpha characters with spaces.                                                                                                                               |
 | **numeric**                                                                    | Determine if the provided value is a valid number or numeric string.                                                                                                                                      |
 | **integer**                                                                    | Determine if the provided value is a valid integer.                                                                                                                                                       |
-| **boolean**,strict                                                             | Determine if the provided value is a valid boolean. Returns true for: yes/no, on/off, 1/0, true/false. In strict mode (optional) only true/false will be valid which you can combine with boolean filter. |
 | **float**                                                                      | Determine if the provided value is a valid float.                                                                                                                                                         |
 | **valid_url**                                                                  | Determine if the provided value is a valid URL.                                                                                                                                                           |
 | **url_exists**                                                                 | Determine if a URL exists & is accessible.                                                                                                                                                                |
@@ -155,12 +155,12 @@ Filter rules can also be any PHP native function (e.g.: rim).
 |------------------------|---------------------------------------------------------------------------------------------------------------------|
 | **noise_words**        | Replace noise words in a string (http://tax.cchgroup.com/help/Avoiding_noise_words_in_your_search.htm).             |
 | **rmpunctuation**      | Remove all known punctuation from a string.                                                                         |
-| **sanitize_string**    | Sanitize the string by removing any script tags.                                                                    |
 | **urlencode**          | Sanitize the string by urlencoding characters.                                                                      |
 | **htmlencode**         | Sanitize the string by converting HTML characters to their HTML entities.                                           |
 | **sanitize_email**     | Sanitize the string by removing illegal characters from emails.                                                     |
 | **sanitize_numbers**   | Sanitize the string by removing illegal characters from numbers.                                                    |
 | **sanitize_floats**    | Sanitize the string by removing illegal characters from float numbers.                                              |
+| **sanitize_string**    | Sanitize the string by removing any script tags.                                                                    |
 | **basic_tags**         | Filter out all HTML tags except the defined basic tags.                                                             |
 | **boolean**            | Filter booleans. ['1', 1, 'true', true, 'yes', 'on'] will be converted to true, anything else is false.             |
 | **whole_number**       | Convert the provided numeric value to a whole number.                                                               |
