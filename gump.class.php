@@ -837,19 +837,6 @@ class GUMP
     }
 
     /**
-     * Sanitize the string by removing any script tags.
-     *
-     * @param string $value
-     * @param array  $params
-     *
-     * @return string
-     */
-    protected function filter_sanitize_string($value, $params = null)
-    {
-        return filter_var($value, FILTER_SANITIZE_STRING);
-    }
-
-    /**
      * Sanitize the string by urlencoding characters.
      *
      * @param string $value
@@ -912,6 +899,47 @@ class GUMP
     protected function filter_sanitize_floats($value, $params = null)
     {
         return filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+    }
+
+
+    /**
+     * Sanitize the string by removing any script tags.
+     *
+     * @param string $value
+     * @param array  $params
+     *
+     * @return string
+     */
+    protected function filter_sanitize_string($value, $params = null)
+    {
+        return filter_var($value, FILTER_SANITIZE_STRING);
+    }
+
+    /**
+     * Determine if the provided value is a valid boolean. Returns true for: yes/no, on/off, 1/0, true/false. In strict mode (optional) only true/false will be valid which you can combine with boolean filter.
+     *
+     * @example_parameter strict
+     *
+     * @param string $field
+     * @param array $input
+     * @param string $param
+     * @return bool
+     */
+    protected function validate_boolean($field, array $input, string $param = null)
+    {
+        if ($param === 'strict') {
+            return in_array($input[$field], [true, false], true);
+        }
+
+        $booleans = [];
+        foreach (self::$trues as $true) {
+            $booleans[] = $true;
+        }
+        foreach (self::$falses as $false) {
+            $booleans[] = $false;
+        }
+
+        return in_array($input[$field], $booleans, true);
     }
 
     /**
@@ -1306,33 +1334,6 @@ class GUMP
         }
 
         return true;
-    }
-
-    /**
-     * Determine if the provided value is a valid boolean. Returns true for: yes/no, on/off, 1/0, true/false. In strict mode (optional) only true/false will be valid which you can combine with boolean filter.
-     *
-     * @example_parameter strict
-     *
-     * @param string $field
-     * @param array $input
-     * @param string $param
-     * @return bool
-     */
-    protected function validate_boolean($field, array $input, string $param = null)
-    {
-        if ($param === 'strict') {
-            return in_array($input[$field], [true, false], true);
-        }
-
-        $booleans = [];
-        foreach (self::$trues as $true) {
-            $booleans[] = $true;
-        }
-        foreach (self::$falses as $false) {
-            $booleans[] = $false;
-        }
-
-        return in_array($input[$field], $booleans, true);
     }
 
     /**
