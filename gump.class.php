@@ -53,6 +53,15 @@ class GUMP
         return self::$instance;
     }
 
+    // ** ------------------------- Configuration -------------------------------- ** //
+
+    public static $rules_delimiter = '|';
+
+    public static $rules_parameters_delimiter = ',';
+
+    public static $rules_parameters_arrays_delimiter = ';';
+
+
     // ** ------------------------- Validation Data ------------------------------- ** //
 
     public static $basic_tags = '<br><p><a><strong><b><i><em><img><blockquote><code><dd><dl><hr><h1><h2><h3><h4><h5><h6><label><ul><li><span><sub><sup>';
@@ -265,20 +274,17 @@ class GUMP
      *
      * @param array  $data
      * @param bool   $check_fields
-     * @param string $rules_delimiter
-     * @param string $parameters_delimiters
      *
      * @return array
      *
      * @throws Exception
      */
-    public function run(array $data, $check_fields = false, $rules_delimiter='|', $parameters_delimiters=',')
+    public function run(array $data, $check_fields = false)
     {
-        $data = $this->filter($data, $this->filter_rules(), $rules_delimiter, $parameters_delimiters);
+        $data = $this->filter($data, $this->filter_rules());
 
         $validated = $this->validate(
-            $data, $this->validation_rules(),
-            $rules_delimiter, $parameters_delimiters
+            $data, $this->validation_rules()
         );
 
         if ($check_fields === true) {
@@ -372,21 +378,19 @@ class GUMP
      *
      * @param mixed  $input
      * @param array  $ruleset
-     * @param string $rules_delimiter
-     * @param string $parameters_delimiter
      *
      * @return mixed
      *
      * @throws Exception
      */
-    public function validate(array $input, array $ruleset, string $rules_delimiter='|', string $parameters_delimiter=',')
+    public function validate(array $input, array $ruleset)
     {
         $this->errors = [];
 
         foreach ($ruleset as $field => $rawRules) {
             $input[$field] = $input[$field] ?? null;
 
-            $rules = $this->parse_rules($rawRules, $rules_delimiter);
+            $rules = $this->parse_rules($rawRules);
             $is_required = $this->field_has_required_rules($rules);
 
             if (!$is_required && self::is_empty($input[$field])) {
@@ -394,7 +398,7 @@ class GUMP
             }
 
             foreach ($rules as $rule) {
-                $parsed_rule = $this->parse_rule($rule, $parameters_delimiter);
+                $parsed_rule = $this->parse_rule($rule);
                 $result = $this->call_rule($parsed_rule['rule'], $field, $input, $parsed_rule['param']);
 
                 if (is_array($result)) {
@@ -411,10 +415,9 @@ class GUMP
      * Parses filters and validators rules group.
      *
      * @param string|array $rules
-     * @param string $rules_delimiter
      * @return array
      */
-    private function parse_rules($rules, string $rules_delimiter)
+    private function parse_rules($rules)
     {
         // v2
         if (is_array($rules)) {
@@ -432,17 +435,16 @@ class GUMP
             }, $rules, $rules_names);
         }
 
-        return explode($rules_delimiter, $rules);;
+        return explode(self::$rules_delimiter, $rules);;
     }
 
     /**
      * Parses filters and validators individual rules.
      *
      * @param string|array $rule
-     * @param string $parameters_delimiter
      * @return array
      */
-    private function parse_rule($rule, string $parameters_delimiter)
+    private function parse_rule($rule)
     {
         // v2
         if (is_array($rule)) {
@@ -457,8 +459,8 @@ class GUMP
             'param' => null
         ];
 
-        if (strstr($rule, $parameters_delimiter) !== false) {
-            list($rule, $param) = explode($parameters_delimiter, $rule);
+        if (strstr($rule, self::$rules_parameters_delimiter) !== false) {
+            list($rule, $param) = explode(self::$rules_parameters_delimiter, $rule);
 
             $result['rule'] = $rule;
             $result['param'] = $this->parse_rule_param($param);
@@ -473,16 +475,12 @@ class GUMP
      */
     private function parse_rule_param($param)
     {
-        if (is_null($param)) {
-            return null;
-        }
-
         if (is_array($param)) {
             return $param;
         }
 
-        if (strstr($param, ';') !== false) {
-            return explode(';', $param);
+        if (strstr($param, self::$rules_parameters_arrays_delimiter) !== false) {
+            return explode(self::$rules_parameters_arrays_delimiter, $param);
         }
 
         return $param;
@@ -736,28 +734,25 @@ class GUMP
 
     /**
      * Filter the input data according to the specified filter set.
-     * If any filter's parameter contains either '|' or ',', the corresponding default separator can be changed.
      *
      * @param mixed  $input
      * @param array  $filterset
-     * @param string $filters_delimeter
-     * @param string $parameters_delimiter
      *
      * @return mixed
      *
      * @throws Exception
      */
-    public function filter(array $input, array $filterset, string $filters_delimeter='|', string $parameters_delimiter=',')
+    public function filter(array $input, array $filterset)
     {
         foreach ($filterset as $field => $filters) {
             if (!array_key_exists($field, $input)) {
                 continue;
             }
 
-            $filters = $this->parse_rules($filters, $filters_delimeter);
+            $filters = $this->parse_rules($filters);
 
             foreach ($filters as $filter) {
-                $parsed_rule = $this->parse_rule($filter, $parameters_delimiter);
+                $parsed_rule = $this->parse_rule($filter);
 
                 if (is_array($input[$field])) {
                     $input_array = &$input[$field];
