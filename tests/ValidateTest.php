@@ -323,6 +323,39 @@ class ValidateTest extends BaseTestCase
         ]], $result);
     }
 
+
+    public function testRulesArrayFormatIgnoresNonRequiredFields()
+    {
+        $result = $this->gump->validate([
+            'some_other_field' => null
+        ], [
+            'some_field' => ['boolean', 'min_len' => 2],
+            'some_other_field' => ['integer', 'min_len' => 2],
+        ]);
+
+        $this->assertTrue($result);
+    }
+
+    public function testRulesArrayFormatChecksRequiredFields()
+    {
+        $result = $this->gump->validate([], [
+            'some_field' => ['required', 'boolean', 'min_len' => 2],
+            'some_other_field' => ['required', 'integer', 'min_len' => 2],
+        ]);
+
+        $this->assertEquals($result, [[
+            'field' => 'some_field',
+            'value' => null,
+            'rule' => 'validate_required',
+            'param' => null
+        ], [
+            'field' => 'some_other_field',
+            'value' => null,
+            'rule' => 'validate_required',
+            'param' => null
+        ]]);
+    }
+
     public function testRulesArrayFormatWithSimpleArrayParameters()
     {
         $result = $this->gump->validate([
