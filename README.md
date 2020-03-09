@@ -19,21 +19,25 @@ composer require wixel/gump
 ```php
 $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
     'username' => 'required|alpha_numeric',
-    'password' => 'required|max_len,100|min_len,6',
+    'password' => 'required|between_len,4;100',
     'avatar'   => 'required_file|extension,png;jpg'
 ]);
 
-// recommended format (supported since v1.7)
+// recommended format (supported since v1.7) with field-rule specific error messages example
 $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
     'username' => ['required', 'alpha_numeric'],
-    'password' => ['required', 'max_len' => 100, 'min_len' => 6],
+    'password' => ['required', 'between_len' => [6, 100]],
     'avatar'   => ['required_file', 'extension' => ['png', 'jpg']]
+], [
+    'username' => ['required' => 'Fill the Username field please.'],
+    'password' => ['between_len' => '{field} must be between {param[0]} and {param[1]} characters.'],
+    'avatar'   => ['extension' => 'Valid extensions for avatar are: {param}'] // "png, jpg"
 ]);
 
 if ($is_valid === true) {
     // continue
 } else {
-    print_r($is_valid);
+    var_dump($is_valid); // array of error messages
 }
 ```
 
@@ -41,10 +45,10 @@ if ($is_valid === true) {
 
 ```php
 $filtered = GUMP::filter_input([
-    'field' => ' text ',
+    'field'       => ' text ',
     'other_field' => 'Cool Title'
 ], [
-    'field' => ['trim', 'upper_case'],
+    'field'       => ['trim', 'upper_case'],
     'other_field' => 'slug'
 ]);
 
@@ -65,6 +69,12 @@ $gump->validation_rules([
     'credit_card' => 'required|valid_cc'
 ]);
 
+// field-specific error messages
+$gump->set_fields_error_messages([
+    'username'      => ['required' => 'Fill the Username field please, its required.'],
+    'credit_card'   => ['extension' => 'Please enter a valid credit card.']
+]);
+
 $gump->filter_rules([
     'username' => 'trim|sanitize_string',
     'password' => 'trim',
@@ -73,14 +83,14 @@ $gump->filter_rules([
     'bio'      => 'noise_words'
 ]);
 
-$validated_data = $gump->run($_POST);
+$valid_data = $gump->run($_POST);
 
-if ($validated_data === false) {
-    var_dump($gump->get_readable_errors()); // ['Field X is required.']
+if ($valid_data === false) {
+    var_dump($gump->get_readable_errors()); // For HTML: ['Field <span class="gump-field">Somefield</span> is required.'] 
     // or
-    var_dump($gump->get_errors_array()); // ['field' => 'Field X is required']
+    var_dump($gump->get_errors_array()); // For APIs?: ['field' => 'Field Somefield is required']
 } else {
-    var_dump($validated_data); // validation successful
+    var_dump($valid_data); // after filters result: ['field' => 'value']
 }
 ```
 
