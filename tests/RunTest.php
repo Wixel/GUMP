@@ -75,5 +75,4 @@ class RunTest extends BaseTestCase
             'param' => null
         ]], $this->gump->errors());
     }
-
 }

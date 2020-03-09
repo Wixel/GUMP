@@ -29,10 +29,12 @@ class StaticIsValidTest extends BaseTestCase
             'test' => 'asd'
         ], [
             'test' => 'numeric'
+        ], [
+            'test' => ['numeric' => '{field} must be a number please !!!']
         ]);
 
         $this->assertEquals([
-            'The <span class="gump-field">Test</span> field must be a number'
+            '<span class="gump-field">Test</span> must be a number please !!!'
         ], $result);
     }
 }

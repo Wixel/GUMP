@@ -12,6 +12,30 @@ use Exception;
  */
 class ValidateTest extends BaseTestCase
 {
+    public function testConfigParameters()
+    {
+        $current_rules_delimiter =  GUMP::$rules_delimiter;
+        $current_rules_parameters_delimiter =  GUMP::$rules_parameters_delimiter;
+        $current_rules_parameters_arrays_delimiter =  GUMP::$rules_parameters_arrays_delimiter;
+
+        GUMP::$rules_delimiter = ';';
+        GUMP::$rules_parameters_delimiter = ':';
+        GUMP::$rules_parameters_arrays_delimiter = ',';
+
+        $result = $this->gump->validate([
+            'some_field' => 'no'
+        ], [
+            'some_field' => 'alpha;contains_list:yes,no',
+        ]);
+
+        $this->assertTrue($result);
+
+        // reset
+        GUMP::$rules_delimiter = $current_rules_delimiter;
+        GUMP::$rules_parameters_delimiter = $current_rules_parameters_delimiter;
+        GUMP::$rules_parameters_arrays_delimiter = $current_rules_parameters_arrays_delimiter;
+    }
+
     public function testIntegratedValidatorReturnsOneErrorOnOneFailure()
     {
         $result = $this->gump->validate([
@@ -322,7 +346,6 @@ class ValidateTest extends BaseTestCase
             'param' => null
         ]], $result);
     }
-
 
     public function testRulesArrayFormatIgnoresNonRequiredFields()
     {
