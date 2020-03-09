@@ -30,7 +30,7 @@ $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
     'avatar'   => ['required_file', 'extension' => ['png', 'jpg']]
 ], [
     'username' => ['required' => 'Fill the Username field please.'],
-    'password' => ['between_len' => '{field} must be between {param[0]} and {param[1]} characters please.'],
+    'password' => ['between_len' => '{field} must be between {param[0]} and {param[1]} characters.'],
     'avatar'   => ['extension' => 'Valid extensions for avatar are: {param}'] // "png, jpg"
 ]);
 
