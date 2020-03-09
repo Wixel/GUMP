@@ -52,6 +52,9 @@ class GUMP
 
     public static $rules_parameters_arrays_delimiter = ';';
 
+    // field characters below will be replaced with a space.
+    public static $field_chars_to_spaces = ['_', '-'];
+
     // ** ------------------------- Validation Data ------------------------------- ** //
 
     public static $basic_tags = '<br><p><a><strong><b><i><em><img><blockquote><code><dd><dl><hr><h1><h2><h3><h4><h5><h6><label><ul><li><span><sub><sup>';
@@ -68,9 +71,6 @@ class GUMP
     public static $trues = ['1', 1, 'true', true, 'yes', 'on'];
     public static $falses = ['0', 0, 'false', false, 'no', 'off'];
 
-    // field characters below will be replaced with a space.
-    protected $fieldCharsToRemove = array('_', '-');
-
     protected $lang;
 
     protected $fields_error_messages = [];
@@ -83,7 +83,6 @@ class GUMP
 
     // Instance attribute containing errors from last run
     protected $errors = [];
-
 
     // ** ------------------------- Validation Helpers ---------------------------- ** //
 
@@ -711,7 +710,7 @@ class GUMP
         if (array_key_exists($field, self::$fields)) {
             $field = self::$fields[$field];
         } else {
-            $field = ucwords(str_replace($this->fieldCharsToRemove, chr(32), $field));
+            $field = ucwords(str_replace(self::$field_chars_to_spaces, chr(32), $field));
         }
 
         // if param is a field (i.e. equalsfield validator)
