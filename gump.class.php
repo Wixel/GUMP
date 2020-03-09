@@ -61,7 +61,6 @@ class GUMP
 
     public static $rules_parameters_arrays_delimiter = ';';
 
-
     // ** ------------------------- Validation Data ------------------------------- ** //
 
     public static $basic_tags = '<br><p><a><strong><b><i><em><img><blockquote><code><dd><dl><hr><h1><h2><h3><h4><h5><h6><label><ul><li><span><sub><sup>';
@@ -82,6 +81,8 @@ class GUMP
     protected $fieldCharsToRemove = array('_', '-');
 
     protected $lang;
+
+    protected $custom_messages = [];
 
 
     // ** ------------------------- Validation Helpers ---------------------------- ** //
@@ -376,16 +377,16 @@ class GUMP
      * Perform data validation against the provided ruleset.
      * If any rule's parameter contains either '|' or ',', the corresponding default separator can be changed
      *
-     * @param mixed  $input
-     * @param array  $ruleset
-     *
+     * @param mixed $input
+     * @param array $ruleset
+     * @param array $custom_messages
      * @return mixed
-     *
      * @throws Exception
      */
-    public function validate(array $input, array $ruleset)
+    public function validate(array $input, array $ruleset, array $custom_messages = [])
     {
         $this->errors = [];
+        $this->custom_messages = $custom_messages;
 
         foreach ($ruleset as $field => $rawRules) {
             $input[$field] = $input[$field] ?? null;
@@ -694,7 +695,8 @@ class GUMP
                 throw new Exception('Rule "'.$e['rule'].'" does not have an error message');
             }
 
-            $result[$e['field']] = $this->process_error_message($e['field'], $e['param'], $messages[$e['rule']]);
+            $message = $this->custom_messages[$e['field']][str_replace('validate_', '', $e['rule'])] ?? $messages[$e['rule']];
+            $result[$e['field']] = $this->process_error_message($e['field'], $e['param'], $message);
         }
 
         return $result;
