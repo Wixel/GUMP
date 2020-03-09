@@ -23,17 +23,6 @@ class GetErrorsArrayTest extends BaseTestCase
         $this->assertEquals([], $this->gump->get_errors_array());
     }
 
-    public function testReturnsNullWhenNoErrorsAndConvertingToStringIsSet()
-    {
-        $result = $this->gump->validate([
-            'test_number' => '111'
-        ], [
-            'test_number' => 'numeric'
-        ]);
-
-        $this->assertNull($this->gump->get_errors_array(true));
-    }
-
     public function testReturnsErrorsWithFieldAsKey()
     {
         $result = $this->gump->validate([
@@ -138,15 +127,14 @@ class GetErrorsArrayTest extends BaseTestCase
         $this->gump->get_errors_array();
     }
 
-    public function testCustomErrorMessages()
+    public function testCustomFieldsErrorMessages()
     {
         $this->gump->validate([
             'test_number' => '123'
         ], [
-            'test_number' => 'required|between_len,1;2'
+            'test_number' => 'between_len,1;2'
         ], [
             'test_number' => [
-                'required' => 'Test Number can not be empty. Please fill it up.',
                 'between_len' => '{field} length MUST be between {param[0]} and {param[1]} !!!'
             ]
         ]);

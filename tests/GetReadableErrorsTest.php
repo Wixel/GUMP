@@ -133,4 +133,21 @@ class GetReadableErrorsTest extends BaseTestCase
             (string)$this->gump
         );
     }
+
+    public function testCustomFieldsErrorMessages()
+    {
+        $this->gump->validate([
+            'test_number' => '123'
+        ], [
+            'test_number' => 'between_len,1;2'
+        ], [
+            'test_number' => [
+                'between_len' => '{field} length MUST be between {param[0]} and {param[1]} !!!'
+            ]
+        ]);
+
+        $this->assertEquals([
+            '<span class="gump-field">Test Number</span> length MUST be between 1 and 2 !!!'
+        ], $this->gump->get_readable_errors());
+    }
 }
