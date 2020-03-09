@@ -1641,6 +1641,42 @@ class GUMP
     {
         return isset($input[$field]) && is_array($input[$field]) && $input[$field]['error'] === 0;
     }
+    
+    /**
+     * Check the uploaded file for filesize
+     * checks only the ext should add mime type check.
+     *
+     * Usage: '<index>' => 'file_size,500kb
+     *
+     * @param string $field
+     * @param array  $input
+     *
+     * @return mixed
+     */
+    protected function validate_file_size($field, $input, $param = null)
+    {
+        if (!isset($input[$field])) {
+            return;
+        }
+        
+        if (is_array($input[$field]) && $input[$field]['error'] !== 4) {
+            $max_filesize = str_replace('kb', '', trim(strtolower($param))) * 1024;
+            
+            //get the image filesize
+            $imagesize = $input[$field]['size'];
+            
+            if ( ($imagesize > 0) && ($imagesize < $max_filesize) ) {
+                return;
+            }
+            
+            return array(
+                'field' => $field,
+                'value' => $input[$field],
+                'rule' => __FUNCTION__,
+                'param' => $param,
+            );
+        }
+    }
 
     /**
      * Check the uploaded file for extension. Doesn't check mime-type yet.
