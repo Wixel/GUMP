@@ -342,3 +342,16 @@ if ($validated === true) {
     print_r($validated);
 }
 ```
+
+
+Global configuration
+--------------------
+This configuration values would allow you to turn: `required|contains,value1;value2` into `required|contains:value1,value2`.
+
+```php
+GUMP::$rules_delimiter = '|';
+
+GUMP::$rules_parameters_delimiter = ',';
+
+GUMP::$rules_parameters_arrays_delimiter = ';';
+```
