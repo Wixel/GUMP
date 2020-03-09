@@ -23,12 +23,12 @@ $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
     'avatar'   => 'required_file|extension,png;jpg'
 ]);
 
-// recommended format (supported since v1.7)
+// recommended format (supported since v1.7) with field-rule specific error messages example
 $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
     'username' => ['required', 'alpha_numeric'],
     'password' => ['required', 'between_len' => [6, 100]],
     'avatar'   => ['required_file', 'extension' => ['png', 'jpg']]
-], [ // field-rule specific error messages
+], [
     'username' => ['required' => 'Fill the Username field please.'],
     'password' => ['between_len' => '{field} must be between {param[0]} and {param[1]} characters please.'],
     'avatar'   => ['extension' => 'Valid extensions for avatar are: {param}'] // "png, jpg"
@@ -45,10 +45,10 @@ if ($is_valid === true) {
 
 ```php
 $filtered = GUMP::filter_input([
-    'field' => ' text ',
+    'field'       => ' text ',
     'other_field' => 'Cool Title'
 ], [
-    'field' => ['trim', 'upper_case'],
+    'field'       => ['trim', 'upper_case'],
     'other_field' => 'slug'
 ]);
 
@@ -71,7 +71,7 @@ $gump->validation_rules([
 
 // field-specific error messages
 $gump->set_fields_error_messages([
-    'username' => ['required' => 'Fill the Username field please, its required.'],
+    'username'      => ['required' => 'Fill the Username field please, its required.'],
     'credit_card'   => ['extension' => 'Please enter a valid credit card.']
 ]);
 
