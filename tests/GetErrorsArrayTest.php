@@ -137,4 +137,22 @@ class GetErrorsArrayTest extends BaseTestCase
 
         $this->gump->get_errors_array();
     }
+
+    public function testCustomErrorMessages()
+    {
+        $this->gump->validate([
+            'test_number' => '123'
+        ], [
+            'test_number' => 'required|between_len,1;2'
+        ], [
+            'test_number' => [
+                'required' => 'Test Number can not be empty. Please fill it up.',
+                'between_len' => '{field} length MUST be between {param[0]} and {param[1]} !!!'
+            ]
+        ]);
+
+        $this->assertEquals([
+            'test_number' => 'Test Number length MUST be between 1 and 2 !!!'
+        ], $this->gump->get_errors_array());
+    }
 }
