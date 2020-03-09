@@ -383,15 +383,17 @@ class GUMP
     {
         $this->errors = [];
 
-        foreach ($ruleset as $field => $rules) {
+        foreach ($ruleset as $field => $rawRules) {
             $input[$field] = $input[$field] ?? null;
 
-            $rules = $this->parse_rules($rules, $rules_delimiter);
-            $require_rule_found = $this->find_required_rule($rules);
+            $rules = $this->parse_rules($rawRules, $rules_delimiter);
+            $is_required = $this->field_has_required_rules($rules);
+
+            if (!$is_required && self::is_empty($input[$field])) {
+                continue;
+            }
 
             foreach ($rules as $rule) {
-                if (is_null($require_rule_found) && self::is_empty($input[$field])) continue;
-
                 $parsed_rule = $this->parse_rule($rule, $parameters_delimiter);
                 $result = $this->call_rule($parsed_rule['rule'], $field, $input, $parsed_rule['param']);
 
@@ -486,7 +488,7 @@ class GUMP
         return $param;
     }
 
-    private function find_required_rule(array $rules)
+    private function field_has_required_rules(array $rules)
     {
         $require_type_of_rules = ['required', 'required_file'];
 
@@ -495,11 +497,11 @@ class GUMP
             $found = array_filter($rules, function($item) use($require_type_of_rules) {
                 return in_array($item[0], $require_type_of_rules);
             });
-            return $found > 0 ? true : false;
+            return count($found) > 0;
         }
 
         $found = array_values(array_intersect($require_type_of_rules, $rules));
-        return count($found) > 0 ? $found[0] : null;
+        return count($found) > 0;
     }
 
     private static function validator_to_method(string $rule)
