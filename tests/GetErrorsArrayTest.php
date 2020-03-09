@@ -23,17 +23,6 @@ class GetErrorsArrayTest extends BaseTestCase
         $this->assertEquals([], $this->gump->get_errors_array());
     }
 
-    public function testReturnsNullWhenNoErrorsAndConvertingToStringIsSet()
-    {
-        $result = $this->gump->validate([
-            'test_number' => '111'
-        ], [
-            'test_number' => 'numeric'
-        ]);
-
-        $this->assertNull($this->gump->get_errors_array(true));
-    }
-
     public function testReturnsErrorsWithFieldAsKey()
     {
         $result = $this->gump->validate([
@@ -136,5 +125,22 @@ class GetErrorsArrayTest extends BaseTestCase
         $this->expectExceptionMessage('Rule "custom" does not have an error message');
 
         $this->gump->get_errors_array();
+    }
+
+    public function testCustomFieldsErrorMessages()
+    {
+        $this->gump->validate([
+            'test_number' => '123'
+        ], [
+            'test_number' => 'between_len,1;2'
+        ], [
+            'test_number' => [
+                'between_len' => '{field} length MUST be between {param[0]} and {param[1]} !!!'
+            ]
+        ]);
+
+        $this->assertEquals([
+            'test_number' => 'Test Number length MUST be between 1 and 2 !!!'
+        ], $this->gump->get_errors_array());
     }
 }
