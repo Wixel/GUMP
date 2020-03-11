@@ -36,7 +36,7 @@ class GetErrorsArrayTest extends BaseTestCase
 
     public function testReturnsErrorsWithErrorMessageOfCustomValidator()
     {
-        GUMP::add_validator("custom", function($field, $input, $param = null) {
+        GUMP::add_validator("custom", function($field, $input, array $params = []) {
             return $input[$field] === 'ok';
         }, 'Custom error message');
 
@@ -70,11 +70,11 @@ class GetErrorsArrayTest extends BaseTestCase
 
     public function testErrorMessagePropagatesParamsArrayKeysToErrorMessages()
     {
-        GUMP::add_validator("num_index", function($field, $input, $param = null) {
+        GUMP::add_validator("num_index", function($field, $input, array $params = []) {
             return $input[$field] === 'ok';
         }, 'Parameter one: {param[0]} and parameter two: {param[1]}');
 
-        GUMP::add_validator("text_index", function($field, $input, $param = null) {
+        GUMP::add_validator("text_index", function($field, $input, array $params = []) {
             return $input[$field] === 'ok';
         }, 'Parameter one: {param[ten]} and parameter two: {param[twenty]}');
 
@@ -94,7 +94,7 @@ class GetErrorsArrayTest extends BaseTestCase
 
     public function testErrorMessageSplitsArrayParameterWithCommas()
     {
-        GUMP::add_validator("custom", function($field, $input, $param = null) {
+        GUMP::add_validator("custom", function($field, $input, array $params = []) {
             return $input[$field] === 'ok';
         }, 'Separated by comma: {param}');
 
@@ -107,24 +107,6 @@ class GetErrorsArrayTest extends BaseTestCase
         $this->assertEquals([
             'test_number' => 'Separated by comma: 1, 2'
         ], $this->gump->get_errors_array());
-    }
-
-    public function testItThrowsExceptionWhenCustomValidatorFailsWithoutAnErrorMessageSet()
-    {
-        GUMP::add_validator("custom", function($field, $input, $param = null) {
-            return $input[$field] === 'ok';
-        });
-
-        $this->gump->validate([
-            'test_number' => 'notOk'
-        ], [
-            'test_number' => 'custom'
-        ]);
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Rule "custom" does not have an error message');
-
-        $this->gump->get_errors_array();
     }
 
     public function testCustomFieldsErrorMessages()

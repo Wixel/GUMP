@@ -82,24 +82,6 @@ class GetReadableErrorsTest extends BaseTestCase
         ], $this->gump->get_readable_errors());
     }
 
-    public function testItThrowsExceptionWhenCustomValidatorFailsAndDoesNotHaveErrorMessageSet()
-    {
-        GUMP::add_validator("custom", function($field, $input, $param = NULL) {
-            return $input[$field] === 'ok';
-        });
-
-        $this->gump->validate([
-            'testnumber' => 'hey'
-        ], [
-            'testnumber' => 'custom'
-        ]);
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Rule "custom" does not have an error message');
-
-        $this->gump->get_readable_errors();
-    }
-
     public function testEqualsFieldValidator()
     {
         GUMP::set_field_name('test_number', 'Test Num.');
