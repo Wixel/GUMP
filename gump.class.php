@@ -926,7 +926,7 @@ class GUMP
     }
 
     /**
-     * Converts ['1', 1, 'true', true, 'yes', 'on'] to true, anything else is false ('on' is specially useful for form checkboxes).
+     * Converts ['1', 1, 'true', true, 'yes', 'on'] to true, anything else is false ('on' is useful for form checkboxes).
      *
      * @param string $value
      * @param array  $params
@@ -969,7 +969,7 @@ class GUMP
     }
 
     /**
-     * Convert MS Word special characters to web safe characters. ([“, ”, ‘, ’, –, …] => [", ", ', ', -, ...])
+     * Convert MS Word special characters to web safe characters. ([“ ”] => ", [‘ ’] => ', [–] => -, […] => ...)
      *
      * @param string $value
      * @param array  $params
@@ -978,27 +978,13 @@ class GUMP
      */
     protected function filter_ms_word_characters($value, $params = null)
     {
-        $word_open_double  = '“';
-        $word_close_double = '”';
-        $web_safe_double   = '"';
+        $value = str_replace(['“', '”'], '"', $value);
 
-        $value = str_replace(array($word_open_double, $word_close_double), $web_safe_double, $value);
+        $value = str_replace(['‘', '’'], "'", $value);
 
-        $word_open_single  = '‘';
-        $word_close_single = '’';
-        $web_safe_single   = "'";
+        $value = str_replace('–', '-', $value);
 
-        $value = str_replace(array($word_open_single, $word_close_single), $web_safe_single, $value);
-
-        $word_em     = '–';
-        $web_safe_em = '-';
-
-        $value = str_replace($word_em, $web_safe_em, $value);
-
-        $word_ellipsis = '…';
-        $web_ellipsis  = '...';
-
-        $value = str_replace($word_ellipsis, $web_ellipsis, $value);
+        $value = str_replace('…', '...', $value);
 
         return $value;
     }
@@ -1077,7 +1063,7 @@ class GUMP
 
         // v2
         if (is_array($param)) {
-            $param = array_map(function($value) {
+            $param = array_map(static function($value) {
                 return mb_strtolower(trim($value));
             }, $param);
 
@@ -1107,7 +1093,7 @@ class GUMP
      */
     protected function validate_contains_list($field, $input, array $param)
     {
-        $param = array_map(function($value) {
+        $param = array_map(static function($value) {
             return mb_strtolower(trim($value));
         }, $param);
 
@@ -1128,7 +1114,7 @@ class GUMP
      */
     protected function validate_doesnt_contain_list($field, $input, array $param)
     {
-        $param = array_map(function($value) {
+        $param = array_map(static function($value) {
             return mb_strtolower(trim($value));
         }, $param);
 
