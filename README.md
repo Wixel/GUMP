@@ -233,51 +233,41 @@ Adding custom validators and filters is made easy by using callback functions.
 /**
  * You would call it like 'equals_string,someString'
  *
- * @param string  $field Name of the field
- * @param array   $input Access to the whole input data
- * @param string  $param Rule parameters (optional)
+ * @param string $field  Name of the field
+ * @param array  $input  Access to the whole input data
+ * @param array  $params Rule parameters. This is usually empty array by default if rule does not have parameters.
  *
  * @return bool   true or false whether the validation was successful or not
  */
-GUMP::add_validator("equals_string", function($field, $input, $param = null) {
-    return $input[$field] === $param;
-}, 'Field {field} does not equal {param}.');
+GUMP::add_validator("equals_string", function($field, $input, array $params) {
+    return $input[$field] === $params;
+}, 'Field {field} does not equal to {param}.');
 
 
 /**
- * @param string  $value Value
- * @param string  $param Filter parameters (optional)
+ * @param string $value Value
+ * @param array  $param Filter parameters (optional)
  *
  * @return mixed  result of filtered value
  */
-GUMP::add_filter("upper", function($value, $params = null) {
+GUMP::add_filter("upper", function($value, array $params = []) {
     return strtoupper($value);
 });
 ```
 
-Alternately, you can simply create your own class that extends the GUMP class.
+Alternately, you can simply create your own class that extends GUMP. You only have to have in mind:
+
+* For filter methods, prepend the method name with "filter_".
+* For validator methods, prepend the method name with "validate_".
 
 ```php
 class MyClass extends GUMP
 {
-    /**
-     * @param string  $value Value
-     * @param string  $param Filter parameters (optional)
-     *
-     * @return mixed  result of filtered value
-     */
     protected function filter_myfilter($value, $param = null)
     {
         return strtoupper($value);
     }
 
-    /**
-     * @param string  $field Name of the field
-     * @param array   $input Access to the whole input data
-     * @param string  $param Rule parameters (optional)
-     *
-     * @return bool   true or false whether the validation was successful or not
-     */
     protected function validate_myvalidator($field, array $input, array $params = null)
     {
         return $input[$field] === 'good_value';
@@ -287,11 +277,6 @@ class MyClass extends GUMP
 $validator = new MyClass();
 $validated = $validator->validate($_POST, $rules);
 ```
-Remember:
-
-* For filter methods, prepend the method name with "filter_".
-* For validator methods, prepend the method name with "validate_".
-
 
 Global configuration
 --------------------
