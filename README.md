@@ -263,12 +263,12 @@ Alternately, you can simply create your own class that extends GUMP. You only ha
 ```php
 class MyClass extends GUMP
 {
-    protected function filter_myfilter($value, $param = null)
+    protected function filter_myfilter($value, array $params = [])
     {
         return strtoupper($value);
     }
 
-    protected function validate_myvalidator($field, array $input, array $params = null)
+    protected function validate_myvalidator($field, array $input, array $params = [])
     {
         return $input[$field] === 'good_value';
     }
