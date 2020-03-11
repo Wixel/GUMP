@@ -68,7 +68,7 @@ class RequiredValidatorTest extends BaseTestCase
             'field' => 'test',
             'value' => null,
             'rule' => 'validate_required',
-            'param' => null
+            'params' => []
         ]], $result);
     }
 
@@ -84,7 +84,7 @@ class RequiredValidatorTest extends BaseTestCase
             'field' => 'test',
             'value' => '',
             'rule' => 'validate_required',
-            'param' => null
+            'params' => []
         ]], $result);
     }
 }

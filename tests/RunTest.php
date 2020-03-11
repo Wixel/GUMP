@@ -72,7 +72,7 @@ class RunTest extends BaseTestCase
             'field' => 'mismatch',
             'value' => 'somedata',
             'rule' => 'mismatch',
-            'param' => null
+            'params' => []
         ]], $this->gump->errors());
     }
 }

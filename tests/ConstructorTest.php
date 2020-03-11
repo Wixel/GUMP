@@ -34,7 +34,7 @@ class ConstructorTest extends BaseTestCase
             ->andReturnFalse();
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Language with key "es" does not exist');
+        $this->expectExceptionMessage("'es' language is not supported.");
 
         $gump = new GUMP('es');
     }

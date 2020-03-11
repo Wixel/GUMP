@@ -23,7 +23,7 @@ class GetReadableErrorsTest extends BaseTestCase
         $this->assertEquals([], $this->gump->get_readable_errors());
     }
 
-    public function testReturnsNullWhenNoErrorsAndConvertingToString()
+    public function testReturnsEmptyStringWhenNoErrorsAndConvertingToString()
     {
         $result = $this->gump->validate([
             'test_number' => '123'
@@ -31,7 +31,7 @@ class GetReadableErrorsTest extends BaseTestCase
             'test_number' => 'numeric'
         ]);
 
-        $this->assertNull($this->gump->get_readable_errors(true));
+        $this->assertEquals('', $this->gump->get_readable_errors(true));
     }
 
     public function testReturnsArray()

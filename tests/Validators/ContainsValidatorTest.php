@@ -13,38 +13,37 @@ use Tests\BaseTestCase;
  */
 class ContainsValidatorTest extends BaseTestCase
 {
-    public function testSuccess()
+    /**
+     * @dataProvider successProvider
+     */
+    public function testSuccess($rule, $input)
     {
-        $this->assertTrue($this->validate("contains,'one' 'two' 'space separated'", 'space separated'));
+        $this->assertTrue($this->validate($rule, $input));
     }
 
-    public function testSuccessWithSemicolonFormat()
+    public function successProvider()
     {
-        $this->assertTrue($this->validate("contains,one;two;as long as it does not contain a semicolon", 'as long as it does not contain a semicolon'));
+        return [
+            ['contains,one', 'one'],
+            ['contains,one;two;with space', 'with space'],
+            [['contains' => ['one']], 'one'],
+            [['contains' => ['one', 'two']], 'two'],
+        ];
     }
 
-    public function testFailure()
+    /**
+     * @dataProvider errorProvider
+     */
+    public function testError($rule, $input)
     {
-        $this->assertNotTrue($this->validate('contains,one two', 'three'));
+        $this->assertNotTrue($this->validate($rule, $input));
     }
 
-    public function testFailureWithSemicolonFormat()
+    public function errorProvider()
     {
-        $this->assertNotTrue($this->validate("contains,one;two;as long as it does not contain a semicolon", 'as long as it does not contain a'));
-    }
-
-    public function testSuccessWithRegexSeparator()
-    {
-        $this->assertTrue($this->validate("contains,'one' 'two' 'half three'", 'half three'));
-    }
-
-    public function testFailureWithRegexSeparator()
-    {
-        $this->assertNotTrue($this->validate("contains,'one' 'two'", 'three'));
-    }
-
-    public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
-    {
-        $this->assertTrue($this->validate("contains,'one' 'two'", ''));
+        return [
+            ['contains,one', 'two'],
+            ['contains,one;two;with space', 'with spac'],
+        ];
     }
 }
