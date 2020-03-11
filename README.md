@@ -214,6 +214,13 @@ GUMP::set_field_names([
     'zip' => 'ZIP Code'
 ]);
 
+// Set custom error messages for rules.
+GUMP::set_error_message('validate_required', '{field} is required.');
+GUMP::set_error_messages([
+    'validate_required'    => '{field} is required.',
+    'validate_valid_email' => '{field} must be a valid email.'
+]);
+
 // Strips and encodes unwanted characters
 GUMP::xss_clean(array $data);
 ```
