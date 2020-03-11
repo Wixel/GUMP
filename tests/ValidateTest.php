@@ -184,18 +184,9 @@ class ValidateTest extends BaseTestCase
     public function testValidatePassesParametersToIntegratedValidators()
     {
         $extendedGUMP = new class extends GUMP {
-            public function validate_integrated($field, $input, $param = null)
+            protected function validate_integrated($field, $input, array $param = [])
             {
-                if ($input[$field] == $param) {
-                    return;
-                }
-
-                return array(
-                    'field' => $field,
-                    'value' => $input[$field],
-                    'rule' => __FUNCTION__,
-                    'param' => $param,
-                );
+                return $input[$field] == $param[0];
             }
         };
 
@@ -218,10 +209,10 @@ class ValidateTest extends BaseTestCase
             'test' => 'custom,parameterValue'
         ];
 
-        GUMP::add_validator("custom", function($field, $input, $param = null) use($gumpInput) {
+        GUMP::add_validator("custom", function($field, $input, array $params = []) use($gumpInput) {
             $this->assertEquals($field, 'test');
             $this->assertEquals($input, $gumpInput);
-            $this->assertEquals($param, 'parameterValue');
+            $this->assertEquals($params, ['parameterValue']);
 
             return $input[$field] == 'fail';
         }, 'My custom error');
@@ -231,7 +222,7 @@ class ValidateTest extends BaseTestCase
 
     public function testCustomValidatorsReturnRightErrorStructure()
     {
-        GUMP::add_validator("custom", function($field, $input, $param = null) {
+        GUMP::add_validator("custom", function($field, $input, array $params = []) {
             return $input[$field] == 'fail';
         }, 'My custom error');
 
@@ -245,7 +236,7 @@ class ValidateTest extends BaseTestCase
             'field' => 'test',
             'value' => 'failing',
             'rule' => 'custom',
-            'param' => 'parameterValue'
+            'param' => ['parameterValue']
         ]], $result);
     }
 
@@ -254,14 +245,14 @@ class ValidateTest extends BaseTestCase
         $result = $this->gump->validate([
             'test' => '123'
         ], [
-            'test' => 'date,Y-m-md'
+            'test' => 'date,Y-m-d'
         ]);
 
         $this->assertEquals([[
             'field' => 'test',
             'value' => '123',
             'rule' => 'validate_date',
-            'param' => 'Y-m-md'
+            'param' => ['Y-m-d']
         ]], $result);
     }
 
@@ -277,7 +268,7 @@ class ValidateTest extends BaseTestCase
             'field' => 'test',
             'value' => '',
             'rule' => 'validate_required',
-            'param' => null
+            'param' => []
         ]]);
     }
 
@@ -294,12 +285,12 @@ class ValidateTest extends BaseTestCase
             'field' => 'some_field',
             'value' => null,
             'rule' => 'validate_required',
-            'param' => null
+            'param' => []
         ], [
             'field' => 'file_field',
             'value' => null,
             'rule' => 'validate_required_file',
-            'param' => null
+            'param' => []
         ]]);
     }
 
@@ -320,7 +311,7 @@ class ValidateTest extends BaseTestCase
             'field' => 'some_field',
             'value' => '123',
             'rule' => 'validate_alpha',
-            'param' => null
+            'param' => []
         ]], $result);
     }
 
@@ -338,12 +329,12 @@ class ValidateTest extends BaseTestCase
             'field' => 'some_field',
             'value' => 'test',
             'rule' => 'validate_max_len',
-            'param' => 2
+            'param' => [2]
         ], [
             'field' => 'some_other_field',
             'value' => '123',
             'rule' => 'validate_alpha',
-            'param' => null
+            'param' => []
         ]], $result);
     }
 
@@ -370,12 +361,12 @@ class ValidateTest extends BaseTestCase
             'field' => 'some_field',
             'value' => null,
             'rule' => 'validate_required',
-            'param' => null
+            'param' => []
         ], [
             'field' => 'some_other_field',
             'value' => null,
             'rule' => 'validate_required',
-            'param' => null
+            'param' => []
         ]]);
     }
 
