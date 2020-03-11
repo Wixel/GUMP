@@ -259,7 +259,7 @@ class MyClass extends GUMP
      *
      * @return mixed  result of filtered value
      */
-    public function filter_myfilter($value, $param = null)
+    protected function filter_myfilter($value, $param = null)
     {
         return strtoupper($value);
     }
@@ -271,7 +271,7 @@ class MyClass extends GUMP
      *
      * @return bool   true or false whether the validation was successful or not
      */
-    public function validate_myvalidator($field, $input, $param = null)
+    protected function validate_myvalidator($field, array $input, array $params = null)
     {
         return $input[$field] === 'good_value';
     }
