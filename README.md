@@ -189,10 +189,11 @@ Filter rules can also be any PHP native function (e.g.: trim).
 
 ```php
 /**
- * This is the most flexible validation "executer".
+ * This is the most flexible validation "executer" because of it's return errors format.
  *
  * Returns bool true when no errors.
- * Returns array of errors with detailed information (field name, input value, rule that failed).
+ * Returns array of errors with detailed info. which you can then use with your own helpers.
+ * (field name, input value, rule that failed and it's parameters).
  */
 $gump->validate(array $input, array $ruleset, array $fields_error_messages = []);
 
@@ -204,7 +205,7 @@ $gump->validate(array $input, array $ruleset, array $fields_error_messages = [])
 $gump->filter(array $input, array $filterset);
 
 // Sanitizes data and converts strings to UTF-8 (if available), optionally according to the provided field whitelist
-$gump->sanitize(array $input, $whitelist = NULL);
+$gump->sanitize(array $input, $whitelist = null);
 
 // Override field names in error messages
 GUMP::set_field_name('str', 'Street');
@@ -279,8 +280,7 @@ class MyClass extends GUMP
 $validator = new MyClass();
 $validated = $validator->validate($_POST, $rules);
 ```
-
-Remember to create a public methods with the correct parameter types and parameter counts.
+Remember:
 
 * For filter methods, prepend the method name with "filter_".
 * For validator methods, prepend the method name with "validate_".
