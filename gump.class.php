@@ -112,7 +112,7 @@ class GUMP
         $gump->validation_rules($validators);
         $gump->set_fields_error_messages($fields_error_messages);
 
-        if ($gump->run($data, false) === false) {
+        if ($gump->run($data) === false) {
             return $gump->get_readable_errors();
         }
 
@@ -319,8 +319,8 @@ class GUMP
      * Sanitize the input data.
      *
      * @param array $input
-     * @param null  $fields
-     * @param bool  $utf8_encode
+     * @param array $fields
+     * @param bool $utf8_encode
      *
      * @return array
      */
@@ -376,10 +376,10 @@ class GUMP
     /**
      * Perform data validation against the provided ruleset.
      *
-     * @param mixed $input
-     * @param array $ruleset
-     * @param array $fields_error_messages
-     * @return mixed
+     * @param array $input Input data.
+     * @param array $ruleset Validation rules.
+     * @param array $fields_error_messages Field-rule specific error messages.
+     * @return bool|array Returns bool true when no errors. Returns array when errors.
      * @throws Exception
      */
     public function validate(array $input, array $ruleset, array $fields_error_messages = [])
@@ -1073,18 +1073,18 @@ class GUMP
      */
     protected function validate_contains($field, array $input, $param = null)
     {
-        $value = trim(mb_strtolower($input[$field]));
+        $value = mb_strtolower(trim($input[$field]));
 
         // v2
         if (is_array($param)) {
             $param = array_map(function($value) {
-                return trim(mb_strtolower($value));
+                return mb_strtolower(trim($value));
             }, $param);
 
             return in_array($value, $param);
         }
 
-        $param = trim(mb_strtolower($param));
+        $param = mb_strtolower(trim($param));
 
         if (preg_match_all('#\'(.+?)\'#', $param, $matches, PREG_PATTERN_ORDER)) {
             $param = $matches[1];
@@ -1108,10 +1108,10 @@ class GUMP
     protected function validate_contains_list($field, $input, array $param)
     {
         $param = array_map(function($value) {
-            return trim(mb_strtolower($value));
+            return mb_strtolower(trim($value));
         }, $param);
 
-        $value = trim(mb_strtolower($input[$field]));
+        $value = mb_strtolower(trim($input[$field]));
 
         return in_array($value, $param);
     }
@@ -1129,10 +1129,10 @@ class GUMP
     protected function validate_doesnt_contain_list($field, $input, array $param)
     {
         $param = array_map(function($value) {
-            return trim(mb_strtolower($value));
+            return mb_strtolower(trim($value));
         }, $param);
 
-        $value = trim(mb_strtolower($input[$field]));
+        $value = mb_strtolower(trim($input[$field]));
 
         return !in_array($value, $param);
     }
