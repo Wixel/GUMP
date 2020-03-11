@@ -165,24 +165,24 @@ Filter rules can also be any PHP native function (e.g.: trim).
 
 <div id="available_filters">
 
-| Filter                 | Description                                                                                                                  |
-|------------------------|------------------------------------------------------------------------------------------------------------------------------|
-| **noise_words**        | Replace noise words in a string (http://tax.cchgroup.com/help/Avoiding_noise_words_in_your_search.htm).                      |
-| **rmpunctuation**      | Remove all known punctuation from a string.                                                                                  |
-| **urlencode**          | Sanitize the string by urlencoding characters.                                                                               |
-| **htmlencode**         | Sanitize the string by converting HTML characters to their HTML entities.                                                    |
-| **sanitize_email**     | Sanitize the string by removing illegal characters from emails.                                                              |
-| **sanitize_numbers**   | Sanitize the string by removing illegal characters from numbers.                                                             |
-| **sanitize_floats**    | Sanitize the string by removing illegal characters from float numbers.                                                       |
-| **sanitize_string**    | Sanitize the string by removing any script tags.                                                                             |
-| **boolean**            | Converts ['1', 1, 'true', true, 'yes', 'on'] to true, anything else is false ('on' is specially useful for form checkboxes). |
-| **basic_tags**         | Filter out all HTML tags except the defined basic tags.                                                                      |
-| **whole_number**       | Convert the provided numeric value to a whole number.                                                                        |
-| **ms_word_characters** | Convert MS Word special characters to web safe characters. ([“, ”, ‘, ’, –, …] => [", ", ', ', -, ...])          |
-| **lower_case**         | Converts to lowercase.                                                                                                       |
-| **upper_case**         | Converts to uppercase.                                                                                                       |
-| **slug**               | Converts value to url-web-slugs.                                                                                             |
-| **trim**               | Remove spaces from the beginning and end of strings (PHP).                                                                   |
+| Filter                 | Description                                                                                                           |
+|------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| **noise_words**        | Replace noise words in a string (http://tax.cchgroup.com/help/Avoiding_noise_words_in_your_search.htm).               |
+| **rmpunctuation**      | Remove all known punctuation from a string.                                                                           |
+| **urlencode**          | Sanitize the string by urlencoding characters.                                                                        |
+| **htmlencode**         | Sanitize the string by converting HTML characters to their HTML entities.                                             |
+| **sanitize_email**     | Sanitize the string by removing illegal characters from emails.                                                       |
+| **sanitize_numbers**   | Sanitize the string by removing illegal characters from numbers.                                                      |
+| **sanitize_floats**    | Sanitize the string by removing illegal characters from float numbers.                                                |
+| **sanitize_string**    | Sanitize the string by removing any script tags.                                                                      |
+| **boolean**            | Converts ['1', 1, 'true', true, 'yes', 'on'] to true, anything else is false ('on' is useful for form checkboxes).    |
+| **basic_tags**         | Filter out all HTML tags except the defined basic tags.                                                               |
+| **whole_number**       | Convert the provided numeric value to a whole number.                                                                 |
+| **ms_word_characters** | Convert MS Word special characters to web safe characters. ([“ ”] => ", [‘ ’] => ', [–] => -, […] => ...) |
+| **lower_case**         | Converts to lowercase.                                                                                                |
+| **upper_case**         | Converts to uppercase.                                                                                                |
+| **slug**               | Converts value to url-web-slugs.                                                                                      |
+| **trim**               | Remove spaces from the beginning and end of strings (PHP).                                                            |
 </div>
 
 #### Other Available Methods
