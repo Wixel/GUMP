@@ -1113,7 +1113,7 @@ class GUMP
     // ** ------------------------- Validators ------------------------------------ ** //
 
     /**
-     * Ensures the specified key value exists and is not empty.
+     * Ensures the specified key value exists and is not empty (not null, not empty string, not empty array).
      *
      * @param string $field
      * @param array $input
