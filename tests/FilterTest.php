@@ -102,8 +102,8 @@ class FilterTest extends BaseTestCase
 
     public function testRulesArrayFormatWithSimpleArrayParameters()
     {
-        GUMP::add_filter("custom", function($value, $param = null) {
-            return call_user_func($param, $value);
+        GUMP::add_filter("custom", function($value, array $param) {
+            return call_user_func($param[0], $value);
         });
 
         $result = $this->gump->filter([
