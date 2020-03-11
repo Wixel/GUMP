@@ -26,9 +26,9 @@ class StaticSetErrorMessagesTest extends BaseTestCase
 
     public function testSetErrorMessageAlsoAppliesForCustomValidators()
     {
-        GUMP::add_validator("custom", function($field, $input, $param = NULL) {
+        GUMP::add_validator("custom", function($field, $input, array $params = []) {
             return $input[$field] === 'ok';
-        });
+        }, 'Error message');
 
         GUMP::set_error_messages([
             'custom' =>'Field {field} should be numeric'

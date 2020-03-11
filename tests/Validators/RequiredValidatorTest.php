@@ -67,7 +67,7 @@ class RequiredValidatorTest extends BaseTestCase
         $this->assertEquals([[
             'field' => 'test',
             'value' => null,
-            'rule' => 'validate_required',
+            'rule' => 'required',
             'params' => []
         ]], $result);
     }
@@ -83,7 +83,7 @@ class RequiredValidatorTest extends BaseTestCase
         $this->assertEquals([[
             'field' => 'test',
             'value' => '',
-            'rule' => 'validate_required',
+            'rule' => 'required',
             'params' => []
         ]], $result);
     }

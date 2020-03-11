@@ -49,7 +49,7 @@ class ValidateTest extends BaseTestCase
 
     public function testCustomValidatorReturnsOneErrorOnOneFailure()
     {
-        GUMP::add_validator("custom2", function($field, $input, $param = null) {
+        GUMP::add_validator("custom2", function($field, $input, array $params = []) {
             return $input[$field] === 'ok';
         }, 'My custom error');
 
@@ -75,7 +75,7 @@ class ValidateTest extends BaseTestCase
 
     public function testCustomValidatorWithIntegratedValidatorReturnsOneErrorOnTwoFailures()
     {
-        GUMP::add_validator("custom3", function($field, $input, $param = null) {
+        GUMP::add_validator("custom3", function($field, $input, array $params = []) {
             return $input[$field] === 'ok';
         }, 'My custom error');
 
@@ -90,7 +90,7 @@ class ValidateTest extends BaseTestCase
 
     public function testIntegratedValidatorWithCustomValidatorReturnsOneErrorOnTwoFailures()
     {
-        GUMP::add_validator("custom4", function($field, $input, $param = null) {
+        GUMP::add_validator("custom4", function($field, $input, array $params = []) {
             return $input[$field] === 'ok';
         }, 'My custom error');
 
@@ -105,7 +105,7 @@ class ValidateTest extends BaseTestCase
 
     public function testCustomValidatorWithCustomValidatorReturnsOneErrorOnTwoFailures()
     {
-        GUMP::add_validator("custom5", function($field, $input, $param = null) {
+        GUMP::add_validator("custom5", function($field, $input, array $params = []) {
             return $input[$field] === 'ok';
         }, 'My custom error');
 
@@ -120,7 +120,7 @@ class ValidateTest extends BaseTestCase
 
     public function testIntegratedValidatorWithCustomValidatorBothFailingOnDifferentFields()
     {
-        GUMP::add_validator("custom", function($field, $input, $param = null) {
+        GUMP::add_validator("custom", function($field, $input, array $params = []) {
             return $input[$field] === 'ok';
         }, 'My custom error');
 
@@ -137,7 +137,7 @@ class ValidateTest extends BaseTestCase
 
     public function testIntegratedValidatorWithCustomValidatorFailingIntegratedOnDifferentFields()
     {
-        GUMP::add_validator("custom", function($field, $input, $param = null) {
+        GUMP::add_validator("custom", function($field, $input, array $params = []) {
             return $input[$field] === 'ok';
         }, 'My custom error');
 
@@ -154,7 +154,7 @@ class ValidateTest extends BaseTestCase
 
     public function testIntegratedValidatorWithCustomValidatorFailingCustomOnDifferentFields()
     {
-        GUMP::add_validator("custom", function($field, $input, $param = null) {
+        GUMP::add_validator("custom", function($field, $input, array $params = []) {
             return $input[$field] === 'ok';
         }, 'My custom error');
 
@@ -251,7 +251,7 @@ class ValidateTest extends BaseTestCase
         $this->assertEquals([[
             'field' => 'test',
             'value' => '123',
-            'rule' => 'validate_date',
+            'rule' => 'date',
             'params' => ['Y-m-d']
         ]], $result);
     }
@@ -267,7 +267,7 @@ class ValidateTest extends BaseTestCase
         $this->assertEquals($result, [[
             'field' => 'test',
             'value' => '',
-            'rule' => 'validate_required',
+            'rule' => 'required',
             'params' => []
         ]]);
     }
@@ -284,12 +284,12 @@ class ValidateTest extends BaseTestCase
         $this->assertEquals($result, [[
             'field' => 'some_field',
             'value' => null,
-            'rule' => 'validate_required',
+            'rule' => 'required',
             'params' => []
         ], [
             'field' => 'file_field',
             'value' => null,
-            'rule' => 'validate_required_file',
+            'rule' => 'required_file',
             'params' => []
         ]]);
     }
@@ -310,7 +310,7 @@ class ValidateTest extends BaseTestCase
         $this->assertEquals([[
             'field' => 'some_field',
             'value' => '123',
-            'rule' => 'validate_alpha',
+            'rule' => 'alpha',
             'params' => []
         ]], $result);
     }
@@ -328,12 +328,12 @@ class ValidateTest extends BaseTestCase
         $this->assertEquals([[
             'field' => 'some_field',
             'value' => 'test',
-            'rule' => 'validate_max_len',
+            'rule' => 'max_len',
             'params' => [2]
         ], [
             'field' => 'some_other_field',
             'value' => '123',
-            'rule' => 'validate_alpha',
+            'rule' => 'alpha',
             'params' => []
         ]], $result);
     }
@@ -360,12 +360,12 @@ class ValidateTest extends BaseTestCase
         $this->assertEquals($result, [[
             'field' => 'some_field',
             'value' => null,
-            'rule' => 'validate_required',
+            'rule' => 'required',
             'params' => []
         ], [
             'field' => 'some_other_field',
             'value' => null,
-            'rule' => 'validate_required',
+            'rule' => 'required',
             'params' => []
         ]]);
     }
@@ -381,7 +381,7 @@ class ValidateTest extends BaseTestCase
         $this->assertEquals([[
             'field' => 'some_field',
             'value' => 'tests',
-            'rule' => 'validate_between_len',
+            'rule' => 'between_len',
             'params' => [2, 4]
         ]], $result);
     }
@@ -397,7 +397,7 @@ class ValidateTest extends BaseTestCase
         $this->assertEquals([[
             'field' => 'some_field',
             'value' => 'tests',
-            'rule' => 'validate_between_len',
+            'rule' => 'between_len',
             'params' => [2, 4] // ;)
         ]], $result);
     }

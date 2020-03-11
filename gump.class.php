@@ -244,19 +244,16 @@ class GUMP
      * @param string $error_message
      *
      * @return void
-     * @throws Exception
+     * @throws Exception when validator with the same name already exists
      */
-    public static function add_validator(string $rule, callable $callback, string $error_message = null)
+    public static function add_validator(string $rule, callable $callback, string $error_message)
     {
         if (method_exists(__CLASS__, self::validator_to_method($rule)) || isset(self::$validation_methods[$rule])) {
             throw new Exception("Validator rule '$rule' already exists.");
         }
 
         self::$validation_methods[$rule] = $callback;
-
-        if ($error_message) {
-            self::$validation_methods_errors[$rule] = $error_message;
-        }
+        self::$validation_methods_errors[$rule] = $error_message;
     }
 
     /**
@@ -266,7 +263,7 @@ class GUMP
      * @param callable $callback
      *
      * @return void
-     * @throws Exception
+     * @throws Exception when filter with the same name already exists
      */
     public static function add_filter(string $rule, callable $callback)
     {
@@ -611,7 +608,7 @@ class GUMP
 
             // is_array check for backward compatibility
             return (is_array($result) || $result === false)
-                ? $this->generate_error_array($field, $input[$field], $method, $rule_params)
+                ? $this->generate_error_array($field, $input[$field], $rule, $rule_params)
                 : true;
         } elseif (isset(self::$validation_methods[$rule])) {
             $result = call_user_func(self::$validation_methods[$rule], $field, $input, $rule_params);
@@ -621,7 +618,7 @@ class GUMP
                 : true;
         }
 
-        throw new Exception("Validator method '$method' does not exist.");
+        throw new Exception(sprintf("Validator method '%s' does not exist.", $method));
     }
 
     /**
@@ -645,7 +642,7 @@ class GUMP
             return call_user_func(self::$filter_methods[$filter], $value, $rule_params);
         }
 
-        throw new Exception("Filter method '$filter' does not exist.");
+        throw new Exception(sprintf("Filter method '%s' does not exist.", $filter));
     }
 
     /**
