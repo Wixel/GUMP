@@ -1057,11 +1057,8 @@ class GUMP
     protected function filter_ms_word_characters($value, array $params = [])
     {
         $value = str_replace(['“', '”'], '"', $value);
-
         $value = str_replace(['‘', '’'], "'", $value);
-
         $value = str_replace('–', '-', $value);
-
         $value = str_replace('…', '...', $value);
 
         return $value;
