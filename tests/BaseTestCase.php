@@ -26,7 +26,7 @@ abstract class BaseTestCase extends TestCase
     {
         $this->prophet = new Prophet;
 
-        $this->helpersMock = m::mock('overload:GUMP\Helpers');
+        $this->helpersMock = m::mock('overload:GUMP\EnvHelpers');
         $this->helpersMock->shouldReceive('file_exists')
             ->once()
             ->andReturnTrue();
