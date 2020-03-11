@@ -236,7 +236,7 @@ class ValidateTest extends BaseTestCase
             'field' => 'test',
             'value' => 'failing',
             'rule' => 'custom',
-            'param' => ['parameterValue']
+            'params' => ['parameterValue']
         ]], $result);
     }
 
@@ -252,7 +252,7 @@ class ValidateTest extends BaseTestCase
             'field' => 'test',
             'value' => '123',
             'rule' => 'validate_date',
-            'param' => ['Y-m-d']
+            'params' => ['Y-m-d']
         ]], $result);
     }
 
@@ -268,7 +268,7 @@ class ValidateTest extends BaseTestCase
             'field' => 'test',
             'value' => '',
             'rule' => 'validate_required',
-            'param' => []
+            'params' => []
         ]]);
     }
 
@@ -285,12 +285,12 @@ class ValidateTest extends BaseTestCase
             'field' => 'some_field',
             'value' => null,
             'rule' => 'validate_required',
-            'param' => []
+            'params' => []
         ], [
             'field' => 'file_field',
             'value' => null,
             'rule' => 'validate_required_file',
-            'param' => []
+            'params' => []
         ]]);
     }
 
@@ -311,7 +311,7 @@ class ValidateTest extends BaseTestCase
             'field' => 'some_field',
             'value' => '123',
             'rule' => 'validate_alpha',
-            'param' => []
+            'params' => []
         ]], $result);
     }
 
@@ -329,12 +329,12 @@ class ValidateTest extends BaseTestCase
             'field' => 'some_field',
             'value' => 'test',
             'rule' => 'validate_max_len',
-            'param' => [2]
+            'params' => [2]
         ], [
             'field' => 'some_other_field',
             'value' => '123',
             'rule' => 'validate_alpha',
-            'param' => []
+            'params' => []
         ]], $result);
     }
 
@@ -361,12 +361,12 @@ class ValidateTest extends BaseTestCase
             'field' => 'some_field',
             'value' => null,
             'rule' => 'validate_required',
-            'param' => []
+            'params' => []
         ], [
             'field' => 'some_other_field',
             'value' => null,
             'rule' => 'validate_required',
-            'param' => []
+            'params' => []
         ]]);
     }
 
@@ -382,7 +382,7 @@ class ValidateTest extends BaseTestCase
             'field' => 'some_field',
             'value' => 'tests',
             'rule' => 'validate_between_len',
-            'param' => [2, 4]
+            'params' => [2, 4]
         ]], $result);
     }
 
@@ -398,7 +398,7 @@ class ValidateTest extends BaseTestCase
             'field' => 'some_field',
             'value' => 'tests',
             'rule' => 'validate_between_len',
-            'param' => [2, 4] // ;)
+            'params' => [2, 4] // ;)
         ]], $result);
     }
 

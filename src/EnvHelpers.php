@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace GUMP;
 
-class Helpers
+/**
+ * Helpers that are environment dependant.
+ */
+class EnvHelpers
 {
     /**
      * @inheritDoc function_exists
@@ -57,5 +60,4 @@ class Helpers
     {
         return file_exists($filename);
     }
-
 }
