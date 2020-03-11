@@ -1,6 +1,6 @@
 # Getting started
 
-GUMP is a standalone PHP data validation and filtering class that makes validating any data easy and painless without the reliance on a framework.
+GUMP is a standalone PHP data validation and filtering class that makes validating any data easy and painless without the reliance on a framework. GUMP is open-source since 2011.
 
 [![License](https://poser.pugx.org/wixel/gump/license)](https://packagist.org/packages/wixel/gump)
 [![Total Downloads](https://poser.pugx.org/wixel/gump/downloads)](https://packagist.org/packages/wixel/gump)
@@ -23,7 +23,7 @@ $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
     'avatar'   => 'required_file|extension,png;jpg'
 ]);
 
-// recommended format (supported since v1.7) with field-rule specific error messages example
+// recommended format (since v1.7) with field-rule specific error messages (optional)
 $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
     'username' => ['required', 'alpha_numeric'],
     'password' => ['required', 'between_len' => [6, 100]],
@@ -61,6 +61,7 @@ var_dump($filtered['other_field']); // result: "cool-title"
 ```php
 $gump = new GUMP();
 
+// set validation rules
 $gump->validation_rules([
     'username'    => 'required|alpha_numeric|max_len,100|min_len,6',
     'password'    => 'required|max_len,100|min_len,6',
@@ -69,12 +70,13 @@ $gump->validation_rules([
     'credit_card' => 'required|valid_cc'
 ]);
 
-// field-specific error messages
+// set field-rule specific error messages
 $gump->set_fields_error_messages([
     'username'      => ['required' => 'Fill the Username field please, its required.'],
     'credit_card'   => ['extension' => 'Please enter a valid credit card.']
 ]);
 
+// set filter rules
 $gump->filter_rules([
     'username' => 'trim|sanitize_string',
     'password' => 'trim',
@@ -83,14 +85,16 @@ $gump->filter_rules([
     'bio'      => 'noise_words'
 ]);
 
+// on success: returns array with validated data (filters applied, if any)
+// on error: returns false
 $valid_data = $gump->run($_POST);
 
-if ($valid_data === false) {
+if ($valid_data) {
+    var_dump($valid_data); // array with same input structure but after filters run
+} else {
     var_dump($gump->get_readable_errors()); // For HTML: ['Field <span class="gump-field">Somefield</span> is required.'] 
     // or
     var_dump($gump->get_errors_array()); // For APIs?: ['field' => 'Field Somefield is required']
-} else {
-    var_dump($valid_data); // after filters result: ['field' => 'value']
 }
 ```
 
@@ -157,7 +161,7 @@ $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
 
 :star: Available Filters
 ------------------------
-Filter rules can also be any PHP native function (e.g.: rim).
+Filter rules can also be any PHP native function (e.g.: trim).
 
 <div id="available_filters">
 
@@ -181,75 +185,37 @@ Filter rules can also be any PHP native function (e.g.: rim).
 | **trim**               | Remove spaces from the beginning and end of strings (PHP).                                                                   |
 </div>
 
-#### Available Methods
+#### Other Available Methods
 
 ```php
-// Shorthand validation
-is_valid(array $data, array $rules)
+/**
+ * This is the most flexible validation "executer".
+ *
+ * Returns bool true when no errors.
+ * Returns array of errors with detailed information (field name, input value, rule that failed).
+ */
+$gump->validate(array $input, array $ruleset, array $fields_error_messages = []);
 
-// Get or set the validation rules
-validation_rules(array $rules);
+/**
+ * Filters input data according to the provided filterset
+ *
+ * Returns array with same input structure but after filters have been applied.
+ */
+$gump->filter(array $input, array $filterset);
 
-// Get or set the filtering rules
-filter_rules(array $rules);
+// Sanitizes data and converts strings to UTF-8 (if available), optionally according to the provided field whitelist
+$gump->sanitize(array $input, $whitelist = NULL);
 
-// Runs the filter and validation routines
-run(array $data);
+// Override field names in error messages
+GUMP::set_field_name('str', 'Street');
+GUMP::set_field_names([
+    'str' => 'Street',
+    'zip' => 'ZIP Code
+]);
 
 // Strips and encodes unwanted characters
-xss_clean(array $data);
-
-// Sanitizes data and converts strings to UTF-8 (if available),
-// optionally according to the provided field whitelist
-sanitize(array $input, $whitelist = NULL);
-
-// Validates input data according to the provided ruleset (see example)
-validate(array $input, array $ruleset);
-
-// Filters input data according to the provided filterset (see example)
-filter(array $input, array $filterset);
-
-// Returns human readable error text in an array or string
-get_readable_errors($convert_to_string = false);
-
-// Fetch an array of validation errors indexed by the field names
-get_errors_array();
-
-// Override field names with readable ones for errors
-set_field_name($field, $readable_name);
+GUMP::xss_clean(array $data);
 ```
-
-
-Match data-keys against rules-keys
--------------
-We can check if there is a rule specified for every data-key, by adding an extra parameter to the run method.
-
-```
-$gump->run($_POST, true);
-```
-
-If it doesn't match the output will be:
-```
-There is no validation rule for <span class=\"$field_class\">$field</span>
-```
-
-Return Values
--------------
-`run()` returns one of two types:
-
-*ARRAY* containing the successfully validated and filtered data when the validation is successful
-
-*BOOLEAN* False when the validation has failed
-
-`validate()` returns one of two types:
-
-*ARRAY* containing key names and validator names when data does not pass the validation.
-
-You can use this array along with your language helpers to determine what error message to show.
-
-*BOOLEAN* value of TRUE if the validation was successful.
-
-`filter()` returns the exact array structure that was parsed as the `$input` parameter, the only difference would be the filtered data.
 
 ###  Creating your own validators and filters
 
@@ -319,34 +285,10 @@ Remember to create a public methods with the correct parameter types and paramet
 * For filter methods, prepend the method name with "filter_".
 * For validator methods, prepend the method name with "validate_".
 
-### Set Custom Field Names
-
-You can easily override your form field names for improved readability in errors using the `GUMP::set_field_name($field, $readable_name)` method as follows:
-
-```php
-$data = [
-    'str' => null
-];
-
-$rules = [
-    'str' => 'required'
-];
-
-GUMP::set_field_name("str", "Street");
-
-$validated = GUMP::is_valid($data, $rules);
-
-if ($validated === true) {
-    echo "Valid Street Address\n";
-} else {
-    print_r($validated);
-}
-```
-
 
 Global configuration
 --------------------
-This configuration values would allow you to turn: `required|contains,value1;value2` into `required|contains:value1,value2`.
+This configuration values allows you to change default rules delimiters (e.g.: `required|contains,value1;value2` to `required|contains:value1,value2`).
 
 ```php
 GUMP::$rules_delimiter = '|';
