@@ -211,7 +211,7 @@ $gump->sanitize(array $input, $whitelist = null);
 GUMP::set_field_name('str', 'Street');
 GUMP::set_field_names([
     'str' => 'Street',
-    'zip' => 'ZIP Code
+    'zip' => 'ZIP Code'
 ]);
 
 // Strips and encodes unwanted characters
