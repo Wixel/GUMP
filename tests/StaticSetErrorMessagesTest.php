@@ -44,4 +44,21 @@ class StaticSetErrorMessagesTest extends BaseTestCase
             'Field <span class="gump-field">Test</span> should be numeric'
         ], $result);
     }
+
+    public function testItOverwritesLanguagefileErrorMessage()
+    {
+        GUMP::set_error_messages([
+            'numeric' =>'Field {field} should be numeric !!!!!!!!!'
+        ]);
+
+        $result = GUMP::is_valid([
+            'test' => 'notOk'
+        ], [
+            'test' => 'numeric'
+        ]);
+
+        $this->assertEquals([
+            'Field <span class="gump-field">Test</span> should be numeric !!!!!!!!!'
+        ], $result);
+    }
 }
