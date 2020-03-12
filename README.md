@@ -92,9 +92,9 @@ $valid_data = $gump->run($_POST);
 if ($valid_data) {
     var_dump($valid_data); // array with same input structure but after filters run
 } else {
-    var_dump($gump->get_readable_errors()); // For HTML: ['Field <span class="gump-field">Somefield</span> is required.'] 
+    var_dump($gump->get_readable_errors()); // HTML: ['Field <span class="gump-field">Somefield</span> is required.'] 
     // or
-    var_dump($gump->get_errors_array()); // For APIs?: ['field' => 'Field Somefield is required']
+    var_dump($gump->get_errors_array()); // No HTML: ['field' => 'Field Somefield is required']
 }
 ```
 
