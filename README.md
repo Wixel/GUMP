@@ -215,10 +215,10 @@ GUMP::set_field_names([
 ]);
 
 // Set custom error messages for rules.
-GUMP::set_error_message('validate_required', '{field} is required.');
+GUMP::set_error_message('required', '{field} is required.');
 GUMP::set_error_messages([
-    'validate_required'    => '{field} is required.',
-    'validate_valid_email' => '{field} must be a valid email.'
+    'required'    => '{field} is required.',
+    'valid_email' => '{field} must be a valid email.'
 ]);
 
 // Strips and encodes unwanted characters
