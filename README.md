@@ -1,6 +1,6 @@
 # Getting started
 
-GUMP is a standalone PHP data validation and filtering class that makes validating any data easy and painless without the reliance on a framework. GUMP is open-source since 2011.
+GUMP is a standalone PHP data validation and filtering class that makes validating any data easy and painless without the reliance on a framework. GUMP is open-source since 2013.
 
 [![License](https://poser.pugx.org/wixel/gump/license)](https://packagist.org/packages/wixel/gump)
 [![Total Downloads](https://poser.pugx.org/wixel/gump/downloads)](https://packagist.org/packages/wixel/gump)
@@ -92,9 +92,9 @@ $valid_data = $gump->run($_POST);
 if ($valid_data) {
     var_dump($valid_data); // array with same input structure but after filters run
 } else {
-    var_dump($gump->get_readable_errors()); // For HTML: ['Field <span class="gump-field">Somefield</span> is required.'] 
+    var_dump($gump->get_readable_errors()); // HTML: ['Field <span class="gump-field">Somefield</span> is required.'] 
     // or
-    var_dump($gump->get_errors_array()); // For APIs?: ['field' => 'Field Somefield is required']
+    var_dump($gump->get_errors_array()); // No HTML: ['field' => 'Field Somefield is required']
 }
 ```
 
@@ -215,10 +215,10 @@ GUMP::set_field_names([
 ]);
 
 // Set custom error messages for rules.
-GUMP::set_error_message('validate_required', '{field} is required.');
+GUMP::set_error_message('required', '{field} is required.');
 GUMP::set_error_messages([
-    'validate_required'    => '{field} is required.',
-    'validate_valid_email' => '{field} must be a valid email.'
+    'required'    => '{field} is required.',
+    'valid_email' => '{field} must be a valid email.'
 ]);
 
 // Strips and encodes unwanted characters
@@ -263,12 +263,12 @@ Alternately, you can simply create your own class that extends GUMP. You only ha
 ```php
 class MyClass extends GUMP
 {
-    protected function filter_myfilter($value, $param = null)
+    protected function filter_myfilter($value, array $params = [])
     {
         return strtoupper($value);
     }
 
-    protected function validate_myvalidator($field, array $input, array $params = null)
+    protected function validate_myvalidator($field, array $input, array $params = [])
     {
         return $input[$field] === 'good_value';
     }
