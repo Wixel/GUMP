@@ -23,7 +23,7 @@ class GetErrorsArrayTest extends BaseTestCase
         $this->assertEquals([], $this->gump->get_errors_array());
     }
 
-    public function testReturnsErrorsWithFieldAsKey()
+    public function testReturnsErrorsForFields()
     {
         $result = $this->gump->validate([
             'test_number' => 'aaa'
@@ -31,12 +31,14 @@ class GetErrorsArrayTest extends BaseTestCase
             'test_number' => 'numeric'
         ]);
 
-        $this->assertArrayHasKey('test_number', $this->gump->get_errors_array());
+        $this->assertEquals([
+            'test_number' => 'The Test Number field must be a number'
+        ], $this->gump->get_errors_array());
     }
 
     public function testReturnsErrorsWithErrorMessageOfCustomValidator()
     {
-        GUMP::add_validator("custom", function($field, $input, array $params = []) {
+        GUMP::add_validator('custom', function($field, $input, array $params = []) {
             return $input[$field] === 'ok';
         }, 'Custom error message');
 
@@ -70,11 +72,11 @@ class GetErrorsArrayTest extends BaseTestCase
 
     public function testErrorMessagePropagatesParamsArrayKeysToErrorMessages()
     {
-        GUMP::add_validator("num_index", function($field, $input, array $params = []) {
+        GUMP::add_validator('num_index', function($field, $input, array $params = []) {
             return $input[$field] === 'ok';
         }, 'Parameter one: {param[0]} and parameter two: {param[1]}');
 
-        GUMP::add_validator("text_index", function($field, $input, array $params = []) {
+        GUMP::add_validator('text_index', function($field, $input, array $params = []) {
             return $input[$field] === 'ok';
         }, 'Parameter one: {param[ten]} and parameter two: {param[twenty]}');
 
@@ -94,7 +96,7 @@ class GetErrorsArrayTest extends BaseTestCase
 
     public function testErrorMessageSplitsArrayParameterWithCommas()
     {
-        GUMP::add_validator("custom", function($field, $input, array $params = []) {
+        GUMP::add_validator('custom', function($field, $input, array $params = []) {
             return $input[$field] === 'ok';
         }, 'Separated by comma: {param}');
 
@@ -124,5 +126,48 @@ class GetErrorsArrayTest extends BaseTestCase
         $this->assertEquals([
             'test_number' => 'Test Number length MUST be between 1 and 2 !!!'
         ], $this->gump->get_errors_array());
+    }
+
+    public function testWhenIntegratedValidatorDoesNotHaveErrorMessageThrowsExceptionOnFailure()
+    {
+        $extendedGUMP = new class extends GUMP {
+            protected function validate_integrated($field, $input, array $params = [])
+            {
+                return $input[$field] === 'ok';
+            }
+        };
+
+        $result = $extendedGUMP->validate([
+            'test' => 'notOk'
+        ], [
+            'test' => 'integrated,parameterValue'
+        ]);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage("'integrated' validator does not have an error message.");
+
+        $extendedGUMP->get_errors_array();
+    }
+
+    public function testWhenIntegratedValidatorHasErrorMessagePrintsItOut()
+    {
+        $extendedGUMP = new class extends GUMP {
+            protected function validate_integrated($field, $input, array $params = [])
+            {
+                return $input[$field] === 'ok';
+            }
+        };
+
+        GUMP::set_error_message('integrated', '{field} value is not correct');
+
+        $result = $extendedGUMP->validate([
+            'test' => 'notOk'
+        ], [
+            'test' => 'integrated,parameterValue'
+        ]);
+
+        $this->assertEquals([
+            'test' => 'Test value is not correct'
+        ], $extendedGUMP->get_errors_array());
     }
 }
