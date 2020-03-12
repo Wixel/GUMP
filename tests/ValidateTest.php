@@ -120,7 +120,7 @@ class ValidateTest extends BaseTestCase
 
     public function testIntegratedValidatorWithCustomValidatorBothFailingOnDifferentFields()
     {
-        GUMP::add_validator("custom", function($field, $input, array $params = []) {
+        GUMP::add_validator('custom', function($field, $input, array $params = []) {
             return $input[$field] === 'ok';
         }, 'My custom error');
 
@@ -137,7 +137,7 @@ class ValidateTest extends BaseTestCase
 
     public function testIntegratedValidatorWithCustomValidatorFailingIntegratedOnDifferentFields()
     {
-        GUMP::add_validator("custom", function($field, $input, array $params = []) {
+        GUMP::add_validator('custom', function($field, $input, array $params = []) {
             return $input[$field] === 'ok';
         }, 'My custom error');
 
@@ -154,7 +154,7 @@ class ValidateTest extends BaseTestCase
 
     public function testIntegratedValidatorWithCustomValidatorFailingCustomOnDifferentFields()
     {
-        GUMP::add_validator("custom", function($field, $input, array $params = []) {
+        GUMP::add_validator('custom', function($field, $input, array $params = []) {
             return $input[$field] === 'ok';
         }, 'My custom error');
 
@@ -172,7 +172,7 @@ class ValidateTest extends BaseTestCase
     public function testValidateThrowsExceptionOnNonexistentValidator()
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("Validator method 'validate_custom' does not exist.");
+        $this->expectExceptionMessage("'custom' validator does not exist.");
 
         $result = $this->gump->validate([
             'test' => 'notOk'
@@ -184,9 +184,9 @@ class ValidateTest extends BaseTestCase
     public function testValidatePassesParametersToIntegratedValidators()
     {
         $extendedGUMP = new class extends GUMP {
-            protected function validate_integrated($field, $input, array $param = [])
+            protected function validate_integrated($field, $input, array $params = [])
             {
-                return $input[$field] == $param[0];
+                return $input[$field] === $params[0];
             }
         };
 
@@ -209,7 +209,7 @@ class ValidateTest extends BaseTestCase
             'test' => 'custom,parameterValue'
         ];
 
-        GUMP::add_validator("custom", function($field, $input, array $params = []) use($gumpInput) {
+        GUMP::add_validator('custom', function($field, $input, array $params = []) use($gumpInput) {
             $this->assertEquals($field, 'test');
             $this->assertEquals($input, $gumpInput);
             $this->assertEquals($params, ['parameterValue']);
@@ -222,7 +222,7 @@ class ValidateTest extends BaseTestCase
 
     public function testCustomValidatorsReturnRightErrorStructure()
     {
-        GUMP::add_validator("custom", function($field, $input, array $params = []) {
+        GUMP::add_validator('custom', function($field, $input, array $params = []) {
             return $input[$field] == 'fail';
         }, 'My custom error');
 
@@ -404,7 +404,7 @@ class ValidateTest extends BaseTestCase
 
     public function testRulesArrayFormatWithMultidimensionalArrayParameters()
     {
-        GUMP::add_validator("custom", function($field, $input, array $param) {
+        GUMP::add_validator('custom', function($field, $input, array $param) {
             return $param['min'] === 2 && $param['max'] === 5;
         }, 'My custom error');
 

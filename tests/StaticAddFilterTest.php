@@ -14,14 +14,14 @@ class StaticAddFilterTest extends BaseTestCase
 {
     public function testItThrowsExceptionWhenFilterWithSameNameIsAdded()
     {
-        GUMP::add_filter("custom", function($value, $params = NULL) {
+        GUMP::add_filter("custom", function($value, array $params = []) {
             return strtoupper($value);
         });
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("Filter rule 'custom' already exists.");
+        $this->expectExceptionMessage("'custom' filter is already defined.");
 
-        GUMP::add_filter("custom", function($value, $params = NULL) {
+        GUMP::add_filter("custom", function($value, array $params = []) {
             return strtoupper($value);
         });
     }

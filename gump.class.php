@@ -249,7 +249,7 @@ class GUMP
     public static function add_validator(string $rule, callable $callback, string $error_message)
     {
         if (method_exists(__CLASS__, self::validator_to_method($rule)) || isset(self::$validation_methods[$rule])) {
-            throw new Exception("Validator rule '$rule' already exists.");
+            throw new Exception(sprintf("'%s' validator is already defined.", $rule));
         }
 
         self::$validation_methods[$rule] = $callback;
@@ -268,7 +268,7 @@ class GUMP
     public static function add_filter(string $rule, callable $callback)
     {
         if (method_exists(__CLASS__, self::filter_to_method($rule)) || isset(self::$filter_methods[$rule])) {
-            throw new Exception("Filter rule '$rule' already exists.");
+            throw new Exception(sprintf("'%s' filter is already defined.", $rule));
         }
 
         self::$filter_methods[$rule] = $callback;
@@ -618,31 +618,31 @@ class GUMP
                 : true;
         }
 
-        throw new Exception(sprintf("Validator method '%s' does not exist.", $method));
+        throw new Exception(sprintf("'%s' validator does not exist.", $rule));
     }
 
     /**
      * Calls a filter.
      *
-     * @param string $filter
+     * @param string $rule
      * @param mixed $value
      * @param array $rule_params
      * @return mixed
      * @throws Exception
      */
-    private function call_filter(string $filter, $value, array $rule_params = [])
+    private function call_filter(string $rule, $value, array $rule_params = [])
     {
-        $method = self::filter_to_method($filter);
+        $method = self::filter_to_method($rule);
 
         if (is_callable(array($this, $method))) {
             return $this->$method($value, $rule_params);
-        } elseif (function_exists($filter)) {
-            return $filter($value);
-        } elseif (isset(self::$filter_methods[$filter])) {
-            return call_user_func(self::$filter_methods[$filter], $value, $rule_params);
+        } elseif (function_exists($rule)) {
+            return $rule($value);
+        } elseif (isset(self::$filter_methods[$rule])) {
+            return call_user_func(self::$filter_methods[$rule], $value, $rule_params);
         }
 
-        throw new Exception(sprintf("Filter method '%s' does not exist.", $filter));
+        throw new Exception(sprintf("'%s' filter does not exist.", $rule));
     }
 
     /**
@@ -711,7 +711,7 @@ class GUMP
     }
 
     /**
-     * Get error messages.
+     * Get all error messages.
      *
      * @return array
      */
@@ -720,76 +720,30 @@ class GUMP
         $lang_file = __DIR__.DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$this->lang.'.php';
         $messages = include $lang_file;
 
-        if (count(self::$validation_methods_errors) > 0) {
-            $messages = array_merge($messages, self::$validation_methods_errors);
-        }
-
-        return $messages;
+        return array_merge($messages, self::$validation_methods_errors);
     }
 
     /**
-     * Process the validation errors and return human readable error messages.
+     * Get error message.
      *
-     * @param bool   $convert_to_string = false
-     * @param string $field_class
-     * @param string $error_class
-     * @return array|string
-     * @throws Exception if validator doesn't have an error message to set
-     */
-    public function get_readable_errors(bool $convert_to_string = false, string $field_class = 'gump-field', string $error_class = 'gump-error-message')
-    {
-        if (empty($this->errors)) {
-            return $convert_to_string ? '' : [];
-        }
-
-        $messages = $this->get_messages();
-        $result = [];
-
-        foreach ($this->errors as $error) {
-            if (!isset($messages[$error['rule']])) {
-                throw new Exception('Rule "'.$error['rule'].'" does not have an error message');
-            }
-
-            $message = $this->get_custom_error_message($error['field'], $error['rule']) ?? $messages[$error['rule']];
-            $result[] = $this->process_error_message(
-                $error['field'],  $error['params'],  $message,
-                static function($replace) use($field_class) {
-                    $replace['{field}'] = sprintf('<span class="%s">%s</span>', $field_class, $replace['{field}']);
-                    return $replace;
-                }
-            );
-        }
-
-        if ($convert_to_string) {
-            return array_reduce($result, function($prev, $next) use($error_class) {
-                return sprintf('%s<span class="%s">%s</span>', $prev, $error_class, $next);
-            });
-        }
-
-        return $result;
-    }
-
-    /**
-     * Process the validation errors and return an array of errors with field names as keys.
-     *
-     * @return array
+     * @param array $messages
+     * @param string $field
+     * @param string $rule
+     * @return mixed|null
      * @throws Exception
      */
-    public function get_errors_array()
+    private function get_error_message(array $messages, string $field, string $rule)
     {
-        $messages = $this->get_messages();
-        $result = [];
-
-        foreach ($this->errors as $error) {
-            if (!isset($messages[$error['rule']])) {
-                throw new Exception('Rule "'.$error['rule'].'" does not have an error message');
-            }
-
-            $message = $this->get_custom_error_message($error['field'], $error['rule']) ?? $messages[$error['rule']];
-            $result[$error['field']] = $this->process_error_message($error['field'], $error['params'], $message);
+        $custom_error_message = $this->get_custom_error_message($field, $rule);
+        if ($custom_error_message !== null) {
+            return $custom_error_message;
         }
 
-        return $result;
+        if (isset($messages[$rule])) {
+            return $messages[$rule];
+        }
+
+        throw new Exception(sprintf("'%s' validator does not have an error message.", $rule));
     }
 
     /**
@@ -797,7 +751,7 @@ class GUMP
      *
      * @param string $field
      * @param string $rule
-     * @return mixed|null
+     * @return string|null
      */
     private function get_custom_error_message(string $field, string $rule)
     {
@@ -843,6 +797,62 @@ class GUMP
         }
 
         return strtr($message, $replace);
+    }
+
+    /**
+     * Process the validation errors and return human readable error messages.
+     *
+     * @param bool   $convert_to_string = false
+     * @param string $field_class
+     * @param string $error_class
+     * @return array|string
+     * @throws Exception if validator doesn't have an error message to set
+     */
+    public function get_readable_errors(bool $convert_to_string = false, string $field_class = 'gump-field', string $error_class = 'gump-error-message')
+    {
+        if (empty($this->errors)) {
+            return $convert_to_string ? '' : [];
+        }
+
+        $messages = $this->get_messages();
+        $result = [];
+
+        $transformer = static function($replace) use($field_class) {
+            $replace['{field}'] = sprintf('<span class="%s">%s</span>', $field_class, $replace['{field}']);
+            return $replace;
+        };
+
+        foreach ($this->errors as $error) {
+            $message = $this->get_error_message($messages, $error['field'], $error['rule']);
+            $result[] = $this->process_error_message($error['field'],  $error['params'],  $message, $transformer);
+        }
+
+        if ($convert_to_string) {
+            return array_reduce($result, static function($prev, $next) use($error_class) {
+                return sprintf('%s<span class="%s">%s</span>', $prev, $error_class, $next);
+            });
+        }
+
+        return $result;
+    }
+
+    /**
+     * Process the validation errors and return an array of errors with field names as keys.
+     *
+     * @return array
+     * @throws Exception
+     */
+    public function get_errors_array()
+    {
+        $messages = $this->get_messages();
+        $result = [];
+
+        foreach ($this->errors as $error) {
+            $message = $this->get_error_message($messages, $error['field'], $error['rule']);
+            $result[$error['field']] = $this->process_error_message($error['field'], $error['params'], $message);
+        }
+
+        return $result;
     }
 
     /**
@@ -1057,11 +1067,8 @@ class GUMP
     protected function filter_ms_word_characters($value, array $params = [])
     {
         $value = str_replace(['“', '”'], '"', $value);
-
         $value = str_replace(['‘', '’'], "'", $value);
-
         $value = str_replace('–', '-', $value);
-
         $value = str_replace('…', '...', $value);
 
         return $value;
