@@ -27,7 +27,7 @@ class FilterTest extends BaseTestCase
 
     public function testMoreThanOneFiltersAreSuccessfullyApplied()
     {
-        GUMP::add_filter("custom", function($value, $params = null) {
+        GUMP::add_filter("custom", function($value, array $params = []) {
             return strtolower($value);
         });
 
@@ -57,7 +57,7 @@ class FilterTest extends BaseTestCase
 
     public function testCustomFilterIsSuccessfullyApplied()
     {
-        GUMP::add_filter("custom", function($value, $params = null) {
+        GUMP::add_filter("custom", function($value, array $params = []) {
             return strtoupper($value);
         });
 
@@ -75,7 +75,7 @@ class FilterTest extends BaseTestCase
     public function testNonexistentFilterThrowsException()
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("Filter method 'custom' does not exist.");
+        $this->expectExceptionMessage("'custom' filter does not exist.");
 
         $this->gump->filter([
             'test' => 'text'

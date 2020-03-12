@@ -14,14 +14,14 @@ class StaticAddValidatorTest extends BaseTestCase
 {
     public function testItThrowsExceptionWhenValidatorWithSameNameIsAdded()
     {
-        GUMP::add_validator("custom", function($field, $input, array $params = []) {
+        GUMP::add_validator('custom', function($field, $input, array $params = []) {
             return $input[$field] === 'ok';
         }, 'Error message');
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("Validator rule 'custom' already exists.");
+        $this->expectExceptionMessage("'custom' validator is already defined.");
 
-        GUMP::add_validator("custom", function($field, $input, array $params = []) {
+        GUMP::add_validator('custom', function($field, $input, array $params = []) {
             return $input[$field] === 'ok';
         }, 'Error message');
     }
