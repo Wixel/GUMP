@@ -89,15 +89,14 @@ $gump->filter_rules([
 // on error: returns false
 $valid_data = $gump->run($_POST);
 
-if ($valid_data) {
-    var_dump($valid_data); // array with same input structure but after filters run
-} else {
+if ($valid_data === false) {
     var_dump($gump->get_readable_errors()); // HTML: ['Field <span class="gump-field">Somefield</span> is required.'] 
     // or
     var_dump($gump->get_errors_array()); // No HTML: ['field' => 'Field Somefield is required']
+} else {
+    var_dump($valid_data); // array with same input structure but after filters run
 }
 ```
-
 
 :star: Available Validators
 ---------------------------
