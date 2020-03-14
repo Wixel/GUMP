@@ -119,4 +119,15 @@ class FilterTest extends BaseTestCase
             'field_two' => 'custom',
         ], $result);
     }
+
+    public function testItForwardsParametersToNativePHPFunctions()
+    {
+        $result = $this->gump->filter([
+            'field' => 'my_password',
+        ], [
+            'field' => ['password_hash' => [ PASSWORD_BCRYPT ] ],
+        ]);
+
+        $this->assertTrue(password_verify('my_password', $result['field']));
+    }
 }
