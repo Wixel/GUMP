@@ -637,7 +637,7 @@ class GUMP
         if (is_callable(array($this, $method))) {
             return $this->$method($value, $rule_params);
         } elseif (function_exists($rule)) {
-            return $rule($value);
+            return call_user_func($rule, $value, ...$rule_params);
         } elseif (isset(self::$filter_methods[$rule])) {
             return call_user_func(self::$filter_methods[$rule], $value, $rule_params);
         }
