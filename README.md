@@ -89,7 +89,7 @@ $gump->filter_rules([
 // on error: returns false
 $valid_data = $gump->run($_POST);
 
-if ($valid_data === false) {
+if ($gump->errors()) {
     var_dump($gump->get_readable_errors()); // HTML: ['Field <span class="gump-field">Somefield</span> is required.'] 
     // or
     var_dump($gump->get_errors_array()); // No HTML: ['field' => 'Field Somefield is required']
