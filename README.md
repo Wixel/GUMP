@@ -85,7 +85,7 @@ $gump->filter_rules([
     'bio'      => 'noise_words'
 ]);
 
-// on success: returns array with validated data (filters applied, if any)
+// on success: returns array with same input structure, but after filters have run
 // on error: returns false
 $valid_data = $gump->run($_POST);
 
@@ -94,7 +94,7 @@ if ($gump->errors()) {
     // or
     var_dump($gump->get_errors_array()); // No HTML: ['field' => 'Field Somefield is required']
 } else {
-    var_dump($valid_data); // array with same input structure but after filters run
+    var_dump($valid_data);
 }
 ```
 
