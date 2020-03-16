@@ -76,28 +76,57 @@ class RunTest extends BaseTestCase
         ]], $this->gump->errors());
     }
 
-    public function testNestedArays()
+    public function testNestedArrays()
     {
         $this->gump->validation_rules([
-            'some_field' => ['required', 'alpha'],
+            'field0' => ['required'],
+            'field1.name' => ['required', 'alpha'],
+            'field2.*.name' => ['required', 'alpha_numeric'],
         ]);
 
-//        // set field-rule specific error messages
-//        $this->gump->set_fields_error_messages([
-//            'some_field.name' => ['required' => 'Fill the Username field please, its required.'],
-//        ]);
+        $this->gump->set_fields_error_messages([
+            'field2.*.name' => ['required' => 'Fill the Name field please, its required.']
+        ]);
 
         $result = $this->gump->run([
-            'some_field' => ['a', 'b']
+            'field0' => ['asd', ''],
+            'field1' => [
+                'name' => 'test123'
+            ],
+            'field2' => [
+                [
+                    'name' => '123'
+                ],
+                [
+                    'name' => ''
+                ],
+            ]
         ]);
 
-        $this->assertTrue($result);
+        $this->assertEquals([
+            [
+                'field' => 'field0',
+                'value' => ['asd', ''],
+                'rule' => 'required',
+                'params' => []
+            ],
+            [
+                'field' => 'field1.name',
+                'value' => 'test123',
+                'rule' => 'alpha',
+                'params' => []
+            ],
+            [
+                'field' => 'field2.*.name',
+                'value' => [ '123', '' ],
+                'rule' => 'required',
+                'params' => []
+            ]
+        ], $this->gump->errors());
 
-        $this->assertEquals([[
-            'field' => 'mismatch',
-            'value' => 'somedata',
-            'rule' => 'mismatch',
-            'params' => []
-        ]], $this->gump->errors());
+        $this->assertEquals(
+            'Fill the Name field please, its required.',
+            $this->gump->get_errors_array()['field2.*.name']
+        );
     }
 }
