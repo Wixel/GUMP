@@ -416,4 +416,5 @@ class ValidateTest extends BaseTestCase
 
         $this->assertTrue($result);
     }
+
 }

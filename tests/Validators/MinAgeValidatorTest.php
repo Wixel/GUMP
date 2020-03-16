@@ -87,7 +87,7 @@ class MinAgeValidatorTest extends BaseTestCase
 
     public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
     {
-        $this->helpersMock = m::mock('overload:GUMP\Helpers');
+        $this->helpersMock = m::mock('overload:GUMP\EnvHelpers');
 
         $this->helpersMock->shouldReceive('date')
             ->once()
