@@ -2,7 +2,7 @@
 
 namespace GUMP;
 
-class Arr
+class ArrayHelpers
 {
     public static function data_get($target, $key, $default = null)
     {
@@ -15,7 +15,7 @@ class Arr
         while (! is_null($segment = array_shift($key))) {
             if ($segment === '*') {
                 if (! is_array($target)) {
-                    return self::value($default);
+                    return $default;
                 }
 
                 $result = [];
@@ -32,7 +32,58 @@ class Arr
             } elseif (is_object($target) && isset($target->{$segment})) {
                 $target = $target->{$segment};
             } else {
-                return self::value($default);
+                return $default;
+            }
+        }
+
+        return $target;
+    }
+
+    public static function data_set(&$target, $key, $value, $overwrite = true)
+    {
+        $segments = is_array($key) ? $key : explode('.', $key);
+
+        if (($segment = array_shift($segments)) === '*') {
+            if (! self::accessible($target)) {
+                $target = [];
+            }
+
+            if ($segments) {
+                foreach ($target as &$inner) {
+                    self::data_set($inner, $segments, $value, $overwrite);
+                }
+            } elseif ($overwrite) {
+                foreach ($target as &$inner) {
+                    $inner = $value;
+                }
+            }
+        } elseif (self::accessible($target)) {
+            if ($segments) {
+                if (! self::exists($target, $segment)) {
+                    $target[$segment] = [];
+                }
+
+                self::data_set($target[$segment], $segments, $value, $overwrite);
+            } elseif ($overwrite || ! self::exists($target, $segment)) {
+                $target[$segment] = $value;
+            }
+        } elseif (is_object($target)) {
+            if ($segments) {
+                if (! isset($target->{$segment})) {
+                    $target->{$segment} = [];
+                }
+
+                self::data_set($target->{$segment}, $segments, $value, $overwrite);
+            } elseif ($overwrite || ! isset($target->{$segment})) {
+                $target->{$segment} = $value;
+            }
+        } else {
+            $target = [];
+
+            if ($segments) {
+                self::data_set($target[$segment], $segments, $value, $overwrite);
+            } elseif ($overwrite) {
+                $target[$segment] = $value;
             }
         }
 
@@ -85,10 +136,5 @@ class Arr
         }
 
         return array_merge([], ...$results);
-    }
-
-    public static function value($value)
-    {
-        return $value instanceof Closure ? $value() : $value;
     }
 }

@@ -8,9 +8,8 @@
  * @version 1.10
  */
 
-use GUMP\Arr;
+use GUMP\ArrayHelpers;
 use GUMP\EnvHelpers;
-use GUMP\Helpers;
 
 class GUMP
 {
@@ -447,7 +446,7 @@ class GUMP
         $this->fields_error_messages = $fields_error_messages;
 
         foreach ($ruleset as $field => $rawRules) {
-            $input[$field] = Arr::data_get($input, $field);
+            $input[$field] = ArrayHelpers::data_get($input, $field);
 
             $rules = $this->parse_rules($rawRules);
             $is_required = $this->field_has_required_rules($rules);
@@ -458,7 +457,7 @@ class GUMP
 
             foreach ($rules as $rule) {
                 $parsed_rule = $this->parse_rule($rule);
-                $result = $this->outer_call_validator($parsed_rule['rule'], $field, $input, $parsed_rule['param']);
+                $result = $this->foreach_call_validator($parsed_rule['rule'], $field, $input, $parsed_rule['param']);
 
                 if (is_array($result)) {
                     $this->errors[] = $result;
@@ -601,7 +600,7 @@ class GUMP
      * @return array|bool
      * @throws Exception
      */
-    private function outer_call_validator(string $rule, string $field, array $input, array $rule_params = [])
+    private function foreach_call_validator(string $rule, string $field, array $input, array $rule_params = [])
     {
         $values = !is_array($input[$field]) ? [ $input[$field] ] : $input[$field];
 
@@ -662,10 +661,10 @@ class GUMP
 
         if (is_callable(array($this, $method))) {
             return $this->$method($value, $rule_params);
-        } elseif (function_exists($rule)) {
-            return call_user_func($rule, $value, ...$rule_params);
         } elseif (isset(self::$filter_methods[$rule])) {
             return call_user_func(self::$filter_methods[$rule], $value, $rule_params);
+        } elseif (function_exists($rule)) {
+            return call_user_func($rule, $value, ...$rule_params);
         }
 
         throw new Exception(sprintf("'%s' filter does not exist.", $rule));

@@ -130,4 +130,41 @@ class FilterTest extends BaseTestCase
 
         $this->assertTrue(password_verify('my_password', $result['field']));
     }
+
+    public function testNestedArrays()
+    {
+        $result = $this->gump->filter([
+            'field0' => [' asd ', ''],
+            'field1' => [
+                'name' => ' test123 '
+            ],
+            'field2' => [
+                [
+                    'name' => ' 123 '
+                ],
+                [
+                    'name' => ' test '
+                ],
+            ]
+        ], [
+            'field0' => 'trim',
+            'field1.name' => 'trim',
+            'field2.*.name' => 'trim',
+        ]);
+
+        $this->assertEquals($result, [
+            'field0' => ['asd', ''],
+            'field1.name' => [
+                'name' => 'test123'
+            ],
+            'field2' => [
+                [
+                    'name' => '123'
+                ],
+                [
+                    'name' => 'test'
+                ],
+            ]
+        ]);
+    }
 }
