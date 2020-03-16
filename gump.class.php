@@ -9,6 +9,7 @@
  */
 
 use GUMP\EnvHelpers;
+use GUMP\Helpers;
 
 class GUMP
 {
@@ -445,7 +446,7 @@ class GUMP
         $this->fields_error_messages = $fields_error_messages;
 
         foreach ($ruleset as $field => $rawRules) {
-            $input[$field] = $input[$field] ?? null;
+            $input[$field] = Helpers::dot_array_search($field, $input);
 
             $rules = $this->parse_rules($rawRules);
             $is_required = $this->field_has_required_rules($rules);
@@ -456,11 +457,14 @@ class GUMP
 
             foreach ($rules as $rule) {
                 $parsed_rule = $this->parse_rule($rule);
-                $result = $this->call_validator($parsed_rule['rule'], $field, $input, $parsed_rule['param']);
 
-                if (is_array($result)) {
-                    $this->errors[] = $result;
-                    break; // exit on first error
+                if (is_array($input[$field])) {
+                    $result = $this->call_validator($parsed_rule['rule'], $field, $input, $parsed_rule['param']);
+
+                    if (is_array($result)) {
+                        $this->errors[] = $result;
+                        break; // exit on first error
+                    }
                 }
             }
         }
