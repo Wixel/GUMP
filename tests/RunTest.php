@@ -84,8 +84,10 @@ class RunTest extends BaseTestCase
             'field2.*.name' => ['required', 'alpha_numeric'],
         ]);
 
+        GUMP::set_field_name('field1.name', 'Object Name');
+
         $this->gump->set_fields_error_messages([
-            'field2.*.name' => ['required' => 'Fill the Name field please, its required.']
+            'field1.name' => ['alpha' => '{field} must contain alpha characters']
         ]);
 
         $result = $this->gump->run([
@@ -124,9 +126,10 @@ class RunTest extends BaseTestCase
             ]
         ], $this->gump->errors());
 
-        $this->assertEquals(
-            'Fill the Name field please, its required.',
-            $this->gump->get_errors_array()['field2.*.name']
-        );
+        $this->assertEquals([
+            'field0' => 'The Field0 field is required',
+            'field1.name' => 'Object Name must contain alpha characters',
+            'field2.*.name' => 'The Field2.*.name field is required'
+        ], $this->gump->get_errors_array());
     }
 }
