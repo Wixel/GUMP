@@ -238,19 +238,13 @@ Adding custom validators and filters is made easy by using callback functions.
  * @param string $field  Field name
  * @param array  $input  Whole input data
  * @param array  $params Rule parameters. This is usually empty array by default if rule does not have parameters.
- * @param mixed  $value  Individual value from input data (in case its an array ['value1', 'value2'] would return one single item)
+ * @param mixed  $value  Individual value from input data. In case of an array ['value1', 'value2'] would return one single item. If you want to get the array itself use $input[$field].
  *
  * @return bool   true or false whether the validation was successful or not
  */
 GUMP::add_validator("equals_string", function($field, array $input, array $params, $value) {
     return $value === $params;
 }, 'Field {field} does not equal to {param}.');
-
-// in case you need your "complete" input value access your value from $input[$field]. Specially if you want to validate known array structures.
-GUMP::add_validator("equals_string", function($field, array $input, array $params, $value) {
-    return $value === $params;
-}, 'Field {field} does not equal to {param}.');
-
 
 /**
  * @param string $value Value
