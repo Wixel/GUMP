@@ -435,15 +435,13 @@ class GUMP
      *
      * @param array $input Input data.
      * @param array $ruleset Validation rules.
-     * @param array $fields_error_messages Field-rule specific error messages.
      *
      * @return bool|array Returns bool true when no errors. Returns array when errors.
      * @throws Exception
      */
-    public function validate(array $input, array $ruleset, array $fields_error_messages = [])
+    public function validate(array $input, array $ruleset)
     {
         $this->errors = [];
-        $this->fields_error_messages = $fields_error_messages;
 
         foreach ($ruleset as $field => $rawRules) {
             $input[$field] = ArrayHelpers::data_get($input, $field);
