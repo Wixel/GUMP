@@ -238,7 +238,9 @@ Adding custom validators and filters is made easy by using callback functions.
  * @param string $field  Field name
  * @param array  $input  Whole input data
  * @param array  $params Rule parameters. This is usually empty array by default if rule does not have parameters.
- * @param mixed  $value  Individual value from input data. In case of an array ['value1', 'value2'] would return one single item. If you want to get the array itself use $input[$field].
+ * @param mixed  $value  Individual value from input data.
+ *                       In case of an array ['value1', 'value2'] would return one single value.
+ *                       If you want to get the array itself use $input[$field].
  *
  * @return bool   true or false whether the validation was successful or not
  */
