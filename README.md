@@ -26,7 +26,7 @@ $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
     'persons.*.name' => 'required'                // ['persons' => [['name' => 'value']]]
 ]);
 
-// recommended format (since v1.7) with field-rule specific error messages (optional)
+// 1st array is rules definition, 2nd is field-rule specific error messages (optional)
 $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
     'username' => ['required', 'alpha_numeric'],
     'password' => ['required', 'between_len' => [6, 100]],
