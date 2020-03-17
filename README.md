@@ -18,12 +18,15 @@ composer require wixel/gump
 
 ```php
 $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
-    'username' => 'required|alpha_numeric',
-    'password' => 'required|between_len,4;100',
-    'avatar'   => 'required_file|extension,png;jpg'
+    'username'       => 'required|alpha_numeric',
+    'password'       => 'required|between_len,4;100',
+    'avatar'         => 'required_file|extension,png;jpg',
+    'tags'           => 'required|alpha_numeric', // ['value1', 'value3']
+    'person.name'    => 'required',               // ['person' => ['name' => 'value']]
+    'persons.*.name' => 'required'                // ['persons' => [['name' => 'value']]]
 ]);
 
-// recommended format (since v1.7) with field-rule specific error messages (optional)
+// 1st array is rules definition, 2nd is field-rule specific error messages (optional)
 $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
     'username' => ['required', 'alpha_numeric'],
     'password' => ['required', 'between_len' => [6, 100]],
@@ -90,9 +93,9 @@ $gump->filter_rules([
 $valid_data = $gump->run($_POST);
 
 if ($gump->errors()) {
-    var_dump($gump->get_readable_errors()); // HTML: ['Field <span class="gump-field">Somefield</span> is required.'] 
+    var_dump($gump->get_readable_errors()); // ['Field <span class="gump-field">Somefield</span> is required.'] 
     // or
-    var_dump($gump->get_errors_array()); // No HTML: ['field' => 'Field Somefield is required']
+    var_dump($gump->get_errors_array()); // ['field' => 'Field Somefield is required']
 } else {
     var_dump($valid_data);
 }
@@ -194,7 +197,7 @@ Filter rules can also be any PHP native function (e.g.: trim).
  * Returns array of errors with detailed info. which you can then use with your own helpers.
  * (field name, input value, rule that failed and it's parameters).
  */
-$gump->validate(array $input, array $ruleset, array $fields_error_messages = []);
+$gump->validate(array $input, array $ruleset);
 
 /**
  * Filters input data according to the provided filterset
@@ -232,16 +235,18 @@ Adding custom validators and filters is made easy by using callback functions.
 /**
  * You would call it like 'equals_string,someString'
  *
- * @param string $field  Name of the field
- * @param array  $input  Access to the whole input data
+ * @param string $field  Field name
+ * @param array  $input  Whole input data
  * @param array  $params Rule parameters. This is usually empty array by default if rule does not have parameters.
+ * @param mixed  $value  Value.
+ *                       In case of an array ['value1', 'value2'] would return one single value.
+ *                       If you want to get the array itself use $input[$field].
  *
  * @return bool   true or false whether the validation was successful or not
  */
-GUMP::add_validator("equals_string", function($field, $input, array $params) {
-    return $input[$field] === $params;
+GUMP::add_validator("equals_string", function($field, array $input, array $params, $value) {
+    return $value === $params;
 }, 'Field {field} does not equal to {param}.');
-
 
 /**
  * @param string $value Value
