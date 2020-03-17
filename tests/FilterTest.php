@@ -131,42 +131,42 @@ class FilterTest extends BaseTestCase
         $this->assertTrue(password_verify('my_password', $result['field']));
     }
 
-    public function testNestedArrays()
-    {
-        $data = [
-            'field0' => [' asd ', ''],
-            'field1' => [
-                'name' => ' test123 '
-            ],
-            'field2' => [
-                [
-                    'name' => ' 123 '
-                ],
-                [
-                    'name' => ' test '
-                ],
-            ]
-        ];
-
-        $result = $this->gump->filter($data, [
-            'field0' => 'trim',
-            'field1.name' => 'trim',
-            'field2.*.name' => 'trim',
-        ]);
-
-        $this->assertEquals([
-            'field0' => ['asd', ''],
-            'field1' => [
-                'name' => 'test123'
-            ],
-            'field2' => [
-                [
-                    'name' => '123'
-                ],
-                [
-                    'name' => 'test'
-                ],
-            ]
-        ], $result);
-    }
+//    public function testNestedArrays()
+//    {
+//        $data = [
+//            'field0' => [' asd ', ''],
+//            'field1' => [
+//                'name' => ' test123 '
+//            ],
+//            'field2' => [
+//                [
+//                    'name' => ' 123 '
+//                ],
+//                [
+//                    'name' => ' test '
+//                ],
+//            ]
+//        ];
+//
+//        $result = $this->gump->filter($data, [
+//            'field0' => 'trim',
+//            'field1.name' => 'trim',
+//            'field2.*.name' => 'trim',
+//        ]);
+//
+//        $this->assertEquals([
+//            'field0' => ['asd', ''],
+//            'field1' => [
+//                'name' => 'test123'
+//            ],
+//            'field2' => [
+//                [
+//                    'name' => '123'
+//                ],
+//                [
+//                    'name' => 'test'
+//                ],
+//            ]
+//        ], $result);
+//    }
 }
