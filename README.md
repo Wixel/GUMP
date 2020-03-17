@@ -21,9 +21,9 @@ $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
     'username'       => 'required|alpha_numeric',
     'password'       => 'required|between_len,4;100',
     'avatar'         => 'required_file|extension,png;jpg',
-    'tags'           => 'required|alpha_numeric', // ['value1', 'value@!2'] fails
-    'person.name'    => 'required',               // ['person' => ['name' => '']] fails
-    'persons.*.name' => 'required'                // ['persons' => [['name' => '']] ] fails
+    'tags'           => 'required|alpha_numeric', // ['value1', 'value@!2']
+    'person.name'    => 'required',               // ['person' => ['name' => '']]
+    'persons.*.name' => 'required'                // ['persons' => [['name' => '']]]
 ]);
 
 // recommended format (since v1.7) with field-rule specific error messages (optional)
