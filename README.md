@@ -21,9 +21,9 @@ $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
     'username'       => 'required|alpha_numeric',
     'password'       => 'required|between_len,4;100',
     'avatar'         => 'required_file|extension,png;jpg',
-    'tags'           => 'required|alpha_numeric', // ['value1', 'value@!2']
-    'person.name'    => 'required',               // ['person' => ['name' => '']]
-    'persons.*.name' => 'required'                // ['persons' => [['name' => '']]]
+    'tags'           => 'required|alpha_numeric', // ['value1', 'value3']
+    'person.name'    => 'required',               // ['person' => ['name' => 'value']]
+    'persons.*.name' => 'required'                // ['persons' => [['name' => 'value']]]
 ]);
 
 // recommended format (since v1.7) with field-rule specific error messages (optional)
@@ -238,7 +238,7 @@ Adding custom validators and filters is made easy by using callback functions.
  * @param string $field  Field name
  * @param array  $input  Whole input data
  * @param array  $params Rule parameters. This is usually empty array by default if rule does not have parameters.
- * @param mixed  $value  Individual value from input data.
+ * @param mixed  $value  Value.
  *                       In case of an array ['value1', 'value2'] would return one single value.
  *                       If you want to get the array itself use $input[$field].
  *
