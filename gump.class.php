@@ -307,6 +307,12 @@ class GUMP
         $this->validation_rules = $rules;
     }
 
+    /**
+     * Set field-rule specific error messages.
+     *
+     * @param array $fields_error_messages
+     * @return array
+     */
     public function set_fields_error_messages(array $fields_error_messages)
     {
         return $this->fields_error_messages = $fields_error_messages;
