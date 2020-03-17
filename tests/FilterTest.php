@@ -133,7 +133,7 @@ class FilterTest extends BaseTestCase
 
     public function testNestedArrays()
     {
-        $result = $this->gump->filter([
+        $data = [
             'field0' => [' asd ', ''],
             'field1' => [
                 'name' => ' test123 '
@@ -146,15 +146,17 @@ class FilterTest extends BaseTestCase
                     'name' => ' test '
                 ],
             ]
-        ], [
+        ];
+
+        $result = $this->gump->filter($data, [
             'field0' => 'trim',
             'field1.name' => 'trim',
             'field2.*.name' => 'trim',
         ]);
 
-        $this->assertEquals($result, [
+        $this->assertEquals([
             'field0' => ['asd', ''],
-            'field1.name' => [
+            'field1' => [
                 'name' => 'test123'
             ],
             'field2' => [
@@ -165,6 +167,6 @@ class FilterTest extends BaseTestCase
                     'name' => 'test'
                 ],
             ]
-        ]);
+        ], $result);
     }
 }

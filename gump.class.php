@@ -647,6 +647,25 @@ class GUMP
     }
 
     /**
+     * Calls call_validator.
+     *
+     * @param string $rule
+     * @param string $field
+     * @param mixed $input
+     * @param array $rule_params
+     * @return array|bool
+     * @throws Exception
+     */
+    private function foreach_call_filter(string $rule, &$value, array $rule_params = [])
+    {
+        $values = !is_array($value) ? [ $value ] : $value;
+
+        foreach ($values as &$v) {
+            $v = $this->call_filter($rule, $v, $rule_params);
+        }
+    }
+
+    /**
      * Calls a filter.
      *
      * @param string $rule
@@ -891,7 +910,8 @@ class GUMP
     public function filter(array $input, array $filterset)
     {
         foreach ($filterset as $field => $filters) {
-            if (!array_key_exists($field, $input)) {
+            $field_value = ArrayHelpers::data_get($input, $field);
+            if (!$field_value) {
                 continue;
             }
 
@@ -900,14 +920,16 @@ class GUMP
             foreach ($filters as $filter) {
                 $parsed_rule = $this->parse_rule($filter);
 
-                if (is_array($input[$field])) {
-                    $input_array = &$input[$field];
-                } else {
-                    $input_array = array(&$input[$field]);
-                }
+                if (is_array($field_value)) {
+                    foreach ($field_value as $key => $value) {
+                        $field_value[$key] = $this->call_filter($parsed_rule['rule'], $value, $parsed_rule['param']);
+                    }
 
-                foreach ($input_array as &$value) {
-                    $value = $this->call_filter($parsed_rule['rule'], $value, $parsed_rule['param']);
+                    ArrayHelpers::data_set($input, $field, $field_value);
+                } else {
+//                    $value = $this->call_filter($parsed_rule['rule'], $field_value, $parsed_rule['param']);
+//
+//                    ArrayHelpers::data_set($input, $field, $value);
                 }
             }
         }
