@@ -110,7 +110,7 @@ if ($gump->errors()) {
 ```php
 $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
     'field' => 'regex,/partOf;my|Regex/', // NO
-    'field' => ['regex' => '/partOf;my|Regex/']) // YES
+    'field' => ['regex' => '/partOf;my|Regex/'] // YES
 ]);
 ```
 
