@@ -98,6 +98,10 @@ class GUMP
 
     public static $basic_tags = '<br><p><a><strong><b><i><em><img><blockquote><code><dd><dl><hr><h1><h2><h3><h4><h5><h6><label><ul><li><span><sub><sup>';
 
+    // By default the instance_tags are the basic tags, but they can be changed on a per instance
+    // of GUMP basis (see the constructor)
+    public $instance_tags;
+
     public static $en_noise_words = "about,after,all,also,an,and,another,any,are,as,at,be,because,been,before,
                                      being,between,both,but,by,came,can,come,could,did,do,each,for,from,get,
                                      got,has,had,he,have,her,here,him,himself,his,how,if,in,into,is,it,its,it's,like,
@@ -144,6 +148,15 @@ class GUMP
      * @var array
      */
     protected $errors = [];
+
+    public function __construct($opts = array()) {
+      $this->instance_tags = static::$basic_tags;
+
+      // permit overrides
+      foreach($opts as $key => $value) {
+        $this->$key = $value;
+      }
+    }
 
     // ** ------------------------- Validation Helpers ---------------------------- ** //
 
@@ -416,7 +429,9 @@ class GUMP
                         }
                     }
 
-                    $value = filter_var($value, FILTER_SANITIZE_STRING);
+                    // old code - filter_var($value, FILTER_SANITIZE_STRING);
+                    // See #106 https://github.com/Wixel/GUMP/issues/106
+                    $value = $this->filter_basic_tags($value);
                 }
 
                 $return[$field] = $value;
@@ -1069,7 +1084,7 @@ class GUMP
      */
     protected function filter_basic_tags($value, array $params = [])
     {
-        return strip_tags($value, self::$basic_tags);
+        return strip_tags($value, $this->instance_tags);
     }
 
     /**
