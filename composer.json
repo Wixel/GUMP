@@ -28,7 +28,9 @@
     "require": {
         "php": ">=7.0",
         "ext-mbstring": "*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "ext-intl": "*",
+        "ext-bcmath": "*"
     },
     "autoload-dev": {
         "psr-4": { "Tests\\": "tests/" }
