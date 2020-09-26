@@ -30,7 +30,8 @@
         "ext-mbstring": "*",
         "ext-json": "*",
         "ext-intl": "*",
-        "ext-bcmath": "*"
+        "ext-bcmath": "*",
+        "ext-iconv": "*"
     },
     "autoload-dev": {
         "psr-4": { "Tests\\": "tests/" }

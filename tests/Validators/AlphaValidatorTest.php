@@ -15,12 +15,12 @@ class AlphaValidatorTest extends BaseTestCase
 {
     public function testSuccess()
     {
-        $this->assertTrue($this->validate('alpha', 'username'));
+        $this->assertTrue($this->validate('alpha', 'azÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝÑàáâãäåçèéêëìíîïðòóôõöùúûüýÿñ'));
     }
 
     public function testError()
     {
-        $this->assertNotTrue($this->validate('alpha', 'hello *(^*^*&'));
+        $this->assertNotTrue($this->validate('alpha', '123azÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝÑàáâãäåçèéêëìíîïðòóôõöùúûüýÿñ'));
     }
 
     public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
