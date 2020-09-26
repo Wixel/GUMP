@@ -1491,13 +1491,7 @@ class GUMP
             $url = $url['host'];
         }
 
-        if (EnvHelpers::functionExists('checkdnsrr') && EnvHelpers::functionExists('idn_to_ascii')) {
-            if (EnvHelpers::checkdnsrr(idn_to_ascii($url, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46), 'A') === false) {
-                return false;
-            }
-        } elseif (EnvHelpers::gethostbyname($url) == $url) {
-            return false;
-        }
+        return EnvHelpers::checkdnsrr(idn_to_ascii($url, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46), 'A') !== false;
     }
 
     /**
