@@ -1,12 +1,4 @@
 <?php
-/**
- * GUMP - A fast, extensible PHP input validation class.
- *
- * @author Sean Nieuwoudt (http://twitter.com/SeanNieuwoudt)
- * @author Filis Futsarov (http://twitter.com/filisdev)
- *
- * @version 1.11
- */
 
 use GUMP\ArrayHelpers;
 use GUMP\EnvHelpers;
