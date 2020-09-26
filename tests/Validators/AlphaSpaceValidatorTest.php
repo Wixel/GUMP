@@ -15,12 +15,12 @@ class AlphaSpaceValidatorTest extends BaseTestCase
 {
     public function testSuccess()
     {
-        $this->assertTrue($this->validate('alpha_space', 'my username'));
+        $this->assertTrue($this->validate('alpha_space', ' azÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ'));
     }
 
     public function testError()
     {
-        $this->assertNotTrue($this->validate('alpha_space', 'hello *(^*^*&'));
+        $this->assertNotTrue($this->validate('alpha_space', '1 azÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ'));
     }
 
     public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
