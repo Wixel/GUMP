@@ -23,7 +23,10 @@ $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
     'avatar'         => 'required_file|extension,png;jpg',
     'tags'           => 'required|alpha_numeric', // ['value1', 'value3']
     'person.name'    => 'required',               // ['person' => ['name' => 'value']]
-    'persons.*.name' => 'required'                // ['persons' => [['name' => 'value']]]
+    'persons.*.age'  => 'required'                // ['persons' => [
+                                                  //      ['name' => 'value1', 'age' => 20],
+                                                  //      ['name' => 'value2']
+                                                  // ]]
 ]);
 
 // 1st array is rules definition, 2nd is field-rule specific error messages (optional)
@@ -107,7 +110,7 @@ if ($gump->errors()) {
 ```php
 $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
     'field' => 'regex,/partOf;my|Regex/', // NO
-    'field' => ['regex' => '/partOf;my|Regex/']) // YES
+    'field' => ['regex' => '/partOf;my|Regex/'] // YES
 ]);
 ```
 
@@ -272,7 +275,7 @@ class MyClass extends GUMP
         return strtoupper($value);
     }
 
-    protected function validate_myvalidator($field, array $input, array $params = [])
+    protected function validate_myvalidator($field, array $input, array $params = [], $value)
     {
         return $input[$field] === 'good_value';
     }
