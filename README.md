@@ -1,380 +1,298 @@
 # Getting started
 
-GUMP is a standalone PHP data validation and filtering class that makes validating any data easy and painless without the reliance on a framework.
+GUMP is a standalone PHP data validation and filtering class that makes validating any data easy and painless without the reliance on a framework. GUMP is open-source since 2013.
 
-Follow along on the project board: http://d.monsterboards.co/project/LSCPVmHUxQ-gump
+[![License](https://poser.pugx.org/wixel/gump/license)](https://packagist.org/packages/wixel/gump)
+[![Total Downloads](https://poser.pugx.org/wixel/gump/downloads)](https://packagist.org/packages/wixel/gump)
+[![Latest Stable Version](https://poser.pugx.org/wixel/gump/v/stable)](https://packagist.org/packages/wixel/gump)
+[![Build Status](https://travis-ci.org/Wixel/GUMP.svg?branch=master)](https://travis-ci.org/Wixel/GUMP)
+[![Coverage Status](https://coveralls.io/repos/github/Wixel/GUMP/badge.svg?branch=master)](https://coveralls.io/github/Wixel/GUMP?branch=master)
 
-#### There are 2 ways to install GUMP
+#### Install with composer
 
-###### Install Manually
+```
+composer require wixel/gump
+```
 
-1. Download GUMP
-2. Unzip it and copy the directory into your PHP project directory.
-
-Include it in your project:
+### Short format example for validations
 
 ```php
-require "gump.class.php";
+$is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
+    'username'       => 'required|alpha_numeric',
+    'password'       => 'required|between_len,4;100',
+    'avatar'         => 'required_file|extension,png;jpg',
+    'tags'           => 'required|alpha_numeric', // ['value1', 'value3']
+    'person.name'    => 'required',               // ['person' => ['name' => 'value']]
+    'persons.*.age'  => 'required'                // ['persons' => [
+                                                  //      ['name' => 'value1', 'age' => 20],
+                                                  //      ['name' => 'value2']
+                                                  // ]]
+]);
 
-$is_valid = GUMP::is_valid($_POST, array(
-	'username' => 'required|alpha_numeric',
-	'password' => 'required|max_len,100|min_len,6'
-));
+// 1st array is rules definition, 2nd is field-rule specific error messages (optional)
+$is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
+    'username' => ['required', 'alpha_numeric'],
+    'password' => ['required', 'between_len' => [6, 100]],
+    'avatar'   => ['required_file', 'extension' => ['png', 'jpg']]
+], [
+    'username' => ['required' => 'Fill the Username field please.'],
+    'password' => ['between_len' => '{field} must be between {param[0]} and {param[1]} characters.'],
+    'avatar'   => ['extension' => 'Valid extensions for avatar are: {param}'] // "png, jpg"
+]);
 
-if($is_valid === true) {
-	// continue
+if ($is_valid === true) {
+    // continue
 } else {
-	print_r($is_valid);
+    var_dump($is_valid); // array of error messages
 }
 ```
 
-###### Install with composer
-
-Add the following to your composer.json file:
-
-```json
-{
-    "require": {
-        "wixel/gump": "dev-master"
-    }
-}
-```
-Then open your terminal in your project directory and run:
-
-`composer install`
-
-
-#### Available Methods
+### Short format example for filtering
 
 ```php
-// Shorthand validation
-is_valid(array $data, array $rules)
+$filtered = GUMP::filter_input([
+    'field'       => ' text ',
+    'other_field' => 'Cool Title'
+], [
+    'field'       => ['trim', 'upper_case'],
+    'other_field' => 'slug'
+]);
 
-// Get or set the validation rules
-validation_rules(array $rules);
-
-// Get or set the filtering rules
-filter_rules(array $rules);
-
-// Runs the filter and validation routines
-run(array $data);
-
-// Strips and encodes unwanted characters
-xss_clean(array $data);
-
-// Sanitizes data and converts strings to UTF-8 (if available),
-// optionally according to the provided field whitelist
-sanitize(array $input, $whitelist = NULL);
-
-// Validates input data according to the provided ruleset (see example)
-validate(array $input, array $ruleset);
-
-// Filters input data according to the provided filterset (see example)
-filter(array $input, array $filterset);
-
-// Returns human readable error text in an array or string
-get_readable_errors($convert_to_string = false);
-
-// Fetch an array of validation errors indexed by the field names
-get_errors_array();
-
-// Override field names with readable ones for errors
-set_field_name($field, $readable_name);
+var_dump($filtered['field']); // result: "TEXT"
+var_dump($filtered['other_field']); // result: "cool-title"
 ```
 
-# Example (Long format)
-
-The following example is part of a registration form, the flow should be pretty standard
+### Long format example
 
 ```php
-# Note that filters and validators are separate rule sets and method calls. There is a good reason for this.
-
-require "gump.class.php";
-
 $gump = new GUMP();
 
-$_POST = $gump->sanitize($_POST); // You don't have to sanitize, but it's safest to do so.
+// set validation rules
+$gump->validation_rules([
+    'username'    => 'required|alpha_numeric|max_len,100|min_len,6',
+    'password'    => 'required|max_len,100|min_len,6',
+    'email'       => 'required|valid_email',
+    'gender'      => 'required|exact_len,1|contains,m;f',
+    'credit_card' => 'required|valid_cc'
+]);
 
-$gump->validation_rules(array(
-	'username'    => 'required|alpha_numeric|max_len,100|min_len,6',
-	'password'    => 'required|max_len,100|min_len,6',
-	'email'       => 'required|valid_email',
-	'gender'      => 'required|exact_len,1|contains,m f',
-	'credit_card' => 'required|valid_cc'
-));
+// set field-rule specific error messages
+$gump->set_fields_error_messages([
+    'username'      => ['required' => 'Fill the Username field please, its required.'],
+    'credit_card'   => ['extension' => 'Please enter a valid credit card.']
+]);
 
-$gump->filter_rules(array(
-	'username' => 'trim|sanitize_string',
-	'password' => 'trim',
-	'email'    => 'trim|sanitize_email',
-	'gender'   => 'trim',
-	'bio'	   => 'noise_words'
-));
+// set filter rules
+$gump->filter_rules([
+    'username' => 'trim|sanitize_string',
+    'password' => 'trim',
+    'email'    => 'trim|sanitize_email',
+    'gender'   => 'trim',
+    'bio'      => 'noise_words'
+]);
 
-$validated_data = $gump->run($_POST);
+// on success: returns array with same input structure, but after filters have run
+// on error: returns false
+$valid_data = $gump->run($_POST);
 
-if($validated_data === false) {
-	echo $gump->get_readable_errors(true);
+if ($gump->errors()) {
+    var_dump($gump->get_readable_errors()); // ['Field <span class="gump-field">Somefield</span> is required.'] 
+    // or
+    var_dump($gump->get_errors_array()); // ['field' => 'Field Somefield is required']
 } else {
-	print_r($validated_data); // validation successful
+    var_dump($valid_data);
 }
 ```
 
-# Example (Short format)
+:star: Available Validators
+---------------------------
+**Important:** If you use Pipe or Semicolon as parameter value, you **must** use array format.
+```php
+$is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
+    'field' => 'regex,/partOf;my|Regex/', // NO
+    'field' => ['regex' => '/partOf;my|Regex/'] // YES
+]);
+```
 
-The short format is an alternative way to run the validation.
+<div id="available_validators">
+
+| Rule                                                                           | Description                                                                                                                                                                                               |
+|--------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **required**                                                                   | Ensures the specified key value exists and is not empty (not null, not empty string, not empty array).                                                                                                    |
+| **contains**,one;two;use array format if one of the values contains semicolons | Verify that a value is contained within the pre-defined value set.                                                                                                                                        |
+| **contains_list**,value1;value2                                                | Verify that a value is contained within the pre-defined value set. Error message will NOT show the list of possible values.                                                                               |
+| **doesnt_contain_list**,value1;value2                                          | Verify that a value is contained within the pre-defined value set. Error message will NOT show the list of possible values.                                                                               |
+| **boolean**,strict                                                             | Determine if the provided value is a valid boolean. Returns true for: yes/no, on/off, 1/0, true/false. In strict mode (optional) only true/false will be valid which you can combine with boolean filter. |
+| **valid_email**                                                                | Determine if the provided email has valid format.                                                                                                                                                         |
+| **max_len**,240                                                                | Determine if the provided value length is less or equal to a specific value.                                                                                                                              |
+| **min_len**,4                                                                  | Determine if the provided value length is more or equal to a specific value.                                                                                                                              |
+| **exact_len**,5                                                                | Determine if the provided value length matches a specific value.                                                                                                                                          |
+| **between_len**,3;11                                                           | Determine if the provided value length is between min and max values.                                                                                                                                     |
+| **alpha**                                                                      | Determine if the provided value contains only alpha characters.                                                                                                                                           |
+| **alpha_numeric**                                                              | Determine if the provided value contains only alpha-numeric characters.                                                                                                                                   |
+| **alpha_dash**                                                                 | Determine if the provided value contains only alpha characters with dashed and underscores.                                                                                                               |
+| **alpha_numeric_dash**                                                         | Determine if the provided value contains only alpha numeric characters with dashed and underscores.                                                                                                       |
+| **alpha_numeric_space**                                                        | Determine if the provided value contains only alpha numeric characters with spaces.                                                                                                                       |
+| **alpha_space**                                                                | Determine if the provided value contains only alpha characters with spaces.                                                                                                                               |
+| **numeric**                                                                    | Determine if the provided value is a valid number or numeric string.                                                                                                                                      |
+| **integer**                                                                    | Determine if the provided value is a valid integer.                                                                                                                                                       |
+| **float**                                                                      | Determine if the provided value is a valid float.                                                                                                                                                         |
+| **valid_url**                                                                  | Determine if the provided value is a valid URL.                                                                                                                                                           |
+| **url_exists**                                                                 | Determine if a URL exists & is accessible.                                                                                                                                                                |
+| **valid_ip**                                                                   | Determine if the provided value is a valid IP address.                                                                                                                                                    |
+| **valid_ipv4**                                                                 | Determine if the provided value is a valid IPv4 address.                                                                                                                                                  |
+| **valid_ipv6**                                                                 | Determine if the provided value is a valid IPv6 address.                                                                                                                                                  |
+| **valid_cc**                                                                   | Determine if the input is a valid credit card number.                                                                                                                                                     |
+| **valid_name**                                                                 | Determine if the input is a valid human name.                                                                                                                                                             |
+| **street_address**                                                             | Determine if the provided input is likely to be a street address using weak detection.                                                                                                                    |
+| **iban**                                                                       | Determine if the provided value is a valid IBAN.                                                                                                                                                          |
+| **date**,d/m/Y                                                                 | Determine if the provided input is a valid date (ISO 8601) or specify a custom format (optional).                                                                                                         |
+| **min_age**,18                                                                 | Determine if the provided input meets age requirement (ISO 8601). Input should be a date (Y-m-d).                                                                                                         |
+| **max_numeric**,50                                                             | Determine if the provided numeric value is lower or equal to a specific value.                                                                                                                            |
+| **min_numeric**,1                                                              | Determine if the provided numeric value is higher or equal to a specific value.                                                                                                                           |
+| **starts**,Z                                                                   | Determine if the provided value starts with param.                                                                                                                                                        |
+| **required_file**                                                              | Determine if the file was successfully uploaded.                                                                                                                                                          |
+| **extension**,png;jpg;gif                                                      | Check the uploaded file for extension. Doesn't check mime-type yet.                                                                                                                                       |
+| **equalsfield**,other_field_name                                               | Determine if the provided field value equals current field value.                                                                                                                                         |
+| **guidv4**                                                                     | Determine if the provided field value is a valid GUID (v4)                                                                                                                                                |
+| **phone_number**                                                               | Determine if the provided value is a valid phone number.                                                                                                                                                  |
+| **regex**,/test-[0-9]{3}/                                                      | Custom regex validator.                                                                                                                                                                                   |
+| **valid_json_string**                                                          | Determine if the provided value is a valid JSON string.                                                                                                                                                   |
+| **valid_array_size_greater**,1                                                 | Check if an input is an array and if the size is more or equal to a specific value.                                                                                                                       |
+| **valid_array_size_lesser**,1                                                  | Check if an input is an array and if the size is less or equal to a specific value.                                                                                                                       |
+| **valid_array_size_equal**,1                                                   | Check if an input is an array and if the size is equal to a specific value.                                                                                                                               |
+| **valid_twitter**                                                              | Determine if the provided value is a valid Twitter account.                                                                                                                                               |
+</div>
+
+:star: Available Filters
+------------------------
+Filter rules can also be any PHP native function (e.g.: trim).
+
+<div id="available_filters">
+
+| Filter                 | Description                                                                                                           |
+|------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| **noise_words**        | Replace noise words in a string (http://tax.cchgroup.com/help/Avoiding_noise_words_in_your_search.htm).               |
+| **rmpunctuation**      | Remove all known punctuation from a string.                                                                           |
+| **urlencode**          | Sanitize the string by urlencoding characters.                                                                        |
+| **htmlencode**         | Sanitize the string by converting HTML characters to their HTML entities.                                             |
+| **sanitize_email**     | Sanitize the string by removing illegal characters from emails.                                                       |
+| **sanitize_numbers**   | Sanitize the string by removing illegal characters from numbers.                                                      |
+| **sanitize_floats**    | Sanitize the string by removing illegal characters from float numbers.                                                |
+| **sanitize_string**    | Sanitize the string by removing any script tags.                                                                      |
+| **boolean**            | Converts ['1', 1, 'true', true, 'yes', 'on'] to true, anything else is false ('on' is useful for form checkboxes).    |
+| **basic_tags**         | Filter out all HTML tags except the defined basic tags.                                                               |
+| **whole_number**       | Convert the provided numeric value to a whole number.                                                                 |
+| **ms_word_characters** | Convert MS Word special characters to web safe characters. ([“ ”] => ", [‘ ’] => ', [–] => -, […] => ...) |
+| **lower_case**         | Converts to lowercase.                                                                                                |
+| **upper_case**         | Converts to uppercase.                                                                                                |
+| **slug**               | Converts value to url-web-slugs.                                                                                      |
+| **trim**               | Remove spaces from the beginning and end of strings (PHP).                                                            |
+</div>
+
+#### Other Available Methods
 
 ```php
-$data = array(
-	'street' => '6 Avondans Road'
-);
+/**
+ * This is the most flexible validation "executer" because of it's return errors format.
+ *
+ * Returns bool true when no errors.
+ * Returns array of errors with detailed info. which you can then use with your own helpers.
+ * (field name, input value, rule that failed and it's parameters).
+ */
+$gump->validate(array $input, array $ruleset);
 
-$validated = GUMP::is_valid($data, array(
-	'street' => 'required|street_address'
-));
+/**
+ * Filters input data according to the provided filterset
+ *
+ * Returns array with same input structure but after filters have been applied.
+ */
+$gump->filter(array $input, array $filterset);
 
-if($validated === true) {
-	echo "Valid Street Address!";
-} else {
-	print_r($validated);
-}
+// Sanitizes data and converts strings to UTF-8 (if available), optionally according to the provided field whitelist
+$gump->sanitize(array $input, $whitelist = null);
+
+// Override field names in error messages
+GUMP::set_field_name('str', 'Street');
+GUMP::set_field_names([
+    'str' => 'Street',
+    'zip' => 'ZIP Code'
+]);
+
+// Set custom error messages for rules.
+GUMP::set_error_message('required', '{field} is required.');
+GUMP::set_error_messages([
+    'required'    => '{field} is required.',
+    'valid_email' => '{field} must be a valid email.'
+]);
+
+// Strips and encodes unwanted characters
+GUMP::xss_clean(array $data);
 ```
 
-
-Match data-keys against rules-keys
--------------
-We can check if there is a rule specified for every data-key, by adding an extra parameter to the run method.
-
-```
-$gump->run($_POST, true);
-```
-
-If it doesn't match the output will be:
-```
-There is no validation rule for <span class=\"$field_class\">$field</span>
-```
-
-Return Values
--------------
-`run()` returns one of two types:
-
-*ARRAY* containing the successfully validated and filtered data when the validation is successful
-
-*BOOLEAN* False when the validation has failed
-
-`validate()` returns one of two types:
-
-*ARRAY* containing key names and validator names when data does not pass the validation.
-
-You can use this array along with your language helpers to determine what error message to show.
-
-*BOOLEAN* value of TRUE if the validation was successful.
-
-`filter()` returns the exact array structure that was parsed as the `$input` parameter, the only difference would be the filtered data.
-
-
-Available Validators
---------------------
-* required `Ensures the specified key value exists and is not empty`
-* valid_email `Checks for a valid email address`
-* max_len,n `Checks key value length, makes sure it's not longer than the specified length. n = length parameter.`
-* min_len,n `Checks key value length, makes sure it's not shorter than the specified length. n = length parameter.`
-* exact_len,n `Ensures that the key value length precisely matches the specified length. n = length parameter.`
-* alpha `Ensure only alpha characters are present in the key value (a-z, A-Z)`
-* alpha_numeric `Ensure only alpha-numeric characters are present in the key value (a-z, A-Z, 0-9)`
-* alpha_dash `Ensure only alpha-numeric characters + dashes and underscores are present in the key value (a-z, A-Z, 0-9, _-)`
-* alpha_space `Ensure only alpha-numeric characters + spaces are present in the key value (a-z, A-Z, 0-9, \s)`
-* numeric `Ensure only numeric key values`
-* integer `Ensure only integer key values`
-* boolean `Checks for PHP accepted boolean values, returns TRUE for "1", "true", "on" and "yes"`
-* float `Checks for float values`
-* valid_url `Check for valid URL or subdomain`
-* url_exists `Check to see if the url exists and is accessible`
-* valid_ip `Check for valid generic IP address`
-* valid_ipv4 `Check for valid IPv4 address`
-* valid_ipv6 `Check for valid IPv6 address`
-* valid_cc `Check for a valid credit card number (Uses the MOD10 Checksum Algorithm)`
-* valid_name `Check for a valid format human name`
-* contains,n `Verify that a value is contained within the pre-defined value set`
-* contains_list,n `Verify that a value is contained within the pre-defined value set. The list of valid values must be provided in semicolon-separated list format (like so: value1;value2;value3;..;valuen). If a validation error occurs, the list of valid values is not revelead (this means, the error will just say the input is invalid, but it won't reveal the valid set to the user.`
-* doesnt_contain_list,n `Verify that a value is not contained within the pre-defined value set. Semicolon (;) separated, list not outputted. See the rule above for more info.`
-* street_address `Checks that the provided string is a likely street address. 1 number, 1 or more space, 1 or more letters`
-* iban `Check for a valid IBAN`
-* min_numeric `Determine if the provided numeric value is higher or equal to a specific value`
-* max_numeric `Determine if the provided numeric value is lower or equal to a specific value`
-* date `Determine if the provided input is a valid date (ISO 8601)`
-* starts `Ensures the value starts with a certain character / set of character`
-* phone_number `Validate phone numbers that match the following examples: 555-555-5555 , 5555425555, 555 555 5555, 1(519) 555-4444, 1 (519) 555-4422, 1-555-555-5555`
-* regex `You can pass a custom regex using the following format: 'regex,/your-regex/'`
-* valid_json_string `validate string to check if it's a valid json format`
-
-Available Filters
------------------
-Filters can be any PHP function that returns a string. You don't need to create your own if a PHP function exists that does what you want the filter to do.
-
-* sanitize_string `Remove script tags and encode HTML entities, similar to GUMP::xss_clean();`
-* urlencode `Encode url entities`
-* htmlencode `Encode HTML entities`
-* sanitize_email `Remove illegal characters from email addresses`
-* sanitize_numbers `Remove any non-numeric characters`
-* sanitize_floats `Remove any non-float characters`
-* trim `Remove spaces from the beginning and end of strings`
-* base64_encode `Base64 encode the input`
-* base64_decode `Base64 decode the input`
-* sha1 `Encrypt the input with the secure sha1 algorithm`
-* md5 `MD5 encode the input`
-* noise_words `Remove noise words from string`
-* json_encode `Create a json representation of the input`
-* json_decode `Decode a json string`
-* rmpunctuation `Remove all known punctuation characters from a string`
-* basic_tags `Remove all layout orientated HTML tags from text. Leaving only basic tags`
-* whole_number `Ensure that the provided numeric value is represented as a whole number`
-* ms_word_characters `Converts MS Word special characters [“”‘’–…] to web safe characters`
-* lower_case `Converts to lowercase`
-* upper_case `Converts to uppercase`
-* slug `Creates web safe url slug`
-
-#  Creating your own validators and filters
+###  Creating your own validators and filters
 
 Adding custom validators and filters is made easy by using callback functions.
 
 ```php
-require("gump.class.php");
+/**
+ * You would call it like 'equals_string,someString'
+ *
+ * @param string $field  Field name
+ * @param array  $input  Whole input data
+ * @param array  $params Rule parameters. This is usually empty array by default if rule does not have parameters.
+ * @param mixed  $value  Value.
+ *                       In case of an array ['value1', 'value2'] would return one single value.
+ *                       If you want to get the array itself use $input[$field].
+ *
+ * @return bool   true or false whether the validation was successful or not
+ */
+GUMP::add_validator("equals_string", function($field, array $input, array $params, $value) {
+    return $value === $params;
+}, 'Field {field} does not equal to {param}.');
 
-/*
-   Create a custom validation rule named "is_object".
-   The callback receives 3 arguments:
-   The field to validate, the values being validated, and any parameters used in the validation rule.
-   It should return a boolean value indicating whether the value is valid.
-*/
-GUMP::add_validator("is_object", function($field, $input, $param = NULL) {
-    return is_object($input[$field]);
-});
-
-/*
-   Create a custom filter named "upper".
-   The callback function receives two arguments:
-   The value to filter, and any parameters used in the filter rule. It should returned the filtered value.
-*/
-GUMP::add_filter("upper", function($value, $params = NULL) {
+/**
+ * @param string $value Value
+ * @param array  $param Filter parameters (optional)
+ *
+ * @return mixed  result of filtered value
+ */
+GUMP::add_filter("upper", function($value, array $params = []) {
     return strtoupper($value);
 });
-
 ```
 
-Alternately, you can simply create your own class that extends the GUMP class.
-
-```php
-
-require("gump.class.php");
-
-class MyClass extends GUMP
-{
-	public function filter_myfilter($value, $param = NULL)
-	{
-		...
-	}
-
-	public function validate_myvalidator($field, $input, $param = NULL)
-	{
-		...
-	}
-
-} // EOC
-
-$validator = new MyClass();
-
-$validated = $validator->validate($_POST, $rules);
-
-```
-
-Please see `examples/custom_validator.php` for further information.
-
-Remember to create a public methods with the correct parameter types and parameter counts.
+Alternately, you can simply create your own class that extends GUMP. You only have to have in mind:
 
 * For filter methods, prepend the method name with "filter_".
 * For validator methods, prepend the method name with "validate_".
 
-# Set Custom Field Names
-
-You can easily override your form field names for improved readability in errors using the `GUMP::set_field_name($field, $readable_name)` method as follows:
-
 ```php
-$data = array(
-	'str' => null
-);
+class MyClass extends GUMP
+{
+    protected function filter_myfilter($value, array $params = [])
+    {
+        return strtoupper($value);
+    }
 
-$rules = array(
-	'str' => 'required'
-);
-
-GUMP::set_field_name("str", "Street");
-
-$validated = GUMP::is_valid($data, $rules);
-
-if($validated === true) {
-	echo "Valid Street Address\n";
-} else {
-	print_r($validated);
+    protected function validate_myvalidator($field, array $input, array $params = [], $value)
+    {
+        return $input[$field] === 'good_value';
+    }
 }
+
+$validator = new MyClass();
+$validated = $validator->validate($_POST, $rules);
 ```
 
-# validating file fields
+Global configuration
+--------------------
+This configuration values allows you to change default rules delimiters (e.g.: `required|contains,value1;value2` to `required|contains:value1,value2`).
 
 ```php
-require "gump.class.php";
+GUMP::$rules_delimiter = '|';
 
-$is_valid = GUMP::is_valid(array_merge($_POST,$_FILES), array(
-	'title' => 'required|alpha_numeric',
-	'image' => 'required_file|extension,png;jpg'
-));
+GUMP::$rules_parameters_delimiter = ',';
 
-if($is_valid === true) {
-	// continue
-} else {
-	print_r($is_valid);
-}
+GUMP::$rules_parameters_arrays_delimiter = ';';
 ```
-
-Running the examples:
-------------------
-
-1. Open up your terminal
-2. cd [GUMP DIRECTORY/examples]
-3. php [file].php
-
-The output will depend on the input data.
-
-# Contributors
-
-* Colleen Emryss http://skitter.tv
-* Mark Slingsby http://www.rsaweb.co.za
-* Rob Crowe http://vivalacrowe.com
-* Roy de Kleijn http://roydekleijn.com
-* Christian Klisch http://www.christian-klisch.de/
-* Inge Brattaas http://res.no/
-* Adam Curtis http://alc.im
-* Sean Hickey
-* Dennis Thompson http://atomicpages.net
-
-# TODO
-
-* A currency validator
-* A country validator
-* Location co-ordinates validator
-* HTML validator
-* Language validation ... determine if a piece of text is a specified language
-* Validate a spam domain or IP.
-* Validate a spam email address
-* Validate spam text with askimet or something similar
-* Improve documentation
-* More examples
-* W3C validation filter?
-* A filter that integrates with an HTML tidy service?: http://infohound.net/tidy/
-* Add a twitter & facebook profile url validator: http://stackoverflow.com/questions/2845243/check-if-twitter-username-exists
-* Add more logical examples - log in form, profile update form, blog post form, etc etc.
-* Add validators to allow checking the PHP $_FILES array.
-* Allow a validator that can check for existing files on the host machine
-* Add an 'is empty' validator check
-* Check that arrays have a positive count (if type is array)
-* A secure password validator

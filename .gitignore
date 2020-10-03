@@ -1,5 +1,6 @@
 .DS_Store
 .idea
+.ddev
 nbproject
 nb-configuration.xml
 Session.vim
@@ -8,4 +9,7 @@ Session.vim
 tmtags
 Thumbs.db
 Desktop.ini
-
+vendor
+coverage
+build
+.phpunit.result.cache
