@@ -916,6 +916,8 @@ class GUMP
                 foreach ($input_array as &$value) {
                     $value = $this->call_filter($parsed_rule['rule'], $value, $parsed_rule['param']);
                 }
+
+                unset($input_array, $value);
             }
         }
 

@@ -131,6 +131,22 @@ class FilterTest extends BaseTestCase
         $this->assertTrue(password_verify('my_password', $result['field']));
     }
 
+    public function testArrayDataIsNotOverridden()
+    {
+        $result = $this->gump->filter([
+            'field_one' => ['100a', '200'],
+            'field_two' => 'yes',
+        ], [
+            'field_one' => 'sanitize_numbers',
+            'field_two' => 'boolean',
+        ]);
+
+        $this->assertEquals([
+            'field_one' => ['100', '200'],
+            'field_two' => true,
+        ], $result);
+    }
+
 //    public function testNestedArrays()
 //    {
 //        $data = [
