@@ -429,6 +429,31 @@ class GUMP
     }
 
     /**
+     * Perform data validation against the provided ruleset and return the valid data.
+     * 
+     * @param array  $data
+     * @param        $check_fields
+     * 
+     * @return array valid data.
+     */
+    public function validData(array $data, $check_fields = false)
+    {
+        $data = $this->run($data, $check_fields);
+
+        if ($data === false) {
+            return [];
+        }
+
+        $allowed = array_keys($this->validation_rules());
+
+        $validData = array_filter($data, function ($key) use ($allowed) {
+            return in_array($key, $allowed);
+        }, ARRAY_FILTER_USE_KEY);
+
+        return $validData;
+    }
+
+    /**
      * Perform data validation against the provided ruleset.
      *
      * @param array $input Input data.
