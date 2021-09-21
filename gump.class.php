@@ -1881,11 +1881,7 @@ class GUMP
      */
     protected function validate_valid_json_string($field, array $input, array $params = [], $value)
     {
-        if (!is_string($input[$field]) || !is_object(json_decode($value))) {
-            return false;
-        }
-
-        return true;
+        return is_string($input[$field]) && is_array(json_decode($value, true)) && (json_last_error() == JSON_ERROR_NONE);
     }
 
     /**
