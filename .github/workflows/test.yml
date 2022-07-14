@@ -21,14 +21,14 @@ jobs:
     strategy:
       matrix:
         include:
-#          - php: '7.0'
-#          - php: '7.1'
-#          - php: '7.2'
-#          - php: '7.3'
-#          - php: '7.4'
+          - php: '7.0'
+          - php: '7.1'
+          - php: '7.2'
+          - php: '7.3'
+          - php: '7.4'
           - php: '8.0'
           - php: '8.1'
-          - php: '8.2'
+#          - php: '8.2'
     steps:
       - name: checkout
         uses: actions/checkout@v3
