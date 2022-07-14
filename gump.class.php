@@ -206,21 +206,6 @@ class GUMP
     }
 
     /**
-     * Perform XSS clean to prevent cross site scripting.
-     *
-     * @param array $data
-     * @return array
-     */
-    public static function xss_clean(array $data)
-    {
-        foreach ($data as $k => $v) {
-            $data[$k] = static::polyfill_filter_var_string($v);
-        }
-
-        return $data;
-    }
-
-    /**
      * An empty value for us is: null, empty string or empty array
      *
      * @param  $value
