@@ -34,7 +34,7 @@ abstract class BaseTestCase extends TestCase
         $this->gump = new GUMP;
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->prophet->checkPredictions();
 
