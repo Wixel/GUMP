@@ -26,7 +26,7 @@
         "php-coveralls/php-coveralls": "^2.2"
     },
     "require": {
-        "php": ">=7.0",
+        "php": ">=7.1",
         "ext-mbstring": "*",
         "ext-json": "*",
         "ext-intl": "*",
