@@ -66,10 +66,10 @@ function get_docs_validators(string $readmePath) {
 function get_gump_filters() {
     $reflect = new ReflectionClass("GUMP");
 
-    $methodsToIgnore = ['filter_input', 'filter_rules', 'filter_to_method', 'polyfill_filter_var_string'];
+    $methodsToIgnore = ['filter_input', 'filter_rules', 'filter_to_method'];
 
     $filters = array_filter($reflect->getMethods(), function($method) use($methodsToIgnore) {
-        return strpos($method->name, FILTERS_PREFIX) !== false && !in_array($method->name, $methodsToIgnore);
+        return strpos($method->name, FILTERS_PREFIX) === 0 && !in_array($method->name, $methodsToIgnore);
     });
 
     $result = [];
