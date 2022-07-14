@@ -21,7 +21,7 @@ class StaticSetErrorMessagesTest extends BaseTestCase
 
         $test = GUMP::set_error_messages($keysValues);
 
-        $this->assertEquals($keysValues, self::getPrivateField(GUMP::class, 'validation_methods_errors'));
+        $this->assertEquals($keysValues, self::getPrivateField($this->gump, 'validation_methods_errors'));
     }
 
     public function testItOverwritesAddValidatorErrorMessage()

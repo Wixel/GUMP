@@ -22,7 +22,7 @@ abstract class BaseTestCase extends TestCase
      */
     protected $helpersMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->prophet = new Prophet;
 
@@ -34,7 +34,7 @@ abstract class BaseTestCase extends TestCase
         $this->gump = new GUMP;
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->prophet->checkPredictions();
 
