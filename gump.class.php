@@ -1942,28 +1942,4 @@ class GUMP
     {
         return !(!is_array($input[$field]) || count($input[$field]) != $params[0]);
     }
-
-    /**
-     * Determine if the provided value is a valid Twitter account.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     * @throws Exception if Twitter API has changed, in such case report on GitHub please.
-     */
-    protected function validate_valid_twitter($field, array $input, array $params = [], $value = null)
-    {
-        $json = EnvHelpers::file_get_contents("http://twitter.com/users/username_available?username=".$input[$field]);
-
-        $result = json_decode($json);
-
-        if (!isset($result->reason)) {
-            throw new Exception('Twitter JSON response changed. Please report this on GitHub.');
-        }
-
-        return $result->reason === "taken";
-    }
 }
