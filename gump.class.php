@@ -1757,7 +1757,7 @@ class GUMP
      *
      * @return bool
      */
-    protected function validate_required_file($field, array $input, array $params = [], $value = null)
+    protected function validate_required_file($field, array $input, array $params = [], $value)
     {
         return isset($input[$field]) && is_array($input[$field]) && $input[$field]['error'] === 0;
     }
