@@ -409,7 +409,7 @@ class GUMP
                     }
                 }
 
-                $value = filter_var($value, FILTER_SANITIZE_STRING);
+                $value = static::polyfill_filter_var_string($value);
             }
 
             $return[$field] = $value;
