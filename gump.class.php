@@ -1055,7 +1055,7 @@ class GUMP
     private static function filter_var_string_polyfill($value)
     {
         $str = preg_replace('/x00|<[^>]*>?/', '', $value);
-        return str_replace(['', ''], ['&#39;', '&#34;'], $str);
+        return (string)str_replace(['', ''], ['&#39;', '&#34;'], $str);
     }
 
     /**
