@@ -42,6 +42,8 @@ jobs:
           
           # create a lock file
           composer install
+          composer update
+          
           composer run-script test
       - name: docs healthcheck
         run: |
