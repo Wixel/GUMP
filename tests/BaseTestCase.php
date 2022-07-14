@@ -22,7 +22,7 @@ abstract class BaseTestCase extends TestCase
      */
     protected $helpersMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->prophet = new Prophet;
 
