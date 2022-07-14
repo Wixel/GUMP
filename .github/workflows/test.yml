@@ -40,6 +40,7 @@ jobs:
           # create folder for coverage
           mkdir -p build/logs
           
+          # use phpunit9 for php8 and phpunit6 for 7.1 to 7.4
           composer update
           
           # create a lock file
