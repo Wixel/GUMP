@@ -214,7 +214,7 @@ class GUMP
     public static function xss_clean(array $data)
     {
         foreach ($data as $k => $v) {
-            $data[$k] = static::filter_var_string_polyfill($v);
+            $data[$k] = static::polyfill_filter_var_string($v);
         }
 
         return $data;
@@ -1044,7 +1044,7 @@ class GUMP
      */
     protected function filter_sanitize_string($value, array $params = [])
     {
-        return self::filter_var_string_polyfill($value);
+        return self::polyfill_filter_var_string($value);
     }
 
     /**
@@ -1052,7 +1052,7 @@ class GUMP
      *
      * @return string
      */
-    private static function filter_var_string_polyfill($value)
+    private static function polyfill_filter_var_string($value)
     {
         $str = preg_replace('/x00|<[^>]*>?/', '', $value);
         return (string)str_replace(['', ''], ['&#39;', '&#34;'], $str);
