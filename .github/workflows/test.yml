@@ -35,10 +35,12 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-      - name: execute unit tests
-        run: composer run-script quality
+      - name: run unit tests
+        run: |
+          # create a lock file
+          composer install
+          composer run-script test
 #      - name: upload coverage
 #        env:
 #          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 #        run: php vendor/bin/php-coveralls --exclude-no-stmt --coverage_clover=build/logs/clover.xml -v
-
