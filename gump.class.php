@@ -206,21 +206,6 @@ class GUMP
     }
 
     /**
-     * Perform XSS clean to prevent cross site scripting.
-     *
-     * @param array $data
-     * @return array
-     */
-    public static function xss_clean(array $data)
-    {
-        foreach ($data as $k => $v) {
-            $data[$k] = filter_var($v, FILTER_SANITIZE_STRING);
-        }
-
-        return $data;
-    }
-
-    /**
      * An empty value for us is: null, empty string or empty array
      *
      * @param  $value
@@ -409,7 +394,7 @@ class GUMP
                     }
                 }
 
-                $value = filter_var($value, FILTER_SANITIZE_STRING);
+                $value = static::polyfill_filter_var_string($value);
             }
 
             $return[$field] = $value;
@@ -1044,7 +1029,18 @@ class GUMP
      */
     protected function filter_sanitize_string($value, array $params = [])
     {
-        return filter_var($value, FILTER_SANITIZE_STRING);
+        return self::polyfill_filter_var_string($value);
+    }
+
+    /**
+     * Implemented to replace FILTER_SANITIZE_STRING behaviour deprecated in php8.1
+     *
+     * @return string
+     */
+    private static function polyfill_filter_var_string($value)
+    {
+        $str = preg_replace('/x00|<[^>]*>?/', '', $value);
+        return (string)str_replace(['', ''], ['&#39;', '&#34;'], $str);
     }
 
     /**
@@ -1325,7 +1321,7 @@ class GUMP
      *
      * @return bool
      */
-    protected function validate_between_len($field, $input, array $params, $value)
+    protected function validate_between_len($field, $input, array $params, $value = null)
     {
         return $this->validate_min_len($field, $input, [$params[0]], $value)
             && $this->validate_max_len($field, $input, [$params[1]], $value);
@@ -1694,7 +1690,7 @@ class GUMP
      * @return bool
      * @throws Exception
      */
-    protected function validate_min_age($field, array $input, array $params, $value)
+    protected function validate_min_age($field, array $input, array $params, $value = null)
     {
         $inputDatetime = new DateTime(EnvHelpers::date('Y-m-d', strtotime($value)));
         $todayDatetime = new DateTime(EnvHelpers::date('Y-m-d'));
@@ -1746,7 +1742,7 @@ class GUMP
      * @param mixed $value
      * @return bool
      */
-    protected function validate_starts($field, array $input, array $params, $value)
+    protected function validate_starts($field, array $input, array $params, $value = null)
     {
         return strpos($value, $params[0]) === 0;
     }
@@ -1778,7 +1774,7 @@ class GUMP
      *
      * @return bool
      */
-    protected function validate_extension($field, $input, array $params, $value)
+    protected function validate_extension($field, $input, array $params, $value = null)
     {
         if (is_array($input[$field]) && $input[$field]['error'] === 0) {
             $params = array_map(function ($v) {
@@ -1806,7 +1802,7 @@ class GUMP
      *
      * @return bool
      */
-    protected function validate_equalsfield($field, array $input, array $params, $value)
+    protected function validate_equalsfield($field, array $input, array $params, $value = null)
     {
         return $input[$field] == $input[$params[0]];
     }
@@ -1900,7 +1896,7 @@ class GUMP
      *
      * @return bool
      */
-    protected function validate_valid_array_size_greater($field, array $input, array $params, $value)
+    protected function validate_valid_array_size_greater($field, array $input, array $params, $value = null)
     {
         if (!is_array($input[$field]) || count($input[$field]) < $params[0]) {
             return false;
@@ -1945,29 +1941,5 @@ class GUMP
     protected function validate_valid_array_size_equal($field, array $input, array $params = [], $value = null)
     {
         return !(!is_array($input[$field]) || count($input[$field]) != $params[0]);
-    }
-
-    /**
-     * Determine if the provided value is a valid Twitter account.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     * @throws Exception if Twitter API has changed, in such case report on GitHub please.
-     */
-    protected function validate_valid_twitter($field, array $input, array $params = [], $value = null)
-    {
-        $json = EnvHelpers::file_get_contents("http://twitter.com/users/username_available?username=".$input[$field]);
-
-        $result = json_decode($json);
-
-        if (!isset($result->reason)) {
-            throw new Exception('Twitter JSON response changed. Please report this on GitHub.');
-        }
-
-        return $result->reason === "taken";
     }
 }

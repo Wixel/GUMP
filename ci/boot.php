@@ -69,7 +69,7 @@ function get_gump_filters() {
     $methodsToIgnore = ['filter_input', 'filter_rules', 'filter_to_method'];
 
     $filters = array_filter($reflect->getMethods(), function($method) use($methodsToIgnore) {
-        return strpos($method->name, FILTERS_PREFIX) !== false && !in_array($method->name, $methodsToIgnore);
+        return strpos($method->name, FILTERS_PREFIX) === 0 && !in_array($method->name, $methodsToIgnore);
     });
 
     $result = [];
