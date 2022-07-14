@@ -26,7 +26,7 @@ class StaticSetFieldNameTest extends BaseTestCase
             'test_number' => 'alpha'
         ]);
 
-        $this->assertEquals($keysValues, self::getPrivateField(GUMP::class, 'fields'));
+        $this->assertEquals($keysValues, self::getPrivateField($this->gump, 'fields'));
         $this->assertEquals([
             'test_number' => 'The Test Num. field may only contain letters'
         ], $this->gump->get_errors_array());
