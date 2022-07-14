@@ -40,8 +40,6 @@ jobs:
           # create folder for coverage
           mkdir -p build/logs
           
-          composer update
-          
           # create a lock file
           composer install
           
