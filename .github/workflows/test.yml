@@ -52,4 +52,6 @@ jobs:
           php ci/check_validators_docs.php
           php ci/check_validators_translations.php
       - name: upload coverage
-        run: php vendor/bin/php-coveralls -v
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: php vendor/bin/php-coveralls --exclude-no-stmt --coverage_clover=build/logs/clover.xml -v
