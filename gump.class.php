@@ -1044,7 +1044,8 @@ class GUMP
      */
     protected function filter_sanitize_string($value, array $params = [])
     {
-        return filter_var($value, FILTER_SANITIZE_STRING);
+        $str = preg_replace('/x00|<[^>]*>?/', '', (string)$value);
+        return str_replace(['', ''], ['&#39;', '&#34;'], $str);
     }
 
     /**
