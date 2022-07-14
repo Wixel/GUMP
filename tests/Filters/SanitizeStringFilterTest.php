@@ -28,7 +28,11 @@ class SanitizeStringFilterTest extends BaseTestCase
     public function successProvider()
     {
         return [
+            ['<Hello World!>', ''],
+            ['Hello World!</h1>', 'Hello World!'],
+            ['<h1>Hello World!', 'Hello World!'],
             ['<h1>Hello World!</h1>', 'Hello World!'],
+            ['Hello World! <some-tag>inside tag</some-tag>', 'Hello World! inside tag'],
         ];
     }
 }
