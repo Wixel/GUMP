@@ -3,6 +3,7 @@
      convertWarningsToExceptions="true"
      convertNoticesToExceptions="true"
      convertErrorsToExceptions="true"
+     convertDeprecationsToExceptions="true"
      bootstrap="tests/bootstrap.php"
      verbose="true"
     >
