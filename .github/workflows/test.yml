@@ -35,11 +35,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-      - name: docs healthcheck
-        run: |
-          php ci/check_filters_docs.php
-          php ci/check_validators_docs.php
-          php ci/check_validators_translations.php
       - name: run unit tests
         run: |
           # create folder for coverage
@@ -48,6 +43,11 @@ jobs:
           # create a lock file
           composer install
           composer run-script test
+      - name: docs healthcheck
+        run: |
+          php ci/check_filters_docs.php
+          php ci/check_validators_docs.php
+          php ci/check_validators_translations.php
 #      - name: upload coverage
 #        env:
 #          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
