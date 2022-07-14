@@ -37,7 +37,7 @@
         "psr-4": { "Tests\\": "tests/" }
     },
     "scripts": {
-        "test": "php ./vendor/bin/phpunit",
+        "test": "phpdbg -qrr ./vendor/bin/phpunit",
         "dump": "php ./ci/dump_filters_docs.php && php ./ci/dump_validators_docs.php",
         "check": "php ./ci/check_filters_docs.php && php ./ci/check_validators_docs.php && php ./ci/check_validators_translations.php"
     },
