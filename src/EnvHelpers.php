@@ -45,15 +45,6 @@ class EnvHelpers
     }
 
     /**
-     * @inheritDoc file_get_contents
-     */
-    public static function file_get_contents(
-        $filename, $use_include_path = false, $context = null, $offset = 0, $maxlen = null
-    ) {
-        return file_get_contents($filename, $use_include_path, $context, $offset, $maxlen);
-    }
-
-    /**
      * @inheritDoc file_exists
      */
     public static function file_exists($filename)
