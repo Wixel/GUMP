@@ -28,6 +28,7 @@ jobs:
 #          - php: '7.4'
           - php: '8.0'
           - php: '8.1'
+          - php: '8.2'
     steps:
       - name: checkout
         uses: actions/checkout@v3
