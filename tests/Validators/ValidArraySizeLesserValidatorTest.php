@@ -32,6 +32,6 @@ class ValidArraySizeLesserValidatorTest extends BaseTestCase
 
     public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
     {
-         $this->assertTrue($this->validate(self::RULE, ''));
+         $this->assertTrue($this->validate(self::RULE, []));
     }
 }
