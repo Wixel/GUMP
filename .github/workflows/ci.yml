@@ -1,4 +1,4 @@
-name: test
+name: ci
 
 on:
   push:
@@ -52,3 +52,9 @@ jobs:
           php ci/check_filters_docs.php
           php ci/check_validators_docs.php
           php ci/check_validators_translations.php
+      # it is enough to upload the coverage once!
+      - name: upload coverage
+        if: matrix.php == '7.1'
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: php vendor/bin/php-coveralls --exclude-no-stmt --coverage_clover=build/logs/clover.xml -v

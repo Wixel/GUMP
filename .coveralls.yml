@@ -1,2 +1,0 @@
-service_name: github-actions-ci
-coverage_clover: build/logs/clover.xml
