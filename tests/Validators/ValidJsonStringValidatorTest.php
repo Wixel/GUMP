@@ -28,6 +28,7 @@ class ValidJsonStringValidatorTest extends BaseTestCase
         return [
             ['{}'],
             ['{"testing": true}'],
+            ['["one", "two"]'],
         ];
     }
 
