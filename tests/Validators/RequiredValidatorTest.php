@@ -46,6 +46,7 @@ class RequiredValidatorTest extends BaseTestCase
         return [
             [''],
             [null],
+            [[]],
         ];
     }
 
