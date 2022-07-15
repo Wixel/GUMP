@@ -37,6 +37,9 @@ jobs:
           php-version: ${{ matrix.php }}
       - name: run unit tests
         run: |
+          # create folder for coverage
+          mkdir -p build/logs
+          
           # use phpunit9 for php8 and phpunit6 for 7.1 to 7.4
           composer update
           
@@ -49,3 +52,9 @@ jobs:
           php ci/check_filters_docs.php
           php ci/check_validators_docs.php
           php ci/check_validators_translations.php
+      # it is enough to upload the coverage once!
+      - name: upload coverage
+        if: matrix.php == '7.1'
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: php vendor/bin/php-coveralls --exclude-no-stmt --coverage_clover=build/logs/clover.xml -v
