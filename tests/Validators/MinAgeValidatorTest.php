@@ -17,8 +17,6 @@ class MinAgeValidatorTest extends BaseTestCase
 {
     public function testSameDayAsBirthdayIsSuccess()
     {
-
-
         $this->helpersMock->shouldReceive('date')
             ->once()
             ->with('Y-m-d', 866419200)
@@ -41,8 +39,6 @@ class MinAgeValidatorTest extends BaseTestCase
 
     public function testOneDayAfterBirthdayIsSuccess()
     {
-
-
         $this->helpersMock->shouldReceive('date')
             ->once()
             ->with('Y-m-d', 866419200)

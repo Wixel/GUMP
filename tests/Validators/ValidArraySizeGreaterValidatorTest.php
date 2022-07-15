@@ -32,6 +32,21 @@ class ValidArraySizeGreaterValidatorTest extends BaseTestCase
 
     public function testWhenInputIsEmptyAndNotRequiredIsSuccess()
     {
-         $this->assertTrue($this->validate(self::RULE, ''));
+         $this->assertTrue($this->validate(self::RULE, []));
+    }
+
+    public function testWhenInputIsEmptyAndRequiredIsError()
+    {
+         $this->assertEquals(
+             $this->validate('required|'.self::RULE, []),
+             [
+                 [
+                     'field' => 'test',
+                     'value' => [],
+                     'rule' => 'required',
+                     'params' => []
+                 ]
+             ]
+         );
     }
 }

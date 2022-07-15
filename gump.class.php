@@ -537,7 +537,7 @@ class GUMP
     {
         $require_type_of_rules = ['required', 'required_file'];
 
-        // v2
+        // v2 format (using arrays for definition of rules)
         if (is_array($rules) && is_array($rules[0])) {
             $found = array_filter($rules, function ($item) use ($require_type_of_rules) {
                 return in_array($item[0], $require_type_of_rules);
@@ -583,10 +583,20 @@ class GUMP
      */
     private function foreach_call_validator(string $rule, string $field, array $input, array $rule_params = [])
     {
-        $values = !is_array($input[$field]) ? [ $input[$field] ] : $input[$field];
+        $is_required_kind_of_rule = $this->field_has_required_rules([$rule]);
+
+        // Fixes #315
+        if ($is_required_kind_of_rule && is_array($input[$field]) && count($input[$field]) === 0) {
+            $result = $this->call_validator($rule, $field, $input, $rule_params, $input[$field]);
+
+            return is_array($result) ? $result : true;
+        }
+
+        $values = is_array($input[$field]) ? $input[$field] : [ $input[$field] ];
 
         foreach ($values as $value) {
             $result = $this->call_validator($rule, $field, $input, $rule_params, $value);
+
             if (is_array($result)) {
                 return $result;
             }
