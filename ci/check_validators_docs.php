@@ -4,11 +4,18 @@ require_once 'ci/boot.php';
 $docs = get_docs_validators(README_FILE);
 $gump = get_gump_validators();
 
+$allValidators = array_merge($docs, $gump);
+
 $errors = [];
 
-foreach ($gump as $key => $value) {
+foreach ($allValidators as $key => $value) {
     if (!isset($docs[$key])) {
         $errors[] = sprintf('"%s" validator exists in GUMP but not in docs!', $key);
+        continue;
+    }
+
+    if (!isset($gump[$key])) {
+        $errors[] = sprintf('"%s" validator exists in docs but not in GUMP!', $key);
         continue;
     }
 

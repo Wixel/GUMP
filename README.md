@@ -164,7 +164,6 @@ $is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
 | **valid_array_size_greater**,1                                                 | Check if an input is an array and if the size is more or equal to a specific value.                                                                                                                       |
 | **valid_array_size_lesser**,1                                                  | Check if an input is an array and if the size is less or equal to a specific value.                                                                                                                       |
 | **valid_array_size_equal**,1                                                   | Check if an input is an array and if the size is equal to a specific value.                                                                                                                               |
-| **valid_twitter**                                                              | Determine if the provided value is a valid Twitter account.                                                                                                                                               |
 </div>
 
 :star: Available Filters
