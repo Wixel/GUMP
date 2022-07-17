@@ -228,9 +228,6 @@ GUMP::set_error_messages([
     'required'    => '{field} is required.',
     'valid_email' => '{field} must be a valid email.'
 ]);
-
-// Strips and encodes unwanted characters
-GUMP::xss_clean(array $data);
 ```
 
 ###  Creating your own validators and filters
