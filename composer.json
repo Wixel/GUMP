@@ -1,6 +1,6 @@
 {
-    "name": "wixel/gump",
-    "description": "A fast, extensible & stand-alone PHP input validation class that allows you to validate any data.",
+    "name": "oranzh/gump",
+    "description": "Only for me, this is from Wixel",
     "keywords": ["validation", "validator", "validate"],
     "authors": [
         {
