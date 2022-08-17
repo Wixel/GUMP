@@ -638,6 +638,10 @@ class GUMP
                 : true;
         }
 
+        if (strpos($method, 'validate_respect_') === 0) {
+            return $this->respecValidation(func_get_args());
+        }
+
         throw new Exception(sprintf("'%s' validator does not exist.", $rule));
     }
 
@@ -1949,5 +1953,55 @@ class GUMP
     protected function validate_valid_array_size_equal($field, array $input, array $params = [], $value = null)
     {
         return !(!is_array($input[$field]) || count($input[$field]) != $params[0]);
+    }
+
+    /**
+     * Validate data using respect/validation
+     *
+     * @param array $arguments
+     *
+     * @return bool
+     *
+     * @throws Exception if error message not setted or exception lanced by respect/validation
+     */
+    public function respecValidation(array $arguments) {
+        list($rule, $field, $input, $rule_params, $value) = $arguments;
+
+        $rule  = str_replace('respect_', '', $rule);
+
+        // Check error messages has set
+        $messages = $this->get_messages();
+
+        if (!isset($messages[$rule])) {
+            throw new \Exception ('Rule "' . $rule . '" does not have an error message');
+        }
+
+        $class = '\Respect\Validation\Validator::' . $rule;
+
+        $class_instance = call_user_func_array($class, $rule_params); // returns instance of validation class
+        $instance = current($class_instance->getRules());
+
+        if (method_exists($instance, '__construct')) {
+            $class_instance = call_user_func_array($class, $rule_params);
+            if (!$class_instance->validate($value)) {
+                return array(
+                    'field' => $field,
+                    'value' => $value,
+                    'rule'  => $rule,
+                    'params' => $rule_params,
+                );
+            }
+        } else {
+            if (!$class()->validate($value)) {
+                return array(
+                    'field' => $field,
+                    'value' => $value,
+                    'rule'  => $rule,
+                    'params' => $rule_params,
+                );
+            }
+        }
+
+        return true;
     }
 }

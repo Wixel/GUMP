@@ -416,4 +416,35 @@ class ValidateTest extends BaseTestCase
 
         $this->assertTrue($result);
     }
+
+    public function testRulesRespectValidationCpfIsValid()
+    {
+        GUMP::set_error_message('cpf', 'cpf is invalid!');
+
+        $result = $this->gump->validate([
+            'cpf' => '133.394.590-61'
+        ], [
+            'cpf' => ['required', 'respect_cpf'],
+        ]);
+
+        $this->assertTrue($result);
+    }
+
+    public function testRulesRespectValidationCpfIsInValid()
+    {
+        GUMP::set_error_message('cpf', 'cpf is invalid!');
+
+        $result = $this->gump->validate([
+            'cpf' => '133.394.590-62'
+        ], [
+            'cpf' => ['required', 'respect_cpf'],
+        ]);
+
+        $this->assertEquals([[
+            'field' => 'cpf',
+            'value' => '133.394.590-62',
+            'rule' => 'cpf',
+            'params' => []
+        ]], $result);
+    }
 }
