@@ -2,7 +2,7 @@
 
 GUMP is a standalone PHP data validation and filtering class that makes validating any data easy and painless without the reliance on a framework. GUMP is open-source since 2013.
 
-Supports wide range of PHP versions (**php7.1** to **php8.1**) and **ZERO dependencies**!
+Supports wide range of PHP versions (**php7.1** to **php8.1**)!
 
 [![Total Downloads](https://poser.pugx.org/wixel/gump/downloads)](https://packagist.org/packages/wixel/gump)
 [![Latest Stable Version](https://poser.pugx.org/wixel/gump/v/stable)](https://packagist.org/packages/wixel/gump)
@@ -282,6 +282,62 @@ class MyClass extends GUMP
 
 $validator = new MyClass();
 $validated = $validator->validate($_POST, $rules);
+```
+
+Respect/Validation Integration
+--------------------
+
+This project is integrated with Respect/Validation, to validate using it, prefix the desired validation with `respect_`, for example, to validate a cpf, it would be: `respect_cpf`, where cpf is a rule available in Respect/Validation.
+
+For each validation to be used from Respect/Validation, it is necessary to set the error message, still using the cpf example, it would look like below:
+
+```
+GUMP::set_error_message('cpf', 'cpf in invalid!');
+```
+
+To view all rules disponible in Respect/Validation, access https://respect-validation.readthedocs.io/en/latest/list-of-rules
+
+### Some examples to use Respect/Validation to validating file fields
+
+
+```php
+require_once('vendor/autoload.php');
+
+GUMP::set_error_message('cpf', 'cpf in invalid!');
+
+$is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
+    'username'       => 'required|alpha_numeric',
+    'cpf'           => 'required|respect_cpf', // Validates a Brazillian CPF number using the Respect/Validation
+    'password'       => 'required|between_len,4;100',
+    'avatar'         => 'required_file|extension,png;jpg',
+    'tags'           => 'required|alpha_numeric', // ['value1', 'value3']
+    'person.name'    => 'required',               // ['person' => ['name' => 'value']]
+    'persons.*.age'  => 'required'                // ['persons' => [
+                                                  //      ['name' => 'value1', 'age' => 20],
+                                                  //      ['name' => 'value2']
+                                                  // ]]
+]);
+
+// 1st array is rules definition, 2nd is field-rule specific error messages (optional)
+$is_valid = GUMP::is_valid(array_merge($_POST, $_FILES), [
+    'username' => ['required', 'alpha_numeric'],
+    'cpf' => ['required', 'respect_cpf'], // Validates a Brazillian CPF number using the Respect/Validation
+    'password' => ['required', 'between_len' => [6, 100]],
+    'avatar'   => ['required_file', 'extension' => ['png', 'jpg']]
+], [
+    'username' => ['required' => 'Fill the Username field please.'],
+    'cpf' => ['cpf' => 'Required one cpf number valid'],
+    'password' => ['between_len' => '{field} must be between {param[0]} and {param[1]} characters.'],
+    'avatar'   => ['extension' => 'Valid extensions for avatar are: {param}'] // "png, jpg"
+]);
+
+if ($is_valid === true) {
+    // continue
+} else {
+    var_dump($is_valid); // array of error messages
+}
+
+// view all validators in https://respect-validation.readthedocs.io/en/latest/list-of-rules
 ```
 
 Global configuration

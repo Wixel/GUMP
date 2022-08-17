@@ -31,7 +31,8 @@
         "ext-json": "*",
         "ext-intl": "*",
         "ext-bcmath": "*",
-        "ext-iconv": "*"
+        "ext-iconv": "*",
+        "respect/validation": "~1.1"
     },
     "autoload-dev": {
         "psr-4": { "Tests\\": "tests/" }
