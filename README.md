@@ -196,6 +196,11 @@ Filter rules can also be any PHP native function (e.g.: trim).
 
 ```php
 /**
+ * Setting up the language, see available languages in "lang" directory
+ */
+$gump = new GUMP('en');
+
+/**
  * This is the most flexible validation "executer" because of it's return errors format.
  *
  * Returns bool true when no errors.
