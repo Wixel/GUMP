@@ -86,6 +86,8 @@ class GUMP
      */
     public static $field_chars_to_spaces = ['_', '-'];
 
+    public static $require_type_of_rules = ['required', 'required_file'];
+
     // ** ------------------------- Validation Data ------------------------------- ** //
 
     public static $basic_tags = '<br><p><a><strong><b><i><em><img><blockquote><code><dd><dl><hr><h1><h2><h3><h4><h5><h6><label><ul><li><span><sub><sup>';
@@ -535,17 +537,15 @@ class GUMP
      */
     private function field_has_required_rules(array $rules)
     {
-        $require_type_of_rules = ['required', 'required_file'];
-
         // v2 format (using arrays for definition of rules)
         if (is_array($rules) && is_array($rules[0])) {
-            $found = array_filter($rules, function ($item) use ($require_type_of_rules) {
-                return in_array($item[0], $require_type_of_rules);
+            $found = array_filter($rules, function ($item) {
+                return in_array($item[0], static::$require_type_of_rules);
             });
             return count($found) > 0;
         }
 
-        $found = array_values(array_intersect($require_type_of_rules, $rules));
+        $found = array_values(array_intersect(static::$require_type_of_rules, $rules));
         return count($found) > 0;
     }
 
