@@ -544,7 +544,10 @@ class GUMP
             });
             return count($found) > 0;
         }
-
+        $rules = array_map(function($rule) {
+            [$rule] = explode(static::$rules_parameters_delimiter, $rule);
+            return $rule;
+        }, $rules);
         $found = array_values(array_intersect(static::$require_type_of_rules, $rules));
         return count($found) > 0;
     }
