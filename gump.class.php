@@ -1950,4 +1950,15 @@ class GUMP
     {
         return !(!is_array($input[$field]) || count($input[$field]) != $params[0]);
     }
+
+    /**
+     * Checks if a validator method exists for a given rule.
+     *
+     * @param string $rule
+     * @return bool
+     */
+    public static function has_validator(string $rule): bool
+    {
+        return method_exists(__CLASS__, self::validator_to_method($rule)) || isset(self::$validation_methods[$rule]);
+    }
 }
