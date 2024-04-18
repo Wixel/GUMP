@@ -1961,4 +1961,16 @@ class GUMP
     {
         return method_exists(__CLASS__, self::validator_to_method($rule)) || isset(self::$validation_methods[$rule]);
     }
+
+    /**
+     * Checks if a filter method exists for a given filter.
+     * @param string $filter
+     * @return bool
+     */
+    public static function has_filter(string $filter): bool
+    {
+        return method_exists(__CLASS__, self::filter_to_method($filter))
+            || isset(self::$filter_methods[$filter])
+            || function_exists($filter);
+    }
 }
