@@ -6,6 +6,7 @@ return array(
     'max_len'                  => 'Das Feld "{field}" darf maximal {param} Zeichen enthalten.',
     'min_len'                  => 'Das Feld "{field}" muss mindestens {param} Zeichen enthalten.',
     'exact_len'                => 'Das Feld "{field}" muss genau {param} Zeichen enthalten.',
+    'between_len'              => 'Das Feld "{field}" muss zwischen {param[0]} und {param[1]} Zeichen enthalten.',
     'alpha'                    => 'Das Feld "{field}" darf nur Buchstaben enthalten.',
     'alpha_numeric'            => 'Das Feld "{field}" darf nur Buchstaben und Ziffern enthalten.',
     'alpha_numeric_space'      => 'Das Feld "{field}" darf nur Buchstaben, Ziffern und Leerzeichen enthalten.',
