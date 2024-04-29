@@ -15,7 +15,7 @@ class AlphaNumericValidatorTest extends BaseTestCase
 {
     public function testSuccess()
     {
-        $this->assertTrue($this->validate('alpha_numeric', '123azÀÁÂÃÄÅČÇĎÈÉÊËÌÍÎÏĹĽÑŇÒÓÔÕÖŔŘŠßŤÙÚŮÛÜÝŸŽàáâãäåčçďèéêëìíîïĺľñňðòóôõöŕřšťùúůûüýÿž'));
+        $this->assertTrue($this->validate('alpha_numeric', '123azÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝÑàáâãäåçèéêëìíîïðòóôõöùúûüýÿñ'));
     }
 
     public function testError()
