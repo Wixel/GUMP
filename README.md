@@ -268,7 +268,7 @@ GUMP::add_filter("upper", function($value, array $params = []) {
     return strtoupper($value);
 });
 
-// You might want to check whether a filter first already
+// You might want to check whether a filter exists first
 GUMP::has_filter($rule);
 ```
 
