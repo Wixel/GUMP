@@ -13,3 +13,4 @@ vendor
 coverage
 build
 .phpunit.result.cache
+user.env
