@@ -255,6 +255,9 @@ GUMP::add_validator("equals_string", function($field, array $input, array $param
     return $value === $params;
 }, 'Field {field} does not equal to {param}.');
 
+// You might want to check whether a validator exists first
+GUMP::has_validator($rule);
+
 /**
  * @param string $value Value
  * @param array  $param Filter parameters (optional)
@@ -264,6 +267,9 @@ GUMP::add_validator("equals_string", function($field, array $input, array $param
 GUMP::add_filter("upper", function($value, array $params = []) {
     return strtoupper($value);
 });
+
+// You might want to check whether a filter first already
+GUMP::has_filter($rule);
 ```
 
 Alternately, you can simply create your own class that extends GUMP. You only have to have in mind:

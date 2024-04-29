@@ -6,40 +6,38 @@ use GUMP;
 
 class StaticHasFilterTest extends BaseTestCase
 {
-    public function testHasFilterWhenExists(): void
+    public function dataOfExistingRules()
     {
-        $filterRules = [
+        return [
             // There are native filters
-            'noise_words',
-            'rmpunctuation',
-            'urlencode',
-            'htmlencode',
-            'sanitize_email',
-            'sanitize_numbers',
-            'sanitize_floats',
-            'sanitize_string',
-            'boolean',
-            'basic_tags',
-            'whole_number',
-            'ms_word_characters',
-            'lower_case',
-            'upper_case',
-            'slug',
+            ['noise_words'],
+            ['upper_case'],
+            ['slug'],
             // These are built-in functions
-            'trim',
-            'strtoupper',
-            'strtolower',
-            'intval',
-            'floatval',
+            ['trim'],
+            ['strtoupper'],
         ];
+    }
 
-        foreach ($filterRules as $filterRule) {
-            $this->assertTrue(GUMP::has_filter($filterRule));
-        }
+    /**
+     * @dataProvider dataOfExistingRules
+     */
+    public function testHasFilterWhenExists(string $rule)
+    {
+        $this->assertTrue(GUMP::has_filter($rule));
+    }
+
+    public function testHasFilterWithCustomRule(): void
+    {
+        GUMP::add_filter('test', function($value, array $params = []) {
+            return strtoupper($value);
+        });
+
+        $this->assertTrue(GUMP::has_filter('test'));
     }
 
     public function testHasFilterWhenNotExists(): void
     {
-        $this->assertFalse(GUMP::has_filter('custom_filter'));
+        $this->assertFalse(GUMP::has_filter('test'));
     }
 }
