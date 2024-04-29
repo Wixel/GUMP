@@ -99,7 +99,7 @@ class GUMP
                                      very,was,way,we,well,were,what,where,which,while,who,with,would,you,your,a,
                                      b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,$,1,2,3,4,5,6,7,8,9,0,_";
 
-    private static $alpha_regex = 'a-zÀÁÂÃÄÅČÇĎÈÉÊËÌÍÎÏĹĽÑŇÒÓÔÕÖŔŘŠßŤÙÚŮÛÜÝŸŽàáâãäåčçďèéêëìíîïĺľñňðòóôõöŕřšťùúůûüýÿž';
+    private static $alpha_regex = 'a-zÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝŸÑàáâãäåçèéêëìíîïðòóôõöùúûüýÿñ';
 
     public static $trues = ['1', 1, 'true', true, 'yes', 'on'];
     public static $falses = ['0', 0, 'false', false, 'no', 'off'];
