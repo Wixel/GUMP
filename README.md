@@ -2,7 +2,7 @@
 
 GUMP is a standalone PHP data validation and filtering class that makes validating any data easy and painless without the reliance on a framework. GUMP is open-source since 2013.
 
-Supports wide range of PHP versions (**php7.1** to **php8.1**) and **ZERO dependencies**!
+Supports wide range of PHP versions (**php7.1** to **php8.3**) and **ZERO dependencies**!
 
 [![Total Downloads](https://poser.pugx.org/wixel/gump/downloads)](https://packagist.org/packages/wixel/gump)
 [![Latest Stable Version](https://poser.pugx.org/wixel/gump/v/stable)](https://packagist.org/packages/wixel/gump)
