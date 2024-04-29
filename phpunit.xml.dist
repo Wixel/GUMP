@@ -6,6 +6,7 @@
      convertDeprecationsToExceptions="true"
      bootstrap="tests/bootstrap.php"
      verbose="true"
+     colors="true"
     >
     <testsuites>
         <testsuite name="default">
