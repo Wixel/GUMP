@@ -1812,7 +1812,17 @@ class GUMP
      */
     protected function validate_extension($field, $input, array $params, $value = null)
     {
-        if (is_array($input[$field]) && $input[$field]['error'] === 0) {
+        if (!is_array($input[$field])) {
+            return false;
+        }
+
+        // file is not required (empty upload)
+        if ($input[$field]['error'] === 4 && $input[$field]['size'] === 0 && $input[$field]['name'] === '') {
+            return true;
+        }
+
+        // when successfully uploaded we proceed to verify the extension
+        if ($input[$field]['error'] === 0) {
             $params = array_map(function ($v) {
                 return trim(mb_strtolower($v));
             }, $params);

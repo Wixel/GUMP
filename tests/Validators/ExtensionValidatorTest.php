@@ -15,6 +15,28 @@ class ExtensionValidatorTest extends BaseTestCase
 {
     const RULE = 'extension,png;jpg;gif';
 
+    public function testItSucceedsWhenThereIsNoInputFile()
+    {
+        $result = $this->gump->validate([], [
+            'test' => self::RULE
+        ]);
+
+        $this->assertTrue($result);
+    }
+
+    public function testItSucceedsWhenThereIsNoInputFileSubmittedFromBrowser()
+    {
+        $input = [
+            'name' => '',
+            'full_path' => '',
+            'type' => '',
+            'error' => 4,
+            'size' => 0,
+        ];
+
+        $this->assertTrue($this->validate(self::RULE, $input));
+    }
+
     public function testItSuccessesWhenExtensionMatches()
     {
         $input = [
@@ -53,5 +75,4 @@ class ExtensionValidatorTest extends BaseTestCase
 
         $this->assertNotTrue($this->validate(self::RULE, $input));
     }
-
 }
