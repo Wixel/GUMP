@@ -33,7 +33,6 @@ return array(
     'min_numeric'              => 'Το πεδίο {field} πρέπει να είναι αριθμητική τιμή, ίση ή μεγαλύτερη από {param}',
     'max_numeric'              => 'Το πεδίο {field} πρέπει να είναι αριθμητική τιμή, ίση ή μικρότερη από {param}',
     'min_age'                  => 'Το πεδίο {field} πρέπει να είναι ηλικία μεγαλύτερη ή ίση με {param}',
-    'invalid'                  => 'Το πεδίο {field} δεν είναι έγκυρο',
     'starts'                   => 'Το πεδίο {πεδίο} πρέπει να αρχίζει με {param}',
     'extension'                => 'Το πεδίο {field} μπορεί να έχει μόνο μία από τις ακόλουθες επεκτάσεις: {param}',
     'required_file'            => 'Το πεδίο {field} είναι απαραίτητο',
@@ -45,10 +44,4 @@ return array(
     'valid_array_size_greater' => 'Το πεδίο {field} πρέπει να είναι πίνακας με μέγεθος, ίσο ή μεγαλύτερο από {param}',
     'valid_array_size_lesser'  => 'Το πεδίο {field} πρέπει να είναι πίνακας με μέγεθος, ίσο ή μικρότερο από {param}',
     'valid_array_size_equal'   => 'Το πεδίο {field} πρέπει να είναι πίνακας με μέγεθος {param}',
-    'valid_persian_name'       => 'Το {field} πρέπει να είναι ένα έγκυρο Περσικό/Dari ή Αραβικό όνομα',
-    'valid_eng_per_pas_name'   => 'Το {field} θα πρέπει να είναι ένα έγκυρο Αγγλικό, Περσικό/Dari/Pashtu ή Αραβικό όνομα',
-    'valid_persian_digit'      => 'Το {field} θα πρέπει να είναι ένα έγκυρο ψηφίο σε Περσική/Dari ή Αραβική μορφή',
-    'valid_persian_text'       => 'Το {field} πρέπει να είναι έγκυρο κείμενο σε Περσική/Dari ή Αραβική μορφή',
-    'valid_pashtu_text'        => 'Το {field} πρέπει να είναι έγκυρο κείμενο σε μορφή Pashtu',
-    'valid_twitter'            => 'Το {field} δεν είναι έγκυρη λαβή twitter',
 );

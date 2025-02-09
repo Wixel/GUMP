@@ -33,7 +33,6 @@ return array(
     'min_numeric'              => 'The {field} field needs to be a numeric value, equal to, or higher than {param}',
     'max_numeric'              => 'The {field} field needs to be a numeric value, equal to, or lower than {param}',
     'min_age'                  => 'The {field} field needs to have an age greater than or equal to {param}',
-    'invalid'                  => 'The {field} field is invalid',
     'starts'                   => 'The {field} field needs to start with {param}',
     'extension'                => 'The {field} field can only have one of the following extensions: {param}',
     'required_file'            => 'The {field} field is required',
@@ -45,10 +44,4 @@ return array(
     'valid_array_size_greater' => 'The {field} fields needs to be an array with a size, equal to, or higher than {param}',
     'valid_array_size_lesser'  => 'The {field} fields needs to be an array with a size, equal to, or lower than {param}',
     'valid_array_size_equal'   => 'The {field} fields needs to be an array with a size equal to {param}',
-    'valid_persian_name'       => 'The {field} should be a valid Persian/Dari or Arabic name',
-	'valid_eng_per_pas_name'   => 'The {field} should be a valid English, Persian/Dari/Pashtu or Arabic name',
-	'valid_persian_digit'      => 'The {field} should be a valid digit in Persian/Dari or Arabic format',
-	'valid_persian_text'       => 'The {field} should be a valid text in Persian/Dari or Arabic format',
-	'valid_pashtu_text'        => 'The {field} should be a valid text in Pashtu format',
-    'valid_twitter'            => 'The {field} is not a valid twitter handle',
 );

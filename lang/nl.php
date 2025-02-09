@@ -29,7 +29,6 @@ return array(
     'min_numeric'          => 'Het veld {field} moet een numerieke waarde gelijk aan of groter zijn dan {param}',
     'max_numeric'          => 'Het veld {field} moet een numerieke waarde gelijk aan of kleiner zijn dan {param}',
     'min_age'              => 'Het veld {field} moet gelijk zijn aan of groter zijn dan {param}',
-    'invalid'              => 'Het veld {field} is ongeldig',
     'starts'               => 'Het veld {field} moet beginnen met {param}',
     'extension'            => 'Het veld {field} moet de volgende extensies hebben {parameter}',
     'required_file'        => 'Het veld {field} is verplicht',
@@ -38,4 +37,10 @@ return array(
     'phone_number'         => 'Het veld {field} moet een geldig telefoonnummer bevatten',
     'regex'                => 'Het veld {field} moet een geldige waarde bevatten',
     'valid_json_string'    => 'Het veld {field} moet een JSON-indeling hebben',
+    'between_len'          => 'Het veld {field} moet tussen de {param1} en {param2} tekens bevatten',
+    'alpha_numeric_dash'   => 'Het veld {field} mag alleen alfanumerieke tekens en streepjes bevatten',
+    'alpha_numeric_space'  => 'Het veld {field} mag alleen alfanumerieke tekens, spaties en cijfers bevatten',
+    'valid_array_size_greater' => 'Het veld {field} moet een array bevatten met meer dan {param} elementen',
+    'valid_array_size_lesser'  => 'Het veld {field} moet een array bevatten met minder dan {param} elementen',
+    'valid_array_size_equal'   => 'Het veld {field} moet een array bevatten met precies {param} elementen',
 );

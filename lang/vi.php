@@ -33,7 +33,6 @@ return array(
     'min_numeric'      => '{field} cần phải là một giá trị số, bằng hoặc cao hơn {param}',
     'max_numeric'      => '{field} cần phải là một giá trị số, bằng hoặc thấp hơn {param}',
     'min_age'      => '{field} cần có tuổi lớn hơn hoặc bằng {param}',
-    'invalid'      => '{field} không hợp lệ',
     'starts'       => '{field} cần bắt đầu bằng {param}',
     'extension'        => '{field} chỉ có thể có một trong các mở rộng sau: {param}',
     'required_file'        => '{field} là bắt buộc',
@@ -45,10 +44,4 @@ return array(
     'valid_array_size_greater'     => 'Các {field} cần phải là một mảng có kích thước, bằng hoặc cao hơn {param}',
     'valid_array_size_lesser'      => 'Các {field} cần phải là một mảng có kích thước, bằng hoặc thấp hơn {param}',
     'valid_array_size_equal'       => 'Các {field} cần phải là một mảng có kích thước bằng {param}',
-    'valid_persian_name'       => '{field} phải là tên tiếng Ba Tư / Dari hoặc tiếng Ả Rập hợp lệ',
-    'valid_eng_per_pas_name'       => '{field} phải là tên tiếng Anh, tiếng Ba Tư / Dari / Pashtu hoặc tiếng Ả Rập hợp lệ',
-    'valid_persian_digit'      => '{field} phải là một chữ số hợp lệ ở định dạng Ba Tư / Dari hoặc Ả Rập',
-    'valid_persian_text'       => '{field} phải là một văn bản hợp lệ ở định dạng Ba Tư / Dari hoặc Ả Rập',
-    'valid_pashtu_text'        => '{field} phải là một văn bản hợp lệ ở định dạng Pashtu',
-    'valid_twitter'        => '{field} không phải là một twitter hợp lệ',
 );

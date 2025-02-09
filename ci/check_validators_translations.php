@@ -8,32 +8,41 @@ $languages = array_filter(scandir('lang'), function ($file) {
 });
 
 $totalMissingTranslations = 0;
+$totalDeprecatedTranslations = 0;
 
 foreach ($languages as $language) {
-    printf('Checking validators for language %s...'.PHP_EOL.PHP_EOL, $language);
 
     $translations = array_map(function($item) {
         return str_replace('validate_', '', $item);
+//    }, array_keys(require 'lang/en.php'));
     }, array_keys(require 'lang/'.$language));
 
     $missingTranslations = array_diff($validators, $translations);
+    $deprecatedTranslations = array_diff($translations, $validators);
 
     $totalMissingTranslations += count($missingTranslations);
+    $totalDeprecatedTranslations += count($deprecatedTranslations);
 
-    if (count($missingTranslations) > 0) {
+    if (count($missingTranslations) > 0 || count($deprecatedTranslations) > 0) {
+        printf('Detected some issues in %s...'.PHP_EOL.PHP_EOL, $language);
+
         foreach ($missingTranslations as $missingTranslation) {
-            print(sprintf('⮕ %s error message is missing!', $missingTranslation).PHP_EOL);
+            print(sprintf('⮕ "%s" error message is missing!', $missingTranslation).PHP_EOL);
         }
 
-        print(PHP_EOL.'Please add missing translations to lang/en.php file.'.PHP_EOL);
-    } else {
-        print('Translation checks successfully passed!'.PHP_EOL);
-    }
+        foreach ($deprecatedTranslations as $deprecatedTranslation) {
+            print(sprintf('⮕ "%s" error message is deprecated!', $deprecatedTranslation).PHP_EOL);
+        }
 
-    echo '======================================================'.PHP_EOL.PHP_EOL;
+        printf(PHP_EOL.'Please add the missing or remove the outdated translations in lang/%s file.'.PHP_EOL, $language);
+
+        echo '======================================================'.PHP_EOL.PHP_EOL;
+    }
 }
 
-if ($totalMissingTranslations > 0) {
-    printf('%d translations missing'.PHP_EOL, $totalMissingTranslations);
+if ($totalMissingTranslations > 0 || $totalDeprecatedTranslations > 0) {
+    printf('%d translations missing and %d deprecated'.PHP_EOL, $totalMissingTranslations, $totalDeprecatedTranslations);
     exit(1);
 }
+
+print('Translation checks successfully passed!'.PHP_EOL);

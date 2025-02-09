@@ -33,7 +33,6 @@ return array(
     'min_numeric'              => '字段 {field} 必须是一个数字, 且大于等于 {param}',
     'max_numeric'              => '字段 {field} 必须是一个数字, 且小于等于 {param}',
     'min_age'                  => '字段 {field} 需要是个大于等于 {param} 的年龄',
-    'invalid'                  => '字段 {field} 无效',
     'starts'                   => '字段 {field} 需要以 {param} 开始',
     'extension'                => '字段 {field} 只支持以下文件格式: {param}，注：不检查Mime-Type',
     'required_file'            => '字段 {field} 文件上传不成功',
@@ -45,10 +44,4 @@ return array(
     'valid_array_size_greater' => '字段 {field} 必须是一个数组，且至少有 {param} 个元素',
     'valid_array_size_lesser'  => '字段 {field} 必须是一个数组，且最多有 {param} 个元素',
     'valid_array_size_equal'   => '字段 {field} 必须是一个数组，且有 {param} 个元素',
-    'valid_persian_name'       => '字段 {field} 应该是一个有效的波斯语/达里语或阿拉伯语名称',
-    'valid_eng_per_pas_name'   => '字段 {field} 应该是一个有效的英文、波斯语/达里语/帕什图语或阿拉伯语名称',
-    'valid_persian_digit'      => '字段 {field} 应该是波斯语/达里语或阿拉伯语格式的有效数字',
-    'valid_persian_text'       => '字段 {field} 应该是一个有效的波斯语/达里语或阿拉伯语格式的文本',
-    'valid_pashtu_text'        => '字段 {field} 应该是普什图语格式的有效文字',
-    'valid_twitter'            => '字段 {field} 不是一个有效的Twitter账号',
 );
