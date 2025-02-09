@@ -13,6 +13,35 @@ on:
       - 'master'
 
 jobs:
+  docs_healthcheck:
+    name: Docs of validators and filters is up to date
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: Setup PHP Action
+        uses: shivammathur/setup-php@v2
+      - name: composer
+        run: composer install
+      - name: docs healthcheck
+        run: |
+          php ci/check_filters_docs.php
+          php ci/check_validators_docs.php
+
+  translations:
+    name: Translations are complete
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: Setup PHP Action
+        uses: shivammathur/setup-php@v2
+      - name: composer
+        run: composer install
+      - name: translations
+        run: |
+          php ci/check_validators_translations.php
+
   test_unit:
     name: Unit Tests
     runs-on: ubuntu-latest
@@ -47,11 +76,6 @@ jobs:
           composer install
           
           composer run-script test
-      - name: docs healthcheck
-        run: |
-          php ci/check_filters_docs.php
-          php ci/check_validators_docs.php
-          php ci/check_validators_translations.php
       # it is enough to upload the coverage once
       - name: upload coverage
         if: matrix.php == '7.1'
