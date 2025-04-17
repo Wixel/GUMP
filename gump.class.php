@@ -1812,6 +1812,10 @@ class GUMP
      */
     protected function validate_extension($field, $input, array $params, $value = null)
     {
+        if (isset($input[$field]['error']) && gettype($input[$field]['error']) == 'string') {
+            $input[$field]['error'] = (int) $input[$field]['error'];
+        }
+        
         if (!is_array($input[$field])) {
             return false;
         }
