@@ -339,6 +339,8 @@ class GUMP
         }
 
         $this->filter_rules = $rules;
+
+        return $this->filter_rules;
     }
 
     /**
