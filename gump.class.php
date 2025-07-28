@@ -311,6 +311,8 @@ class GUMP
         }
 
         $this->validation_rules = $rules;
+
+        return $this->validation_rules;
     }
 
     /**
