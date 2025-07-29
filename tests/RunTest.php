@@ -12,6 +12,42 @@ use Exception;
  */
 class RunTest extends BaseTestCase
 {
+    public function testFilterRulesReturnsEmptyArrayByDefault()
+    {
+        $filterRules = $this->gump->filter_rules();
+
+        $this->assertEquals([], $filterRules);
+    }
+
+    public function testValidationRulesReturnsEmptyArrayByDefault()
+    {
+        $filterRules = $this->gump->validation_rules();
+
+        $this->assertEquals([], $filterRules);
+    }
+
+    public function testFilterRulesReturnsItsValuesWhenTheyAreSet()
+    {
+        $rules = array(
+            'test' => 'trim'
+        );
+
+        $actualRules = $this->gump->filter_rules($rules);
+
+        $this->assertEquals($rules, $actualRules);
+    }
+
+    public function testValidationRulesReturnsItsValuesWhenTheyAreSet()
+    {
+        $rules = array(
+            'test'    => 'numeric'
+        );
+
+        $actulRules = $this->gump->validation_rules($rules);
+
+        $this->assertEquals($rules, $actulRules);
+    }
+
     public function testOnFailureReturnsFalse()
     {
         $this->gump->validation_rules(array(
