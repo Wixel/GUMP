@@ -311,6 +311,8 @@ class GUMP
         }
 
         $this->validation_rules = $rules;
+
+        return $this->validation_rules;
     }
 
     /**
@@ -337,6 +339,8 @@ class GUMP
         }
 
         $this->filter_rules = $rules;
+
+        return $this->filter_rules;
     }
 
     /**
@@ -821,7 +825,7 @@ class GUMP
      * @param callable|null $transformer
      * @return string
      */
-    private function process_error_message($field, array $params, string $message, callable $transformer = null)
+    private function process_error_message($field, array $params, string $message, ?callable $transformer = null)
     {
         // if field name is explicitly set, use it
         if (array_key_exists($field, self::$fields)) {
