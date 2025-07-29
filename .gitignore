@@ -14,3 +14,4 @@ coverage
 build
 .phpunit.result.cache
 user.env
+composer.lock
