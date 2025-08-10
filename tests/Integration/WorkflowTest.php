@@ -197,7 +197,7 @@ class WorkflowTest extends BaseTestCase
 
         $this->assertNotFalse($result, 'File upload with metadata should pass validation');
         $this->assertEquals('business', $result['category']);
-        $this->assertIsArray($result['tags']);
+        $this->assertTrue(is_array($result['tags']), 'Tags should be an array');
     }
 
     /**
