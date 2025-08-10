@@ -8,7 +8,9 @@
 
 ## 🚀 Overview
 
-GUMP is a standalone PHP data validation and filtering library that makes validating any data easy and painless without the reliance on a framework. GUMP has been serving the PHP community since **2013** and is trusted by thousands of developers worldwide.
+GUMP is a standalone PHP data validation and filtering library that makes validating any data easy and painless without
+the reliance on a framework. GUMP has been serving the PHP community since **2013** and is trusted by thousands of
+developers worldwide.
 
 ### Key Features
 
@@ -61,11 +63,11 @@ require_once 'path/to/gump.class.php';
 
 - **PHP**: 7.1, 7.2, 7.3, 7.4, 8.0, 8.1, 8.2, 8.3, 8.4+
 - **Extensions**:
-  - `ext-mbstring` - Multibyte string support
-  - `ext-json` - JSON processing
-  - `ext-intl` - Internationalization functions
-  - `ext-bcmath` - Arbitrary precision mathematics
-  - `ext-iconv` - Character encoding conversion
+    - `ext-mbstring` - Multibyte string support
+    - `ext-json` - JSON processing
+    - `ext-intl` - Internationalization functions
+    - `ext-bcmath` - Arbitrary precision mathematics
+    - `ext-iconv` - Character encoding conversion
 
 ## Quick Start
 
@@ -256,51 +258,72 @@ GUMP provides **70+ built-in validators** for comprehensive data validation:
 | **valid_array_size_equal**,1                                                   | Check if an input is an array and if the size is equal to a specific value.                                                                                                                               |
 
 ### 🔐 Security Validators
-| **strong_password**                                                            | Validates password with uppercase, lowercase, number and special character (min 8 chars).                                                                 |
-| **jwt_token**                                                                  | Validates JWT token format (3 base64url parts separated by dots).                                                                                          |
-| **hash**,md5                                                                   | Validates hash format for specified algorithm (md5, sha1, sha256, sha512).                                                                                |
-| **no_sql_injection**                                                           | Detects common SQL injection patterns in input.                                                                                                            |
-| **no_xss**                                                                     | Enhanced XSS detection beyond basic sanitize_string.                                                                                                       |
+
+| Rule | Description |
+|------|-------------|
+| **strong_password** | Validates password with uppercase, lowercase, number and special character (min 8 chars). |
+| **jwt_token** | Validates JWT token format (3 base64url parts separated by dots). |
+| **hash**,md5 | Validates hash format for specified algorithm (md5, sha1, sha256, sha512). |
+| **no_sql_injection** | Detects common SQL injection patterns in input. |
+| **no_xss** | Enhanced XSS detection beyond basic sanitize_string. |
 
 ### 🌐 Modern Web Validators
-| **uuid**                                                                       | Validates UUID format (any version 1-5).                                                                                                                  |
-| **base64**                                                                     | Validates base64 encoded data.                                                                                                                             |
-| **hex_color**                                                                  | Validates hexadecimal color code (#FF0000 or #FFF format).                                                                                                |
-| **rgb_color**                                                                  | Validates RGB color format (rgb(255,0,0)).                                                                                                                |
-| **timezone**                                                                   | Validates timezone identifier (America/New_York, UTC, etc.).                                                                                              |
-| **language_code**                                                              | Validates language code (en, en-US format - ISO 639).                                                                                                     |
-| **country_code**                                                               | Validates country code (US, CA format - ISO 3166).                                                                                                        |
-| **currency_code**                                                              | Validates currency code (USD, EUR format - ISO 4217).                                                                                                     |
+
+| Rule | Description |
+|------|-------------|
+| **uuid** | Validates UUID format (any version 1-5). |
+| **base64** | Validates base64 encoded data. |
+| **hex_color** | Validates hexadecimal color code (#FF0000 or #FFF format). |
+| **rgb_color** | Validates RGB color format (rgb(255,0,0)). |
+| **timezone** | Validates timezone identifier (America/New_York, UTC, etc.). |
+| **language_code** | Validates language code (en, en-US format - ISO 639). |
+| **country_code** | Validates country code (US, CA format - ISO 3166). |
+| **currency_code** | Validates currency code (USD, EUR format - ISO 4217). |
 
 ### 📡 Network Validators
-| **mac_address**                                                                | Validates MAC address format (AA:BB:CC:DD:EE:FF or AA-BB-CC-DD-EE-FF).                                                                                   |
-| **domain_name**                                                                | Validates domain name format (example.com - without protocol).                                                                                            |
-| **port_number**                                                                | Validates port number (1-65535).                                                                                                                          |
-| **social_handle**                                                              | Validates social media handle format (@username or username).                                                                                             |
+
+| Rule | Description |
+|------|-------------|
+| **mac_address** | Validates MAC address format (AA:BB:CC:DD:EE:FF or AA-BB-CC-DD-EE-FF). |
+| **domain_name** | Validates domain name format (example.com - without protocol). |
+| **port_number** | Validates port number (1-65535). |
+| **social_handle** | Validates social media handle format (@username or username). |
 
 ### 🗺️ Geographic Validators
-| **latitude**                                                                   | Validates latitude coordinate (-90 to 90).                                                                                                                |
-| **longitude**                                                                  | Validates longitude coordinate (-180 to 180).                                                                                                             |
-| **postal_code**,US                                                             | Validates postal code for specified country (US, CA, UK, DE, FR, AU, JP).                                                                                |
-| **coordinates**                                                                | Validates coordinates in lat,lng format (40.7128,-74.0060).                                                                                              |
+
+| Rule | Description |
+|------|-------------|
+| **latitude** | Validates latitude coordinate (-90 to 90). |
+| **longitude** | Validates longitude coordinate (-180 to 180). |
+| **postal_code**,US | Validates postal code for specified country (US, CA, UK, DE, FR, AU, JP). |
+| **coordinates** | Validates coordinates in lat,lng format (40.7128,-74.0060). |
 
 ### 📅 Enhanced Date/Time Validators
-| **future_date**                                                                | Validates that date is in the future.                                                                                                                     |
-| **past_date**                                                                  | Validates that date is in the past.                                                                                                                       |
-| **business_day**                                                               | Validates that date falls on a business day (Monday-Friday).                                                                                              |
-| **valid_time**                                                                 | Validates time format (HH:MM:SS or HH:MM).                                                                                                                |
-| **date_range**,2024-01-01;2024-12-31                                          | Validates date falls within specified range.                                                                                                              |
+
+| Rule | Description |
+|------|-------------|
+| **future_date** | Validates that date is in the future. |
+| **past_date** | Validates that date is in the past. |
+| **business_day** | Validates that date falls on a business day (Monday-Friday). |
+| **valid_time** | Validates time format (HH:MM:SS or HH:MM). |
+| **date_range**,2024-01-01;2024-12-31 | Validates date falls within specified range. |
 
 ### 🔢 Mathematical Validators
-| **even**                                                                       | Validates that number is even.                                                                                                                            |
-| **odd**                                                                        | Validates that number is odd.                                                                                                                             |
-| **prime**                                                                      | Validates that number is prime.                                                                                                                           |
+
+| Rule | Description |
+|------|-------------|
+| **even** | Validates that number is even. |
+| **odd** | Validates that number is odd. |
+| **prime** | Validates that number is prime. |
 
 ### 📝 Content & Format Validators
-| **word_count**,min,10,max,500                                                  | Validates word count within specified range.                                                                                                              |
-| **camel_case**                                                                 | Validates camelCase format (variableName).                                                                                                                |
-| **snake_case**                                                                 | Validates snake_case format (variable_name).                                                                                                              |
-| **url_slug**                                                                   | Validates URL slug format (my-url-slug).                                                                                                                  |
+
+| Rule | Description |
+|------|-------------|
+| **word_count**,min,10,max,500 | Validates word count within specified range. |
+| **camel_case** | Validates camelCase format (variableName). |
+| **snake_case** | Validates snake_case format (variable_name). |
+| **url_slug** | Validates URL slug format (my-url-slug). |
 
 </div>
 
@@ -309,6 +332,7 @@ GUMP provides **70+ built-in validators** for comprehensive data validation:
 ### Essential Validators
 
 **`required`** - The most fundamental validator
+
 ```php
 // Basic usage
 'email' => 'required'
@@ -319,6 +343,7 @@ GUMP provides **70+ built-in validators** for comprehensive data validation:
 ```
 
 **`between_len,min;max`** - String length range validation
+
 ```php
 // Username must be between 3-20 characters
 'username' => 'between_len,3;20'
@@ -333,6 +358,7 @@ GUMP provides **70+ built-in validators** for comprehensive data validation:
 ### Real-World Usage Examples
 
 **User Registration Form**
+
 ```php
 $rules = [
     'first_name' => 'required|alpha_space|min_len,2|max_len,50',
@@ -349,6 +375,7 @@ $rules = [
 ```
 
 **E-commerce Product Form**
+
 ```php
 $rules = [
     'name'        => 'required|between_len,3;100',
@@ -363,6 +390,7 @@ $rules = [
 ```
 
 **API Payload Validation**
+
 ```php
 $rules = [
     'user_id'     => 'required|uuid',
@@ -376,6 +404,7 @@ $rules = [
 ```
 
 **Security & Authentication Form**
+
 ```php
 $rules = [
     'password'    => 'required|strong_password',
@@ -388,6 +417,7 @@ $rules = [
 ```
 
 **Geographic & Network Validation**
+
 ```php
 $rules = [
     'latitude'    => 'required|latitude',
@@ -402,6 +432,7 @@ $rules = [
 ```
 
 **Content & Format Validation**
+
 ```php
 $rules = [
     'variable_name' => 'required|snake_case',
@@ -417,6 +448,7 @@ $rules = [
 ### Advanced Validation Patterns
 
 **Conditional Validation**
+
 ```php
 // Only validate credit card if payment method is 'credit_card'
 if ($input['payment_method'] === 'credit_card') {
@@ -426,6 +458,7 @@ if ($input['payment_method'] === 'credit_card') {
 ```
 
 **File Upload with Metadata**
+
 ```php
 $rules = [
     'title'       => 'required|between_len,3;100',
@@ -437,6 +470,7 @@ $rules = [
 ```
 
 **Nested Array Validation**
+
 ```php
 $rules = [
     'company.name'           => 'required|between_len,2;100',
@@ -448,8 +482,8 @@ $rules = [
 ];
 ```
 
-> **💡 Pro Tips**: 
-> 
+> **💡 Pro Tips**:
+>
 > **Parameter Conflicts**: When using pipe (`|`) or semicolon (`;`) in validator parameters, use array format:
 > ```php
 > // ❌ Wrong - will break parsing
@@ -480,24 +514,25 @@ GUMP includes 15+ filters for data sanitization and transformation:
 
 <div id="available_filters">
 
-| Filter                 | Description                                                                                                           |
-|------------------------|-----------------------------------------------------------------------------------------------------------------------|
-| **noise_words**        | Replace noise words in a string (http://tax.cchgroup.com/help/Avoiding_noise_words_in_your_search.htm).               |
-| **rmpunctuation**      | Remove all known punctuation from a string.                                                                           |
-| **urlencode**          | Sanitize the string by urlencoding characters.                                                                        |
-| **htmlencode**         | Sanitize the string by converting HTML characters to their HTML entities.                                             |
-| **sanitize_email**     | Sanitize the string by removing illegal characters from emails.                                                       |
-| **sanitize_numbers**   | Sanitize the string by removing illegal characters from numbers.                                                      |
-| **sanitize_floats**    | Sanitize the string by removing illegal characters from float numbers.                                                |
-| **sanitize_string**    | Sanitize the string by removing any script tags.                                                                      |
-| **boolean**            | Converts ['1', 1, 'true', true, 'yes', 'on'] to true, anything else is false ('on' is useful for form checkboxes).    |
-| **basic_tags**         | Filter out all HTML tags except the defined basic tags.                                                               |
-| **whole_number**       | Convert the provided numeric value to a whole number.                                                                 |
-| **ms_word_characters** | Convert MS Word special characters to web safe characters. ([“ ”] => ", [‘ ’] => ', [–] => -, […] => ...) |
-| **lower_case**         | Converts to lowercase.                                                                                                |
-| **upper_case**         | Converts to uppercase.                                                                                                |
-| **slug**               | Converts value to url-web-slugs.                                                                                      |
-| **trim**               | Remove spaces from the beginning and end of strings (PHP).                                                            |
+| Filter                 | Description                                                                                                        |
+|------------------------|--------------------------------------------------------------------------------------------------------------------|
+| **noise_words**        | Replace noise words in a string (http://tax.cchgroup.com/help/Avoiding_noise_words_in_your_search.htm).            |
+| **rmpunctuation**      | Remove all known punctuation from a string.                                                                        |
+| **urlencode**          | Sanitize the string by urlencoding characters.                                                                     |
+| **htmlencode**         | Sanitize the string by converting HTML characters to their HTML entities.                                          |
+| **sanitize_email**     | Sanitize the string by removing illegal characters from emails.                                                    |
+| **sanitize_numbers**   | Sanitize the string by removing illegal characters from numbers.                                                   |
+| **sanitize_floats**    | Sanitize the string by removing illegal characters from float numbers.                                             |
+| **sanitize_string**    | Sanitize the string by removing any script tags.                                                                   |
+| **boolean**            | Converts ['1', 1, 'true', true, 'yes', 'on'] to true, anything else is false ('on' is useful for form checkboxes). |
+| **basic_tags**         | Filter out all HTML tags except the defined basic tags.                                                            |
+| **whole_number**       | Convert the provided numeric value to a whole number.                                                              |
+| **ms_word_characters** | Convert MS Word special characters to web safe characters. ([“ ”] => ", [‘ ’] => ', [–] => -, […] => ...)          |
+| **lower_case**         | Converts to lowercase.                                                                                             |
+| **upper_case**         | Converts to uppercase.                                                                                             |
+| **slug**               | Converts value to url-web-slugs.                                                                                   |
+| **trim**               | Remove spaces from the beginning and end of strings (PHP).                                                         |
+
 </div>
 
 ### Filter Chaining Example
@@ -584,7 +619,9 @@ GUMP::set_error_messages([
 
 GUMP supports 19 languages out of the box:
 
-**Supported Languages**: German (de), Greek (el), English (en), Esperanto (eo), Spanish (es), Persian (fa), French (fr), Hebrew (he), Hungarian (hu), Indonesian (id), Italian (it), Japanese (ja), Dutch (nl), Portuguese Brazil (pt-br), Russian (ru), Turkish (tr), Ukrainian (uk), Vietnamese (vi), Chinese Simplified (zh-CN)
+**Supported Languages**: German (de), Greek (el), English (en), Esperanto (eo), Spanish (es), Persian (fa), French (fr),
+Hebrew (he), Hungarian (hu), Indonesian (id), Italian (it), Japanese (ja), Dutch (nl), Portuguese Brazil (pt-br),
+Russian (ru), Turkish (tr), Ukrainian (uk), Vietnamese (vi), Chinese Simplified (zh-CN)
 
 ```php
 // Set language during instantiation
@@ -787,7 +824,7 @@ We welcome contributions! Please read our [Contributing Guidelines](CONTRIBUTING
 ## Statistics
 
 - ⭐ **GitHub Stars**: 1000+
-- 📦 **Downloads**: 1M+ via Packagist  
+- 📦 **Downloads**: 1M+ via Packagist
 - 🏭 **Production Use**: Thousands of projects
 - 🌍 **Languages**: 19 supported languages
 - ⚡ **Performance**: <1ms validation time for typical forms
@@ -796,26 +833,31 @@ We welcome contributions! Please read our [Contributing Guidelines](CONTRIBUTING
 ## Why Choose GUMP?
 
 ### ✅ Battle-Tested
+
 - **10+ years** in production
 - **Trusted** by thousands of developers
 - **Proven** in high-traffic applications
 
 ### ⚡ Performance First
+
 - **Zero dependencies** - no bloat
 - **Optimized algorithms** - fast validation
 - **Memory efficient** - low resource usage
 
 ### 🔒 Security Focused
+
 - **XSS protection** built-in
 - **Regular security audits**
 - **Secure defaults** everywhere
 
 ### 🌍 Global Ready
+
 - **19 languages** supported
 - **UTF-8 compatible**
 - **Timezone aware** date validation
 
 ### 🛠️ Developer Friendly
+
 - **Clean, simple API**
 - **Excellent documentation**
 - **Extensive examples**
