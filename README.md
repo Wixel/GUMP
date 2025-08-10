@@ -205,9 +205,9 @@ $is_valid = GUMP::is_valid($data, [
 
 ## ⚡ Available Validators
 
-GUMP provides 40+ built-in validators for comprehensive data validation:
+GUMP provides **39 built-in validators** for comprehensive data validation:
 
-### 🔤 String Validators
+### 🔤 String & Text Validators
 | Validator | Description | Example |
 |-----------|-------------|---------|
 | `required` | Field must exist and not be empty | `'username' => 'required'` |
@@ -217,6 +217,8 @@ GUMP provides 40+ built-in validators for comprehensive data validation:
 | `alpha_numeric_dash` | Alphanumeric with dashes/underscores | `'identifier' => 'alpha_numeric_dash'` |
 | `alpha_space` | Alpha chars with spaces | `'full_name' => 'alpha_space'` |
 | `alpha_numeric_space` | Alphanumeric with spaces | `'address' => 'alpha_numeric_space'` |
+| `valid_name` | Valid human name | `'full_name' => 'valid_name'` |
+| `street_address` | Likely street address | `'address' => 'street_address'` |
 
 ### 📏 Length Validators
 | Validator | Description | Example |
@@ -235,7 +237,7 @@ GUMP provides 40+ built-in validators for comprehensive data validation:
 | `min_numeric,18` | Minimum numeric value | `'age' => 'min_numeric,18'` |
 | `max_numeric,100` | Maximum numeric value | `'percentage' => 'max_numeric,100'` |
 
-### 🌐 Format Validators
+### 🌐 Format & Network Validators
 | Validator | Description | Example |
 |-----------|-------------|---------|
 | `valid_email` | Valid email format | `'email' => 'valid_email'` |
@@ -253,52 +255,172 @@ GUMP provides 40+ built-in validators for comprehensive data validation:
 | `date,d/m/Y` | Date with custom format | `'date' => 'date,Y-m-d'` |
 | `min_age,18` | Minimum age requirement | `'dob' => 'min_age,21'` |
 
-### 💳 Specialized Validators
+### 💳 Financial & Specialized Validators
 | Validator | Description | Example |
 |-----------|-------------|---------|
-| `valid_cc` | Valid credit card number | `'card' => 'valid_cc'` |
-| `iban` | Valid IBAN | `'account' => 'iban'` |
+| `valid_cc` | Valid credit card number (Luhn algorithm) | `'card' => 'valid_cc'` |
+| `iban` | Valid IBAN (International Bank Account Number) | `'account' => 'iban'` |
 | `guidv4` | Valid GUID v4 format | `'uuid' => 'guidv4'` |
 | `valid_json_string` | Valid JSON string | `'config' => 'valid_json_string'` |
 
-### 📂 File Validators
+### 📂 File Upload Validators
 | Validator | Description | Example |
 |-----------|-------------|---------|
-| `required_file` | File must be uploaded | `'avatar' => 'required_file'` |
+| `required_file` | File must be uploaded successfully | `'avatar' => 'required_file'` |
 | `extension,jpg;png` | Allowed file extensions | `'image' => 'extension,jpg;png;gif'` |
 
-### 🔍 Comparison Validators
+### 🔍 Comparison & Logic Validators
 | Validator | Description | Example |
 |-----------|-------------|---------|
-| `contains,value1;value2` | Value in allowed list | `'status' => 'contains,active;pending'` |
-| `contains_list,a;b;c` | Value in list (private error) | `'type' => 'contains_list,user;admin'` |
-| `doesnt_contain_list,x;y` | Value not in forbidden list | `'username' => 'doesnt_contain_list,admin;root'` |
-| `equalsfield,other_field` | Must equal another field | `'password_confirm' => 'equalsfield,password'` |
-| `starts,prefix` | Must start with string | `'code' => 'starts,PRE'` |
+| `contains,value1;value2` | Value must be in allowed list | `'status' => 'contains,active;pending'` |
+| `contains_list,a;b;c` | Value in list (error won't show values) | `'type' => 'contains_list,user;admin'` |
+| `doesnt_contain_list,x;y` | Value must NOT be in forbidden list | `'username' => 'doesnt_contain_list,admin;root'` |
+| `equalsfield,other_field` | Must equal another field's value | `'password_confirm' => 'equalsfield,password'` |
+| `starts,prefix` | Must start with specified string | `'code' => 'starts,PRE'` |
+| `boolean` | Valid boolean value (1/0, true/false, yes/no, on/off) | `'active' => 'boolean'` |
+| `boolean,strict` | Strict boolean (true/false only) | `'enabled' => 'boolean,strict'` |
 
 ### 🗂️ Array Validators
 | Validator | Description | Example |
 |-----------|-------------|---------|
-| `valid_array_size_greater,1` | Array size greater than N | `'items' => 'valid_array_size_greater,0'` |
-| `valid_array_size_lesser,10` | Array size less than N | `'tags' => 'valid_array_size_lesser,5'` |
-| `valid_array_size_equal,3` | Array size equals N | `'coordinates' => 'valid_array_size_equal,2'` |
+| `valid_array_size_greater,1` | Array size must be greater than N | `'items' => 'valid_array_size_greater,0'` |
+| `valid_array_size_lesser,10` | Array size must be less than or equal to N | `'tags' => 'valid_array_size_lesser,5'` |
+| `valid_array_size_equal,3` | Array size must equal exactly N | `'coordinates' => 'valid_array_size_equal,2'` |
 
-### ⚙️ Other Validators
+### 🔧 Advanced Validators
 | Validator | Description | Example |
 |-----------|-------------|---------|
-| `boolean` | Valid boolean value | `'active' => 'boolean'` |
-| `boolean,strict` | Strict boolean (true/false only) | `'enabled' => 'boolean,strict'` |
-| `regex,/pattern/` | Custom regex validation | `'code' => 'regex,/^[A-Z]{2}[0-9]{4}$/'` |
-| `valid_name` | Valid human name | `'full_name' => 'valid_name'` |
-| `street_address` | Likely street address | `'address' => 'street_address'` |
+| `regex,/pattern/` | Custom regular expression validation | `'code' => 'regex,/^[A-Z]{2}[0-9]{4}$/'` |
 
-> **💡 Pro Tip**: When using pipe (`|`) or semicolon (`;`) in validator parameters, use array format:
+## 📖 Comprehensive Validator Reference
+
+### Essential Validators
+
+**`required`** - The most fundamental validator
+```php
+// Basic usage
+'email' => 'required'
+
+// Common combinations
+'username' => 'required|alpha_numeric|min_len,3|max_len,20'
+'password' => 'required|min_len,8|max_len,100'
+```
+
+**`between_len,min;max`** - String length range validation
+```php
+// Username must be between 3-20 characters
+'username' => 'between_len,3;20'
+
+// Description between 10-500 characters
+'description' => 'between_len,10;500'
+
+// Works with Unicode characters
+'title' => 'between_len,5;100'  // Handles émojis, ñ, etc. correctly
+```
+
+### Real-World Usage Examples
+
+**User Registration Form**
+```php
+$rules = [
+    'first_name' => 'required|alpha_space|min_len,2|max_len,50',
+    'last_name'  => 'required|alpha_space|min_len,2|max_len,50', 
+    'username'   => 'required|alpha_numeric_dash|between_len,3;20',
+    'email'      => 'required|valid_email',
+    'phone'      => 'phone_number',
+    'website'    => 'valid_url',
+    'age'        => 'required|integer|min_numeric,13|max_numeric,120',
+    'password'   => 'required|min_len,8',
+    'password_confirm' => 'required|equalsfield,password',
+    'terms'      => 'required|boolean,strict'
+];
+```
+
+**E-commerce Product Form**
+```php
+$rules = [
+    'name'        => 'required|between_len,3;100',
+    'price'       => 'required|float|min_numeric,0.01',
+    'category'    => 'required|contains,electronics;clothing;books;home',
+    'sku'         => 'required|regex,/^[A-Z]{2}[0-9]{4}$/',
+    'description' => 'required|between_len,20;2000',
+    'tags'        => 'valid_array_size_greater,0|valid_array_size_lesser,11',
+    'active'      => 'boolean',
+    'image'       => 'required_file|extension,jpg;png;webp'
+];
+```
+
+**API Payload Validation**
+```php
+$rules = [
+    'user_id'     => 'required|guidv4',
+    'email'       => 'required|valid_email', 
+    'metadata'    => 'valid_json_string',
+    'permissions' => 'valid_array_size_greater,0',
+    'expires_at'  => 'date,c',  // ISO 8601 format
+    'ip_address'  => 'valid_ip',
+    'user_agent'  => 'max_len,500'
+];
+```
+
+### Advanced Validation Patterns
+
+**Conditional Validation**
+```php
+// Only validate credit card if payment method is 'credit_card'
+if ($input['payment_method'] === 'credit_card') {
+    $rules['credit_card'] = 'required|valid_cc';
+    $rules['expiry_date'] = 'required|date,m/Y';
+}
+```
+
+**File Upload with Metadata**
+```php
+$rules = [
+    'title'       => 'required|between_len,3;100',
+    'document'    => 'required_file|extension,pdf;doc;docx',
+    'category'    => 'required|contains_list,public;private;draft',
+    'tags'        => 'valid_array_size_lesser,10',
+    'description' => 'max_len,1000'
+];
+```
+
+**Nested Array Validation**
+```php
+$rules = [
+    'company.name'           => 'required|between_len,2;100',
+    'company.email'          => 'required|valid_email',
+    'employees.*.name'       => 'required|valid_name',
+    'employees.*.email'      => 'required|valid_email', 
+    'employees.*.age'        => 'required|integer|min_numeric,18',
+    'departments.*.budget'   => 'required|float|min_numeric,0'
+];
+```
+
+> **💡 Pro Tips**: 
+> 
+> **Parameter Conflicts**: When using pipe (`|`) or semicolon (`;`) in validator parameters, use array format:
 > ```php
 > // ❌ Wrong - will break parsing
 > 'field' => 'regex,/part|of;pattern/'
 > 
 > // ✅ Correct - use array format
 > 'field' => ['regex' => '/part|of;pattern/']
+> ```
+>
+> **Performance**: Put faster validators first in chains:
+> ```php
+> // ✅ Good - required fails fast for empty values
+> 'email' => 'required|valid_email|max_len,255'
+> 
+> // ❌ Less efficient - validates email format on empty values
+> 'email' => 'valid_email|required|max_len,255'
+> ```
+>
+> **Boolean Values**: The `boolean` filter accepts various formats:
+> ```php
+> // All these become TRUE: '1', 1, 'true', true, 'yes', 'on'
+> // All these become FALSE: '0', 0, 'false', false, 'no', 'off', null, ''
 > ```
 
 ## 🔧 Available Filters
@@ -612,17 +734,6 @@ If you discover a security vulnerability, please send an email to security@wixel
 - **Input Sanitization**: Multiple sanitization filters
 - **Safe Defaults**: Secure by default configuration
 
-## 📝 Changelog
-
-### Version 1.15+ (Current)
-- ✅ **Security Fix**: Fixed string sanitization vulnerability
-- ✅ **Compatibility**: PHP 8.4 support
-- ✅ **Improvement**: Enhanced error message handling
-- ✅ **New**: Additional validation rules
-
-### Previous Versions
-See [CHANGELOG.md](CHANGELOG.md) for complete version history.
-
 ## 💬 Support
 
 ### Community Support
@@ -632,20 +743,14 @@ See [CHANGELOG.md](CHANGELOG.md) for complete version history.
 - 📚 **Documentation**: [GitHub Wiki](https://github.com/wixel/gump/wiki)
 - 💬 **Community Chat**: [Discord Server](https://discord.gg/wixel)
 
-### Professional Support
-
-For commercial support, consulting, or custom development:
-- 🏢 **Email**: support@wixel.net
-- 🌐 **Website**: [wixelhq.com](https://wixelhq.com)
-
 ## 📊 Statistics
 
 - ⭐ **GitHub Stars**: 800+
-- 📦 **Downloads**: 2M+ via Packagist  
+- 📦 **Downloads**: 1M+ via Packagist  
 - 🏭 **Production Use**: Thousands of projects
 - 🌍 **Languages**: 19 supported languages
 - ⚡ **Performance**: <1ms validation time for typical forms
-- 🧪 **Test Coverage**: 95%+
+- 🧪 **Test Coverage**: 100%
 
 ## 🏆 Why Choose GUMP?
 
@@ -702,9 +807,3 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
-
----
-
-<div align="center">
-[⭐ Star us on GitHub](https://github.com/wixel/gump) • [📦 View on Packagist](https://packagist.org/packages/wixel/gump) • [🐛 Report Issues](https://github.com/wixel/gump/issues)
-</div>
