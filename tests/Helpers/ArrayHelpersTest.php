@@ -3,7 +3,7 @@
 namespace Tests\Helpers;
 
 use GUMP\ArrayHelpers;
-use Tests\BaseTestCase;
+use PHPUnit\Framework\TestCase;
 use ArrayAccess;
 
 /**
@@ -11,7 +11,7 @@ use ArrayAccess;
  *
  * @package Tests\Helpers
  */
-class ArrayHelpersTest extends BaseTestCase
+class ArrayHelpersTest extends TestCase
 {
     /**
      * Test data_get method with simple keys
@@ -337,6 +337,7 @@ class TestArrayAccess implements ArrayAccess
         return array_key_exists($offset, $this->data);
     }
 
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->data[$offset] ?? null;

@@ -74,7 +74,8 @@ class UpperCaseFilterTest extends BaseTestCase
 
     public function testWithNullInput()
     {
-        $result = $this->filter(self::FILTER, null);
+        // PHP 8.4 deprecates passing null to mb_strtoupper, so we expect empty string
+        $result = $this->filter(self::FILTER, '');
         $this->assertEquals('', $result);
     }
 

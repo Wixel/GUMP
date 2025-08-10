@@ -10,7 +10,7 @@
 
 GUMP is a standalone PHP data validation and filtering library that makes validating any data easy and painless without the reliance on a framework. GUMP has been serving the PHP community since **2013** and is trusted by thousands of developers worldwide.
 
-### ✨ Key Features
+### Key Features
 
 - **🔒 Zero Dependencies** - Pure PHP, no external dependencies required
 - **🌍 19 Languages** - Built-in internationalization support
@@ -21,7 +21,7 @@ GUMP is a standalone PHP data validation and filtering library that makes valida
 - **🎯 Framework Agnostic** - Works with any PHP project or framework
 - **📱 Modern PHP** - Supports PHP 7.1 to 8.4+
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Installation](#-installation)
 - [Requirements](#-requirements)
@@ -40,7 +40,7 @@ GUMP is a standalone PHP data validation and filtering library that makes valida
 - [Support](#-support)
 - [License](#-license)
 
-## 📦 Installation
+## Installation
 
 ### Via Composer (Recommended)
 
@@ -57,7 +57,7 @@ composer require wixel/gump
 require_once 'path/to/gump.class.php';
 ```
 
-## 🔧 Requirements
+## Requirements
 
 - **PHP**: 7.1, 7.2, 7.3, 7.4, 8.0, 8.1, 8.2, 8.3, 8.4+
 - **Extensions**:
@@ -67,7 +67,7 @@ require_once 'path/to/gump.class.php';
   - `ext-bcmath` - Arbitrary precision mathematics
   - `ext-iconv` - Character encoding conversion
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Simple Validation
 
@@ -111,7 +111,7 @@ $filtered = GUMP::filter_input([
 // $filtered['bio'] = 'Clean bio text'
 ```
 
-## 📚 Usage Examples
+## Usage Examples
 
 ### Basic Validation with Custom Error Messages
 
@@ -203,7 +203,7 @@ $is_valid = GUMP::is_valid($data, [
 ]);
 ```
 
-## ⚡ Available Validators
+## Available Validators
 
 GUMP provides **39 built-in validators** for comprehensive data validation:
 
@@ -292,7 +292,7 @@ GUMP provides **39 built-in validators** for comprehensive data validation:
 |-----------|-------------|---------|
 | `regex,/pattern/` | Custom regular expression validation | `'code' => 'regex,/^[A-Z]{2}[0-9]{4}$/'` |
 
-## 📖 Comprehensive Validator Reference
+## Comprehensive Validator Reference
 
 ### Essential Validators
 
@@ -423,7 +423,7 @@ $rules = [
 > // All these become FALSE: '0', 0, 'false', false, 'no', 'off', null, ''
 > ```
 
-## 🔧 Available Filters
+## Available Filters
 
 GUMP includes 15+ filters for data sanitization and transformation:
 
@@ -477,7 +477,7 @@ $filtered = GUMP::filter_input([
 // $filtered['active'] = true
 ```
 
-## 🏗️ Advanced Usage
+## Advanced Usage
 
 ### Instance Methods
 
@@ -535,7 +535,7 @@ GUMP::set_error_messages([
 ]);
 ```
 
-## 🌍 Internationalization
+## Internationalization
 
 GUMP supports 19 languages out of the box:
 
@@ -551,7 +551,7 @@ $gump = new GUMP('de'); // German
 $result = $gump->validate(['email' => 'invalid'], ['email' => 'valid_email']);
 ```
 
-## 🛠️ Custom Validators & Filters
+## Custom Validators & Filters
 
 ### Adding Custom Validators
 
@@ -623,7 +623,7 @@ $filtered = $custom_gump->filter(['name' => 'John'], ['name' => 'add_prefix,MR_'
 // Result: 'MR_John'
 ```
 
-## ⚙️ Configuration
+## Configuration
 
 ### Global Delimiter Configuration
 
@@ -651,7 +651,7 @@ GUMP::$field_chars_to_spaces = ['_', '-', '.'];
 // 'first-name' becomes 'First Name' in error messages
 ```
 
-## 🧪 Testing
+## Testing
 
 GUMP includes comprehensive test coverage with PHPUnit:
 
@@ -681,7 +681,7 @@ cd dev/
 ./run_tests_docker.sh
 ```
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! Please read our [Contributing Guidelines](CONTRIBUTING.md) before submitting PRs.
 
@@ -711,11 +711,7 @@ We welcome contributions! Please read our [Contributing Guidelines](CONTRIBUTING
 - 🚀 **Performance** - Optimize validation algorithms
 - 🛡️ **Security** - Security audits and improvements
 
-## 🛡️ Security
-
-### Reporting Security Vulnerabilities
-
-If you discover a security vulnerability, please send an email to security@wixel.net instead of creating a public issue.
+## Security
 
 ### Security Best Practices
 
@@ -734,7 +730,7 @@ If you discover a security vulnerability, please send an email to security@wixel
 - **Input Sanitization**: Multiple sanitization filters
 - **Safe Defaults**: Secure by default configuration
 
-## 💬 Support
+## Support
 
 ### Community Support
 
@@ -743,7 +739,7 @@ If you discover a security vulnerability, please send an email to security@wixel
 - 📚 **Documentation**: [GitHub Wiki](https://github.com/wixel/gump/wiki)
 - 💬 **Community Chat**: [Discord Server](https://discord.gg/wixel)
 
-## 📊 Statistics
+## Statistics
 
 - ⭐ **GitHub Stars**: 800+
 - 📦 **Downloads**: 1M+ via Packagist  
@@ -752,7 +748,7 @@ If you discover a security vulnerability, please send an email to security@wixel
 - ⚡ **Performance**: <1ms validation time for typical forms
 - 🧪 **Test Coverage**: 100%
 
-## 🏆 Why Choose GUMP?
+## Why Choose GUMP?
 
 ### ✅ Battle-Tested
 - **10+ years** in production
@@ -780,7 +776,7 @@ If you discover a security vulnerability, please send an email to security@wixel
 - **Extensive examples**
 - **Framework agnostic**
 
-## 📄 License
+## License
 
 GUMP is open-source software licensed under the [MIT License](LICENSE).
 

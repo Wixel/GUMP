@@ -51,7 +51,16 @@ class BetweenLenValidatorTest extends BaseTestCase
 
     public function testErrorWhenEmpty()
     {
-        $this->assertNotTrue($this->validate('between_len,1;10', ''));
+        // Empty string should fail when field is required AND minimum length is > 0
+        $result = $this->validate('required|between_len,1;10', '');
+        $this->assertNotTrue($result, 'Empty string should fail validation when field is required and minimum length is 1');
+    }
+
+    public function testSuccessWhenEmptyButNotRequired()
+    {
+        // Empty string should pass when field is not required (GUMP skips validation for non-required empty fields)
+        $result = $this->validate('between_len,1;10', '');
+        $this->assertTrue($result, 'Empty string should pass validation when field is not required');
     }
 
     public function testErrorWhenExactlyBelowMinimum()
@@ -126,11 +135,4 @@ class BetweenLenValidatorTest extends BaseTestCase
         $this->assertTrue($this->validate('between_len,3;10', 'مرحبا'));
     }
 
-    /**
-     * Helper method to validate input
-     */
-    private function validate($rule, $input)
-    {
-        return $this->gump->validate(['test' => $input], ['test' => $rule]);
-    }
 }
