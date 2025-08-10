@@ -16,7 +16,7 @@ GUMP is a standalone PHP data validation and filtering library that makes valida
 - **🌍 19 Languages** - Built-in internationalization support
 - **⚡ High Performance** - Lightweight and fast validation processing
 - **🔧 Extensible** - Easy to add custom validators and filters
-- **📋 40+ Validators** - Comprehensive set of validation rules out of the box
+- **📋 41 Validators** - Comprehensive set of validation rules out of the box
 - **🛡️ Security Focused** - Built-in XSS protection and data sanitization
 - **🎯 Framework Agnostic** - Works with any PHP project or framework
 - **📱 Modern PHP** - Supports PHP 7.1 to 8.4+
@@ -205,92 +205,56 @@ $is_valid = GUMP::is_valid($data, [
 
 ## Available Validators
 
-GUMP provides **39 built-in validators** for comprehensive data validation:
+GUMP provides **41 built-in validators** for comprehensive data validation:
 
-### 🔤 String & Text Validators
-| Validator | Description | Example |
-|-----------|-------------|---------|
-| `required` | Field must exist and not be empty | `'username' => 'required'` |
-| `alpha` | Only alphabetic characters | `'name' => 'alpha'` |
-| `alpha_numeric` | Alphanumeric characters only | `'username' => 'alpha_numeric'` |
-| `alpha_dash` | Alpha chars with dashes/underscores | `'slug' => 'alpha_dash'` |
-| `alpha_numeric_dash` | Alphanumeric with dashes/underscores | `'identifier' => 'alpha_numeric_dash'` |
-| `alpha_space` | Alpha chars with spaces | `'full_name' => 'alpha_space'` |
-| `alpha_numeric_space` | Alphanumeric with spaces | `'address' => 'alpha_numeric_space'` |
-| `valid_name` | Valid human name | `'full_name' => 'valid_name'` |
-| `street_address` | Likely street address | `'address' => 'street_address'` |
+<div id="available_validators">
 
-### 📏 Length Validators
-| Validator | Description | Example |
-|-----------|-------------|---------|
-| `min_len,6` | Minimum length requirement | `'password' => 'min_len,8'` |
-| `max_len,100` | Maximum length limit | `'title' => 'max_len,100'` |
-| `exact_len,10` | Exact length requirement | `'phone' => 'exact_len,10'` |
-| `between_len,6;20` | Length between min and max | `'username' => 'between_len,3;20'` |
-
-### 🔢 Numeric Validators
-| Validator | Description | Example |
-|-----------|-------------|---------|
-| `numeric` | Valid number or numeric string | `'price' => 'numeric'` |
-| `integer` | Valid integer | `'age' => 'integer'` |
-| `float` | Valid float/decimal number | `'rating' => 'float'` |
-| `min_numeric,18` | Minimum numeric value | `'age' => 'min_numeric,18'` |
-| `max_numeric,100` | Maximum numeric value | `'percentage' => 'max_numeric,100'` |
-
-### 🌐 Format & Network Validators
-| Validator | Description | Example |
-|-----------|-------------|---------|
-| `valid_email` | Valid email format | `'email' => 'valid_email'` |
-| `valid_url` | Valid URL format | `'website' => 'valid_url'` |
-| `url_exists` | URL exists and is accessible | `'link' => 'url_exists'` |
-| `valid_ip` | Valid IP address (v4 or v6) | `'ip' => 'valid_ip'` |
-| `valid_ipv4` | Valid IPv4 address | `'server_ip' => 'valid_ipv4'` |
-| `valid_ipv6` | Valid IPv6 address | `'ipv6' => 'valid_ipv6'` |
-| `phone_number` | Valid phone number | `'phone' => 'phone_number'` |
-
-### 📅 Date & Time Validators
-| Validator | Description | Example |
-|-----------|-------------|---------|
-| `date` | Valid date (ISO 8601) | `'birthday' => 'date'` |
-| `date,d/m/Y` | Date with custom format | `'date' => 'date,Y-m-d'` |
-| `min_age,18` | Minimum age requirement | `'dob' => 'min_age,21'` |
-
-### 💳 Financial & Specialized Validators
-| Validator | Description | Example |
-|-----------|-------------|---------|
-| `valid_cc` | Valid credit card number (Luhn algorithm) | `'card' => 'valid_cc'` |
-| `iban` | Valid IBAN (International Bank Account Number) | `'account' => 'iban'` |
-| `guidv4` | Valid GUID v4 format | `'uuid' => 'guidv4'` |
-| `valid_json_string` | Valid JSON string | `'config' => 'valid_json_string'` |
-
-### 📂 File Upload Validators
-| Validator | Description | Example |
-|-----------|-------------|---------|
-| `required_file` | File must be uploaded successfully | `'avatar' => 'required_file'` |
-| `extension,jpg;png` | Allowed file extensions | `'image' => 'extension,jpg;png;gif'` |
-
-### 🔍 Comparison & Logic Validators
-| Validator | Description | Example |
-|-----------|-------------|---------|
-| `contains,value1;value2` | Value must be in allowed list | `'status' => 'contains,active;pending'` |
-| `contains_list,a;b;c` | Value in list (error won't show values) | `'type' => 'contains_list,user;admin'` |
-| `doesnt_contain_list,x;y` | Value must NOT be in forbidden list | `'username' => 'doesnt_contain_list,admin;root'` |
-| `equalsfield,other_field` | Must equal another field's value | `'password_confirm' => 'equalsfield,password'` |
-| `starts,prefix` | Must start with specified string | `'code' => 'starts,PRE'` |
-| `boolean` | Valid boolean value (1/0, true/false, yes/no, on/off) | `'active' => 'boolean'` |
-| `boolean,strict` | Strict boolean (true/false only) | `'enabled' => 'boolean,strict'` |
-
-### 🗂️ Array Validators
-| Validator | Description | Example |
-|-----------|-------------|---------|
-| `valid_array_size_greater,1` | Array size must be greater than N | `'items' => 'valid_array_size_greater,0'` |
-| `valid_array_size_lesser,10` | Array size must be less than or equal to N | `'tags' => 'valid_array_size_lesser,5'` |
-| `valid_array_size_equal,3` | Array size must equal exactly N | `'coordinates' => 'valid_array_size_equal,2'` |
-
-### 🔧 Advanced Validators
-| Validator | Description | Example |
-|-----------|-------------|---------|
-| `regex,/pattern/` | Custom regular expression validation | `'code' => 'regex,/^[A-Z]{2}[0-9]{4}$/'` |
+| Rule                                                                           | Description                                                                                                                                                                                               |
+|--------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **required**                                                                   | Ensures the specified key value exists and is not empty (not null, not empty string, not empty array).                                                                                                    |
+| **contains**,one;two;use array format if one of the values contains semicolons | Verify that a value is contained within the pre-defined value set.                                                                                                                                        |
+| **contains_list**,value1;value2                                                | Verify that a value is contained within the pre-defined value set. Error message will NOT show the list of possible values.                                                                               |
+| **doesnt_contain_list**,value1;value2                                          | Verify that a value is contained within the pre-defined value set. Error message will NOT show the list of possible values.                                                                               |
+| **boolean**,strict                                                             | Determine if the provided value is a valid boolean. Returns true for: yes/no, on/off, 1/0, true/false. In strict mode (optional) only true/false will be valid which you can combine with boolean filter. |
+| **valid_email**                                                                | Determine if the provided email has valid format.                                                                                                                                                         |
+| **max_len**,240                                                                | Determine if the provided value length is less or equal to a specific value.                                                                                                                              |
+| **min_len**,4                                                                  | Determine if the provided value length is more or equal to a specific value.                                                                                                                              |
+| **exact_len**,5                                                                | Determine if the provided value length matches a specific value.                                                                                                                                          |
+| **between_len**,3;11                                                           | Determine if the provided value length is between min and max values.                                                                                                                                     |
+| **alpha**                                                                      | Determine if the provided value contains only alpha characters.                                                                                                                                           |
+| **alpha_numeric**                                                              | Determine if the provided value contains only alpha-numeric characters.                                                                                                                                   |
+| **alpha_dash**                                                                 | Determine if the provided value contains only alpha characters with dashed and underscores.                                                                                                               |
+| **alpha_numeric_dash**                                                         | Determine if the provided value contains only alpha numeric characters with dashed and underscores.                                                                                                       |
+| **alpha_numeric_space**                                                        | Determine if the provided value contains only alpha numeric characters with spaces.                                                                                                                       |
+| **alpha_space**                                                                | Determine if the provided value contains only alpha characters with spaces.                                                                                                                               |
+| **numeric**                                                                    | Determine if the provided value is a valid number or numeric string.                                                                                                                                      |
+| **integer**                                                                    | Determine if the provided value is a valid integer.                                                                                                                                                       |
+| **float**                                                                      | Determine if the provided value is a valid float.                                                                                                                                                         |
+| **valid_url**                                                                  | Determine if the provided value is a valid URL.                                                                                                                                                           |
+| **url_exists**                                                                 | Determine if a URL exists & is accessible.                                                                                                                                                                |
+| **valid_ip**                                                                   | Determine if the provided value is a valid IP address.                                                                                                                                                    |
+| **valid_ipv4**                                                                 | Determine if the provided value is a valid IPv4 address.                                                                                                                                                  |
+| **valid_ipv6**                                                                 | Determine if the provided value is a valid IPv6 address.                                                                                                                                                  |
+| **valid_cc**                                                                   | Determine if the input is a valid credit card number.                                                                                                                                                     |
+| **valid_name**                                                                 | Determine if the input is a valid human name.                                                                                                                                                             |
+| **street_address**                                                             | Determine if the provided input is likely to be a street address using weak detection.                                                                                                                    |
+| **iban**                                                                       | Determine if the provided value is a valid IBAN.                                                                                                                                                          |
+| **date**,d/m/Y                                                                 | Determine if the provided input is a valid date (ISO 8601) or specify a custom format (optional).                                                                                                         |
+| **min_age**,18                                                                 | Determine if the provided input meets age requirement (ISO 8601). Input should be a date (Y-m-d).                                                                                                         |
+| **max_numeric**,50                                                             | Determine if the provided numeric value is lower or equal to a specific value.                                                                                                                            |
+| **min_numeric**,1                                                              | Determine if the provided numeric value is higher or equal to a specific value.                                                                                                                           |
+| **starts**,Z                                                                   | Determine if the provided value starts with param.                                                                                                                                                        |
+| **required_file**                                                              | Determine if the file was successfully uploaded.                                                                                                                                                          |
+| **extension**,png;jpg;gif                                                      | Check the uploaded file for extension. Doesn't check mime-type yet.                                                                                                                                       |
+| **equalsfield**,other_field_name                                               | Determine if the provided field value equals current field value.                                                                                                                                         |
+| **guidv4**                                                                     | Determine if the provided field value is a valid GUID (v4)                                                                                                                                                |
+| **phone_number**                                                               | Determine if the provided value is a valid phone number.                                                                                                                                                  |
+| **regex**,/test-[0-9]{3}/                                                      | Custom regex validator.                                                                                                                                                                                   |
+| **valid_json_string**                                                          | Determine if the provided value is a valid JSON string.                                                                                                                                                   |
+| **valid_array_size_greater**,1                                                 | Check if an input is an array and if the size is more or equal to a specific value.                                                                                                                       |
+| **valid_array_size_lesser**,1                                                  | Check if an input is an array and if the size is less or equal to a specific value.                                                                                                                       |
+| **valid_array_size_equal**,1                                                   | Check if an input is an array and if the size is equal to a specific value.                                                                                                                               |
+</div>
 
 ## Comprehensive Validator Reference
 
@@ -427,33 +391,27 @@ $rules = [
 
 GUMP includes 15+ filters for data sanitization and transformation:
 
-### 🧹 Sanitization Filters
-| Filter | Description | Example |
-|--------|-------------|---------|
-| `trim` | Remove whitespace from ends | `'name' => 'trim'` |
-| `sanitize_email` | Remove illegal email chars | `'email' => 'sanitize_email'` |
-| `sanitize_numbers` | Keep only numbers | `'phone' => 'sanitize_numbers'` |
-| `sanitize_floats` | Keep numbers and decimal | `'price' => 'sanitize_floats'` |
-| `sanitize_string` | Remove script tags & XSS | `'content' => 'sanitize_string'` |
-| `htmlencode` | Encode HTML entities | `'description' => 'htmlencode'` |
-| `urlencode` | URL encode string | `'query' => 'urlencode'` |
+<div id="available_filters">
 
-### ✏️ Text Transformation Filters
-| Filter | Description | Example |
-|--------|-------------|---------|
-| `lower_case` | Convert to lowercase | `'username' => 'lower_case'` |
-| `upper_case` | Convert to uppercase | `'code' => 'upper_case'` |
-| `slug` | Convert to URL-friendly slug | `'title' => 'slug'` |
-| `boolean` | Convert to boolean | `'active' => 'boolean'` |
-| `whole_number` | Convert to whole number | `'quantity' => 'whole_number'` |
-
-### 🎨 Content Filters
-| Filter | Description | Example |
-|--------|-------------|---------|
-| `noise_words` | Remove common noise words | `'content' => 'noise_words'` |
-| `rmpunctuation` | Remove all punctuation | `'text' => 'rmpunctuation'` |
-| `basic_tags` | Keep only basic HTML tags | `'content' => 'basic_tags'` |
-| `ms_word_characters` | Convert MS Word special chars | `'text' => 'ms_word_characters'` |
+| Filter                 | Description                                                                                                           |
+|------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| **noise_words**        | Replace noise words in a string (http://tax.cchgroup.com/help/Avoiding_noise_words_in_your_search.htm).               |
+| **rmpunctuation**      | Remove all known punctuation from a string.                                                                           |
+| **urlencode**          | Sanitize the string by urlencoding characters.                                                                        |
+| **htmlencode**         | Sanitize the string by converting HTML characters to their HTML entities.                                             |
+| **sanitize_email**     | Sanitize the string by removing illegal characters from emails.                                                       |
+| **sanitize_numbers**   | Sanitize the string by removing illegal characters from numbers.                                                      |
+| **sanitize_floats**    | Sanitize the string by removing illegal characters from float numbers.                                                |
+| **sanitize_string**    | Sanitize the string by removing any script tags.                                                                      |
+| **boolean**            | Converts ['1', 1, 'true', true, 'yes', 'on'] to true, anything else is false ('on' is useful for form checkboxes).    |
+| **basic_tags**         | Filter out all HTML tags except the defined basic tags.                                                               |
+| **whole_number**       | Convert the provided numeric value to a whole number.                                                                 |
+| **ms_word_characters** | Convert MS Word special characters to web safe characters. ([“ ”] => ", [‘ ’] => ', [–] => -, […] => ...) |
+| **lower_case**         | Converts to lowercase.                                                                                                |
+| **upper_case**         | Converts to uppercase.                                                                                                |
+| **slug**               | Converts value to url-web-slugs.                                                                                      |
+| **trim**               | Remove spaces from the beginning and end of strings (PHP).                                                            |
+</div>
 
 ### Filter Chaining Example
 
