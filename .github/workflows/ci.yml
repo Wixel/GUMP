@@ -1,4 +1,4 @@
-name: ci
+name: CI/CD
 
 on:
   push:
@@ -62,6 +62,9 @@ jobs:
           php-version: ${{ matrix.php }}
       - name: run unit tests
         run: |
+          # Ensure that we have PCOV installed 
+          pecl install pcov && echo "extension=pcov.so" >> php.ini
+
           # create folder for coverage
           mkdir -p build/logs
           
