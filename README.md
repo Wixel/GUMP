@@ -782,7 +782,6 @@ We welcome contributions! Please read our [Contributing Guidelines](CONTRIBUTING
 - 🐛 **Bug Reports**: [GitHub Issues](https://github.com/wixel/gump/issues)
 - 💡 **Feature Requests**: [GitHub Discussions](https://github.com/wixel/gump/discussions)
 - 📚 **Documentation**: [GitHub Wiki](https://github.com/wixel/gump/wiki)
-- 💬 **Community Chat**: [Discord Server](https://discord.gg/wixel)
 
 ## Statistics
 
