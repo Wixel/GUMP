@@ -16,10 +16,25 @@ if ($hasCoverage) {
         mkdir('build/logs', 0755, true);
     }
     
-    // Run tests with coverage
-    $cmd = './vendor/bin/phpunit --coverage-clover=build/logs/clover.xml';
+    // Generate appropriate PHPUnit configuration for the detected version
+    echo "Generating version-appropriate PHPUnit configuration...\n";
+    system('php ci/generate_phpunit_config.php', $configResult);
+    
+    if ($configResult === 0 && file_exists('phpunit-runtime.xml')) {
+        $configFile = 'phpunit-runtime.xml';
+        echo "Using generated configuration: {$configFile}\n";
+    } else {
+        echo "⚠️  Could not generate configuration, falling back to default\n";
+        $configFile = 'phpunit.xml.dist';
+    }
+    
+    // Run tests with coverage using appropriate config
+    $cmd = "./vendor/bin/phpunit --configuration=\"{$configFile}\" --coverage-clover=build/logs/clover.xml";
     $result = 0;
     passthru($cmd, $result);
+    
+    // Clean up runtime config
+    @unlink('phpunit-runtime.xml');
     
     if ($result !== 0) {
         echo "❌ Test execution failed\n";

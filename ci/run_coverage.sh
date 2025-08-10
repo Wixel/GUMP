@@ -11,8 +11,23 @@ if php -m | grep -E "(xdebug|pcov)" >/dev/null 2>&1; then
     # Create build directory if it doesn't exist
     mkdir -p build/logs
     
-    # Run tests with coverage
-    ./vendor/bin/phpunit --coverage-clover=build/logs/clover.xml
+    # Generate appropriate PHPUnit configuration for the detected version
+    echo "Generating version-appropriate PHPUnit configuration..."
+    php ci/generate_phpunit_config.php
+    
+    if [ -f "phpunit-runtime.xml" ]; then
+        CONFIG_FILE="phpunit-runtime.xml"
+        echo "Using generated configuration: $CONFIG_FILE"
+    else
+        echo "⚠️  Could not generate configuration, falling back to default"
+        CONFIG_FILE="phpunit.xml.dist"
+    fi
+    
+    # Run tests with coverage using appropriate config
+    ./vendor/bin/phpunit --configuration="$CONFIG_FILE" --coverage-clover=build/logs/clover.xml
+    
+    # Clean up runtime config
+    rm -f phpunit-runtime.xml
     
     if [ -f "build/logs/clover.xml" ]; then
         echo "✅ Coverage report generated. Uploading to Coveralls..."
