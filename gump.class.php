@@ -1211,7 +1211,7 @@ class GUMP
      *
      * @return bool
      */
-    protected function validate_contains($field, array $input, array $params)
+    protected function validate_contains($field, array $input, array $params = [], $value = null)
     {
         $value = mb_strtolower(trim($input[$field]));
 
@@ -1234,7 +1234,7 @@ class GUMP
      *
      * @return bool
      */
-    protected function validate_contains_list($field, $input, array $params)
+    protected function validate_contains_list($field, array $input, array $params = [], $value = null)
     {
         return $this->validate_contains($field, $input, $params);
     }
@@ -1251,7 +1251,7 @@ class GUMP
      *
      * @return bool
      */
-    protected function validate_doesnt_contain_list($field, $input, array $params)
+    protected function validate_doesnt_contain_list($field, array $input, array $params = [], $value = null)
     {
         return !$this->validate_contains($field, $input, $params);
     }
@@ -1362,7 +1362,7 @@ class GUMP
      *
      * @return bool
      */
-    protected function validate_between_len($field, $input, array $params, $value = null)
+    protected function validate_between_len($field, array $input, array $params = [], $value = null)
     {
         return $this->validate_min_len($field, $input, [$params[0]], $value)
             && $this->validate_max_len($field, $input, [$params[1]], $value);
@@ -1731,7 +1731,7 @@ class GUMP
      * @return bool
      * @throws Exception
      */
-    protected function validate_min_age($field, array $input, array $params, $value = null)
+    protected function validate_min_age($field, array $input, array $params = [], $value = null)
     {
         $inputDatetime = new DateTime(EnvHelpers::date('Y-m-d', strtotime($value)));
         $todayDatetime = new DateTime(EnvHelpers::date('Y-m-d'));
@@ -1783,7 +1783,7 @@ class GUMP
      * @param mixed $value
      * @return bool
      */
-    protected function validate_starts($field, array $input, array $params, $value = null)
+    protected function validate_starts($field, array $input, array $params = [], $value = null)
     {
         return strpos($value, $params[0]) === 0;
     }
@@ -1815,7 +1815,7 @@ class GUMP
      *
      * @return bool
      */
-    protected function validate_extension($field, $input, array $params, $value = null)
+    protected function validate_extension($field, array $input, array $params = [], $value = null)
     {
         if (!is_array($input[$field])) {
             return false;
@@ -1853,7 +1853,7 @@ class GUMP
      *
      * @return bool
      */
-    protected function validate_equalsfield($field, array $input, array $params, $value = null)
+    protected function validate_equalsfield($field, array $input, array $params = [], $value = null)
     {
         return $input[$field] == $input[$params[0]];
     }
@@ -1945,7 +1945,7 @@ class GUMP
      *
      * @return bool
      */
-    protected function validate_valid_array_size_greater($field, array $input, array $params, $value = null)
+    protected function validate_valid_array_size_greater($field, array $input, array $params = [], $value = null)
     {
         if (!is_array($input[$field]) || count($input[$field]) < $params[0]) {
             return false;
