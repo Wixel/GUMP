@@ -2,6 +2,8 @@
 
 namespace GUMP;
 
+use ArrayAccess;
+
 class ArrayHelpers
 {
     public static function data_get($target, $key, $default = null)

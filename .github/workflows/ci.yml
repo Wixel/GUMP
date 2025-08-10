@@ -1,4 +1,4 @@
-name: ci
+name: CI/CD
 
 on:
   push:
@@ -62,6 +62,9 @@ jobs:
           php-version: ${{ matrix.php }}
       - name: run unit tests
         run: |
+          # Ensure that we have PCOV installed 
+          pecl install pcov && echo "extension=pcov.so" >> php.ini
+
           # create folder for coverage
           mkdir -p build/logs
           
@@ -71,10 +74,10 @@ jobs:
           # create a lock file
           composer install
           
-          composer run-script test
-      # it is enough to upload the coverage once
+          # Run the coveralls
+          ./vendor/bin/phpunit --coverage-clover=build/logs/clover.xml
       - name: upload coverage
         if: matrix.php == '7.1'
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: php vendor/bin/php-coveralls --exclude-no-stmt --coverage_clover=build/logs/clover.xml -v
+        run: ./ci/run_coverage.sh
