@@ -44,4 +44,51 @@ return array(
     'valid_array_size_greater' => 'The {field} fields needs to be an array with a size, equal to, or higher than {param}',
     'valid_array_size_lesser'  => 'The {field} fields needs to be an array with a size, equal to, or lower than {param}',
     'valid_array_size_equal'   => 'The {field} fields needs to be an array with a size equal to {param}',
+
+    // Security validators
+    'strong_password'          => 'The {field} must contain at least 8 characters with uppercase, lowercase, number and special character',
+    'jwt_token'                => 'The {field} must be a valid JWT token format',
+    'hash'                     => 'The {field} must be a valid {param} hash',
+    'no_sql_injection'         => 'The {field} contains potential SQL injection patterns',
+    'no_xss'                   => 'The {field} contains potential XSS patterns',
+
+    // Modern web validators
+    'uuid'                     => 'The {field} must be a valid UUID',
+    'base64'                   => 'The {field} must be valid base64 encoded data',
+    'hex_color'                => 'The {field} must be a valid hexadecimal color code (e.g., #FF0000)',
+    'rgb_color'                => 'The {field} must be a valid RGB color format (e.g., rgb(255,0,0))',
+    'timezone'                 => 'The {field} must be a valid timezone identifier',
+    'language_code'            => 'The {field} must be a valid language code (e.g., en, en-US)',
+    'country_code'             => 'The {field} must be a valid country code (e.g., US, CA)',
+    'currency_code'            => 'The {field} must be a valid currency code (e.g., USD, EUR)',
+
+    // Network validators
+    'mac_address'              => 'The {field} must be a valid MAC address format',
+    'domain_name'              => 'The {field} must be a valid domain name',
+    'port_number'              => 'The {field} must be a valid port number (1-65535)',
+    'social_handle'            => 'The {field} must be a valid social media handle format',
+
+    // Geographic validators
+    'latitude'                 => 'The {field} must be a valid latitude (-90 to 90)',
+    'longitude'                => 'The {field} must be a valid longitude (-180 to 180)',
+    'postal_code'              => 'The {field} must be a valid postal code for {param}',
+    'coordinates'              => 'The {field} must be valid coordinates in lat,lng format',
+
+    // Enhanced date/time validators
+    'future_date'              => 'The {field} must be a future date',
+    'past_date'                => 'The {field} must be a past date',
+    'business_day'             => 'The {field} must fall on a business day (Monday-Friday)',
+    'valid_time'               => 'The {field} must be a valid time format (HH:MM or HH:MM:SS)',
+    'date_range'               => 'The {field} must be a date between {param[0]} and {param[1]}',
+
+    // Mathematical validators
+    'even'                     => 'The {field} must be an even number',
+    'odd'                      => 'The {field} must be an odd number',
+    'prime'                    => 'The {field} must be a prime number',
+
+    // Content validators
+    'word_count'               => 'The {field} word count does not meet requirements',
+    'camel_case'               => 'The {field} must be in camelCase format',
+    'snake_case'               => 'The {field} must be in snake_case format',
+    'url_slug'                 => 'The {field} must be a valid URL slug format',
 );
