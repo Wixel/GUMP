@@ -43,5 +43,52 @@ return array(
     'valid_json_string'        => 'Il campo {field} deve contenere una stringa in formato JSON corretto',
     'valid_array_size_greater' => 'Il campo {field} deve essere un array di dimensioni maggiori o uguali a {param}',
     'valid_array_size_lesser'  => 'Il campo {field} deve essere un array di dimensioni minori o uguali a {param}',
-    'valid_array_size_equal'   => 'Il campo {field} deve essere un array di dimensioni uguali a {param}'
+    'valid_array_size_equal'   => 'Il campo {field} deve essere un array di dimensioni uguali a {param}',
+
+    // Security validators
+    'strong_password'          => 'Il campo {field} deve contenere almeno 8 caratteri con maiuscole, minuscole, numeri e caratteri speciali',
+    'jwt_token'                => 'Il campo {field} deve essere un formato token JWT valido',
+    'hash'                     => 'Il campo {field} deve essere un hash {param} valido',
+    'no_sql_injection'         => 'Il campo {field} contiene potenziali pattern di SQL injection',
+    'no_xss'                   => 'Il campo {field} contiene potenziali pattern XSS',
+
+    // Modern web validators
+    'uuid'                     => 'Il campo {field} deve essere un UUID valido',
+    'base64'                   => 'Il campo {field} deve essere dati codificati base64 validi',
+    'hex_color'                => 'Il campo {field} deve essere un codice colore esadecimale valido (es. #FF0000)',
+    'rgb_color'                => 'Il campo {field} deve essere un formato colore RGB valido (es. rgb(255,0,0))',
+    'timezone'                 => 'Il campo {field} deve essere un identificatore di fuso orario valido',
+    'language_code'            => 'Il campo {field} deve essere un codice lingua valido (es. it, it-IT)',
+    'country_code'             => 'Il campo {field} deve essere un codice paese valido (es. IT, US)',
+    'currency_code'            => 'Il campo {field} deve essere un codice valuta valido (es. USD, EUR)',
+
+    // Network validators
+    'mac_address'              => 'Il campo {field} deve essere un formato indirizzo MAC valido',
+    'domain_name'              => 'Il campo {field} deve essere un nome dominio valido',
+    'port_number'              => 'Il campo {field} deve essere un numero porta valido (1-65535)',
+    'social_handle'            => 'Il campo {field} deve essere un formato handle social media valido',
+
+    // Geographic validators
+    'latitude'                 => 'Il campo {field} deve essere una latitudine valida (-90 a 90)',
+    'longitude'                => 'Il campo {field} deve essere una longitudine valida (-180 a 180)',
+    'postal_code'              => 'Il campo {field} deve essere un codice postale valido per {param}',
+    'coordinates'              => 'Il campo {field} deve essere coordinate valide in formato lat,lng',
+
+    // Enhanced date/time validators
+    'future_date'              => 'Il campo {field} deve essere una data futura',
+    'past_date'                => 'Il campo {field} deve essere una data passata',
+    'business_day'             => 'Il campo {field} deve cadere in un giorno lavorativo (lunedì-venerdì)',
+    'valid_time'               => 'Il campo {field} deve essere un formato ora valido (HH:MM o HH:MM:SS)',
+    'date_range'               => 'Il campo {field} deve essere una data tra {param[0]} e {param[1]}',
+
+    // Mathematical validators
+    'even'                     => 'Il campo {field} deve essere un numero pari',
+    'odd'                      => 'Il campo {field} deve essere un numero dispari',
+    'prime'                    => 'Il campo {field} deve essere un numero primo',
+
+    // Content validators
+    'word_count'               => 'Il campo {field} non soddisfa i requisiti di conteggio parole',
+    'camel_case'               => 'Il campo {field} deve essere in formato camelCase',
+    'snake_case'               => 'Il campo {field} deve essere in formato snake_case',
+    'url_slug'                 => 'Il campo {field} deve essere un formato slug URL valido',
 );

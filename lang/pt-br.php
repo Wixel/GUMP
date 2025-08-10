@@ -44,4 +44,51 @@ return array(
     'valid_array_size_greater' => 'O campo {field} precisa conter um array com tamanho, igual, ou maior que {param}',
     'valid_array_size_lesser'  => 'O campo {field} precisa conter um array com tamanho, igual, ou menor que {param}',
     'valid_array_size_equal'   => 'O campo {field} precisa conter um array com tamanho igual a {param}',
+
+    // Security validators
+    'strong_password'          => 'O campo {field} deve conter pelo menos 8 caracteres com maiúsculas, minúsculas, números e caracteres especiais',
+    'jwt_token'                => 'O campo {field} deve ser um formato de token JWT válido',
+    'hash'                     => 'O campo {field} deve ser um hash {param} válido',
+    'no_sql_injection'         => 'O campo {field} contém padrões potenciais de SQL injection',
+    'no_xss'                   => 'O campo {field} contém padrões potenciais de XSS',
+
+    // Modern web validators
+    'uuid'                     => 'O campo {field} deve ser um UUID válido',
+    'base64'                   => 'O campo {field} deve ser dados codificados em base64 válidos',
+    'hex_color'                => 'O campo {field} deve ser um código de cor hexadecimal válido (ex: #FF0000)',
+    'rgb_color'                => 'O campo {field} deve ser um formato de cor RGB válido (ex: rgb(255,0,0))',
+    'timezone'                 => 'O campo {field} deve ser um identificador de fuso horário válido',
+    'language_code'            => 'O campo {field} deve ser um código de idioma válido (ex: en, en-US)',
+    'country_code'             => 'O campo {field} deve ser um código de país válido (ex: US, CA)',
+    'currency_code'            => 'O campo {field} deve ser um código de moeda válido (ex: USD, EUR)',
+
+    // Network validators
+    'mac_address'              => 'O campo {field} deve ser um formato de endereço MAC válido',
+    'domain_name'              => 'O campo {field} deve ser um nome de domínio válido',
+    'port_number'              => 'O campo {field} deve ser um número de porta válido (1-65535)',
+    'social_handle'            => 'O campo {field} deve ser um formato de identificador de rede social válido',
+
+    // Geographic validators
+    'latitude'                 => 'O campo {field} deve ser uma latitude válida (-90 a 90)',
+    'longitude'                => 'O campo {field} deve ser uma longitude válida (-180 a 180)',
+    'postal_code'              => 'O campo {field} deve ser um código postal válido para {param}',
+    'coordinates'              => 'O campo {field} deve ser coordenadas válidas no formato lat,lng',
+
+    // Enhanced date/time validators
+    'future_date'              => 'O campo {field} deve ser uma data futura',
+    'past_date'                => 'O campo {field} deve ser uma data passada',
+    'business_day'             => 'O campo {field} deve cair em um dia útil (Segunda-feira a Sexta-feira)',
+    'valid_time'               => 'O campo {field} deve ser um formato de hora válido (HH:MM ou HH:MM:SS)',
+    'date_range'               => 'O campo {field} deve ser uma data entre {param[0]} e {param[1]}',
+
+    // Mathematical validators
+    'even'                     => 'O campo {field} deve ser um número par',
+    'odd'                      => 'O campo {field} deve ser um número ímpar',
+    'prime'                    => 'O campo {field} deve ser um número primo',
+
+    // Content validators
+    'word_count'               => 'A contagem de palavras do campo {field} não atende aos requisitos',
+    'camel_case'               => 'O campo {field} deve estar no formato camelCase',
+    'snake_case'               => 'O campo {field} deve estar no formato snake_case',
+    'url_slug'                 => 'O campo {field} deve ser um formato de URL slug válido',
 );
