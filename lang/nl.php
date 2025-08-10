@@ -43,4 +43,51 @@ return array(
     'valid_array_size_greater' => 'Het veld {field} moet een array bevatten met meer dan {param} elementen',
     'valid_array_size_lesser'  => 'Het veld {field} moet een array bevatten met minder dan {param} elementen',
     'valid_array_size_equal'   => 'Het veld {field} moet een array bevatten met precies {param} elementen',
+
+    // Security validators
+    'strong_password'          => 'Het veld {field} moet ten minste 8 tekens bevatten met hoofdletters, kleine letters, cijfers en speciale tekens',
+    'jwt_token'                => 'Het veld {field} moet een geldig JWT token formaat zijn',
+    'hash'                     => 'Het veld {field} moet een geldige {param} hash zijn',
+    'no_sql_injection'         => 'Het veld {field} bevat potentiële SQL injection patronen',
+    'no_xss'                   => 'Het veld {field} bevat potentiële XSS patronen',
+
+    // Modern web validators
+    'uuid'                     => 'Het veld {field} moet een geldige UUID zijn',
+    'base64'                   => 'Het veld {field} moet geldige base64 gecodeerde data zijn',
+    'hex_color'                => 'Het veld {field} moet een geldige hexadecimale kleurcode zijn (bijv. #FF0000)',
+    'rgb_color'                => 'Het veld {field} moet een geldig RGB kleurformaat zijn (bijv. rgb(255,0,0))',
+    'timezone'                 => 'Het veld {field} moet een geldige tijdzone identifier zijn',
+    'language_code'            => 'Het veld {field} moet een geldige taalcode zijn (bijv. nl, nl-NL)',
+    'country_code'             => 'Het veld {field} moet een geldige landcode zijn (bijv. NL, BE)',
+    'currency_code'            => 'Het veld {field} moet een geldige valutacode zijn (bijv. USD, EUR)',
+
+    // Network validators
+    'mac_address'              => 'Het veld {field} moet een geldig MAC adres formaat zijn',
+    'domain_name'              => 'Het veld {field} moet een geldige domeinnaam zijn',
+    'port_number'              => 'Het veld {field} moet een geldig poortnummer zijn (1-65535)',
+    'social_handle'            => 'Het veld {field} moet een geldig social media handle formaat zijn',
+
+    // Geographic validators
+    'latitude'                 => 'Het veld {field} moet een geldige breedtegraad zijn (-90 tot 90)',
+    'longitude'                => 'Het veld {field} moet een geldige lengtegraad zijn (-180 tot 180)',
+    'postal_code'              => 'Het veld {field} moet een geldige postcode zijn voor {param}',
+    'coordinates'              => 'Het veld {field} moet geldige coördinaten zijn in lat,lng formaat',
+
+    // Enhanced date/time validators
+    'future_date'              => 'Het veld {field} moet een toekomstige datum zijn',
+    'past_date'                => 'Het veld {field} moet een datum in het verleden zijn',
+    'business_day'             => 'Het veld {field} moet op een werkdag vallen (maandag-vrijdag)',
+    'valid_time'               => 'Het veld {field} moet een geldig tijdformaat zijn (HH:MM of HH:MM:SS)',
+    'date_range'               => 'Het veld {field} moet een datum zijn tussen {param[0]} en {param[1]}',
+
+    // Mathematical validators
+    'even'                     => 'Het veld {field} moet een even getal zijn',
+    'odd'                      => 'Het veld {field} moet een oneven getal zijn',
+    'prime'                    => 'Het veld {field} moet een priemgetal zijn',
+
+    // Content validators
+    'word_count'               => 'Het veld {field} voldoet niet aan de woordaantal vereisten',
+    'camel_case'               => 'Het veld {field} moet in camelCase formaat zijn',
+    'snake_case'               => 'Het veld {field} moet in snake_case formaat zijn',
+    'url_slug'                 => 'Het veld {field} moet een geldig URL slug formaat zijn',
 );

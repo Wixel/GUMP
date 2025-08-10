@@ -44,4 +44,51 @@ return array(
     'valid_array_size_greater' => '{field} alanı {param} veya daha yüksek bir dizi olması gerekir',
     'valid_array_size_lesser'  => '{field} alanı {param} veya daha küçük bir dizi olması gerekir',
     'valid_array_size_equal'   => '{field} alanı {param} boyutuna eşit bir dizi olması gerekiyor',
+
+    // Security validators
+    'strong_password'          => '{field} alanı büyük harf, küçük harf, sayı ve özel karakter içeren en az 8 karakter olmalı',
+    'jwt_token'                => '{field} alanı geçerli bir JWT token formatında olmalı',
+    'hash'                     => '{field} alanı geçerli bir {param} hash olmalı',
+    'no_sql_injection'         => '{field} alanı potansiyel SQL injection desenleri içeriyor',
+    'no_xss'                   => '{field} alanı potansiyel XSS desenleri içeriyor',
+
+    // Modern web validators
+    'uuid'                     => '{field} alanı geçerli bir UUID olmalı',
+    'base64'                   => '{field} alanı geçerli base64 kodlanmış veri olmalı',
+    'hex_color'                => '{field} alanı geçerli bir onaltılık renk kodu olmalı (örn: #FF0000)',
+    'rgb_color'                => '{field} alanı geçerli bir RGB renk formatında olmalı (örn: rgb(255,0,0))',
+    'timezone'                 => '{field} alanı geçerli bir saat dilimi tanımlayıcısı olmalı',
+    'language_code'            => '{field} alanı geçerli bir dil kodu olmalı (örn: en, en-US)',
+    'country_code'             => '{field} alanı geçerli bir ülke kodu olmalı (örn: US, CA)',
+    'currency_code'            => '{field} alanı geçerli bir para birimi kodu olmalı (örn: USD, EUR)',
+
+    // Network validators
+    'mac_address'              => '{field} alanı geçerli bir MAC adresi formatında olmalı',
+    'domain_name'              => '{field} alanı geçerli bir domain adı olmalı',
+    'port_number'              => '{field} alanı geçerli bir port numarası olmalı (1-65535)',
+    'social_handle'            => '{field} alanı geçerli bir sosyal medya kullanıcı adı formatında olmalı',
+
+    // Geographic validators
+    'latitude'                 => '{field} alanı geçerli bir enlem olmalı (-90 ile 90 arası)',
+    'longitude'                => '{field} alanı geçerli bir boylam olmalı (-180 ile 180 arası)',
+    'postal_code'              => '{field} alanı {param} için geçerli bir posta kodu olmalı',
+    'coordinates'              => '{field} alanı lat,lng formatında geçerli koordinatlar olmalı',
+
+    // Enhanced date/time validators
+    'future_date'              => '{field} alanı gelecek bir tarih olmalı',
+    'past_date'                => '{field} alanı geçmiş bir tarih olmalı',
+    'business_day'             => '{field} alanı iş günü olmalı (Pazartesi-Cuma)',
+    'valid_time'               => '{field} alanı geçerli bir saat formatında olmalı (HH:MM veya HH:MM:SS)',
+    'date_range'               => '{field} alanı {param[0]} ve {param[1]} arasında bir tarih olmalı',
+
+    // Mathematical validators
+    'even'                     => '{field} alanı çift sayı olmalı',
+    'odd'                      => '{field} alanı tek sayı olmalı',
+    'prime'                    => '{field} alanı asal sayı olmalı',
+
+    // Content validators
+    'word_count'               => '{field} alanının kelime sayısı gereksinimleri karşılamıyor',
+    'camel_case'               => '{field} alanı camelCase formatında olmalı',
+    'snake_case'               => '{field} alanı snake_case formatında olmalı',
+    'url_slug'                 => '{field} alanı geçerli bir URL slug formatında olmalı',
 );

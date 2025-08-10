@@ -44,4 +44,51 @@ return array(
     'valid_array_size_lesser' => 'Le champ {field} doit être un tableau dont la taille est inférieure ou égale à {param}',
     'valid_array_size_equal'  => 'Le champ {field} doit être un tableau dont la taille est égale à {param}',
     'valid_json_string'    => 'Le champ {field} doit avoir un format JSON',
+
+    // Security validators
+    'strong_password'          => 'Le champ {field} doit contenir au moins 8 caractères avec majuscules, minuscules, chiffres et caractères spéciaux',
+    'jwt_token'                => 'Le champ {field} doit être un format de jeton JWT valide',
+    'hash'                     => 'Le champ {field} doit être un hash {param} valide',
+    'no_sql_injection'         => 'Le champ {field} contient des motifs potentiels d\'injection SQL',
+    'no_xss'                   => 'Le champ {field} contient des motifs potentiels de XSS',
+
+    // Modern web validators
+    'uuid'                     => 'Le champ {field} doit être un UUID valide',
+    'base64'                   => 'Le champ {field} doit être des données encodées en base64 valides',
+    'hex_color'                => 'Le champ {field} doit être un code couleur hexadécimal valide (ex. #FF0000)',
+    'rgb_color'                => 'Le champ {field} doit être un format de couleur RGB valide (ex. rgb(255,0,0))',
+    'timezone'                 => 'Le champ {field} doit être un identifiant de fuseau horaire valide',
+    'language_code'            => 'Le champ {field} doit être un code de langue valide (ex. fr, fr-FR)',
+    'country_code'             => 'Le champ {field} doit être un code de pays valide (ex. FR, CA)',
+    'currency_code'            => 'Le champ {field} doit être un code de devise valide (ex. USD, EUR)',
+
+    // Network validators
+    'mac_address'              => 'Le champ {field} doit être un format d\'adresse MAC valide',
+    'domain_name'              => 'Le champ {field} doit être un nom de domaine valide',
+    'port_number'              => 'Le champ {field} doit être un numéro de port valide (1-65535)',
+    'social_handle'            => 'Le champ {field} doit être un format d\'identifiant de médias sociaux valide',
+
+    // Geographic validators
+    'latitude'                 => 'Le champ {field} doit être une latitude valide (-90 à 90)',
+    'longitude'                => 'Le champ {field} doit être une longitude valide (-180 à 180)',
+    'postal_code'              => 'Le champ {field} doit être un code postal valide pour {param}',
+    'coordinates'              => 'Le champ {field} doit être des coordonnées valides au format lat,lng',
+
+    // Enhanced date/time validators
+    'future_date'              => 'Le champ {field} doit être une date future',
+    'past_date'                => 'Le champ {field} doit être une date passée',
+    'business_day'             => 'Le champ {field} doit tomber sur un jour ouvrable (lundi-vendredi)',
+    'valid_time'               => 'Le champ {field} doit être un format d\'heure valide (HH:MM ou HH:MM:SS)',
+    'date_range'               => 'Le champ {field} doit être une date entre {param[0]} et {param[1]}',
+
+    // Mathematical validators
+    'even'                     => 'Le champ {field} doit être un nombre pair',
+    'odd'                      => 'Le champ {field} doit être un nombre impair',
+    'prime'                    => 'Le champ {field} doit être un nombre premier',
+
+    // Content validators
+    'word_count'               => 'Le champ {field} ne respecte pas les exigences de comptage de mots',
+    'camel_case'               => 'Le champ {field} doit être au format camelCase',
+    'snake_case'               => 'Le champ {field} doit être au format snake_case',
+    'url_slug'                 => 'Le champ {field} doit être un format de slug d\'URL valide',
 );

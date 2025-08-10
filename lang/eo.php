@@ -43,5 +43,52 @@ return array(
     'valid_json_string'        => 'La kampo “{field}” devas enhavi validan JSON-formatan ĉenon',
     'valid_array_size_greater' => 'La kampoj “{field}” devas esti tabelo kun grandeco egala aŭ pli granda ol {param}',
     'valid_array_size_lesser'  => 'La kampoj “{field}” devas esti tabelo kun grandeco egala aŭ malpli granda ol {param}',
-    'valid_array_size_equal'   => 'La kampoj “{field}” devas esti tabelo kun grandeco egala je {param}',
+    'valid_array_size_equal'   => 'La kampoj "{field}" devas esti tabelo kun grandeco egala je {param}',
+
+    // Security validators
+    'strong_password'          => 'La kampo "{field}" devas enhavi almenaŭ 8 signojn kun majuskloj, minuskloj, numeroj kaj specialaj signoj',
+    'jwt_token'                => 'La kampo "{field}" devas esti valida JWT-ĵetona formato',
+    'hash'                     => 'La kampo "{field}" devas esti valida {param} haketo',
+    'no_sql_injection'         => 'La kampo "{field}" enhavas eblajn SQL-enmeto modelojn',
+    'no_xss'                   => 'La kampo "{field}" enhavas eblajn XSS modelojn',
+
+    // Modern web validators
+    'uuid'                     => 'La kampo "{field}" devas esti valida UUID',
+    'base64'                   => 'La kampo "{field}" devas esti validaj base64-kodaj datumoj',
+    'hex_color'                => 'La kampo "{field}" devas esti valida deksesouma kolorkodo (ekz., #FF0000)',
+    'rgb_color'                => 'La kampo "{field}" devas esti valida RGB-kolora formato (ekz., rgb(255,0,0))',
+    'timezone'                 => 'La kampo "{field}" devas esti valida tempozono-identigilo',
+    'language_code'            => 'La kampo "{field}" devas esti valida lingvokodo (ekz., en, en-US)',
+    'country_code'             => 'La kampo "{field}" devas esti valida landkodo (ekz., US, CA)',
+    'currency_code'            => 'La kampo "{field}" devas esti valida monkodo (ekz., USD, EUR)',
+
+    // Network validators
+    'mac_address'              => 'La kampo "{field}" devas esti valida MAC-adresa formato',
+    'domain_name'              => 'La kampo "{field}" devas esti valida retregionomo',
+    'port_number'              => 'La kampo "{field}" devas esti valida pordonumero (1-65535)',
+    'social_handle'            => 'La kampo "{field}" devas esti valida socia reteja tenilo formato',
+
+    // Geographic validators
+    'latitude'                 => 'La kampo "{field}" devas esti valida latitudo (-90 ĝis 90)',
+    'longitude'                => 'La kampo "{field}" devas esti valida longitudo (-180 ĝis 180)',
+    'postal_code'              => 'La kampo "{field}" devas esti valida poŝtkodo por {param}',
+    'coordinates'              => 'La kampo "{field}" devas esti validaj koordinatoj en lat,lng formato',
+
+    // Enhanced date/time validators
+    'future_date'              => 'La kampo "{field}" devas esti estonta dato',
+    'past_date'                => 'La kampo "{field}" devas esti pasinta dato',
+    'business_day'             => 'La kampo "{field}" devas esti en negoca tago (lundo-vendredo)',
+    'valid_time'               => 'La kampo "{field}" devas esti valida tempoformato (HH:MM aŭ HH:MM:SS)',
+    'date_range'               => 'La kampo "{field}" devas esti dato inter {param[0]} kaj {param[1]}',
+
+    // Mathematical validators
+    'even'                     => 'La kampo "{field}" devas esti para numero',
+    'odd'                      => 'La kampo "{field}" devas esti nepara numero',
+    'prime'                    => 'La kampo "{field}" devas esti primo numero',
+
+    // Content validators
+    'word_count'               => 'La vorto-kalkulo de la kampo "{field}" ne plenumas la postulojn',
+    'camel_case'               => 'La kampo "{field}" devas esti en camelCase formato',
+    'snake_case'               => 'La kampo "{field}" devas esti en snake_case formato',
+    'url_slug'                 => 'La kampo "{field}" devas esti valida URL-slug formato',
 );

@@ -44,4 +44,51 @@ return array(
     'valid_array_size_greater' => 'El campo {field} debe ser un arreglo con el tamaño, igual o mayor que {param}',
     'valid_array_size_lesser'  => 'El campo {field} debe ser un arreglo con el tamaño, igual o menor que {param}',
     'valid_array_size_equal'   => 'El campo {field} debe ser un arreglo con el tamaño igual a {param}',
+
+    // Security validators
+    'strong_password'          => 'El campo {field} debe contener al menos 8 caracteres con mayúsculas, minúsculas, números y caracteres especiales',
+    'jwt_token'                => 'El campo {field} debe ser un formato de token JWT válido',
+    'hash'                     => 'El campo {field} debe ser un hash {param} válido',
+    'no_sql_injection'         => 'El campo {field} contiene patrones potenciales de inyección SQL',
+    'no_xss'                   => 'El campo {field} contiene patrones potenciales de XSS',
+
+    // Modern web validators
+    'uuid'                     => 'El campo {field} debe ser un UUID válido',
+    'base64'                   => 'El campo {field} debe ser datos codificados en base64 válidos',
+    'hex_color'                => 'El campo {field} debe ser un código de color hexadecimal válido (ej. #FF0000)',
+    'rgb_color'                => 'El campo {field} debe ser un formato de color RGB válido (ej. rgb(255,0,0))',
+    'timezone'                 => 'El campo {field} debe ser un identificador de zona horaria válido',
+    'language_code'            => 'El campo {field} debe ser un código de idioma válido (ej. es, es-ES)',
+    'country_code'             => 'El campo {field} debe ser un código de país válido (ej. ES, MX)',
+    'currency_code'            => 'El campo {field} debe ser un código de moneda válido (ej. USD, EUR)',
+
+    // Network validators
+    'mac_address'              => 'El campo {field} debe ser un formato de dirección MAC válido',
+    'domain_name'              => 'El campo {field} debe ser un nombre de dominio válido',
+    'port_number'              => 'El campo {field} debe ser un número de puerto válido (1-65535)',
+    'social_handle'            => 'El campo {field} debe ser un formato de usuario de redes sociales válido',
+
+    // Geographic validators
+    'latitude'                 => 'El campo {field} debe ser una latitud válida (-90 a 90)',
+    'longitude'                => 'El campo {field} debe ser una longitud válida (-180 a 180)',
+    'postal_code'              => 'El campo {field} debe ser un código postal válido para {param}',
+    'coordinates'              => 'El campo {field} debe ser coordenadas válidas en formato lat,lng',
+
+    // Enhanced date/time validators
+    'future_date'              => 'El campo {field} debe ser una fecha futura',
+    'past_date'                => 'El campo {field} debe ser una fecha pasada',
+    'business_day'             => 'El campo {field} debe caer en un día hábil (lunes a viernes)',
+    'valid_time'               => 'El campo {field} debe ser un formato de tiempo válido (HH:MM o HH:MM:SS)',
+    'date_range'               => 'El campo {field} debe ser una fecha entre {param[0]} y {param[1]}',
+
+    // Mathematical validators
+    'even'                     => 'El campo {field} debe ser un número par',
+    'odd'                      => 'El campo {field} debe ser un número impar',
+    'prime'                    => 'El campo {field} debe ser un número primo',
+
+    // Content validators
+    'word_count'               => 'El campo {field} no cumple con los requisitos de conteo de palabras',
+    'camel_case'               => 'El campo {field} debe estar en formato camelCase',
+    'snake_case'               => 'El campo {field} debe estar en formato snake_case',
+    'url_slug'                 => 'El campo {field} debe ser un formato de slug URL válido',
 );
