@@ -76,10 +76,8 @@ jobs:
           
           # Run the coveralls
           ./vendor/bin/phpunit --coverage-clover=build/logs/clover.xml
-      # it is enough to upload the coverage once
       - name: upload coverage
         if: matrix.php == '7.1'
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: 
-          php vendor/bin/php-coveralls --exclude-no-stmt --coverage_clover=build/logs/clover.xml -v
+        run: ./ci/run_coverage.sh
