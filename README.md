@@ -18,7 +18,7 @@ developers worldwide.
 - **🌍 19 Languages** - Built-in internationalization support
 - **⚡ High Performance** - Lightweight and fast validation processing
 - **🔧 Extensible** - Easy to add custom validators and filters
-- **📋 41 Validators** - Comprehensive set of validation rules out of the box
+- **📋 76 Validators** - Comprehensive set of validation rules out of the box
 - **🛡️ Security Focused** - Built-in XSS protection and data sanitization
 - **🎯 Framework Agnostic** - Works with any PHP project or framework
 - **📱 Modern PHP** - Supports PHP 7.1 to 8.4+
@@ -207,7 +207,7 @@ $is_valid = GUMP::is_valid($data, [
 
 ## Available Validators
 
-GUMP provides **70+ built-in validators** for comprehensive data validation:
+GUMP provides **76 built-in validators** for comprehensive data validation:
 
 <div id="available_validators">
 
@@ -256,75 +256,39 @@ GUMP provides **70+ built-in validators** for comprehensive data validation:
 | **valid_array_size_greater**,1                                                 | Check if an input is an array and if the size is more or equal to a specific value.                                                                                                                       |
 | **valid_array_size_lesser**,1                                                  | Check if an input is an array and if the size is less or equal to a specific value.                                                                                                                       |
 | **valid_array_size_equal**,1                                                   | Check if an input is an array and if the size is equal to a specific value.                                                                                                                               |
-
-### 🔐 Security Validators
-
-| Rule | Description |
-|------|-------------|
-| **strong_password** | Validates password with uppercase, lowercase, number and special character (min 8 chars). |
-| **jwt_token** | Validates JWT token format (3 base64url parts separated by dots). |
-| **hash**,md5 | Validates hash format for specified algorithm (md5, sha1, sha256, sha512). |
-| **no_sql_injection** | Detects common SQL injection patterns in input. |
-| **no_xss** | Enhanced XSS detection beyond basic sanitize_string. |
-
-### 🌐 Modern Web Validators
-
-| Rule | Description |
-|------|-------------|
-| **uuid** | Validates UUID format (any version 1-5). |
-| **base64** | Validates base64 encoded data. |
-| **hex_color** | Validates hexadecimal color code (#FF0000 or #FFF format). |
-| **rgb_color** | Validates RGB color format (rgb(255,0,0)). |
-| **timezone** | Validates timezone identifier (America/New_York, UTC, etc.). |
-| **language_code** | Validates language code (en, en-US format - ISO 639). |
-| **country_code** | Validates country code (US, CA format - ISO 3166). |
-| **currency_code** | Validates currency code (USD, EUR format - ISO 4217). |
-
-### 📡 Network Validators
-
-| Rule | Description |
-|------|-------------|
-| **mac_address** | Validates MAC address format (AA:BB:CC:DD:EE:FF or AA-BB-CC-DD-EE-FF). |
-| **domain_name** | Validates domain name format (example.com - without protocol). |
-| **port_number** | Validates port number (1-65535). |
-| **social_handle** | Validates social media handle format (@username or username). |
-
-### 🗺️ Geographic Validators
-
-| Rule | Description |
-|------|-------------|
-| **latitude** | Validates latitude coordinate (-90 to 90). |
-| **longitude** | Validates longitude coordinate (-180 to 180). |
-| **postal_code**,US | Validates postal code for specified country (US, CA, UK, DE, FR, AU, JP). |
-| **coordinates** | Validates coordinates in lat,lng format (40.7128,-74.0060). |
-
-### 📅 Enhanced Date/Time Validators
-
-| Rule | Description |
-|------|-------------|
-| **future_date** | Validates that date is in the future. |
-| **past_date** | Validates that date is in the past. |
-| **business_day** | Validates that date falls on a business day (Monday-Friday). |
-| **valid_time** | Validates time format (HH:MM:SS or HH:MM). |
-| **date_range**,2024-01-01;2024-12-31 | Validates date falls within specified range. |
-
-### 🔢 Mathematical Validators
-
-| Rule | Description |
-|------|-------------|
-| **even** | Validates that number is even. |
-| **odd** | Validates that number is odd. |
-| **prime** | Validates that number is prime. |
-
-### 📝 Content & Format Validators
-
-| Rule | Description |
-|------|-------------|
-| **word_count**,min,10,max,500 | Validates word count within specified range. |
-| **camel_case** | Validates camelCase format (variableName). |
-| **snake_case** | Validates snake_case format (variable_name). |
-| **url_slug** | Validates URL slug format (my-url-slug). |
-
+| **strong_password**                                                            | Validate strong password with uppercase, lowercase, number and special character.                                                                                                                         |
+| **jwt_token**                                                                  | Validate JWT token format.                                                                                                                                                                                |
+| **hash**,Array                                                                 | Validate hash format for specified algorithm.                                                                                                                                                             |
+| **no_sql_injection**                                                           | Detect common SQL injection patterns.                                                                                                                                                                     |
+| **no_xss**                                                                     | Enhanced XSS detection beyond basic sanitize_string.                                                                                                                                                      |
+| **uuid**                                                                       | Validate UUID format (any version).                                                                                                                                                                       |
+| **base64**                                                                     | Validate base64 encoded data.                                                                                                                                                                             |
+| **hex_color**                                                                  | Validate hexadecimal color code.                                                                                                                                                                          |
+| **rgb_color**                                                                  | Validate RGB color format.                                                                                                                                                                                |
+| **timezone**                                                                   | Validate timezone identifier.                                                                                                                                                                             |
+| **language_code**                                                              | Validate language code (ISO 639).                                                                                                                                                                         |
+| **country_code**                                                               | Validate country code (ISO 3166).                                                                                                                                                                         |
+| **currency_code**                                                              | Validate currency code (ISO 4217).                                                                                                                                                                        |
+| **mac_address**                                                                | Validate MAC address format.                                                                                                                                                                              |
+| **domain_name**                                                                | Validate domain name format (without protocol).                                                                                                                                                           |
+| **port_number**                                                                | Validate port number (1-65535).                                                                                                                                                                           |
+| **social_handle**                                                              | Validate social media handle format.                                                                                                                                                                      |
+| **latitude**                                                                   | Validate latitude coordinate (-90 to 90).                                                                                                                                                                 |
+| **longitude**                                                                  | Validate longitude coordinate (-180 to 180).                                                                                                                                                              |
+| **postal_code**,Array                                                          | Validate postal code for specified country.                                                                                                                                                               |
+| **coordinates**                                                                | Validate coordinates in lat,lng format.                                                                                                                                                                   |
+| **future_date**                                                                | Validate that date is in the future.                                                                                                                                                                      |
+| **past_date**                                                                  | Validate that date is in the past.                                                                                                                                                                        |
+| **business_day**                                                               | Validate that date falls on a business day (Monday-Friday).                                                                                                                                               |
+| **valid_time**                                                                 | Validate time format (HH:MM:SS or HH:MM).                                                                                                                                                                 |
+| **date_range**,2024-01-01;2024-12-31                                           | Validate date falls within specified range.                                                                                                                                                               |
+| **even**                                                                       | Validate that number is even.                                                                                                                                                                             |
+| **odd**                                                                        | Validate that number is odd.                                                                                                                                                                              |
+| **prime**                                                                      | Validate that number is prime.                                                                                                                                                                            |
+| **word_count**,min,10,max,500                                                  | Validate word count within specified range.                                                                                                                                                               |
+| **camel_case**                                                                 | Validate camelCase format.                                                                                                                                                                                |
+| **snake_case**                                                                 | Validate snake_case format.                                                                                                                                                                               |
+| **url_slug**                                                                   | Validate URL slug format.                                                                                                                                                                                 |
 </div>
 
 ## Comprehensive Validator Reference
@@ -510,7 +474,7 @@ $rules = [
 
 ## Available Filters
 
-GUMP includes 15+ filters for data sanitization and transformation:
+GUMP includes 16 filters for data sanitization and transformation:
 
 <div id="available_filters">
 
