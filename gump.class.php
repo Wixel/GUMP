@@ -1075,12 +1075,13 @@ class GUMP
     /**
      * Implemented to replace FILTER_SANITIZE_STRING behaviour deprecated in php8.1
      *
+     * @param mixed $value
      * @return string
      */
     private static function polyfill_filter_var_string($value)
     {
-        $str = preg_replace('/x00|<[^>]*>?/', '', $value);
-        return (string)str_replace(['', ''], ['&#39;', '&#34;'], $str);
+        $str = preg_replace('/\x00|<[^>]*>?/', '', $value);
+        return (string)str_replace(["'", '"'], ['&#39;', '&#34;'], $str);
     }
 
     /**
