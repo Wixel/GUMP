@@ -620,10 +620,10 @@ GUMP::set_error_messages([
 
 ## Internationalization
 
-GUMP supports 19 languages out of the box:
+GUMP supports 20 languages out of the box:
 
 **Supported Languages**: German (de), Greek (el), English (en), Esperanto (eo), Spanish (es), Persian (fa), French (fr),
-Hebrew (he), Hungarian (hu), Indonesian (id), Italian (it), Japanese (ja), Dutch (nl), Portuguese Brazil (pt-br),
+Hebrew (he), Hungarian (hu), Indonesian (id), Italian (it), Japanese (ja), Dutch (nl), Polish (pl), Portuguese Brazil (pt-br),
 Russian (ru), Turkish (tr), Ukrainian (uk), Vietnamese (vi), Chinese Simplified (zh-CN)
 
 ```php

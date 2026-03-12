@@ -2447,6 +2447,7 @@ class GUMP
             'FR' => '/^\d{5}$/',
             'AU' => '/^\d{4}$/',
             'JP' => '/^\d{3}-\d{4}$/',
+            'PL' => '/^\d{2}-\d{3}$/',
         ];
 
         return isset($patterns[$country]) && preg_match($patterns[$country], $value) > 0;
