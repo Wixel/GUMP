@@ -5,9 +5,11 @@ declare(strict_types=1);
 use GUMP\ArrayHelpers;
 use GUMP\EnvHelpers;
 use GUMP\Filtering\ClosureFilter;
+use GUMP\Filtering\Filter;
 use GUMP\Filtering\FilterRegistry;
 use GUMP\Validation\ClosureValidator;
 use GUMP\Validation\ValidationContext;
+use GUMP\Validation\Validator;
 use GUMP\Validation\ValidatorRegistry;
 
 /**
@@ -61,6 +63,18 @@ class GUMP
      * $validator_registry note.
      */
     protected static ?FilterRegistry $filter_registry = null;
+
+    /**
+     * Per-instance validator overrides. Populated by GUMP#register_validator().
+     * Checked BEFORE the static (global) registry — same rule on an instance
+     * shadows the global one without modifying it. Null until first use.
+     */
+    protected ?ValidatorRegistry $local_validators = null;
+
+    /**
+     * Per-instance filter overrides. See $local_validators note.
+     */
+    protected ?FilterRegistry $local_filters = null;
 
     protected static function registry(): ValidatorRegistry
     {
@@ -204,7 +218,7 @@ class GUMP
     public static function get_instance(): self
     {
         if (self::$instance === null) {
-            self::$instance = new static();
+            self::$instance = new self();
         }
 
         return self::$instance;
@@ -411,6 +425,48 @@ class GUMP
     }
 
     /**
+     * Register a first-class Validator implementation. Preferred over add_validator() when you have
+     * a real class; skips the callable adapter and gives you typed access to ValidationContext.
+     *
+     * @param Validator $validator
+     * @param string    $error_message optional template — same placeholder rules as add_validator()
+     * @throws Exception when a validator with the same rule name is already registered
+     */
+    public static function register_validator(Validator $validator, string $error_message = ''): void
+    {
+        $rule = $validator->rule();
+
+        if (self::has_validator($rule)) {
+            throw new Exception(sprintf("'%s' validator is already defined.", $rule));
+        }
+
+        self::registry()->register($validator);
+
+        if ($error_message !== '') {
+            self::$validation_methods_errors[$rule] = $error_message;
+        }
+    }
+
+    /**
+     * Register a Validator on THIS instance only — does not affect other GUMP instances or the
+     * global registry. Instance-local validators shadow same-named global validators when this
+     * instance dispatches. Use when you want isolated per-request customisation (e.g. Octane,
+     * Swoole, RoadRunner) without polluting the shared registry.
+     *
+     * Returns $this for chaining.
+     */
+    public function register_local_validator(Validator $validator): self
+    {
+        if ($this->local_validators === null) {
+            $this->local_validators = new ValidatorRegistry();
+        }
+
+        $this->local_validators->register($validator);
+
+        return $this;
+    }
+
+    /**
      * Reset the validator registry to its built-in defaults.
      * Test helper — clears any validators added via add_validator().
      */
@@ -436,6 +492,40 @@ class GUMP
         }
 
         self::filter_registry()->register(new ClosureFilter($rule, \Closure::fromCallable($callback)));
+    }
+
+    /**
+     * Register a first-class Filter implementation. Preferred over add_filter() when you have
+     * a real class; skips the callable adapter.
+     *
+     * @throws Exception when a filter with the same rule name is already registered
+     */
+    public static function register_filter(Filter $filter): void
+    {
+        $rule = $filter->rule();
+
+        if (self::has_filter($rule)) {
+            throw new Exception(sprintf("'%s' filter is already defined.", $rule));
+        }
+
+        self::filter_registry()->register($filter);
+    }
+
+    /**
+     * Register a Filter on THIS instance only. See register_local_validator() for the rationale —
+     * same model, applies to filtering.
+     *
+     * Returns $this for chaining.
+     */
+    public function register_local_filter(Filter $filter): self
+    {
+        if ($this->local_filters === null) {
+            $this->local_filters = new FilterRegistry();
+        }
+
+        $this->local_filters->register($filter);
+
+        return $this;
     }
 
     /**
@@ -700,7 +790,7 @@ class GUMP
                 $rules_names[] = is_numeric($key) ? $value : $key;
             }
 
-            return array_map(function ($value, $key) use ($rules) {
+            return array_map(static function ($value, $key) {
                 if ($value === $key) {
                     return [ $key ];
                 }
@@ -747,9 +837,9 @@ class GUMP
      * Parse rule parameters.
      *
      * @param string|array $param
-     * @return array|string|null
+     * @return array<int, string>|array<int|string, mixed>
      */
-    private function parse_rule_params($param)
+    private function parse_rule_params($param): array
     {
         if (is_array($param)) {
             return $param;
@@ -775,7 +865,7 @@ class GUMP
         $require_type_of_rules = ['required', 'required_file'];
 
         // v2 format (using arrays for definition of rules)
-        if (is_array($rules) && is_array($rules[0])) {
+        if (isset($rules[0]) && is_array($rules[0])) {
             $found = array_filter($rules, function ($item) use ($require_type_of_rules) {
                 return in_array($item[0], $require_type_of_rules);
             });
@@ -793,7 +883,7 @@ class GUMP
      *
      * @param string $rule
      * @param string $field
-     * @param mixed $input
+     * @param array $input
      * @param array $rule_params
      * @return array|bool
      * @throws Exception
@@ -827,24 +917,34 @@ class GUMP
      *
      * @param string $rule
      * @param string $field
-     * @param mixed $input
+     * @param array $input
      * @param array $rule_params
      * @return array|bool
      * @throws Exception
      */
     private function call_validator(string $rule, string $field, array $input, array $rule_params = [], $value = null)
     {
-        // Primary dispatch: Validator implementations in the registry.
-        if (self::registry()->has($rule)) {
-            $context = new ValidationContext($field, $input, $rule_params);
-            $result  = self::registry()->get($rule)->validate($value, $context);
+        $context = new ValidationContext($field, $input, $rule_params);
+
+        // 1. Instance-local overrides win over globals (allows isolated per-GUMP customisation).
+        if ($this->local_validators !== null && $this->local_validators->has($rule)) {
+            $result = $this->local_validators->get($rule)->validate($value, $context);
 
             return $result->isValid()
                 ? true
                 : $this->generate_error_array($field, $input[$field], $rule, $rule_params);
         }
 
-        // Subclass extension: GUMP descendants may declare validate_<rule> as a protected method.
+        // 2. Global registry.
+        if (self::registry()->has($rule)) {
+            $result = self::registry()->get($rule)->validate($value, $context);
+
+            return $result->isValid()
+                ? true
+                : $this->generate_error_array($field, $input[$field], $rule, $rule_params);
+        }
+
+        // 3. Subclass extension: GUMP descendants may declare validate_<rule> as a protected method.
         $method = sprintf('validate_%s', $rule);
         if (is_callable([$this, $method])) {
             $result = $this->$method($field, $input, $rule_params, $value);
@@ -868,7 +968,12 @@ class GUMP
      */
     private function call_filter(string $rule, $value, array $rule_params = [])
     {
-        // Primary dispatch: Filter implementations in the registry.
+        // 1. Instance-local overrides win over globals.
+        if ($this->local_filters !== null && $this->local_filters->has($rule)) {
+            return $this->local_filters->get($rule)->apply($value, $rule_params);
+        }
+
+        // 2. Global registry.
         if (self::filter_registry()->has($rule)) {
             return self::filter_registry()->get($rule)->apply($value, $rule_params);
         }
@@ -1106,7 +1211,7 @@ class GUMP
     /**
      * Filter the input data according to the specified filter set.
      *
-     * @param mixed  $input
+     * @param array  $input
      * @param array  $filterset
      * @return mixed
      * @throws Exception

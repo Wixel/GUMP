@@ -5,13 +5,10 @@ namespace Tests;
 use GUMP;
 use Mockery as m;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Prophet;
 use ReflectionClass;
 
 abstract class BaseTestCase extends TestCase
 {
-    protected $prophet;
-
     /**
      * @var GUMP
      */
@@ -24,8 +21,6 @@ abstract class BaseTestCase extends TestCase
 
     public function setUp(): void
     {
-        $this->prophet = new Prophet();
-
         $this->helpersMock = m::mock('overload:GUMP\EnvHelpers');
         $this->helpersMock->shouldReceive('file_exists')
             ->once()
@@ -36,8 +31,6 @@ abstract class BaseTestCase extends TestCase
 
     protected function tearDown(): void
     {
-        $this->prophet->checkPredictions();
-
         \Mockery::close();
 
         $this->resetCustomFieldsLabels();

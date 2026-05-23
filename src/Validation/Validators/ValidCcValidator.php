@@ -37,7 +37,7 @@ final class ValidCcValidator implements Validator
         $total = 0;
 
         for ($i = 0; $i < $number_length; ++$i) {
-            $digit = $number[$i];
+            $digit = (int) $number[$i];
 
             if ($i % 2 == $parity) {
                 $digit *= 2;

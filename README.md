@@ -21,7 +21,7 @@ developers worldwide.
 - **76 Validators** - Comprehensive set of validation rules out of the box
 - **Security Focused** - Built-in XSS protection and data sanitization
 - **Framework Agnostic** - Works with any PHP project or framework
-- **Modern PHP** - Supports PHP 7.1 to 8.4+
+- **Modern PHP** - Supports PHP 8.0 to 8.4+
 
 ## Table of Contents
 
@@ -60,13 +60,12 @@ require_once 'path/to/gump.class.php';
 
 ## Requirements
 
-- **PHP**: 7.1, 7.2, 7.3, 7.4, 8.0, 8.1, 8.2, 8.3, 8.4+
+- **PHP**: 8.0, 8.1, 8.2, 8.3, 8.4+
 - **Extensions**:
   - `ext-mbstring` - Multibyte string support
   - `ext-json` - JSON processing
-  - `ext-intl` - Internationalization functions
-  - `ext-bcmath` - Arbitrary precision mathematics
-  - `ext-iconv` - Character encoding conversion
+  - `ext-bcmath` - Arbitrary precision mathematics (used by the IBAN validator)
+  - `ext-iconv` - Character encoding conversion (used by the slug filter)
 
 ## Quick Start
 
@@ -706,6 +705,84 @@ $filtered = $custom_gump->filter(['name' => 'John'], ['name' => 'add_prefix,MR_'
 // Result: 'MR_John'
 ```
 
+### Validator & Filter Classes (Modern API)
+
+For new code, prefer implementing the `Validator` / `Filter` interfaces over the callback-based
+`add_validator()` / `add_filter()`. You get typed access to `ValidationContext`, your rule is
+unit-testable in isolation, and there's no closure-adapter overhead.
+
+```php
+use GUMP\Validation\Result;
+use GUMP\Validation\ValidationContext;
+use GUMP\Validation\Validator;
+
+final class EnterprisePasswordValidator implements Validator
+{
+    public function rule(): string
+    {
+        return 'enterprise_password';
+    }
+
+    public function validate(mixed $value, ValidationContext $context): Result
+    {
+        $ok = is_string($value)
+            && strlen($value) >= 16
+            && preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/', $value);
+
+        return $ok ? Result::pass() : Result::fail();
+    }
+}
+
+// Register globally — visible to every GUMP instance, like add_validator().
+GUMP::register_validator(
+    new EnterprisePasswordValidator(),
+    'The {field} must be a 16+ character password with mixed case, a digit, and a symbol.'
+);
+
+// Filters work the same way:
+use GUMP\Filtering\Filter;
+
+final class MaskEmailFilter implements Filter
+{
+    public function rule(): string
+    {
+        return 'mask_email';
+    }
+
+    public function apply(mixed $value, array $params = []): mixed
+    {
+        $parts = explode('@', (string) $value);
+        if (count($parts) !== 2) {
+            return $value;
+        }
+        $masked = substr($parts[0], 0, 2) . str_repeat('*', max(0, strlen($parts[0]) - 2));
+        return $masked . '@' . $parts[1];
+    }
+}
+
+GUMP::register_filter(new MaskEmailFilter());
+```
+
+### Instance-Local Validators & Filters (Isolation)
+
+If you run GUMP in a long-running PHP worker (Octane, Swoole, RoadRunner, ReactPHP), the static
+`add_validator()` / `register_validator()` methods mutate global state that bleeds across requests.
+The instance-local variants register a validator or filter on **one GUMP instance only**, so other
+concurrent requests are unaffected:
+
+```php
+$gump = (new GUMP())
+    ->register_local_validator(new TenantSpecificValidator($tenantId))
+    ->register_local_filter(new RequestScopedFilter($request));
+
+$result = $gump->validate($input, $rules);
+// Built-in + the two locally-registered rules are visible to $gump only.
+// No global state was mutated.
+```
+
+Instance-local rules take precedence over global ones with the same name — handy for swapping a
+built-in for a test double in a single test method without touching the global registry.
+
 ## Configuration
 
 ### Global Delimiter Configuration
@@ -736,7 +813,8 @@ GUMP::$field_chars_to_spaces = ['_', '-', '.'];
 
 ## Testing
 
-GUMP includes comprehensive test coverage with PHPUnit:
+GUMP includes comprehensive test coverage with PHPUnit, plus static analysis with PHPStan and
+docs-consistency checks. All three gate every PR via GitHub Actions.
 
 ```bash
 # Install development dependencies
@@ -748,11 +826,24 @@ composer test
 # Run tests with coverage
 ./vendor/bin/phpunit --coverage-html coverage
 
-# Check documentation consistency
+# Static analysis (PHPStan, level 5)
+composer analyse
+
+# Check documentation consistency (validators/filters in README match the registries,
+# and all translation files are complete)
 composer check
 
-# Dump documentation (for contributors)
+# Dump documentation (regenerates the validator/filter tables in README)
 composer dump
+
+# Coding style (php-cs-fixer dry-run; composer lint:fix applies)
+composer lint
+```
+
+A reasonable pre-push sanity check:
+
+```bash
+composer test && composer analyse && composer check
 ```
 
 ### Running Tests in Docker
