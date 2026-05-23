@@ -1,0 +1,13 @@
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+    level: 5
+    paths:
+        - gump.class.php
+        - src
+    excludePaths:
+        - vendor
+        - tests
+        - ci
+    treatPhpDocTypesAsCertain: false

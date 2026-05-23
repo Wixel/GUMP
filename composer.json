@@ -24,10 +24,11 @@
         "phpspec/prophecy": "^v1.10|^v1.17",
         "kamermans/docblock-reflection": "^1.0",
         "php-coveralls/php-coveralls": "^2.5",
-        "friendsofphp/php-cs-fixer": "^3.0"
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "phpstan/phpstan": "^2.1"
     },
     "require": {
-        "php": ">=7.1",
+        "php": ">=8.0",
         "ext-mbstring": "*",
         "ext-json": "*",
         "ext-intl": "*",
@@ -42,6 +43,8 @@
         "dump": "php ./ci/dump_filters_docs.php && php ./ci/dump_validators_docs.php",
         "check": "php ./ci/check_filters_docs.php && php ./ci/check_validators_docs.php && php ./ci/check_validators_translations.php",
         "lint": "php ./vendor/bin/php-cs-fixer fix --dry-run --diff",
-        "lint:fix": "php ./vendor/bin/php-cs-fixer fix"
+        "lint:fix": "php ./vendor/bin/php-cs-fixer fix",
+        "analyse": "php ./vendor/bin/phpstan analyse",
+        "analyse:baseline": "php ./vendor/bin/phpstan analyse --generate-baseline"
     }
 }

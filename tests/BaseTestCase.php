@@ -65,13 +65,12 @@ abstract class BaseTestCase extends TestCase
 
     public function resetCustomValidators()
     {
-        self::setPrivateField(GUMP::class, $this->gump, 'validation_methods', []);
-        self::setPrivateField(GUMP::class, $this->gump, 'validation_methods_errors', []);
+        GUMP::reset_custom_validators();
     }
 
     public function resetCustomFilters()
     {
-        self::setPrivateField(GUMP::class, $this->gump, 'filter_methods', []);
+        GUMP::reset_custom_filters();
     }
 
     public function resetCustomFieldsLabels()

@@ -9,26 +9,25 @@ const FILTERS_PREFIX = 'filter_';
 
 function get_gump_validators()
 {
-    $reflect = new ReflectionClass('GUMP');
+    // Walk the registry — the source of truth post-modernisation.
+    $registry = call_gump_internal('registry');
 
-    $validators = array_filter($reflect->getMethods(), function ($method) {
-        return strpos($method->name, VALIDATORS_PREFIX) !== false;
-    });
+    $registryReflection = new ReflectionClass($registry);
+    $validatorsProperty = $registryReflection->getProperty('validators');
+    $validatorsProperty->setAccessible(true);
+    /** @var array<string, GUMP\Validation\Validator> $validators */
+    $validators = $validatorsProperty->getValue($registry);
 
     $result = [];
-    foreach ($validators as $validator) {
-        $docblock = new \kamermans\Reflection\DocBlock($validator);
+    foreach ($validators as $ruleName => $validator) {
+        $classReflection = new ReflectionClass($validator);
 
-        $ruleName = str_replace(VALIDATORS_PREFIX, '', $validator->name);
-        $ruleDescription = $docblock->getComment();
-        $ruleExampleParameter = $docblock->getTag('example_parameter');
+        $description = parse_class_docblock_description($classReflection->getDocComment());
 
-        $item = [
-            'description' => $ruleDescription,
-        ];
+        $item = ['description' => $description];
 
-        if (!is_null($ruleExampleParameter)) {
-            $item['rule'] = sprintf('**%s**,%s', $ruleName, $ruleExampleParameter);
+        if ($classReflection->hasConstant('EXAMPLE_PARAMETER')) {
+            $item['rule'] = sprintf('**%s**,%s', $ruleName, $classReflection->getConstant('EXAMPLE_PARAMETER'));
         } else {
             $item['rule'] = sprintf('**%s**', $ruleName);
         }
@@ -37,6 +36,43 @@ function get_gump_validators()
     }
 
     return $result;
+}
+
+/**
+ * Invoke a protected static method on GUMP (used to reach into registry() / filter_registry()
+ * which are non-public by design).
+ */
+function call_gump_internal(string $method)
+{
+    $reflection = new ReflectionClass('GUMP');
+    $methodReflection = $reflection->getMethod($method);
+    $methodReflection->setAccessible(true);
+
+    return $methodReflection->invoke(null);
+}
+
+/**
+ * Extract the first sentence/line of the class docblock as the rule's description.
+ */
+function parse_class_docblock_description($docComment): string
+{
+    if ($docComment === false || $docComment === '') {
+        return '';
+    }
+
+    // Strip the /** and */ wrappers, then take the first non-empty content line.
+    $stripped = preg_replace('#^\s*/\*\*\s*\n?|\s*\*/\s*$#', '', $docComment);
+    $lines = preg_split('/\R/', $stripped);
+
+    foreach ($lines as $line) {
+        $line = preg_replace('/^\s*\*\s?/', '', $line);
+        $line = trim($line);
+        if ($line !== '' && !str_starts_with($line, '@')) {
+            return $line;
+        }
+    }
+
+    return '';
 }
 
 function get_docs_validators(string $readmePath)
@@ -68,28 +104,24 @@ function get_docs_validators(string $readmePath)
 
 function get_gump_filters()
 {
-    $reflect = new ReflectionClass('GUMP');
+    $registry = call_gump_internal('filter_registry');
 
-    $methodsToIgnore = ['filter_input', 'filter_rules', 'filter_to_method'];
-
-    $filters = array_filter($reflect->getMethods(), function ($method) use ($methodsToIgnore) {
-        return strpos($method->name, FILTERS_PREFIX) === 0 && !in_array($method->name, $methodsToIgnore);
-    });
+    $registryReflection = new ReflectionClass($registry);
+    $filtersProperty = $registryReflection->getProperty('filters');
+    $filtersProperty->setAccessible(true);
+    /** @var array<string, GUMP\Filtering\Filter> $filters */
+    $filters = $filtersProperty->getValue($registry);
 
     $result = [];
-    foreach ($filters as $filter) {
-        $docblock = new \kamermans\Reflection\DocBlock($filter);
+    foreach ($filters as $ruleName => $filter) {
+        $classReflection = new ReflectionClass($filter);
 
-        $ruleName = str_replace(FILTERS_PREFIX, '', $filter->name);
-        $ruleDescription = $docblock->getComment();
-        $ruleExampleParameter = $docblock->getTag('example_parameter');
+        $description = parse_class_docblock_description($classReflection->getDocComment());
 
-        $item = [
-            'description' => $ruleDescription,
-        ];
+        $item = ['description' => $description];
 
-        if (!is_null($ruleExampleParameter)) {
-            $item['rule'] = sprintf('**%s**,%s', $ruleName, $ruleExampleParameter);
+        if ($classReflection->hasConstant('EXAMPLE_PARAMETER')) {
+            $item['rule'] = sprintf('**%s**,%s', $ruleName, $classReflection->getConstant('EXAMPLE_PARAMETER'));
         } else {
             $item['rule'] = sprintf('**%s**', $ruleName);
         }

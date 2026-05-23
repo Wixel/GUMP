@@ -1,7 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 use GUMP\ArrayHelpers;
 use GUMP\EnvHelpers;
+use GUMP\Filtering\ClosureFilter;
+use GUMP\Filtering\FilterRegistry;
+use GUMP\Validation\ClosureValidator;
+use GUMP\Validation\ValidationContext;
+use GUMP\Validation\ValidatorRegistry;
 
 /**
  * GUMP - A Fast PHP Data Validation & Filtering Library
@@ -29,32 +36,163 @@ class GUMP
     protected static $instance = null;
 
     /**
-     * Contains readable field names that have been manually set.
+     * Readable field names that have been manually set.
      *
      * @var array
      */
     protected static $fields = [];
 
     /**
-     * Custom validators.
-     *
-     * @var array
-     */
-    protected static $validation_methods = [];
-
-    /**
-     * Custom validators error messages.
+     * Custom validator error messages.
      *
      * @var array
      */
     protected static $validation_methods_errors = [];
 
     /**
-     * Customer filters.
-     *
-     * @var array
+     * Validator registry. Shared across all GUMP instances by design — the
+     * static API (GUMP::add_validator) modifies this registry, so any GUMP
+     * instance can see custom validators added by callers.
      */
-    protected static $filter_methods = [];
+    protected static ?ValidatorRegistry $validator_registry = null;
+
+    /**
+     * Filter registry. Shared across all GUMP instances by design — see
+     * $validator_registry note.
+     */
+    protected static ?FilterRegistry $filter_registry = null;
+
+    protected static function registry(): ValidatorRegistry
+    {
+        if (self::$validator_registry === null) {
+            self::$validator_registry = new ValidatorRegistry();
+            self::register_built_in_validators(self::$validator_registry);
+        }
+
+        return self::$validator_registry;
+    }
+
+    protected static function filter_registry(): FilterRegistry
+    {
+        if (self::$filter_registry === null) {
+            self::$filter_registry = new FilterRegistry();
+            self::register_built_in_filters(self::$filter_registry);
+        }
+
+        return self::$filter_registry;
+    }
+
+    private static function register_built_in_validators(ValidatorRegistry $registry): void
+    {
+        $validators = [
+            \GUMP\Validation\Validators\RequiredValidator::class,
+            \GUMP\Validation\Validators\ContainsValidator::class,
+            \GUMP\Validation\Validators\ContainsListValidator::class,
+            \GUMP\Validation\Validators\DoesntContainListValidator::class,
+            \GUMP\Validation\Validators\BooleanValidator::class,
+            \GUMP\Validation\Validators\ValidEmailValidator::class,
+            \GUMP\Validation\Validators\MaxLenValidator::class,
+            \GUMP\Validation\Validators\MinLenValidator::class,
+            \GUMP\Validation\Validators\ExactLenValidator::class,
+            \GUMP\Validation\Validators\BetweenLenValidator::class,
+            \GUMP\Validation\Validators\AlphaValidator::class,
+            \GUMP\Validation\Validators\AlphaNumericValidator::class,
+            \GUMP\Validation\Validators\AlphaDashValidator::class,
+            \GUMP\Validation\Validators\AlphaNumericDashValidator::class,
+            \GUMP\Validation\Validators\AlphaNumericSpaceValidator::class,
+            \GUMP\Validation\Validators\AlphaSpaceValidator::class,
+            \GUMP\Validation\Validators\NumericValidator::class,
+            \GUMP\Validation\Validators\IntegerValidator::class,
+            \GUMP\Validation\Validators\FloatValidator::class,
+            \GUMP\Validation\Validators\ValidUrlValidator::class,
+            \GUMP\Validation\Validators\UrlExistsValidator::class,
+            \GUMP\Validation\Validators\ValidIpValidator::class,
+            \GUMP\Validation\Validators\ValidIpv4Validator::class,
+            \GUMP\Validation\Validators\ValidIpv6Validator::class,
+            \GUMP\Validation\Validators\ValidCcValidator::class,
+            \GUMP\Validation\Validators\ValidNameValidator::class,
+            \GUMP\Validation\Validators\StreetAddressValidator::class,
+            \GUMP\Validation\Validators\IbanValidator::class,
+            \GUMP\Validation\Validators\DateValidator::class,
+            \GUMP\Validation\Validators\MinAgeValidator::class,
+            \GUMP\Validation\Validators\MaxNumericValidator::class,
+            \GUMP\Validation\Validators\MinNumericValidator::class,
+            \GUMP\Validation\Validators\StartsValidator::class,
+            \GUMP\Validation\Validators\RequiredFileValidator::class,
+            \GUMP\Validation\Validators\ExtensionValidator::class,
+            \GUMP\Validation\Validators\EqualsfieldValidator::class,
+            \GUMP\Validation\Validators\Guidv4Validator::class,
+            \GUMP\Validation\Validators\PhoneNumberValidator::class,
+            \GUMP\Validation\Validators\RegexValidator::class,
+            \GUMP\Validation\Validators\ValidJsonStringValidator::class,
+            \GUMP\Validation\Validators\ValidArraySizeGreaterValidator::class,
+            \GUMP\Validation\Validators\ValidArraySizeLesserValidator::class,
+            \GUMP\Validation\Validators\ValidArraySizeEqualValidator::class,
+            \GUMP\Validation\Validators\StrongPasswordValidator::class,
+            \GUMP\Validation\Validators\JwtTokenValidator::class,
+            \GUMP\Validation\Validators\HashValidator::class,
+            \GUMP\Validation\Validators\NoSqlInjectionValidator::class,
+            \GUMP\Validation\Validators\NoXssValidator::class,
+            \GUMP\Validation\Validators\UuidValidator::class,
+            \GUMP\Validation\Validators\Base64Validator::class,
+            \GUMP\Validation\Validators\HexColorValidator::class,
+            \GUMP\Validation\Validators\RgbColorValidator::class,
+            \GUMP\Validation\Validators\TimezoneValidator::class,
+            \GUMP\Validation\Validators\LanguageCodeValidator::class,
+            \GUMP\Validation\Validators\CountryCodeValidator::class,
+            \GUMP\Validation\Validators\CurrencyCodeValidator::class,
+            \GUMP\Validation\Validators\MacAddressValidator::class,
+            \GUMP\Validation\Validators\DomainNameValidator::class,
+            \GUMP\Validation\Validators\PortNumberValidator::class,
+            \GUMP\Validation\Validators\SocialHandleValidator::class,
+            \GUMP\Validation\Validators\LatitudeValidator::class,
+            \GUMP\Validation\Validators\LongitudeValidator::class,
+            \GUMP\Validation\Validators\PostalCodeValidator::class,
+            \GUMP\Validation\Validators\CoordinatesValidator::class,
+            \GUMP\Validation\Validators\FutureDateValidator::class,
+            \GUMP\Validation\Validators\PastDateValidator::class,
+            \GUMP\Validation\Validators\BusinessDayValidator::class,
+            \GUMP\Validation\Validators\ValidTimeValidator::class,
+            \GUMP\Validation\Validators\DateRangeValidator::class,
+            \GUMP\Validation\Validators\EvenValidator::class,
+            \GUMP\Validation\Validators\OddValidator::class,
+            \GUMP\Validation\Validators\PrimeValidator::class,
+            \GUMP\Validation\Validators\WordCountValidator::class,
+            \GUMP\Validation\Validators\CamelCaseValidator::class,
+            \GUMP\Validation\Validators\SnakeCaseValidator::class,
+            \GUMP\Validation\Validators\UrlSlugValidator::class,
+        ];
+
+        foreach ($validators as $class) {
+            $registry->register(new $class());
+        }
+    }
+
+    private static function register_built_in_filters(FilterRegistry $registry): void
+    {
+        $filters = [
+            \GUMP\Filtering\Filters\NoiseWordsFilter::class,
+            \GUMP\Filtering\Filters\RmpunctuationFilter::class,
+            \GUMP\Filtering\Filters\UrlencodeFilter::class,
+            \GUMP\Filtering\Filters\HtmlencodeFilter::class,
+            \GUMP\Filtering\Filters\SanitizeEmailFilter::class,
+            \GUMP\Filtering\Filters\SanitizeNumbersFilter::class,
+            \GUMP\Filtering\Filters\SanitizeFloatsFilter::class,
+            \GUMP\Filtering\Filters\SanitizeStringFilter::class,
+            \GUMP\Filtering\Filters\BooleanFilter::class,
+            \GUMP\Filtering\Filters\BasicTagsFilter::class,
+            \GUMP\Filtering\Filters\WholeNumberFilter::class,
+            \GUMP\Filtering\Filters\MsWordCharactersFilter::class,
+            \GUMP\Filtering\Filters\LowerCaseFilter::class,
+            \GUMP\Filtering\Filters\UpperCaseFilter::class,
+            \GUMP\Filtering\Filters\SlugFilter::class,
+            \GUMP\Filtering\Filters\TrimFilter::class,
+        ];
+
+        foreach ($filters as $class) {
+            $registry->register(new $class());
+        }
+    }
 
     // ** ------------------------- Instance Helper ---------------------------- ** //
 
@@ -63,7 +201,7 @@ class GUMP
      *
      * @return GUMP
      */
-    public static function get_instance()
+    public static function get_instance(): self
     {
         if (self::$instance === null) {
             self::$instance = new static();
@@ -124,13 +262,6 @@ class GUMP
                                      the,their,them,then,there,these,they,this,those,through,to,too,under,up,
                                      very,was,way,we,well,were,what,where,which,while,who,with,would,you,your,a,
                                      b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,$,1,2,3,4,5,6,7,8,9,0,_";
-
-    /**
-     * Regex pattern for alpha characters including international characters.
-     *
-     * @var string
-     */
-    private static $alpha_regex = 'a-zÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖßÙÚÛÜÝŸÑàáâãäåçèéêëìíîïðòóôõöùúûüýÿñ';
 
     /**
      * Values that are considered TRUE in boolean validation and filtering.
@@ -254,9 +385,9 @@ class GUMP
      * @param mixed $value
      * @return bool
      */
-    public static function is_empty($value)
+    public static function is_empty(mixed $value): bool
     {
-        return (is_null($value) || $value === '' || (is_array($value) && count($value) === 0));
+        return is_null($value) || $value === '' || (is_array($value) && count($value) === 0);
     }
 
     /**
@@ -271,12 +402,22 @@ class GUMP
      */
     public static function add_validator(string $rule, callable $callback, string $error_message)
     {
-        if (method_exists(__CLASS__, self::validator_to_method($rule)) || isset(self::$validation_methods[$rule])) {
+        if (self::has_validator($rule)) {
             throw new Exception(sprintf("'%s' validator is already defined.", $rule));
         }
 
-        self::$validation_methods[$rule] = $callback;
+        self::registry()->register(new ClosureValidator($rule, \Closure::fromCallable($callback)));
         self::$validation_methods_errors[$rule] = $error_message;
+    }
+
+    /**
+     * Reset the validator registry to its built-in defaults.
+     * Test helper — clears any validators added via add_validator().
+     */
+    public static function reset_custom_validators(): void
+    {
+        self::$validator_registry        = null;
+        self::$validation_methods_errors = [];
     }
 
     /**
@@ -290,11 +431,31 @@ class GUMP
      */
     public static function add_filter(string $rule, callable $callback)
     {
-        if (method_exists(__CLASS__, self::filter_to_method($rule)) || isset(self::$filter_methods[$rule])) {
+        if (self::has_filter($rule)) {
             throw new Exception(sprintf("'%s' filter is already defined.", $rule));
         }
 
-        self::$filter_methods[$rule] = $callback;
+        self::filter_registry()->register(new ClosureFilter($rule, \Closure::fromCallable($callback)));
+    }
+
+    /**
+     * Reset the filter registry to its built-in defaults.
+     * Test helper — clears any filters added via add_filter().
+     */
+    public static function reset_custom_filters(): void
+    {
+        self::$filter_registry = null;
+    }
+
+    /**
+     * FILTER_SANITIZE_STRING-style sanitiser (PHP 8.1+ deprecated the original).
+     * Used internally and by SanitizeStringFilter.
+     */
+    public static function polyfill_filter_var_string($value): string
+    {
+        $str = preg_replace('/\x00|<[^>]*>?/', '', (string) $value);
+
+        return (string) str_replace(["'", '"'], ['&#39;', '&#34;'], $str);
     }
 
     /**
@@ -306,7 +467,8 @@ class GUMP
      */
     public static function has_validator(string $rule)
     {
-        return method_exists(__CLASS__, self::validator_to_method($rule)) || isset(self::$validation_methods[$rule]);
+        return self::registry()->has($rule)
+            || method_exists(__CLASS__, sprintf('validate_%s', $rule));
     }
 
     /**
@@ -318,8 +480,8 @@ class GUMP
      */
     public static function has_filter(string $filter)
     {
-        return method_exists(__CLASS__, self::filter_to_method($filter))
-            || isset(self::$filter_methods[$filter])
+        return self::filter_registry()->has($filter)
+            || method_exists(__CLASS__, sprintf('filter_%s', $filter))
             || function_exists($filter);
     }
 
@@ -593,6 +755,8 @@ class GUMP
             return $param;
         }
 
+        $param = (string) $param;
+
         if (strpos($param, self::$rules_parameters_arrays_delimiter) !== false) {
             return explode(self::$rules_parameters_arrays_delimiter, $param);
         }
@@ -622,28 +786,6 @@ class GUMP
         $found = array_values(array_intersect($require_type_of_rules, $rules));
 
         return count($found) > 0;
-    }
-
-    /**
-     * Helper to convert validator rule name to validator rule method name.
-     *
-     * @param string $rule
-     * @return string
-     */
-    private static function validator_to_method(string $rule)
-    {
-        return sprintf('validate_%s', $rule);
-    }
-
-    /**
-     * Helper to convert filter rule name to filter rule method name.
-     *
-     * @param string $rule
-     * @return string
-     */
-    private static function filter_to_method(string $rule)
-    {
-        return sprintf('filter_%s', $rule);
     }
 
     /**
@@ -692,23 +834,22 @@ class GUMP
      */
     private function call_validator(string $rule, string $field, array $input, array $rule_params = [], $value = null)
     {
-        $method = self::validator_to_method($rule);
+        // Primary dispatch: Validator implementations in the registry.
+        if (self::registry()->has($rule)) {
+            $context = new ValidationContext($field, $input, $rule_params);
+            $result  = self::registry()->get($rule)->validate($value, $context);
 
-        // use native validations
+            return $result->isValid()
+                ? true
+                : $this->generate_error_array($field, $input[$field], $rule, $rule_params);
+        }
+
+        // Subclass extension: GUMP descendants may declare validate_<rule> as a protected method.
+        $method = sprintf('validate_%s', $rule);
         if (is_callable([$this, $method])) {
             $result = $this->$method($field, $input, $rule_params, $value);
 
-            // is_array check for backward compatibility
             return (is_array($result) || $result === false)
-                ? $this->generate_error_array($field, $input[$field], $rule, $rule_params)
-                : true;
-        }
-
-        // use custom validations
-        if (isset(self::$validation_methods[$rule])) {
-            $result = call_user_func(self::$validation_methods[$rule], $field, $input, $rule_params, $value);
-
-            return ($result === false)
                 ? $this->generate_error_array($field, $input[$field], $rule, $rule_params)
                 : true;
         }
@@ -727,19 +868,18 @@ class GUMP
      */
     private function call_filter(string $rule, $value, array $rule_params = [])
     {
-        $method = self::filter_to_method($rule);
+        // Primary dispatch: Filter implementations in the registry.
+        if (self::filter_registry()->has($rule)) {
+            return self::filter_registry()->get($rule)->apply($value, $rule_params);
+        }
 
-        // use native filters
+        // Subclass extension: GUMP descendants may declare filter_<rule> as a protected method.
+        $method = sprintf('filter_%s', $rule);
         if (is_callable([$this, $method])) {
             return $this->$method($value, $rule_params);
         }
 
-        // use custom filters
-        if (isset(self::$filter_methods[$rule])) {
-            return call_user_func(self::$filter_methods[$rule], $value, $rule_params);
-        }
-
-        // use php functions as filters
+        // Fallback: any PHP function with a matching name (e.g. 'strip_tags', 'md5').
         if (function_exists($rule)) {
             return call_user_func($rule, $value, ...$rule_params);
         }
@@ -817,10 +957,14 @@ class GUMP
      *
      * @return array
      */
-    protected function get_messages()
+    protected function get_messages(): array
     {
         $lang_file = __DIR__.DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR.$this->lang.'.php';
         $messages = include $lang_file;
+
+        if (!is_array($messages)) {
+            throw new Exception(sprintf("Language file '%s' did not return an array.", $this->lang));
+        }
 
         return array_merge($messages, self::$validation_methods_errors);
     }
@@ -996,1729 +1140,5 @@ class GUMP
         return $input;
     }
 
-    // ** ------------------------- Filters --------------------------------------- ** //
 
-    /**
-     * Replace noise words in a string (http://tax.cchgroup.com/help/Avoiding_noise_words_in_your_search.htm).
-     *
-     * @param string $value
-     * @param array  $params
-     *
-     * @return string
-     */
-    protected function filter_noise_words($value, array $params = [])
-    {
-        $value = preg_replace('/\s\s+/u', chr(32), $value);
-
-        $value = " $value ";
-
-        $words = explode(',', self::$en_noise_words);
-
-        foreach ($words as $word) {
-            $word = trim($word);
-
-            $word = " $word "; // Normalize
-
-            if (stripos($value, $word) !== false) {
-                $value = str_ireplace($word, chr(32), $value);
-            }
-        }
-
-        return trim($value);
-    }
-
-    /**
-     * Remove all known punctuation from a string.
-     *
-     * @param string $value
-     * @param array  $params
-     *
-     * @return string
-     */
-    protected function filter_rmpunctuation($value, array $params = [])
-    {
-        return preg_replace("/(?![.=$'€%-])\p{P}/u", '', $value);
-    }
-
-    /**
-     * Sanitize the string by urlencoding characters.
-     *
-     * @param string $value
-     * @param array  $params
-     *
-     * @return string
-     */
-    protected function filter_urlencode($value, array $params = [])
-    {
-        return filter_var($value, FILTER_SANITIZE_ENCODED);
-    }
-
-    /**
-     * Sanitize the string by converting HTML characters to their HTML entities.
-     *
-     * @param string $value
-     * @param array  $params
-     *
-     * @return string
-     */
-    protected function filter_htmlencode($value, array $params = [])
-    {
-        return filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS);
-    }
-
-    /**
-     * Sanitize the string by removing illegal characters from emails.
-     *
-     * @param string $value
-     * @param array  $params
-     *
-     * @return string
-     */
-    protected function filter_sanitize_email($value, array $params = [])
-    {
-        return filter_var($value, FILTER_SANITIZE_EMAIL);
-    }
-
-    /**
-     * Sanitize the string by removing illegal characters from numbers.
-     *
-     * @param string $value
-     * @param array  $params
-     *
-     * @return string
-     */
-    protected function filter_sanitize_numbers($value, array $params = [])
-    {
-        return filter_var($value, FILTER_SANITIZE_NUMBER_INT);
-    }
-
-    /**
-     * Sanitize the string by removing illegal characters from float numbers.
-     *
-     * @param string $value
-     * @param array  $params
-     *
-     * @return string
-     */
-    protected function filter_sanitize_floats($value, array $params = [])
-    {
-        return filter_var($value, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-    }
-
-    /**
-     * Sanitize the string by removing any script tags.
-     *
-     * @param string $value
-     * @param array  $params
-     *
-     * @return string
-     */
-    protected function filter_sanitize_string($value, array $params = [])
-    {
-        return self::polyfill_filter_var_string($value);
-    }
-
-    /**
-     * Implemented to replace FILTER_SANITIZE_STRING behaviour deprecated in php8.1
-     *
-     * @param mixed $value
-     * @return string
-     */
-    private static function polyfill_filter_var_string($value)
-    {
-        $str = preg_replace('/\x00|<[^>]*>?/', '', $value);
-
-        return (string)str_replace(["'", '"'], ['&#39;', '&#34;'], $str);
-    }
-
-    /**
-     * Converts ['1', 1, 'true', true, 'yes', 'on'] to true, anything else is false ('on' is useful for form checkboxes).
-     *
-     * @param mixed $value
-     * @param array $params
-     *
-     * @return bool
-     */
-    protected function filter_boolean($value, array $params = [])
-    {
-        if (in_array($value, self::$trues, true)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Filter out all HTML tags except the defined basic tags.
-     *
-     * @param string $value
-     * @param array  $params
-     *
-     * @return string
-     */
-    protected function filter_basic_tags($value, array $params = [])
-    {
-        return strip_tags($value, self::$basic_tags);
-    }
-
-    /**
-     * Convert the provided numeric value to a whole number.
-     *
-     * @param string $value
-     * @param array  $params
-     *
-     * @return string
-     */
-    protected function filter_whole_number($value, array $params = [])
-    {
-        return intval($value);
-    }
-
-    /**
-     * Convert MS Word special characters to web safe characters. ([“ ”] => ", [‘ ’] => ', [–] => -, […] => ...)
-     *
-     * @param string $value
-     * @param array  $params
-     *
-     * @return string
-     */
-    protected function filter_ms_word_characters($value, array $params = [])
-    {
-        return str_replace(['“', '”', '‘', '’', '–', '…'], ['"', '"', "'", "'", '-', '...'], $value);
-    }
-
-    /**
-     * Converts to lowercase.
-     *
-     * @param string $value
-     * @param array  $params
-     *
-     * @return string
-     */
-    protected function filter_lower_case($value, array $params = [])
-    {
-        return mb_strtolower($value);
-    }
-
-    /**
-     * Converts to uppercase.
-     *
-     * @param string $value
-     * @param array  $params
-     *
-     * @return string
-     */
-    protected function filter_upper_case($value, array $params = [])
-    {
-        return mb_strtoupper($value);
-    }
-
-    /**
-     * Converts value to url-web-slugs.
-     *
-     * @see https://stackoverflow.com/questions/40641973/php-to-convert-string-to-slug
-     * @see http://cubiq.org/the-perfect-php-clean-url-generator
-     *
-     * @param string $value
-     * @param array  $params
-     *
-     * @return string
-     */
-    protected function filter_slug($value, array $params = [])
-    {
-        $delimiter = '-';
-
-        return mb_strtolower(trim(preg_replace('/[\s-]+/', $delimiter, preg_replace('/[^A-Za-z0-9-]+/', $delimiter, preg_replace('/[&]/', 'and', preg_replace('/[\']/', '', iconv('UTF-8', 'ASCII//TRANSLIT', $value))))), $delimiter));
-    }
-
-    /**
-     * Remove spaces from the beginning and end of strings.
-     *
-     * @param string $value
-     * @param array  $params
-     *
-     * @return string
-     */
-    protected function filter_trim($value, array $params = [])
-    {
-        return trim($value);
-    }
-
-    // ** ------------------------- Validators ------------------------------------ ** //
-
-    /**
-     * Ensures the specified key value exists and is not empty (not null, not empty string, not empty array).
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_required($field, array $input, array $params = [], $value = null)
-    {
-        return isset($value) && !self::is_empty($value);
-    }
-
-    /**
-     * Verify that a value is contained within the pre-defined value set.
-     *
-     * @example_parameter one;two;use array format if one of the values contains semicolons
-     *
-     * @param string $field
-     * @param array  $input
-     * @param array $params
-     *
-     * @return bool
-     */
-    protected function validate_contains($field, array $input, array $params = [], $value = null)
-    {
-        $value = mb_strtolower(trim($input[$field]));
-
-        $params = array_map(static function ($value) {
-            return mb_strtolower(trim($value));
-        }, $params);
-
-        return in_array($value, $params, true);
-    }
-
-    /**
-     * Verify that a value is contained within the pre-defined value set. Error message will NOT show the list of possible values.
-     *
-     * @example_parameter value1;value2
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_contains_list($field, array $input, array $params = [], $value = null)
-    {
-        return $this->validate_contains($field, $input, $params);
-    }
-
-    /**
-     * Verify that a value is contained within the pre-defined value set. Error message will NOT show the list of possible values.
-     *
-     * @example_parameter value1;value2
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_doesnt_contain_list($field, array $input, array $params = [], $value = null)
-    {
-        return !$this->validate_contains($field, $input, $params);
-    }
-
-    /**
-     * Determine if the provided value is a valid boolean. Returns true for: yes/no, on/off, 1/0, true/false. In strict mode (optional) only true/false will be valid which you can combine with boolean filter.
-     *
-     * @example_parameter strict
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_boolean($field, array $input, array $params = [], $value = null)
-    {
-        if (isset($params[0]) && $params[0] === 'strict') {
-            return in_array($input[$field], [true, false], true);
-        }
-
-        $booleans = [];
-        foreach (self::$trues as $true) {
-            $booleans[] = $true;
-        }
-        foreach (self::$falses as $false) {
-            $booleans[] = $false;
-        }
-
-        return in_array($input[$field], $booleans, true);
-    }
-
-    /**
-     * Determine if the provided email has valid format.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value individual value (in case of array)
-     *
-     * @return bool
-     */
-    protected function validate_valid_email($field, array $input, array $params = [], $value = null)
-    {
-        return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
-    }
-
-    /**
-     * Determine if the provided value length is less or equal to a specific value.
-     *
-     * @example_parameter 240
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_max_len($field, array $input, array $params = [], $value = null)
-    {
-        return mb_strlen($value) <= (int)$params[0];
-    }
-
-    /**
-     * Determine if the provided value length is more or equal to a specific value.
-     *
-     * @example_parameter 4
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_min_len($field, array $input, array $params = [], $value = null)
-    {
-        return mb_strlen($value) >= (int)$params[0];
-    }
-
-    /**
-     * Determine if the provided value length matches a specific value.
-     *
-     * @example_parameter 5
-     *
-     * @param string $field
-     * @param array  $input
-     * @param array  $params
-     * @param mixed  $value
-     *
-     * @return bool
-     */
-    protected function validate_exact_len($field, array $input, array $params = [], $value = null)
-    {
-        return mb_strlen($value) == (int)$params[0];
-    }
-
-    /**
-     * Determine if the provided value length is between min and max values.
-     *
-     * @example_parameter 3;11
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_between_len($field, array $input, array $params = [], $value = null)
-    {
-        return $this->validate_min_len($field, $input, [$params[0]], $value)
-            && $this->validate_max_len($field, $input, [$params[1]], $value);
-    }
-
-    /**
-     * Determine if the provided value contains only alpha characters.
-     *
-     * @param string $field
-     * @param array  $input
-     * @param array  $params
-     * @param mixed  $value
-     * @return bool
-     */
-    protected function validate_alpha($field, array $input, array $params = [], $value = null)
-    {
-        return preg_match('/^(['.self::$alpha_regex.'])+$/i', $value) > 0;
-    }
-
-    /**
-     * Determine if the provided value contains only alpha-numeric characters.
-     *
-     * @param string $field
-     * @param array  $input
-     * @param array  $params
-     *
-     * @return bool
-     */
-    protected function validate_alpha_numeric($field, array $input, array $params = [], $value = null)
-    {
-        return preg_match('/^(['.self::$alpha_regex.'0-9])+$/i', $value) > 0;
-    }
-
-    /**
-     * Determine if the provided value contains only alpha characters with dashed and underscores.
-     *
-     * @param string $field
-     * @param array  $input
-     * @param array  $params
-     *
-     * @return bool
-     */
-    protected function validate_alpha_dash($field, array $input, array $params = [], $value = null)
-    {
-        return preg_match('/^(['.self::$alpha_regex.'_-])+$/i', $value) > 0;
-    }
-
-    /**
-     * Determine if the provided value contains only alpha numeric characters with dashed and underscores.
-     *
-     * @param string $field
-     * @param array  $input
-     * @param array  $params
-     *
-     * @return bool
-     */
-    protected function validate_alpha_numeric_dash($field, array $input, array $params = [], $value = null)
-    {
-        return preg_match('/^(['.self::$alpha_regex.'0-9_-])+$/i', $value) > 0;
-    }
-
-    /**
-     * Determine if the provided value contains only alpha numeric characters with spaces.
-     *
-     * @param string $field
-     * @param array  $input
-     * @param array  $params
-     *
-     * @return bool
-     */
-    protected function validate_alpha_numeric_space($field, array $input, array $params = [], $value = null)
-    {
-        return preg_match('/^(['.self::$alpha_regex.'\s0-9])+$/i', $value) > 0;
-    }
-
-    /**
-     * Determine if the provided value contains only alpha characters with spaces.
-     *
-     * @param string $field
-     * @param array  $input
-     * @param array  $params
-     *
-     * @return bool
-     */
-    protected function validate_alpha_space($field, array $input, array $params = [], $value = null)
-    {
-        return preg_match('/^(['.self::$alpha_regex.'\s])+$/i', $value) > 0;
-    }
-
-    /**
-     * Determine if the provided value is a valid number or numeric string.
-     *
-     * @param string $field
-     * @param array  $input
-     * @param array  $params
-     *
-     * @return bool
-     */
-    protected function validate_numeric($field, array $input, array $params = [], $value = null)
-    {
-        return is_numeric($value);
-    }
-
-    /**
-     * Determine if the provided value is a valid integer.
-     *
-     * @param string $field
-     * @param array  $input
-     * @param array  $params
-     *
-     * @return bool
-     */
-    protected function validate_integer($field, array $input, array $params = [], $value = null)
-    {
-        return !(filter_var($value, FILTER_VALIDATE_INT) === false || is_bool($value) || is_null($value));
-    }
-
-    /**
-     * Determine if the provided value is a valid float.
-     *
-     * @param string $field
-     * @param array  $input
-     * @param array  $params
-     *
-     * @return bool
-     */
-    protected function validate_float($field, array $input, array $params = [], $value = null)
-    {
-        return filter_var($value, FILTER_VALIDATE_FLOAT) !== false;
-    }
-
-    /**
-     * Determine if the provided value is a valid URL.
-     *
-     * @param string $field
-     * @param array  $input
-     * @param array  $params
-     *
-     * @return bool
-     */
-    protected function validate_valid_url($field, array $input, array $params = [], $value = null)
-    {
-        return filter_var($value, FILTER_VALIDATE_URL) !== false;
-    }
-
-    /**
-     * Determine if a URL exists & is accessible.
-     *
-     * @param string $field
-     * @param array  $input
-     * @param array  $params
-     *
-     * @return bool
-     */
-    protected function validate_url_exists($field, array $input, array $params = [], $value = null)
-    {
-        $url = parse_url(mb_strtolower($value));
-
-        if (isset($url['host'])) {
-            $url = $url['host'];
-        }
-
-        return EnvHelpers::checkdnsrr(idn_to_ascii($url, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46), 'A') !== false;
-    }
-
-    /**
-     * Determine if the provided value is a valid IP address.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_valid_ip($field, array $input, array $params = [], $value = null)
-    {
-        return filter_var($value, FILTER_VALIDATE_IP) !== false;
-    }
-
-    /**
-     * Determine if the provided value is a valid IPv4 address.
-     *
-     * @see What about private networks? What about loop-back address? 127.0.0.1 http://en.wikipedia.org/wiki/Private_network
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_valid_ipv4($field, array $input, array $params = [], $value = null)
-    {
-        return filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false;
-    }
-
-    /**
-     * Determine if the provided value is a valid IPv6 address.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_valid_ipv6($field, array $input, array $params = [], $value = null)
-    {
-        return filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false;
-    }
-
-    /**
-     * Determine if the input is a valid credit card number.
-     *
-     * @see http://stackoverflow.com/questions/174730/what-is-the-best-way-to-validate-a-credit-card-in-php
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_valid_cc($field, array $input, array $params = [], $value = null)
-    {
-        $number = preg_replace('/\D/', '', $value);
-
-        $number_length = mb_strlen($number);
-
-        /**
-         * Bail out if $number_length is 0.
-         * This can be the case if a user has entered only alphabets
-         *
-         * @since 1.5
-         */
-        if ($number_length == 0) {
-            return false;
-        }
-
-        $parity = $number_length % 2;
-
-        $total = 0;
-
-        for ($i = 0; $i < $number_length; ++$i) {
-            $digit = $number[$i];
-
-            if ($i % 2 == $parity) {
-                $digit *= 2;
-
-                if ($digit > 9) {
-                    $digit -= 9;
-                }
-            }
-
-            $total += $digit;
-        }
-
-        return $total % 10 == 0;
-    }
-
-    /**
-     * Determine if the input is a valid human name.
-     *
-     * @see https://github.com/Wixel/GUMP/issues/5
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_valid_name($field, array $input, array $params = [], $value = null)
-    {
-        return preg_match("/^([a-z \p{L} '-])+$/i", $value) > 0;
-    }
-
-    /**
-     * Determine if the provided input is likely to be a street address using weak detection.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_street_address($field, array $input, array $params = [], $value = null)
-    {
-        // Theory: 1 number, 1 or more spaces, 1 or more words
-        $has_letter = preg_match('/[a-zA-Z]/', $value);
-        $has_digit = preg_match('/\d/', $value);
-        $has_space = preg_match('/\s/', $value);
-
-        return $has_letter && $has_digit && $has_space;
-    }
-
-    /**
-     * Determine if the provided value is a valid IBAN.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_iban($field, array $input, array $params = [], $value = null)
-    {
-        $character = [
-            'A' => 10, 'C' => 12, 'D' => 13, 'E' => 14, 'F' => 15, 'G' => 16,
-            'H' => 17, 'I' => 18, 'J' => 19, 'K' => 20, 'L' => 21, 'M' => 22,
-            'N' => 23, 'O' => 24, 'P' => 25, 'Q' => 26, 'R' => 27, 'S' => 28,
-            'T' => 29, 'U' => 30, 'V' => 31, 'W' => 32, 'X' => 33, 'Y' => 34,
-            'Z' => 35, 'B' => 11,
-        ];
-
-        if (!preg_match("/\A[A-Z]{2}\d{2} ?[A-Z\d]{4}( ?\d{4}){1,} ?\d{1,4}\z/", $value)) {
-            return false;
-        }
-
-        $iban = str_replace(' ', '', $value);
-        $iban = substr($iban, 4).substr($iban, 0, 4);
-        $iban = strtr($iban, $character);
-
-        return bcmod($iban, 97) == 1;
-    }
-
-    /**
-     * Determine if the provided input is a valid date (ISO 8601) or specify a custom format (optional).
-     *
-     * @example_parameter d/m/Y
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_date($field, array $input, array $params = [], $value = null)
-    {
-        // Default
-        if (count($params) === 0) {
-            $cdate1 = date('Y-m-d', strtotime($value));
-            $cdate2 = date('Y-m-d H:i:s', strtotime($value));
-
-            return !($cdate1 != $value && $cdate2 != $value);
-        }
-
-        $date = \DateTime::createFromFormat($params[0], $value);
-
-        return !($date === false || $value != date($params[0], $date->getTimestamp()));
-    }
-
-    /**
-     * Determine if the provided input meets age requirement (ISO 8601). Input should be a date (Y-m-d).
-     *
-     * @example_parameter 18
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     * @throws Exception
-     */
-    protected function validate_min_age($field, array $input, array $params = [], $value = null)
-    {
-        $inputDatetime = new DateTime(EnvHelpers::date('Y-m-d', strtotime($value)));
-        $todayDatetime = new DateTime(EnvHelpers::date('Y-m-d'));
-
-        $interval = $todayDatetime->diff($inputDatetime);
-        $yearsPassed = $interval->y;
-
-        return $yearsPassed >= $params[0];
-    }
-
-    /**
-     * Determine if the provided numeric value is lower or equal to a specific value.
-     *
-     * @example_parameter 50
-     *
-     * @param string $field
-     * @param array  $input
-     * @param array  $params
-     * @param mixed  $value
-     * @return bool
-     */
-    protected function validate_max_numeric($field, array $input, array $params = [], $value = null)
-    {
-        return is_numeric($value) && is_numeric($params[0]) && ($value <= $params[0]);
-    }
-
-    /**
-     * Determine if the provided numeric value is higher or equal to a specific value.
-     *
-     * @example_parameter 1
-     *
-     * @param string $field
-     * @param array  $input
-     * @param array  $params
-     * @param mixed  $value
-     * @return bool
-     */
-    protected function validate_min_numeric($field, array $input, array $params = [], $value = null)
-    {
-        return is_numeric($value) && is_numeric($params[0]) && ($value >= $params[0]);
-    }
-
-    /**
-     * Determine if the provided value starts with param.
-     *
-     * @example_parameter Z
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     * @return bool
-     */
-    protected function validate_starts($field, array $input, array $params = [], $value = null)
-    {
-        return strpos($value, $params[0]) === 0;
-    }
-
-    /**
-     * Determine if the file was successfully uploaded.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_required_file($field, array $input, array $params = [], $value = null)
-    {
-        return isset($input[$field]) && is_array($input[$field]) && $input[$field]['error'] === 0;
-    }
-
-    /**
-     * Check the uploaded file for extension. Doesn't check mime-type yet.
-     *
-     * @example_parameter png;jpg;gif
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_extension($field, array $input, array $params = [], $value = null)
-    {
-        if (!is_array($input[$field])) {
-            return false;
-        }
-
-        // file is not required (empty upload)
-        if ($input[$field]['error'] === 4 && $input[$field]['size'] === 0 && $input[$field]['name'] === '') {
-            return true;
-        }
-
-        // when successfully uploaded we proceed to verify the extension
-        if ($input[$field]['error'] === 0) {
-            $params = array_map(function ($v) {
-                return trim(mb_strtolower($v));
-            }, $params);
-
-            $path_info = pathinfo($input[$field]['name']);
-            $extension = $path_info['extension'] ?? null;
-
-            return $extension && in_array(mb_strtolower($extension), $params, true);
-        }
-
-        return false;
-    }
-
-    /**
-     * Determine if the provided field value equals current field value.
-     *
-     * @example_parameter other_field_name
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_equalsfield($field, array $input, array $params = [], $value = null)
-    {
-        return $input[$field] == $input[$params[0]];
-    }
-
-    /**
-     * Determine if the provided field value is a valid GUID (v4)
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_guidv4($field, array $input, array $params = [], $value = null)
-    {
-        return preg_match("/\{?[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}\}?$/", $value) > 0;
-    }
-
-    /**
-     * Determine if the provided value is a valid phone number.
-     *
-     * @example_value 5555425555
-     * @example_value 555-555-5555
-     * @example_value 1(519) 555-4444
-     * @example_value 1-555-555-5555
-     * @example_value 1-(555)-555-5555
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_phone_number($field, array $input, array $params = [], $value = null)
-    {
-        $regex = '/^(\d[\s-]?)?[\(\[\s-]{0,2}?\d{3}[\)\]\s-]{0,2}?\d{3}[\s-]?\d{4}$/i';
-
-        return preg_match($regex, $value) > 0;
-    }
-
-    /**
-     * Custom regex validator.
-     *
-     * @example_parameter /test-[0-9]{3}/
-     * @example_value     test-123
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_regex($field, array $input, array $params = [], $value = null)
-    {
-        return preg_match($params[0], $value) > 0;
-    }
-
-    /**
-     * Determine if the provided value is a valid JSON string.
-     *
-     * @example_value {"test": true}
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_valid_json_string($field, array $input, array $params = [], $value = null)
-    {
-        return is_string($input[$field])
-            && is_array(json_decode($value, true))
-            && (json_last_error() == JSON_ERROR_NONE);
-    }
-
-    /**
-     * Check if an input is an array and if the size is more or equal to a specific value.
-     *
-     * @example_parameter 1
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_valid_array_size_greater($field, array $input, array $params = [], $value = null)
-    {
-        if (!is_array($input[$field]) || count($input[$field]) < $params[0]) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Check if an input is an array and if the size is less or equal to a specific value.
-     *
-     * @example_parameter 1
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_valid_array_size_lesser($field, array $input, array $params = [], $value = null)
-    {
-        if (!is_array($input[$field]) || count($input[$field]) > $params[0]) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Check if an input is an array and if the size is equal to a specific value.
-     *
-     * @example_parameter 1
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_valid_array_size_equal($field, array $input, array $params = [], $value = null)
-    {
-        return !(!is_array($input[$field]) || count($input[$field]) != $params[0]);
-    }
-
-    // ** ------------------------- Security Validators --------------------------- ** //
-
-    /**
-     * Validate strong password with uppercase, lowercase, number and special character.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_strong_password($field, array $input, array $params = [], $value = null)
-    {
-        // At least 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char
-        return preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/', $value) > 0;
-    }
-
-    /**
-     * Validate JWT token format.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_jwt_token($field, array $input, array $params = [], $value = null)
-    {
-        $parts = explode('.', $value);
-        if (count($parts) !== 3) {
-            return false;
-        }
-
-        foreach ($parts as $part) {
-            if (!preg_match('/^[A-Za-z0-9_-]+$/', $part)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Validate hash format for specified algorithm.
-     *
-     * @example_parameter md5
-     * @example_parameter sha1
-     * @example_parameter sha256
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_hash($field, array $input, array $params = [], $value = null)
-    {
-        $algorithm = $params[0] ?? 'md5';
-
-        $patterns = [
-            'md5' => '/^[a-f0-9]{32}$/i',
-            'sha1' => '/^[a-f0-9]{40}$/i',
-            'sha256' => '/^[a-f0-9]{64}$/i',
-            'sha512' => '/^[a-f0-9]{128}$/i',
-        ];
-
-        return isset($patterns[$algorithm]) && preg_match($patterns[$algorithm], $value) > 0;
-    }
-
-    /**
-     * Detect common SQL injection patterns.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_no_sql_injection($field, array $input, array $params = [], $value = null)
-    {
-        $patterns = [
-            '/(\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC|UNION)\b)/i',
-            '/(\b(OR|AND)\s+\d+\s*=\s*\d+)/i',
-            '/[\'";]/i',
-            '/--/i',
-            '/\/\*/i',
-            '/\*\//i',
-        ];
-
-        foreach ($patterns as $pattern) {
-            if (preg_match($pattern, $value)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Enhanced XSS detection beyond basic sanitize_string.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_no_xss($field, array $input, array $params = [], $value = null)
-    {
-        $patterns = [
-            '/<script[^>]*>.*?<\/script>/is',
-            '/javascript:/i',
-            '/on\w+\s*=/i',
-            '/<iframe[^>]*>.*?<\/iframe>/is',
-            '/<object[^>]*>.*?<\/object>/is',
-            '/<embed[^>]*>/i',
-            '/expression\s*\(/i',
-            '/vbscript:/i',
-        ];
-
-        foreach ($patterns as $pattern) {
-            if (preg_match($pattern, $value)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    // ** ------------------------- Modern Web Validators ------------------------- ** //
-
-    /**
-     * Validate UUID format (any version).
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_uuid($field, array $input, array $params = [], $value = null)
-    {
-        return preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i', $value) > 0;
-    }
-
-    /**
-     * Validate base64 encoded data.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_base64($field, array $input, array $params = [], $value = null)
-    {
-        return base64_encode(base64_decode($value, true)) === $value;
-    }
-
-    /**
-     * Validate hexadecimal color code.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_hex_color($field, array $input, array $params = [], $value = null)
-    {
-        return preg_match('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', $value) > 0;
-    }
-
-    /**
-     * Validate RGB color format.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_rgb_color($field, array $input, array $params = [], $value = null)
-    {
-        if (preg_match('/^rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i', $value, $matches)) {
-            $r = (int)$matches[1];
-            $g = (int)$matches[2];
-            $b = (int)$matches[3];
-
-            return $r >= 0 && $r <= 255 && $g >= 0 && $g <= 255 && $b >= 0 && $b <= 255;
-        }
-
-        return false;
-    }
-
-    /**
-     * Validate timezone identifier.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_timezone($field, array $input, array $params = [], $value = null)
-    {
-        return in_array($value, timezone_identifiers_list());
-    }
-
-    /**
-     * Validate language code (ISO 639).
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_language_code($field, array $input, array $params = [], $value = null)
-    {
-        // ISO 639-1 (2 letter) or 639-1 with country code (en-US)
-        return preg_match('/^[a-z]{2}(-[A-Z]{2})?$/', $value) > 0;
-    }
-
-    /**
-     * Validate country code (ISO 3166).
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_country_code($field, array $input, array $params = [], $value = null)
-    {
-        return preg_match('/^[A-Z]{2}$/', $value) > 0;
-    }
-
-    /**
-     * Validate currency code (ISO 4217).
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_currency_code($field, array $input, array $params = [], $value = null)
-    {
-        $currencies = [
-            'USD', 'EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'CNY', 'SEK', 'NZD',
-            'MXN', 'SGD', 'HKD', 'NOK', 'TRY', 'ZAR', 'BRL', 'INR', 'KRW', 'RUB',
-        ];
-
-        return in_array($value, $currencies);
-    }
-
-    // ** ------------------------- Network Validators ---------------------------- ** //
-
-    /**
-     * Validate MAC address format.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_mac_address($field, array $input, array $params = [], $value = null)
-    {
-        return preg_match('/^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/', $value) > 0;
-    }
-
-    /**
-     * Validate domain name format (without protocol).
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_domain_name($field, array $input, array $params = [], $value = null)
-    {
-        return preg_match('/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/', $value) > 0;
-    }
-
-    /**
-     * Validate port number (1-65535).
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_port_number($field, array $input, array $params = [], $value = null)
-    {
-        return is_numeric($value) && $value >= 1 && $value <= 65535;
-    }
-
-    /**
-     * Validate social media handle format.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_social_handle($field, array $input, array $params = [], $value = null)
-    {
-        return preg_match('/^@?[A-Za-z0-9_]{1,15}$/', $value) > 0;
-    }
-
-    // ** ------------------------- Geographic Validators ------------------------- ** //
-
-    /**
-     * Validate latitude coordinate (-90 to 90).
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_latitude($field, array $input, array $params = [], $value = null)
-    {
-        return is_numeric($value) && $value >= -90 && $value <= 90;
-    }
-
-    /**
-     * Validate longitude coordinate (-180 to 180).
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_longitude($field, array $input, array $params = [], $value = null)
-    {
-        return is_numeric($value) && $value >= -180 && $value <= 180;
-    }
-
-    /**
-     * Validate postal code for specified country.
-     *
-     * @example_parameter US
-     * @example_parameter CA
-     * @example_parameter UK
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_postal_code($field, array $input, array $params = [], $value = null)
-    {
-        $country = $params[0] ?? 'US';
-
-        $patterns = [
-            'US' => '/^\d{5}(-\d{4})?$/',
-            'CA' => '/^[A-Za-z]\d[A-Za-z] ?\d[A-Za-z]\d$/',
-            'UK' => '/^[A-Za-z]{1,2}\d[A-Za-z\d]? ?\d[A-Za-z]{2}$/',
-            'DE' => '/^\d{5}$/',
-            'FR' => '/^\d{5}$/',
-            'AU' => '/^\d{4}$/',
-            'JP' => '/^\d{3}-\d{4}$/',
-        ];
-
-        return isset($patterns[$country]) && preg_match($patterns[$country], $value) > 0;
-    }
-
-    /**
-     * Validate coordinates in lat,lng format.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_coordinates($field, array $input, array $params = [], $value = null)
-    {
-        if (preg_match('/^(-?\d+\.?\d*),\s*(-?\d+\.?\d*)$/', $value, $matches)) {
-            $lat = (float)$matches[1];
-            $lng = (float)$matches[2];
-
-            return $lat >= -90 && $lat <= 90 && $lng >= -180 && $lng <= 180;
-        }
-
-        return false;
-    }
-
-    // ** ------------------------- Enhanced Date/Time Validators ---------------- ** //
-
-    /**
-     * Validate that date is in the future.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_future_date($field, array $input, array $params = [], $value = null)
-    {
-        $timestamp = strtotime($value);
-
-        return $timestamp !== false && $timestamp > time();
-    }
-
-    /**
-     * Validate that date is in the past.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_past_date($field, array $input, array $params = [], $value = null)
-    {
-        $timestamp = strtotime($value);
-
-        return $timestamp !== false && $timestamp < time();
-    }
-
-    /**
-     * Validate that date falls on a business day (Monday-Friday).
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_business_day($field, array $input, array $params = [], $value = null)
-    {
-        $timestamp = strtotime($value);
-        if ($timestamp === false) {
-            return false;
-        }
-        $dayOfWeek = date('N', $timestamp);
-
-        return $dayOfWeek >= 1 && $dayOfWeek <= 5;
-    }
-
-    /**
-     * Validate time format (HH:MM:SS or HH:MM).
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_valid_time($field, array $input, array $params = [], $value = null)
-    {
-        return preg_match('/^([01]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$/', $value) > 0;
-    }
-
-    /**
-     * Validate date falls within specified range.
-     *
-     * @example_parameter 2024-01-01;2024-12-31
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_date_range($field, array $input, array $params = [], $value = null)
-    {
-        if (count($params) < 2) {
-            return false;
-        }
-
-        $timestamp = strtotime($value);
-        $startTimestamp = strtotime($params[0]);
-        $endTimestamp = strtotime($params[1]);
-
-        if ($timestamp === false || $startTimestamp === false || $endTimestamp === false) {
-            return false;
-        }
-
-        return $timestamp >= $startTimestamp && $timestamp <= $endTimestamp;
-    }
-
-    // ** ------------------------- Mathematical Validators ---------------------- ** //
-
-    /**
-     * Validate that number is even.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_even($field, array $input, array $params = [], $value = null)
-    {
-        return is_numeric($value) && (int)$value % 2 === 0;
-    }
-
-    /**
-     * Validate that number is odd.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_odd($field, array $input, array $params = [], $value = null)
-    {
-        return is_numeric($value) && (int)$value % 2 === 1;
-    }
-
-    /**
-     * Validate that number is prime.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_prime($field, array $input, array $params = [], $value = null)
-    {
-        if (!is_numeric($value)) {
-            return false;
-        }
-
-        $num = (int)$value;
-        if ($num < 2) {
-            return false;
-        }
-        if ($num === 2) {
-            return true;
-        }
-        if ($num % 2 === 0) {
-            return false;
-        }
-
-        for ($i = 3; $i <= sqrt($num); $i += 2) {
-            if ($num % $i === 0) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    // ** ------------------------- Content Validators ---------------------------- ** //
-
-    /**
-     * Validate word count within specified range.
-     *
-     * @example_parameter min,10,max,500
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_word_count($field, array $input, array $params = [], $value = null)
-    {
-        $wordCount = str_word_count($value);
-
-        for ($i = 0; $i < count($params); $i += 2) {
-            if ($params[$i] === 'min' && isset($params[$i + 1])) {
-                if ($wordCount < (int)$params[$i + 1]) {
-                    return false;
-                }
-            }
-            if ($params[$i] === 'max' && isset($params[$i + 1])) {
-                if ($wordCount > (int)$params[$i + 1]) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Validate camelCase format.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_camel_case($field, array $input, array $params = [], $value = null)
-    {
-        return !empty($value) && preg_match('/^[a-z][a-zA-Z0-9]*$/', $value) > 0;
-    }
-
-    /**
-     * Validate snake_case format.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_snake_case($field, array $input, array $params = [], $value = null)
-    {
-        return preg_match('/^[a-z][a-z0-9_]*$/', $value) > 0;
-    }
-
-    /**
-     * Validate URL slug format.
-     *
-     * @param string $field
-     * @param array $input
-     * @param array $params
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    protected function validate_url_slug($field, array $input, array $params = [], $value = null)
-    {
-        return preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/', $value) > 0;
-    }
 }

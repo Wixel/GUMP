@@ -1,18 +1,57 @@
+# ── Operating systems ────────────────────────────────────────────────
 .DS_Store
+Thumbs.db
+Desktop.ini
+.directory
+
+# ── Editors / IDEs ───────────────────────────────────────────────────
 .idea
-.ddev
+.vscode/
+.fleet/
+.zed/
+*.code-workspace
+*.sublime-project
+*.sublime-workspace
 nbproject
 nb-configuration.xml
 Session.vim
+*.swp
+*.swo
+*~
 *.tmproj
 *.tmproject
 tmtags
-Thumbs.db
-Desktop.ini
-vendor
-coverage
-build
-.phpunit.result.cache
-.php-cs-fixer.cache
+.history/
+
+# ── Local environment / dev tooling ──────────────────────────────────
+.ddev
+.direnv/
+.claude/
+.env
+.env.local
+.env.*.local
 user.env
+
+# ── PHP / Composer ───────────────────────────────────────────────────
+/vendor/
+composer.phar
 composer.lock
+
+# ── Build & coverage artifacts ───────────────────────────────────────
+/build/
+/coverage/
+coverage.xml
+*.log
+
+# ── Tool caches ──────────────────────────────────────────────────────
+.phpunit.result.cache
+.phpunit.cache
+.php-cs-fixer.cache
+.phpstan.cache
+.phpstan/
+.psalm-cache/
+
+# ── Misc backups ─────────────────────────────────────────────────────
+*.bak
+*.orig
+*.rej

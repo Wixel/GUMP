@@ -1,0 +1,43 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Anonymous function has an unused use \$rules\.$#'
+			identifier: closure.unusedUse
+			count: 1
+			path: gump.class.php
+
+		-
+			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: gump.class.php
+
+		-
+			message: '#^Method GUMP\:\:parse_rule_params\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: gump.class.php
+
+		-
+			message: '#^Method GUMP\:\:parse_rule_params\(\) never returns string so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: gump.class.php
+
+		-
+			message: '#^PHPDoc tag @param for parameter \$input with type mixed is not subtype of native type array\.$#'
+			identifier: parameter.phpDocType
+			count: 3
+			path: gump.class.php
+
+		-
+			message: '#^Unsafe usage of new static\(\)\.$#'
+			identifier: new.static
+			count: 1
+			path: gump.class.php
+
+		-
+			message: '#^Binary operation "\*\=" between non\-empty\-string and 2 results in an error\.$#'
+			identifier: assignOp.invalid
+			count: 1
+			path: src/Validation/Validators/ValidCcValidator.php
