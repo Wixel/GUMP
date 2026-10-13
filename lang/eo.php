@@ -2,6 +2,11 @@
 
 return [
     'required'                 => 'La kampo “{field}” estas deviga',
+    'required_with'            => 'La kampo "{field}" estas deviga kiam {param} ĉeestas',
+    'required_with_all'        => 'La kampo "{field}" estas deviga kiam ĉiuj {param} ĉeestas',
+    'required_without'         => 'La kampo "{field}" estas deviga kiam {param} ne ĉeestas',
+    'required_without_all'     => 'La kampo "{field}" estas deviga kiam ĉiuj {param} ne ĉeestas',
+    'required_array_keys'      => 'La kampo "{field}" estas deviga kaj devas enhavi ŝlosilojn: {param}',
     'valid_email'              => 'La kampo “{field}” devas enhavi validan retadreson',
     'max_len'                  => 'La kampo “{field}” devas enhavi maksimume {param} signojn',
     'min_len'                  => 'La kampo “{field}” devas enhavi minimume {param} signojn',

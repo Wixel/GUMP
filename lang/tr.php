@@ -2,6 +2,11 @@
 
 return [
     'required'                 => '{field} alanı zorunludur',
+    'required_with'            => '{field} alanı {param} mevcut olduğunda zorunludur',
+    'required_with_all'        => '{field} alanı tüm {param} mevcut olduğunda zorunludur',
+    'required_without'         => '{field} alanı {param} mevcut olmadığında zorunludur',
+    'required_without_all'     => '{field} alanı tüm {param} mevcut olmadığında zorunludur',
+    'required_array_keys'      => '{field} alanı zorunludur ve şu anahtarları içermelidir: {param}',
     'valid_email'              => '{field} alanı geçerli bir e-posta adresi olmalı',
     'max_len'                  => '{field} alanı en fazla {param} karakter veya daha az olmalı',
     'min_len'                  => '{field} alanı en az {param} karakter olmalı',

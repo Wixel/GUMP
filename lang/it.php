@@ -2,6 +2,11 @@
 
 return [
     'required'                 => 'Il campo {field} è obbligatorio',
+    'required_with'            => 'Il campo {field} è obbligatorio quando {param} è presente',
+    'required_with_all'        => 'Il campo {field} è obbligatorio quando tutti i {param} sono presenti',
+    'required_without'         => 'Il campo {field} è obbligatorio quando {param} non è presente',
+    'required_without_all'     => 'Il campo {field} è obbligatorio quando tutti i {param} non sono presenti',
+    'required_array_keys'      => 'Il campo {field} è obbligatorio e deve contenere le chiavi: {param}',
     'valid_email'              => 'Il campo {field} deve essere un indirizzo email valido',
     'max_len'                  => 'Il campo {field} deve essere di {param} caratteri o inferiore',
     'min_len'                  => 'Il campo {field} deve essere di almeno {param} caratteri',

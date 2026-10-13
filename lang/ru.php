@@ -2,6 +2,11 @@
 
 return [
     'required'                 => 'Поле {field} является обязательным',
+    'required_with'            => 'Поле {field} обязательно, когда {param} присутствует',
+    'required_with_all'        => 'Поле {field} обязательно, когда все {param} присутствуют',
+    'required_without'         => 'Поле {field} обязательно, когда {param} отсутствует',
+    'required_without_all'     => 'Поле {field} обязательно, когда все {param} отсутствуют',
+    'required_array_keys'      => 'Поле {field} обязательно и должно содержать ключи: {param}',
     'valid_email'              => 'Поле {field} должно быть Email адресом',
     'max_len'                  => 'Поле {field} должно быть максимум {param} символов',
     'min_len'                  => 'Поле {field} должно быть минимум {param} символов',

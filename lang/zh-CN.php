@@ -2,6 +2,11 @@
 
 return [
     'required'                 => '字段 {field} 必填',
+    'required_with'            => '字段 {field} 在 {param} 存在时必填',
+    'required_with_all'        => '字段 {field} 在所有 {param} 都存在时必填',
+    'required_without'         => '字段 {field} 在 {param} 不存在时必填',
+    'required_without_all'     => '字段 {field} 在所有 {param} 都不存在时必填',
+    'required_array_keys'      => '字段 {field} 必填且必须包含以下键：{param}',
     'valid_email'              => '字段 {field} 必须是一个有效的邮箱地址',
     'max_len'                  => '字段 {field} 不能大于 {param} 个字符',
     'min_len'                  => '字段 {field} 不能小于 {param} 个字符',

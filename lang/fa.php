@@ -2,6 +2,11 @@
 
 return [
     'required'                 => '{field} الزامی میباشد',
+    'required_with'            => '{field} الزامی است وقتی {param} وجود دارد',
+    'required_with_all'        => '{field} الزامی است وقتی همه {param} وجود دارند',
+    'required_without'         => '{field} الزامی است وقتی {param} وجود ندارد',
+    'required_without_all'     => '{field} الزامی است وقتی همه {param} وجود ندارند',
+    'required_array_keys'      => '{field} الزامی است و باید شامل کلیدهای زیر باشد: {param}',
     'valid_email'              => '{field} باید یک آدرس ایمیل معتبر باشد ',
     'max_len'                  => '{field} باید حد اکثر {param} کاراکتر یا کمتر باشد',
     'min_len'                  => '{field} باید حد اقل {param} کاراکتر یا بیشتر باشد',

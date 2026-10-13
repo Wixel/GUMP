@@ -2,6 +2,11 @@
 
 return [
     'required'                 => '{field}フィールドは必須です',
+    'required_with'            => '{param}が存在する場合、{field}フィールドは必須です',
+    'required_with_all'        => 'すべての{param}が存在する場合、{field}フィールドは必須です',
+    'required_without'         => '{param}が存在しない場合、{field}フィールドは必須です',
+    'required_without_all'     => 'すべての{param}が存在しない場合、{field}フィールドは必須です',
+    'required_array_keys'      => '{field}フィールドは必須で、次のキーを含む必要があります：{param}',
     'valid_email'              => '{field}フィールドはメールアドレス形式でなければいけません',
     'max_len'                  => '{field}フィールドは{param}文字以下でなければいけません',
     'min_len'                  => '{field}フィールドは{param}文字以上でなければいけません',

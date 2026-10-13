@@ -2,6 +2,11 @@
 
 return [
     'required'                 => 'Das Feld "{field}" ist erforderlich.',
+    'required_with'            => 'Das Feld "{field}" ist erforderlich, wenn {param} vorhanden ist',
+    'required_with_all'        => 'Das Feld "{field}" ist erforderlich, wenn alle {param} vorhanden sind',
+    'required_without'         => 'Das Feld "{field}" ist erforderlich, wenn {param} nicht vorhanden ist',
+    'required_without_all'     => 'Das Feld "{field}" ist erforderlich, wenn alle {param} nicht vorhanden sind',
+    'required_array_keys'      => 'Das Feld "{field}" ist erforderlich und muss die Schlüssel enthalten: {param}',
     'valid_email'              => 'Das Feld "{field}" muss eine g&uuml;ltige E-Mail-Adresse sein.',
     'max_len'                  => 'Das Feld "{field}" darf maximal {param} Zeichen enthalten.',
     'min_len'                  => 'Das Feld "{field}" muss mindestens {param} Zeichen enthalten.',

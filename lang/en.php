@@ -2,6 +2,11 @@
 
 return [
     'required'                 => 'The {field} field is required',
+    'required_with'            => 'The {field} field is required when {param} is present',
+    'required_with_all'        => 'The {field} field is required when all {param} are present',
+    'required_without'         => 'The {field} field is required when {param} is not present',
+    'required_without_all'     => 'The {field} field is required when all {param} are not present',
+    'required_array_keys'      => 'The {field} field is required and must contain keys: {param}',
     'valid_email'              => 'The {field} field must be a valid email address',
     'max_len'                  => 'The {field} field needs to be {param} characters or less',
     'min_len'                  => 'The {field} field needs to be at least {param} characters',

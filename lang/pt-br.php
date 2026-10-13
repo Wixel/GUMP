@@ -2,6 +2,11 @@
 
 return [
     'required'                 => 'O preenchimento do campo {field} é obrigatório',
+    'required_with'            => 'O campo {field} é obrigatório quando {param} está presente',
+    'required_with_all'        => 'O campo {field} é obrigatório quando todos os {param} estão presentes',
+    'required_without'         => 'O campo {field} é obrigatório quando {param} não está presente',
+    'required_without_all'     => 'O campo {field} é obrigatório quando todos os {param} não estão presentes',
+    'required_array_keys'      => 'O campo {field} é obrigatório e deve conter as chaves: {param}',
     'valid_email'              => 'O campo {field} precisa conter um e-mail válido',
     'max_len'                  => 'O campo {field} pode conter no máximo {param} caracteres',
     'min_len'                  => 'O campo {field} precisa conter no mínimo {param} caracteres',

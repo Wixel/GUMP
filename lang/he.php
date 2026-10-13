@@ -2,6 +2,11 @@
 
 return [
     'required'                 => 'שדה {field} הינו חובה',
+    'required_with'            => 'שדה {field} הינו חובה כאשר {param} קיים',
+    'required_with_all'        => 'שדה {field} הינו חובה כאשר כל ה-{param} קיימים',
+    'required_without'         => 'שדה {field} הינו חובה כאשר {param} לא קיים',
+    'required_without_all'     => 'שדה {field} הינו חובה כאשר כל ה-{param} לא קיימים',
+    'required_array_keys'      => 'שדה {field} הינו חובה וחייב להכיל את המפתחות: {param}',
     'valid_email'              => 'שדה {field} מוכרח להיות כתובת דוא"ל חוקית',
     'max_len'                  => 'שדה {field} מוכרח להיות {param} תווים או פחות',
     'min_len'                  => 'שדה {field} מוכרח להיות לפחות {param} תווים',

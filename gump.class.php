@@ -601,6 +601,36 @@ class GUMP
     }
 
     /**
+     * Extracts the rule name from a rule definition.
+     *
+     * @param mixed $rule_definition
+     * @return string
+     * @throws RuntimeException If definition is invalid or extracted name is empty.
+     */
+    private function extract_rule_name_from_definition($rule_definition)
+    {
+        if (is_array($rule_definition) && !empty($rule_definition)) {
+            $rule_name = reset($rule_definition);
+        } elseif (is_string($rule_definition)) {
+            $rule_name = $rule_definition;
+        } else {
+            throw new RuntimeException(sprintf('Invalid rule definition: expected non-empty array or string, got %s.', gettype($rule_definition)));
+        }
+
+        if (is_string($rule_name)) {
+            $rule_name = strtok($rule_name, self::$rules_parameters_delimiter);
+        }
+
+        $rule_name = is_string($rule_name) ? trim($rule_name) : '';
+
+        if ($rule_name === '') {
+            throw new RuntimeException('Invalid rule name: extracted rule name must not be empty.');
+        }
+
+        return $rule_name;
+    }
+
+    /**
      * Checks if array of rules contains a required type of validator.
      *
      * @param array $rules
@@ -608,18 +638,21 @@ class GUMP
      */
     private function field_has_required_rules(array $rules)
     {
-        $require_type_of_rules = ['required', 'required_file'];
+        $require_type_of_rules = [
+            'required',
+            'required_file',
+            'required_with',
+            'required_with_all',
+            'required_without',
+            'required_without_all',
+            'required_array_keys',
+        ];
 
-        // v2 format (using arrays for definition of rules)
-        if (is_array($rules) && is_array($rules[0])) {
-            $found = array_filter($rules, function ($item) use ($require_type_of_rules) {
-                return in_array($item[0], $require_type_of_rules);
-            });
+        $rule_names = array_map(function ($rule) {
+            return $this->extract_rule_name_from_definition($rule);
+        }, $rules);
 
-            return count($found) > 0;
-        }
-
-        $found = array_values(array_intersect($require_type_of_rules, $rules));
+        $found = array_values(array_intersect($require_type_of_rules, $rule_names));
 
         return count($found) > 0;
     }
@@ -1259,6 +1292,146 @@ class GUMP
     protected function validate_required($field, array $input, array $params = [], $value = null)
     {
         return isset($value) && !self::is_empty($value);
+    }
+
+    /**
+     * The field under validation must be present and not empty ONLY IF ANY of the other specified fields are present and not empty.
+     *
+     * @param string $field
+     * @param array $input
+     * @param array $params
+     * @param mixed $value
+     * @return bool
+     */
+    protected function validate_required_with($field, array $input, array $params = [], $value = null)
+    {
+        $any_present = false;
+
+        foreach ($params as $other_field) {
+            $other_val = ArrayHelpers::data_get($input, trim($other_field));
+            if (!self::is_empty($other_val)) {
+                $any_present = true;
+                break;
+            }
+        }
+
+        if ($any_present) {
+            return $this->validate_required($field, $input, [], $value);
+        }
+
+        return true;
+    }
+
+    /**
+     * The field under validation must be present and not empty ONLY IF ALL of the other specified fields are present and not empty.
+     *
+     * @param string $field
+     * @param array $input
+     * @param array $params
+     * @param mixed $value
+     * @return bool
+     */
+    protected function validate_required_with_all($field, array $input, array $params = [], $value = null)
+    {
+        $all_present = true;
+
+        foreach ($params as $other_field) {
+            $other_val = ArrayHelpers::data_get($input, trim($other_field));
+            if (self::is_empty($other_val)) {
+                $all_present = false;
+                break;
+            }
+        }
+
+        if ($all_present) {
+            return $this->validate_required($field, $input, [], $value);
+        }
+
+        return true;
+    }
+
+    /**
+     *
+     * The field under validation must be present and not empty ONLY WHEN ANY of the other specified fields are NOT present or empty.
+     *
+     * @param string $field
+     * @param array $input
+     * @param array $params
+     * @param mixed $value
+     * @return bool
+     */
+    protected function validate_required_without($field, array $input, array $params = [], $value = null)
+    {
+        $any_missing = false;
+
+        foreach ($params as $other_field) {
+            $other_val = ArrayHelpers::data_get($input, trim($other_field));
+            if (self::is_empty($other_val)) {
+                $any_missing = true;
+                break;
+            }
+        }
+
+        if ($any_missing) {
+            return $this->validate_required($field, $input, [], $value);
+        }
+
+        return true;
+    }
+
+    /**
+     * The field under validation must be present and not empty ONLY WHEN ALL of the other specified fields are NOT present or empty.
+     *
+     * @param string $field
+     * @param array $input
+     * @param array $params
+     * @param mixed $value
+     * @return bool
+     */
+    protected function validate_required_without_all($field, array $input, array $params = [], $value = null)
+    {
+        $all_missing = true;
+
+        foreach ($params as $other_field) {
+            $other_val = ArrayHelpers::data_get($input, trim($other_field));
+            if (!self::is_empty($other_val)) {
+                $all_missing = false;
+                break;
+            }
+        }
+
+        if ($all_missing) {
+            return $this->validate_required($field, $input, [], $value);
+        }
+
+        return true;
+    }
+
+    /**
+     * The field under validation must be an array and contain all specified keys.
+     *
+     * @param string $field
+     * @param array $input
+     * @param array $params
+     * @param mixed $value
+     * @return bool
+     */
+    protected function validate_required_array_keys($field, array $input, array $params = [], $value = null)
+    {
+        $field_value = ArrayHelpers::data_get($input, $field);
+
+        if (!is_array($field_value)) {
+            return false;
+        }
+
+        foreach ($params as $required_key) {
+            $required_key = trim($required_key);
+            if (!ArrayHelpers::exists($field_value, $required_key)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

@@ -2,6 +2,11 @@
 
 return [
     'required'                 => '{field} mező kötelező.',
+    'required_with'            => '{field} mező kötelező, ha {param} jelen van',
+    'required_with_all'        => '{field} mező kötelező, ha minden {param} jelen van',
+    'required_without'         => '{field} mező kötelező, ha {param} nincs jelen',
+    'required_without_all'     => '{field} mező kötelező, ha minden {param} nincs jelen',
+    'required_array_keys'      => '{field} mező kötelező és tartalmaznia kell a kulcsokat: {param}',
     'valid_email'              => '{field} mezőnek valós email címnek kell lennie.',
     'max_len'                  => '{field} mező legfeljebb {param} karakter hosszú lehet.',
     'min_len'                  => '{field} mezőnek legalább {param} karakter hosszúnak kell lennie.',

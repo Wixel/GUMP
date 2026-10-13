@@ -2,6 +2,11 @@
 
 return [
     'required'             => 'Het veld {field} is verplicht',
+    'required_with'        => 'Het veld {field} is verplicht wanneer {param} aanwezig is',
+    'required_with_all'    => 'Het veld {field} is verplicht wanneer alle {param} aanwezig zijn',
+    'required_without'     => 'Het veld {field} is verplicht wanneer {param} niet aanwezig is',
+    'required_without_all' => 'Het veld {field} is verplicht wanneer alle {param} niet aanwezig zijn',
+    'required_array_keys'  => 'Het veld {field} is verplicht en moet de sleutels bevatten: {param}',
     'valid_email'          => 'Het veld {field} moet een geldige e-mail zijn',
     'max_len'              => 'Het veld {field} moet een aantal tekens van {param} of minder hebben',
     'min_len'              => 'Het veld {field} moet een tekennummer van {param} of meer hebben',

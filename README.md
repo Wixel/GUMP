@@ -213,6 +213,11 @@ GUMP provides **76 built-in validators** for comprehensive data validation:
 | Rule                                                                           | Description                                                                                                                                                                                               |
 |--------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **required**                                                                   | Ensures the specified key value exists and is not empty (not null, not empty string, not empty array).                                                                                                    |
+| **required_with**,field1;field2                                                | Field is required when ANY of the specified fields are present and not empty.                                                                                                                          |
+| **required_with_all**,field1;field2                                            | Field is required when ALL of the specified fields are present and not empty.                                                                                                                           |
+| **required_without**,field1;field2                                             | Field is required when ANY of the specified fields are not present or empty.                                                                                                                            |
+| **required_without_all**,field1;field2                                         | Field is required when ALL of the specified fields are not present or empty.                                                                                                                            |
+| **required_array_keys**,key1;key2                                              | Field must be an array and contain all specified keys.                                                                                                                                                   |
 | **contains**,one;two;use array format if one of the values contains semicolons | Verify that a value is contained within the pre-defined value set.                                                                                                                                        |
 | **contains_list**,value1;value2                                                | Verify that a value is contained within the pre-defined value set. Error message will NOT show the list of possible values.                                                                               |
 | **doesnt_contain_list**,value1;value2                                          | Verify that a value is contained within the pre-defined value set. Error message will NOT show the list of possible values.                                                                               |
@@ -317,6 +322,62 @@ GUMP provides **76 built-in validators** for comprehensive data validation:
 
 // Works with Unicode characters
 'title' => 'between_len,5;100'  // Handles émojis, ñ, etc. correctly
+```
+
+### Conditional Required Validators
+
+**`required_with,field1;field2`** - Field required when ANY specified field is present
+
+```php
+// String format
+'recipient_name' => 'required_with,shipping_address'
+
+// Array format
+'recipient_name' => ['required_with' => ['shipping_address']]
+
+// Multiple trigger fields
+'recipient_name' => 'required_with,shipping_address;billing_address'
+'recipient_name' => ['required_with' => ['shipping_address', 'billing_address']]
+```
+
+**`required_with_all,field1;field2`** - Field required when ALL specified fields are present
+
+```php
+// String format
+'order_note' => 'required_with_all,shipping_address;billing_address'
+
+// Array format
+'order_note' => ['required_with_all' => ['shipping_address', 'billing_address']]
+```
+
+**`required_without,field1;field2`** - Field required when ANY specified field is missing/empty
+
+```php
+// String format
+'contact_email' => 'required_without,phone;mobile'
+
+// Array format
+'contact_email' => ['required_without' => ['phone', 'mobile']]
+```
+
+**`required_without_all,field1;field2`** - Field required when ALL specified fields are missing/empty
+
+```php
+// String format
+'contact_email' => 'required_without_all,phone;mobile'
+
+// Array format
+'contact_email' => ['required_without_all' => ['phone', 'mobile']]
+```
+
+**`required_array_keys,key1;key2`** - Array must contain all specified keys
+
+```php
+// String format
+'data' => 'required_array_keys,id;name'
+
+// Array format
+'data' => ['required_array_keys' => ['id', 'name']]
 ```
 
 ### Real-World Usage Examples

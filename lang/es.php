@@ -2,6 +2,11 @@
 
 return [
     'required'                 => 'El campo {field} es requerido',
+    'required_with'            => 'El campo {field} es requerido cuando {param} está presente',
+    'required_with_all'        => 'El campo {field} es requerido cuando todos los {param} están presentes',
+    'required_without'         => 'El campo {field} es requerido cuando {param} no está presente',
+    'required_without_all'     => 'El campo {field} es requerido cuando todos los {param} no están presentes',
+    'required_array_keys'      => 'El campo {field} es requerido y debe contener las claves: {param}',
     'valid_email'              => 'El campo {field} debe ser una dirección de correo electrónico válida',
     'max_len'                  => 'El campo {field} no puede tener más de {param} caracteres de longitud',
     'min_len'                  => 'El campo {field} debe tener al menos {param} caracteres de longitud',

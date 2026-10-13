@@ -2,6 +2,11 @@
 
 return [
     'required'     => '{field} là bắt buộc',
+    'required_with' => 'Trường {field} là bắt buộc khi {param} xuất hiện',
+    'required_with_all' => 'Trường {field} là bắt buộc khi tất cả {param} đều xuất hiện',
+    'required_without' => 'Trường {field} là bắt buộc khi {param} rỗng',
+    'required_without_all' => 'Trường {field} là bắt buộc khi tất cả {param} đều rỗng',
+    'required_array_keys' => 'Trường {field} là bắt buộc và phải chứa các khóa: {param}',
     'valid_email'       => '{field} phải là địa chỉ email hợp lệ',
     'max_len'      => '{field} cần phải có {param} ký tự trở xuống',
     'min_len'      => '{field} cần có ít nhất {param} ký tự',

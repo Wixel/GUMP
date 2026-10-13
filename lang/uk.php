@@ -2,6 +2,11 @@
 
 return [
     'required' => 'Поле {field} є обов’язковим',
+    'required_with' => 'Поле {field} є обов\'язковим, коли {param} присутнє',
+    'required_with_all' => 'Поле {field} є обов\'язковим, коли всі {param} присутні',
+    'required_without' => 'Поле {field} є обов\'язковим, коли {param} відсутнє',
+    'required_without_all' => 'Поле {field} є обов\'язковим, коли всі {param} відсутні',
+    'required_array_keys' => 'Поле {field} є обов\'язковим і має містити ключі: {param}',
     'valid_email' => 'Поле {field} має бути Email адресою',
     'max_len' => 'У полі {field} має бути максимум {param} символів',
     'min_len' => 'У полі {field} має бути мінімум {param} символів',

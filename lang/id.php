@@ -2,6 +2,11 @@
 
 return [
     'required'                 => 'Bagian {field} harus diisi',
+    'required_with'            => 'Bagian {field} wajib diisi ketika {param} ada',
+    'required_with_all'        => 'Bagian {field} wajib diisi ketika semua {param} ada',
+    'required_without'         => 'Bagian {field} wajib diisi ketika {param} tidak ada',
+    'required_without_all'     => 'Bagian {field} wajib diisi ketika semua {param} tidak ada',
+    'required_array_keys'      => 'Bagian {field} wajib diisi dan harus berisi kunci: {param}',
     'valid_email'              => 'Bagian {field} harus berisi alamat email yang benar',
     'max_len'                  => 'Bagian {field} harus memiliki {param} karakter atau kurang',
     'min_len'                  => 'Bagian {field} memiliki sedikitnya {param} karakter',
